@@ -1,5 +1,5 @@
 import HelpCard from "../components/Cards/HelpCard";
-import HelpSectionCard from "../components/Cards/HelpSectionCard";
+import CategoryCard from "../components/Cards/CategoryCard";
 import HelpGrid from "../components/HelpGrid";
 import Layout from "../components/Layout";
 import { getFAQCategories } from "../lib/community";
@@ -12,7 +12,7 @@ export default function Help({ query }) {
       <Layout title={"How can we help you, Matt ?"}>
         <HelpGrid>
           {query.data.categories.map((category) => (
-            <HelpSectionCard title={category.name} key={category.id} />
+            <CategoryCard title={category.name} key={category.id} />
           ))}
           <HelpCard
             iconSVG={<SlackIcon />}

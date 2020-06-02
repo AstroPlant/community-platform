@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Card from "./Card";
+import WrapInLink from "../WrapInLink";
 
 const Container = styled(Card)`
   display: flex;
@@ -15,9 +16,11 @@ export default function CategoryCard({ className, title }) {
   const as = "/help/" + title.toLowerCase();
 
   return (
-    <Container isLink href="/help/[id]" as={as} className={className}>
-      <h3>{title}</h3>
-    </Container>
+    <WrapInLink href="/help/[name]" as={as}>
+      <Container className={className}>
+        <h3>{title}</h3>
+      </Container>
+    </WrapInLink>
   );
 }
 
