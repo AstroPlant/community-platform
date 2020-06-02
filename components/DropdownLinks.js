@@ -38,6 +38,6 @@ DropdownLinks.propTypes = {
     // Either a function
     PropTypes.func,
     // Or the instance of a DOM native element
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    PropTypes.shape({ current: PropTypes.instanceOf(PropTypes.element) }),
   ]),
 };
