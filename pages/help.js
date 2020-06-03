@@ -1,18 +1,21 @@
-import HelpCard from "../components/Cards/HelpCard";
 import CategoryCard from "../components/Cards/CategoryCard";
+import HelpCard from "../components/Cards/HelpCard";
 import HelpGrid from "../components/HelpGrid";
 import Layout from "../components/Layout";
 import { getFAQCategories } from "../lib/community";
 import SlackIcon from "../public/icons/slack.svg";
 
-export default function Help({ query }) {
-  console.log(query);
+export default function Help({ categories }) {
   return (
     <div className="container">
       <Layout title={"How can we help you, Matt ?"}>
         <HelpGrid>
-          {query.data.categories.map((category) => (
-            <CategoryCard title={category.name} key={category.id} />
+          {categories.map((category) => (
+            <CategoryCard
+              name={category.name}
+              slug={category.slug}
+              key={category.id}
+            />
           ))}
           <HelpCard
             iconSVG={<SlackIcon />}
@@ -26,13 +29,10 @@ export default function Help({ query }) {
   );
 }
 
-export async function getStaticProps() {
-  // fetch no longer needs to be imported from isomorphic-unfetch
-  const query = await getFAQCategories();
-
+export async function getServerSideProps() {
   return {
     props: {
-      query,
+      categories: await getFAQCategories(),
     },
   };
 }

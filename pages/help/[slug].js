@@ -1,16 +1,14 @@
-import Head from "next/head";
 import FAQCard from "../../components/Cards/FAQCard";
 import FAQGrid from "../../components/FAQGrid";
 import Layout from "../../components/Layout";
-import { getCategoriesIds, getFAQsofCategory } from "../../lib/community";
+import { getAllCategoriesSlug, getCategoryBySlug } from "../../lib/community";
 
-export default function FAQ({ query }) {
-  console.log(query);
+export default function FAQ({ category }) {
   return (
     <div className="container">
-      <Layout title={"General"}>
+      <Layout title={category.name}>
         <FAQGrid>
-          {query.data.category.faqs.map((faq) => (
+          {category.faqs.map((faq) => (
             <FAQCard
               key={faq.id}
               question={faq.question}
@@ -24,20 +22,12 @@ export default function FAQ({ query }) {
   );
 }
 
-export async function getStaticPaths() {
-  const paths = await getCategoriesIds();
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps() {
-  const query = await getFAQsofCategory(1);
+export async function getServerSideProps(context) {
+  const category = await getCategoryBySlug(context.params.slug);
 
   return {
     props: {
-      query,
+      category,
     },
   };
 }

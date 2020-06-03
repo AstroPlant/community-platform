@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import Card from "./Card";
 import WrapInLink from "../WrapInLink";
+import Card from "./Card";
 
 const Container = styled(Card)`
   display: flex;
@@ -12,13 +12,11 @@ const Container = styled(Card)`
   text-align: center;
 `;
 
-export default function CategoryCard({ className, title }) {
-  const as = "/help/" + title.toLowerCase();
-
+export default function CategoryCard({ className, name, slug }) {
   return (
-    <WrapInLink href="/help/[name]" as={as}>
+    <WrapInLink href="/help/[slug]" as={`/help/${slug}`}>
       <Container className={className}>
-        <h3>{title}</h3>
+        <h3>{name}</h3>
       </Container>
     </WrapInLink>
   );
@@ -26,7 +24,8 @@ export default function CategoryCard({ className, title }) {
 
 CategoryCard.propTypes = {
   className: PropTypes.string,
-  title: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
 };
 
 CategoryCard.defaultProps = {};
