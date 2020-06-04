@@ -10,23 +10,20 @@ const GridContainer = styled.div`
   display: grid;
   grid-gap: ${(props) => props.theme.gridGap};
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
 
   padding: 2rem 0;
 `;
 
-const FeaturedGrid = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-
-  padding: 2rem 0;
+const GridItem = styled.div`
+  height: 30vh;
 `;
 
 const FeaturedArticle = styled.div`
+  margin: 2rem 0;
   grid-row: 1;
   grid-column: 1 / span 3;
+  height: 50vh;
 `;
 
 export default function ArticleGrid({ children }) {
@@ -36,10 +33,12 @@ export default function ArticleGrid({ children }) {
   const otherChildren = allChildren;
   return (
     <Container>
-      <FeaturedGrid>
-        <FeaturedArticle>{featured}</FeaturedArticle>
-      </FeaturedGrid>
-      <GridContainer>{otherChildren}</GridContainer>
+      <FeaturedArticle>{featured}</FeaturedArticle>
+      <GridContainer>
+        {otherChildren.map((child) => (
+          <GridItem>{child}</GridItem>
+        ))}
+      </GridContainer>
     </Container>
   );
 }
