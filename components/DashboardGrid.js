@@ -72,6 +72,7 @@ export default function DashboardGrid({ children }) {
           title={"Title"}
           description={"description"}
           imgSrc={"/placeholder.jpg"}
+          href={"/news"}
         />
       </TopRight>
       <MidLeft>

@@ -6,7 +6,7 @@ import Link from "next/link";
  */
 export default function WrapInLink({ children, href, as }) {
   return (
-    <Link href={href} as={as}>
+    <Link passHref href={href} as={as}>
       <a>{children}</a>
     </Link>
   );

@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import WrapInLink from "../WrapInLink";
 
 const Container = styled.div`
   display: block;
@@ -14,21 +13,12 @@ const Container = styled.div`
   padding: 1.5rem;
 `;
 
-export default function Card({ isLink, children, className, href, as }) {
-  return (
-    <>
-      {isLink ? (
-        <WrapInLink href={href} as={as}>
-          <Container className={className}>{children}</Container>
-        </WrapInLink>
-      ) : (
-        <Container className={className}>{children}</Container>
-      )}
-    </>
-  );
+export default function Card({ children, className }) {
+  return <Container className={className}>{children}</Container>;
 }
 
 Card.propTypes = {
+  className: PropTypes.string,
   children: PropTypes.node,
 };
 

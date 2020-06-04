@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
 import Card from "./Card";
+import Link from "next/link";
 
 const Container = styled(Card)`
   && {
@@ -29,19 +30,28 @@ const Content = styled.div`
   padding: 1rem;
 `;
 
-const ShowAllButton = styled(Button)`
+const CenteredButton = styled(Button)`
   && {
     margin: auto;
   }
 `;
 
-export default function NewsCard({ className, title, description, imgSrc }) {
+export default function NewsCard({
+  className,
+  title,
+  description,
+  imgSrc,
+  href,
+  as,
+}) {
   return (
     <Container className={className} imgSrc={imgSrc}>
       <Content>
         <b>{title}</b>
         <p>{description}</p>
-        <ShowAllButton label={"Show All"} color={"#56F265"}></ShowAllButton>
+        <Link passHref href={href} as={as}>
+          <CenteredButton label={"Show All"} color={"#56F265"} />
+        </Link>
       </Content>
     </Container>
   );
@@ -49,7 +59,9 @@ export default function NewsCard({ className, title, description, imgSrc }) {
 
 Card.propTypes = {
   className: PropTypes.string,
-  title: PropTypes.string,
-  description: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
   imgSrc: PropTypes.string,
+  href: PropTypes.string,
+  as: PropTypes.string,
 };

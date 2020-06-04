@@ -46,7 +46,7 @@ export default function HeaderLink({
   onClick,
 }) {
   return (
-    <Link href={href}>
+    <Link passHref href={href}>
       <LinkContainer className={className} active={active} onClick={onClick}>
         {label}
       </LinkContainer>

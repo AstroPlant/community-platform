@@ -1,4 +1,3 @@
-import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -32,35 +31,17 @@ export default function Button({
   label,
   color,
   onClick,
-  isLink,
-  href,
-  as,
 }) {
   return (
-    <>
-      {isLink ? (
-        <Link href={href} as={as}>
-          <ButtonContainer
-            className={className}
-            large={large}
-            inverted={inverted}
-            color={color}
-          >
-            {label}
-          </ButtonContainer>
-        </Link>
-      ) : (
-        <ButtonContainer
-          className={className}
-          large={large}
-          inverted={inverted}
-          onClick={onClick}
-          color={color}
-        >
-          {label}
-        </ButtonContainer>
-      )}
-    </>
+    <ButtonContainer
+      className={className}
+      large={large}
+      inverted={inverted}
+      onClick={onClick}
+      color={color}
+    >
+      {label}
+    </ButtonContainer>
   );
 }
 
@@ -71,15 +52,9 @@ Button.propTypes = {
   large: PropTypes.bool,
   inverted: PropTypes.bool,
   onClick: PropTypes.func,
-  isLink: PropTypes.bool,
-  href: PropTypes.string,
-  as: PropTypes.string,
 };
 
 Button.defaultProps = {
   large: false,
   inverted: false,
-  isLink: false,
-  href: "/",
-  as: "/",
 };
