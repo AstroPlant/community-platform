@@ -1,7 +1,7 @@
 import ArticleGrid from "../components/ArticleGrid";
+import NewsCard from "../components/Cards/NewsCard";
 import Layout from "../components/Layout";
 import { getArticlesPreview } from "../lib/community";
-import NewsCard from "../components/Cards/NewsCard";
 
 export default function News({ articles }) {
   return (
@@ -10,10 +10,8 @@ export default function News({ articles }) {
         <ArticleGrid>
           {articles.map((article) => (
             <NewsCard
-              title={article.title}
+              article={article}
               key={article.id}
-              description={article.short_description}
-              imgSrc={"http://localhost:1337" + article.cover.url}
               href={"/news/[slug]"}
               as={"/news/" + article.slug}
             />

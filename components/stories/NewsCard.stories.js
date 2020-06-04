@@ -1,8 +1,7 @@
-import { text, withKnobs } from "@storybook/addon-knobs/react";
+import { object, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import imageFile from "../../public/placeholder.jpg";
-import NewsCard from "../Cards/NewsCard";
 import styled from "styled-components";
+import NewsCard from "../Cards/NewsCard";
 
 export default {
   component: NewsCard,
@@ -11,16 +10,23 @@ export default {
   excludeStories: /.*Data$/,
 };
 
-const Card = styled(NewsCard)`
+/* Gives height for the environment */
+const StoryContainer = styled.div`
   height: 50vh;
 `;
 
+const articleData = {
+  title: "An article title!",
+  short_description:
+    "I am describing what the news is about and it's actually amazing",
+  cover: { url: "/uploads/placeholder_c8fa25810a.jpeg" },
+  author: { username: "DouglasAdams" },
+};
+
 export const Default = () => {
   return (
-    <Card
-      title={text("Title", "Title")}
-      description={text("Description", "description")}
-      imgSrc={imageFile}
-    />
+    <StoryContainer>
+      <NewsCard article={object("Article", articleData)} />
+    </StoryContainer>
   );
 };

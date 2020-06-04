@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../Button";
 import Card from "./Card";
 import Link from "next/link";
+import { API_URL } from "../../lib/community";
 
 const Container = styled(Card)`
   && {
@@ -19,6 +20,10 @@ const Container = styled(Card)`
   justify-content: center;
 `;
 
+const Title = styled.b`
+  margin-bottom: 0.5rem;
+`;
+
 const Content = styled.div`
   width: 100%;
   display: flex;
@@ -32,23 +37,16 @@ const Content = styled.div`
 
 const CenteredButton = styled(Button)`
   && {
-    margin: auto;
+    margin: 1rem auto 0.5rem auto;
   }
 `;
 
-export default function NewsCard({
-  className,
-  title,
-  description,
-  imgSrc,
-  href,
-  as,
-}) {
+export default function NewsCard({ className, article, href, as }) {
   return (
-    <Container className={className} imgSrc={imgSrc}>
+    <Container className={className} imgSrc={API_URL + article.cover.url}>
       <Content>
-        <b>{title}</b>
-        <p>{description}</p>
+        <Title>{article.title}</Title>
+        <p>{article.short_description}</p>
         <Link passHref href={href} as={as}>
           <CenteredButton label={"Show All"} color={"#56F265"} />
         </Link>
@@ -57,11 +55,14 @@ export default function NewsCard({
   );
 }
 
-Card.propTypes = {
+NewsCard.propTypes = {
   className: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  imgSrc: PropTypes.string,
+  article: PropTypes.object.isRequired,
   href: PropTypes.string,
   as: PropTypes.string,
+};
+
+NewsCard.defaultProps = {
+  href: "/",
+  as: null,
 };
