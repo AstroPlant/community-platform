@@ -16,8 +16,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: ${(props) => props.theme.fontFamily};
     color: ${(props) => props.theme.light};
     background-color: ${(props) => props.theme.dark};
-
-    height: 100vh;
   }
 
   h1 {
