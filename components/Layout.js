@@ -5,12 +5,18 @@ import Header from "./Header";
 import Path from "./Path";
 import SearchBar from "./SearchBar";
 
+const Wrapper = styled.div`
+  min-height: 100vh;
+`;
+
 const Content = styled.div`
   padding: 2rem;
 
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 72px);
+
+  height: calc(100vh - ${(props) => props.theme.headerHeight});
+  min-height: calc(100vh - ${(props) => props.theme.headerHeight});
 `;
 
 const FirstRow = styled.div`
@@ -22,7 +28,7 @@ const FirstRow = styled.div`
 
 export default function Layout({ children, home, title }) {
   return (
-    <>
+    <Wrapper>
       <Header />
       <Content>
         {!home && (
@@ -30,13 +36,13 @@ export default function Layout({ children, home, title }) {
             <Path />
             <FirstRow>
               <h2>{title}</h2>
-              <SearchBar></SearchBar>
-            </FirstRow>
+              <SearchBar />
+            </FirstRow>{" "}
           </>
         )}
         {children}
       </Content>
-    </>
+    </Wrapper>
   );
 }
 

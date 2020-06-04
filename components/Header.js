@@ -22,6 +22,8 @@ const HeaderContainer = styled.header`
 
   font-size: 1em;
   font-weight: bold;
+
+  max-height: ${(props) => props.theme.headerHeight};
 `;
 
 const BrandContainer = styled.div`

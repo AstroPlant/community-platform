@@ -14,6 +14,8 @@ const Theme = {
   fontFamily: "'Inter', sans-serif",
 
   gridGap: "2rem",
+
+  headerHeight: "4.5rem",
 };
 
 export default Theme;
