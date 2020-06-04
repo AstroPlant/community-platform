@@ -1,14 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import HelpIcon from "../public/icons/help.svg";
-import SlackIcon from "../public/icons/slack.svg";
-import ChallengeCard from "./Cards/ChallengeCard";
-import HelpCard from "./Cards/HelpCard";
-import KitCard from "./Cards/KitCard";
-import LibraryCard from "./Cards/LibraryCard";
-import MapCard from "./Cards/MapCard";
-import NewsCard from "./Cards/NewsCard";
 
 const GridContainer = styled.div`
   display: grid;
@@ -62,44 +54,17 @@ const BotRight = styled(Bottom)`
 `;
 
 export default function DashboardGrid({ children }) {
+  const content = React.Children.toArray(children);
+
   return (
     <GridContainer>
-      <TopLeft>
-        <KitCard kitName={"The Best Kit"} kitType={"Explorer"}></KitCard>
-      </TopLeft>
-      <TopRight>
-        <NewsCard
-          title={"Title"}
-          description={"description"}
-          imgSrc={"/placeholder.jpg"}
-          href={"/news"}
-        />
-      </TopRight>
-      <MidLeft>
-        <ChallengeCard />
-      </MidLeft>
-      <MidRight>
-        <HelpCard
-          iconSVG={<HelpIcon />}
-          iconSize={"32px"}
-          text={"Help"}
-          href={"/help"}
-        />
-      </MidRight>
-      <BotRight>
-        <HelpCard
-          iconSVG={<SlackIcon />}
-          iconSize={"72px"}
-          text={"Ask the community!"}
-          href={"/help"}
-        />
-      </BotRight>
-      <BotLeft>
-        <MapCard></MapCard>
-      </BotLeft>
-      <BotMid>
-        <LibraryCard></LibraryCard>
-      </BotMid>
+      <TopLeft>{content[0]}</TopLeft>
+      <TopRight>{content[1]}</TopRight>
+      <MidLeft>{content[2]}</MidLeft>
+      <MidRight>{content[3]}</MidRight>
+      <BotRight>{content[4]}</BotRight>
+      <BotLeft>{content[5]}</BotLeft>
+      <BotMid>{content[6]}</BotMid>
     </GridContainer>
   );
 }
