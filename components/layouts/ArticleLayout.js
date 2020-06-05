@@ -6,6 +6,7 @@ import Avatar from "../Avatar";
 import Date from "../Date";
 import Header from "../Header";
 import Path from "../Path";
+import BaseLayout from "./BaseLayout";
 
 const Content = styled.div`
   padding: 2rem;
@@ -52,33 +53,29 @@ const Separator = styled.div`
 
 export default function ArticleLayout({ article }) {
   return (
-    <>
-      <Header />
-      <Content>
-        <Path />
-
-        <CoverImage
-          src={"http://localhost:1337" + article.cover.url}
-          alt={article.cover.caption}
-        />
-        <PageLayout>
-          <div>
-            <h1>{article.title}</h1>
-            <ReactMarkdown source={article.content} />
-          </div>
-          <Column>
-            <AuthorInfos>
-              <Avatar size={3} username={article.author.username} />
-              <DateAndName>
-                <b>{article.author.username}</b>
-                <Date dateString={article.created_at} />
-              </DateAndName>
-            </AuthorInfos>
-            <Separator />
-          </Column>
-        </PageLayout>
-      </Content>
-    </>
+    <BaseLayout>
+      <Path />
+      <CoverImage
+        src={"http://localhost:1337" + article.cover.url}
+        alt={article.cover.caption}
+      />
+      <PageLayout>
+        <div>
+          <h1>{article.title}</h1>
+          <ReactMarkdown source={article.content} />
+        </div>
+        <Column>
+          <AuthorInfos>
+            <Avatar size={3} username={article.author.username} />
+            <DateAndName>
+              <b>{article.author.username}</b>
+              <Date dateString={article.created_at} />
+            </DateAndName>
+          </AuthorInfos>
+          <Separator />
+        </Column>
+      </PageLayout>
+    </BaseLayout>
   );
 }
 

@@ -2,11 +2,7 @@ import ArticleLayout from "../../components/layouts/ArticleLayout";
 import { getFullArticle } from "../../services/community";
 
 export default function Article({ article }) {
-  return (
-    <div className="container">
-      <ArticleLayout article={article} />
-    </div>
-  );
+  return <ArticleLayout article={article} />;
 }
 
 export async function getServerSideProps(context) {

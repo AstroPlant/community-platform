@@ -6,6 +6,7 @@ import HeaderLink from "./HeaderLink";
 const Container = styled.div`
   display: flex;
   align-items: center;
+  margin: 1rem 0;
 `;
 
 const NavLink = styled(HeaderLink)`
@@ -18,14 +19,14 @@ const NavLink = styled(HeaderLink)`
   }
 `;
 
-const Sep = styled.b`
-  display: ${(props) => (props.active ? "none" : "block")};
-  color: ${(props) => props.theme.grey};
-  margin: 0 1rem;
-`;
-
 const Separator = ({ active }) => {
-  return <Sep active={active}>></Sep>;
+  const SeparatorHolder = styled.b`
+    display: ${(props) => (props.active ? "none" : "block")};
+    color: ${(props) => props.theme.grey};
+    margin: 0 1rem;
+  `;
+
+  return <SeparatorHolder active={active}>{">"}</SeparatorHolder>;
 };
 
 /***
