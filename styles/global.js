@@ -33,13 +33,14 @@ export const GlobalStyle = createGlobalStyle`
   
   p,b {
     font-size: 1em;
-    line-height: 1.35em;
+    line-height: 1.45em;
   }
   
   p {
     font-weight: normal;
     text-transform: none;
-    max-width: 640px;
+    max-width: 512px;
+    margin-bottom: 0.75rem;
   }
   
   a,
