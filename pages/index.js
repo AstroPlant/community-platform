@@ -31,7 +31,7 @@ export default function Home({ article }) {
           text={"Ask the community!"}
           href={"/help"}
         />
-        <MapCard />
+        <MapCard href={"/map"} />
         <LibraryCard />
       </DashboardGrid>
     </BaseLayout>
