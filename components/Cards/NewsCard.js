@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../Button";
 import Card from "./Card";
 import Link from "next/link";
-import { API_URL } from "../../lib/community";
+import { API_URL } from "../../services/community";
 
 const Container = styled(Card)`
   && {

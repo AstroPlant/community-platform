@@ -6,7 +6,7 @@ import MapCard from "../components/cards/MapCard";
 import NewsCard from "../components/cards/NewsCard";
 import DashboardGrid from "../components/grids/DashboardGrid";
 import Layout from "../components/layouts/Layout";
-import { getFeaturedArticle } from "../lib/community";
+import { getFeaturedArticle } from "../services/community";
 import HelpIcon from "../public/icons/help.svg";
 import SlackIcon from "../public/icons/slack.svg";
 
