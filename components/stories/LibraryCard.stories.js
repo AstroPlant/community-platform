@@ -1,6 +1,6 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import LibraryCard from "../Cards/LibraryCard";
+import LibraryCard from "../cards/LibraryCard";
 
 export default {
   component: LibraryCard,

@@ -1,6 +1,6 @@
 import { text, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import KitCard from "../Cards/KitCard";
+import KitCard from "../cards/KitCard";
 
 export default {
   component: KitCard,

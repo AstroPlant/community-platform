@@ -1,7 +1,7 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import FAQGrid from "../FAQGrid";
-import Card from "../Cards/Card";
+import Card from "../cards/Card";
 
 export default {
   component: FAQGrid,

@@ -1,5 +1,5 @@
-import CategoryCard from "../components/Cards/CategoryCard";
-import HelpCard from "../components/Cards/HelpCard";
+import CategoryCard from "../components/cards/CategoryCard";
+import HelpCard from "../components/cards/HelpCard";
 import HelpGrid from "../components/HelpGrid";
 import Layout from "../components/Layout";
 import { getFAQCategories } from "../lib/community";

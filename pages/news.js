@@ -1,5 +1,5 @@
 import ArticleGrid from "../components/ArticleGrid";
-import NewsCard from "../components/Cards/NewsCard";
+import NewsCard from "../components/cards/NewsCard";
 import Layout from "../components/Layout";
 import { getArticlesPreview } from "../lib/community";
 

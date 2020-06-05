@@ -1,9 +1,9 @@
-import ChallengeCard from "../components/Cards/ChallengeCard";
-import HelpCard from "../components/Cards/HelpCard";
-import KitCard from "../components/Cards/KitCard";
-import LibraryCard from "../components/Cards/LibraryCard";
-import MapCard from "../components/Cards/MapCard";
-import NewsCard from "../components/Cards/NewsCard";
+import ChallengeCard from "../components/cards/ChallengeCard";
+import HelpCard from "../components/cards/HelpCard";
+import KitCard from "../components/cards/KitCard";
+import LibraryCard from "../components/cards/LibraryCard";
+import MapCard from "../components/cards/MapCard";
+import NewsCard from "../components/cards/NewsCard";
 import DashboardGrid from "../components/DashboardGrid";
 import Layout from "../components/Layout";
 import { getFeaturedArticle } from "../lib/community";

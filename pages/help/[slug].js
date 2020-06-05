@@ -1,7 +1,7 @@
-import FAQCard from "../../components/Cards/FAQCard";
+import FAQCard from "../../components/cards/FAQCard";
 import FAQGrid from "../../components/FAQGrid";
 import Layout from "../../components/Layout";
-import { getAllCategoriesSlug, getCategoryBySlug } from "../../lib/community";
+import { getCategoryBySlug } from "../../lib/community";
 
 export default function FAQ({ category }) {
   return (

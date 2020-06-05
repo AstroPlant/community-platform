@@ -1,6 +1,6 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import MapCard from "../Cards/MapCard";
+import MapCard from "../cards/MapCard";
 
 export default {
   component: MapCard,

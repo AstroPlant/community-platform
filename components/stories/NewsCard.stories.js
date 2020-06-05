@@ -1,7 +1,7 @@
 import { object, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import styled from "styled-components";
-import NewsCard from "../Cards/NewsCard";
+import NewsCard from "../cards/NewsCard";
 
 export default {
   component: NewsCard,

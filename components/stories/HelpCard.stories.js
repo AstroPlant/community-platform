@@ -1,7 +1,7 @@
 import { text, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import Notification from "../../public/icons/notification.svg";
-import HelpCard from "../Cards/HelpCard";
+import HelpCard from "../cards/HelpCard";
 import styled from "styled-components";
 
 export default {
