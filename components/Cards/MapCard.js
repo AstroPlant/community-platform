@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
 const Container = styled(Card)`
@@ -22,29 +23,28 @@ const MapContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const MapPlaceholder = styled.div`
-  display: block;
-  height: 100px;
-  width: 100px;
   background-color: white;
-  margin: 2rem;
 `;
 
-export default function MapCard({ className }) {
+export default function MapCard({ className, href }) {
   return (
-    <Container className={className}>
-      <TitleRow>
-        <h3>Kit Map</h3>
-      </TitleRow>
-      <MapContainer>
-        <MapPlaceholder />
-      </MapContainer>
-    </Container>
+    <WrapInLink href={href}>
+      <Container className={className}>
+        <TitleRow>
+          <h3>Kit Map</h3>
+        </TitleRow>
+        <MapContainer />
+      </Container>
+    </WrapInLink>
   );
 }
 
 MapCard.propTypes = {
   className: PropTypes.string,
+  href: PropTypes.string,
+  as: PropTypes.string,
+};
+
+MapCard.defaultProps = {
+  href: null,
 };
