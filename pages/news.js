@@ -1,6 +1,6 @@
 import ArticleGrid from "../components/ArticleGrid";
 import NewsCard from "../components/cards/NewsCard";
-import Layout from "../components/Layout";
+import Layout from "../components/layouts/Layout";
 import { getArticlesPreview } from "../lib/community";
 
 export default function News({ articles }) {

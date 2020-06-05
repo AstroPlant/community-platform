@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
-import Avatar from "./Avatar";
-import Header from "./Header";
-import Path from "./Path";
-import Date from "./Date";
+import Avatar from "../Avatar";
+import Date from "../Date";
+import Header from "../Header";
+import Path from "../Path";
 
 const Content = styled.div`
   padding: 2rem;

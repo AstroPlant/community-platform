@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import Header from "./Header";
-import Path from "./Path";
-import SearchBar from "./SearchBar";
+import Header from "../Header";
+import Path from "../Path";
+import SearchBar from "../SearchBar";
 
 const Wrapper = styled.div`
   min-height: 100vh;

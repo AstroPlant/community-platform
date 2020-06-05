@@ -1,5 +1,5 @@
+import ArticleLayout from "../../components/layouts/ArticleLayout";
 import { getFullArticle } from "../../lib/community";
-import ArticleLayout from "../../components/ArticleLayout";
 
 export default function Article({ article }) {
   return (
