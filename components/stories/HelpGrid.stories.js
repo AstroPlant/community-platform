@@ -1,7 +1,7 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import HelpGrid from "../HelpGrid";
 import Card from "../cards/Card";
+import HelpGrid from "../grids/HelpGrid";
 
 export default {
   component: HelpGrid,

@@ -1,5 +1,5 @@
 import FAQCard from "../../components/cards/FAQCard";
-import FAQGrid from "../../components/FAQGrid";
+import FAQGrid from "../../components/grids/FAQGrid";
 import Layout from "../../components/layouts/Layout";
 import { getCategoryBySlug } from "../../lib/community";
 

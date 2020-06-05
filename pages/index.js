@@ -4,7 +4,7 @@ import KitCard from "../components/cards/KitCard";
 import LibraryCard from "../components/cards/LibraryCard";
 import MapCard from "../components/cards/MapCard";
 import NewsCard from "../components/cards/NewsCard";
-import DashboardGrid from "../components/DashboardGrid";
+import DashboardGrid from "../components/grids/DashboardGrid";
 import Layout from "../components/layouts/Layout";
 import { getFeaturedArticle } from "../lib/community";
 import HelpIcon from "../public/icons/help.svg";

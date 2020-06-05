@@ -1,4 +1,4 @@
-import ArticleGrid from "../components/ArticleGrid";
+import ArticleGrid from "../components/grids/ArticleGrid";
 import NewsCard from "../components/cards/NewsCard";
 import Layout from "../components/layouts/Layout";
 import { getArticlesPreview } from "../lib/community";

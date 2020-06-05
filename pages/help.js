@@ -1,6 +1,6 @@
 import CategoryCard from "../components/cards/CategoryCard";
 import HelpCard from "../components/cards/HelpCard";
-import HelpGrid from "../components/HelpGrid";
+import HelpGrid from "../components/grids/HelpGrid";
 import Layout from "../components/layouts/Layout";
 import { getFAQCategories } from "../lib/community";
 import SlackIcon from "../public/icons/slack.svg";
