@@ -10,6 +10,7 @@ const Theme = {
   darkLight: "#1d1d1d",
 
   grey: "#bcbcbc",
+  error: "#FF3A3A",
 
   fontFamily: "'Inter', sans-serif",
 
