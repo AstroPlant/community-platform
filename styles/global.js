@@ -39,8 +39,6 @@ export const GlobalStyle = createGlobalStyle`
   p {
     font-weight: normal;
     text-transform: none;
-    max-width: 512px;
-    margin-bottom: 0.75rem;
   }
   
   a,
