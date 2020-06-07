@@ -1,8 +1,13 @@
 import ArticleLayout from "../../components/layouts/ArticleLayout";
+import Article from "../../components/Article";
 import { getFullArticle } from "../../services/community";
 
-export default function Article({ article }) {
-  return <ArticleLayout article={article} />;
+export default function ArticlePage({ article }) {
+  return (
+    <ArticleLayout>
+      <Article article={article} />
+    </ArticleLayout>
+  );
 }
 
 export async function getServerSideProps(context) {
