@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import FeaturedArticleCard from "../Cards/FeaturedArticleCard";
+import NewsCard from "../Cards/NewsCard";
 
 const Container = styled.div`
   height: 100%;
@@ -19,24 +21,39 @@ const GridItem = styled.div`
   height: 30vh;
 `;
 
-const FeaturedArticle = styled.div`
+const FeaturedArticleContainer = styled.div`
   margin: 2rem 0;
   grid-row: 1;
   grid-column: 1 / span 3;
   height: 50vh;
 `;
 
-export default function ArticleGrid({ children }) {
-  const allChildren = React.Children.toArray(children);
-  const featured = allChildren[0];
-  allChildren.shift();
-  const otherChildren = allChildren;
+export default function ArticleGrid({ articles }) {
+  const featured = articles[0];
+  let otherArticles = [];
+  for (let i = 1; i < articles.length; i++) {
+    otherArticles.push(articles[i]);
+  }
+
   return (
     <Container>
-      <FeaturedArticle>{featured}</FeaturedArticle>
+      <FeaturedArticleContainer>
+        <FeaturedArticleCard
+          featuredArticle={featured}
+          href={"/news/[slug]"}
+          as={"/news/" + featured.slug}
+        />
+      </FeaturedArticleContainer>
       <GridContainer>
-        {otherChildren.map((child) => (
-          <GridItem>{child}</GridItem>
+        {otherArticles.map((anArticle) => (
+          <GridItem>
+            <NewsCard
+              article={anArticle}
+              key={anArticle.id}
+              href={"/news/[slug]"}
+              as={"/news/" + anArticle.slug}
+            />
+          </GridItem>
         ))}
       </GridContainer>
     </Container>
@@ -44,5 +61,5 @@ export default function ArticleGrid({ children }) {
 }
 
 ArticleGrid.propTypes = {
-  children: PropTypes.node,
+  articles: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

@@ -82,6 +82,7 @@ export async function getArticlesPreview() {
   const query = `{articles(sort: "created_at:desc"){
       id
       slug 
+      created_at
       title
       short_description
       cover { url }
