@@ -3,6 +3,18 @@ import React from "react";
 import styled from "styled-components";
 import HeaderLink from "./HeaderLink";
 
+//Declaring the separator component
+const SeparatorHolder = styled.b`
+  display: ${(props) => (props.active ? "none" : "block")};
+  color: ${(props) => props.theme.grey};
+  margin: 0 1rem;
+`;
+
+function Separator({ active }) {
+  return <SeparatorHolder active={active}>{">"}</SeparatorHolder>;
+}
+
+// Main styled components
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -18,16 +30,6 @@ const NavLink = styled(HeaderLink)`
     }
   }
 `;
-
-const Separator = ({ active }) => {
-  const SeparatorHolder = styled.b`
-    display: ${(props) => (props.active ? "none" : "block")};
-    color: ${(props) => props.theme.grey};
-    margin: 0 1rem;
-  `;
-
-  return <SeparatorHolder active={active}>{">"}</SeparatorHolder>;
-};
 
 /***
  * Returns the word formated to Titlecase
@@ -64,11 +66,11 @@ function Path({ router }) {
 
   return (
     <Container>
-      {steps.map((step, i) => (
+      {steps.map((step) => (
         <>
           <NavLink
             active={step.active}
-            key={i}
+            key={step.name}
             href={step.path}
             label={step.name}
           />
