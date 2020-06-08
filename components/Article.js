@@ -3,6 +3,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { API_URL } from "../services/community";
+import styles from "../styles/article.module.css";
 import Avatar from "./Avatar";
 import Chip from "./Chip";
 import Date from "./Date";
@@ -46,80 +47,6 @@ const ArticleDate = styled(Date)`
   color: #cacaca;
 `;
 
-const Content = styled.div`
-  margin: 2rem 0;
-
-  color: #f3f3f3;
-
-  & h1,
-  & h2 {
-    margin: 2rem 0 1rem 0;
-  }
-
-  & h3,
-  & h4 {
-    margin: 1rem 0;
-  }
-
-  & h1 {
-    font-size: 32px;
-  }
-
-  & h2 {
-    font-size: 26px;
-  }
-
-  & h3 {
-    font-size: 20px;
-  }
-
-  & h4,
-  & h5 {
-    font-size: 16px;
-  }
-
-  & h6 {
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  & p,
-  & a,
-  & u,
-  & li {
-    font-size: 14px;
-    font-weight: 300;
-  }
-
-  & p,
-  & a,
-  & u {
-    margin-bottom: 0.75rem;
-  }
-
-  & pre {
-    width: 100%;
-    padding: 2rem;
-    margin: 1rem 0;
-    background-color: hsla(0, 0%, 100%, 0.1);
-    color: #b2d4bc;
-    border-radius: 4px;
-    overflow: auto;
-  }
-
-  & a {
-    color: ${(props) => props.theme.primary};
-    text-decoration: underline;
-  }
-
-  & ul,
-  & ol {
-    margin: 0.5rem 0 2rem 2rem;
-    margin-left: 2em;
-  }
-`;
-
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -127,12 +54,12 @@ const Column = styled.div`
 `;
 
 export default function Article({ article }) {
+  // Temporary dev env fixes
+  const content = article.content.replace(/\/uploads/g, API_URL + "/uploads");
+  const coverURL = API_URL + article.cover.url;
   return (
     <>
-      <CoverImage
-        src={API_URL + article.cover.url}
-        alt={article.cover.caption}
-      />
+      <CoverImage src={coverURL} alt={article.cover.caption} />
       <Container>
         <Chip label={"Article Category"} />
         <Title>{article.title}</Title>
@@ -144,9 +71,9 @@ export default function Article({ article }) {
           </Column>
         </AuthorInfos>
 
-        <Content>
-          <ReactMarkdown source={article.content} />
-        </Content>
+        <div className={styles.article}>
+          <ReactMarkdown source={content} />
+        </div>
       </Container>
     </>
   );
