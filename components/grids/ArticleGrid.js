@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import FeaturedArticleCard from "../Cards/FeaturedArticleCard";
-import NewsCard from "../Cards/NewsCard";
+import FeaturedArticleCard from "../cards/FeaturedArticleCard";
+import NewsCard from "../cards/NewsCard";
 
 const Container = styled.div`
   height: 100%;
