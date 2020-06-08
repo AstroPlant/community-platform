@@ -30,15 +30,15 @@ export default function Button({
   inverted,
   label,
   color,
-  onClick,
+  ...props
 }) {
   return (
     <ButtonContainer
       className={className}
       large={large}
       inverted={inverted}
-      onClick={onClick}
       color={color}
+      {...props}
     >
       {label}
     </ButtonContainer>

@@ -14,6 +14,33 @@ async function getRequest(apiPath) {
   return res.json();
 }
 
+async function postRequest(apiPath, body) {
+  const url = API_URL + apiPath;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: body,
+  });
+
+  return res.json();
+}
+
+export async function login(username, password) {
+  const body = JSON.stringify({
+    username: username,
+    password: password,
+  });
+
+  const path = "/me/auth";
+
+  const res = await postRequest(path, body);
+  return res;
+}
+
 export async function getAPIVersion() {
   const res = await getRequest("/version");
   return res;

@@ -52,4 +52,9 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     object-fit: cover;
   }
+
+  input {
+    outline: none;
+    border: none;
+  }
 `;
