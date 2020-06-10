@@ -1,8 +1,6 @@
-import { getFeaturedArticle } from "../services/community";
 import styled from "styled-components";
-import UserInput from "../components/UserInput";
-import Button from "../components/Button";
 import LoginForm from "../components/forms/LoginForm";
+import withoutAuth from "../hocs/withoutAuth";
 
 const LoginLayout = styled.div`
   height: 100vh;
@@ -19,7 +17,7 @@ const LeftColumn = styled.div`
   background-color: ${(props) => props.theme.darkLight};
 `;
 
-export default function Login() {
+function Login() {
   return (
     <LoginLayout>
       <LeftColumn>
@@ -29,3 +27,5 @@ export default function Login() {
     </LoginLayout>
   );
 }
+
+export default withoutAuth(Login);

@@ -1,5 +1,9 @@
 export const API_URL = "https://api.astroplant.sda-projects.nl";
 
+/***
+ * GET request template
+ * @param apiPath the path of the api where to send the request
+ */
 async function getRequest(apiPath) {
   const url = API_URL + apiPath;
 
@@ -14,6 +18,10 @@ async function getRequest(apiPath) {
   return res.json();
 }
 
+/***
+ * POST request template
+ * @param apiPath the path of the api where to send the request
+ */
 async function postRequest(apiPath, body) {
   const url = API_URL + apiPath;
 
@@ -26,18 +34,41 @@ async function postRequest(apiPath, body) {
     body: body,
   });
 
-  return res.json();
+  return res;
 }
 
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
 export async function login(username, password) {
+  const path = "/me/auth";
+
   const body = JSON.stringify({
     username: username,
     password: password,
   });
 
-  const path = "/me/auth";
+  const res = await postRequest(path, body);
+
+  return res;
+}
+
+/***
+ * Refreshes the accessToken with the refreshToken
+ * return true on success false on failure
+ * @param refreshToken the token use to refresh the access
+ */
+export async function refreshAccessToken(refreshToken) {
+  const path = "/me/refresh";
+
+  const body = JSON.stringify({
+    refreshToken: refreshToken,
+  });
 
   const res = await postRequest(path, body);
+
   return res;
 }
 

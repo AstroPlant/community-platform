@@ -6,11 +6,12 @@ import MapCard from "../components/cards/MapCard";
 import NewsCard from "../components/cards/NewsCard";
 import DashboardGrid from "../components/grids/DashboardGrid";
 import BaseLayout from "../components/layouts/BaseLayout";
+import withAuth from "../hocs/withAuth";
 import HelpIcon from "../public/icons/help.svg";
 import SlackIcon from "../public/icons/slack.svg";
 import { getFeaturedArticle } from "../services/community";
 
-export default function Home({ article }) {
+function Home({ article }) {
   return (
     <BaseLayout>
       <h1 className="title">Welcome, Matt!</h1>
@@ -47,3 +48,5 @@ export async function getServerSideProps() {
     },
   };
 }
+
+export default withAuth(Home);

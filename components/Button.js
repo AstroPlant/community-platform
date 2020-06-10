@@ -12,7 +12,8 @@ const ButtonContainer = styled.button`
   margin: 0.25rem 0.5rem;
 
   width: ${(props) => (props.large ? "20rem" : "")};
-  background-color: ${(props) => props.color};
+  background-color: ${(props) =>
+    props.disabled ? props.theme.grey : props.color};
 
   color: ${(props) => (props.inverted ? props.theme.light : props.theme.dark)};
   font-size: 1em;

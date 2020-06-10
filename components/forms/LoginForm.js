@@ -1,10 +1,11 @@
 import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
 import React from "react";
+import styled from "styled-components";
+import { authenticate } from "../../providers/Auth";
 import Button from "../Button";
 import Checkbox from "./CheckBox";
 import TextInput from "./TextInput";
-import styled from "styled-components";
-import { login } from "../../services/data-api";
 
 const CustomForm = styled(Form)`
   display: flex;
@@ -19,8 +20,6 @@ const validate = (values) => {
   const errors = {};
   if (!values.username) {
     errors.username = "Required";
-  } else if (["admin", "null", "god"].includes(values.username)) {
-    errors.username = "Nice try";
   }
 
   if (!values.password) {
@@ -29,12 +28,9 @@ const validate = (values) => {
   return errors;
 };
 
-async function submit(values) {
-  const res = await login(values.username, values.password);
-  console.log(res);
-}
-
 const LoginForm = () => {
+  const router = useRouter();
+
   return (
     <>
       <Formik
@@ -43,32 +39,44 @@ const LoginForm = () => {
           password: "",
           rememberMe: false,
         }}
+        initialStatus={{ success: null, error: null }}
         validate={validate}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(submit(values));
-            setSubmitting(false);
-          }, 400);
+        onSubmit={async (values, actions) => {
+          const auth = await authenticate(values.username, values.password);
+
+          if (auth) {
+            actions.setStatus({ success: "Logged In !" });
+            actions.resetForm();
+            router.push("/");
+          } else {
+            actions.setStatus({
+              error: "Whoops ! Could not log in, check your credentials.",
+            });
+          }
         }}
       >
-        <CustomForm>
-          <TextInput
-            label="Username"
-            name="username"
-            type="text"
-            placeholder="SpaceFarmer"
-          />
-          <TextInput
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="Password"
-          />
-
-          <SubmitButton color={"#56F265"} label={"Sign In"} type="submit" />
-
-          <Checkbox name="rememberMe">Remember Me</Checkbox>
-        </CustomForm>
+        {({ status, isValid }) => (
+          <>
+            <CustomForm>
+              {status.error && <div>{status.error}</div>}
+              {status.success && <div>{status.success}</div>}
+              <TextInput
+                label="Username"
+                name="username"
+                type="text"
+                placeholder="SpaceFarmer"
+              />
+              <TextInput
+                label="Password"
+                name="password"
+                type="password"
+                placeholder="Password"
+              />
+              <SubmitButton color={"#56F265"} label={"Sign In"} type="submit" />
+              <Checkbox name="rememberMe">Remember Me</Checkbox>
+            </CustomForm>
+          </>
+        )}
       </Formik>
     </>
   );

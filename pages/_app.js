@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { ThemeProvider } from "styled-components";
+import { AuthProvider } from "../providers/Auth";
 import { GlobalStyle } from "../styles/global";
 import theme from "../styles/theme";
 
@@ -17,10 +18,12 @@ export default function MyApp({ Component, pageProps }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-        <GlobalStyle />
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+          <GlobalStyle />
+        </ThemeProvider>
+      </AuthProvider>
     </>
   );
 }
