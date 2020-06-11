@@ -29,19 +29,31 @@ const Placeholder = styled.div`
   font-size: ${(props) => props.fontSize + "em"};
 `;
 
-export default function Avatar({ hasPicture, imgSrc, username, size }) {
+function PureAvatar({ imgSrc, username, size }) {
   const initial = username.charAt(0).toUpperCase();
   const fontSize = size / 2;
   return (
-    <WrapInLink href={"/"} as={"/"}>
-      <Container size={size}>
-        {hasPicture ? (
-          <img src={imgSrc} />
-        ) : (
-          <Placeholder fontSize={fontSize}>{initial}</Placeholder>
-        )}
-      </Container>
-    </WrapInLink>
+    <Container size={size}>
+      {imgSrc ? (
+        <img src={imgSrc} />
+      ) : (
+        <Placeholder fontSize={fontSize}>{initial}</Placeholder>
+      )}
+    </Container>
+  );
+}
+
+export default function Avatar(props) {
+  return (
+    <>
+      {props.href ? (
+        <WrapInLink href={props.href} as={props.as}>
+          <PureAvatar {...props} />
+        </WrapInLink>
+      ) : (
+        <PureAvatar {...props} />
+      )}
+    </>
   );
 }
 
@@ -50,9 +62,13 @@ Avatar.propTypes = {
   imgSrc: PropTypes.string,
   username: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
+  href: PropTypes.string,
+  as: PropTypes.string,
 };
 
 Avatar.defaultProps = {
   hasPicture: false,
-  imgSrc: "",
+  imgSrc: null,
+  href: null,
+  as: null,
 };

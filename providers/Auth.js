@@ -35,6 +35,9 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+/***
+ * Hook to use the Authentication context
+ */
 export function useAuth() {
   const context = React.useContext(AuthContext);
   if (context === undefined) {
@@ -45,18 +48,39 @@ export function useAuth() {
 
 /***
  * Set a token into localstorage
+ * @param name of the token
+ * @param value of the token
  */
 function setToken(name, value) {
   const options = { path: "/", sameSite: true };
 
-  localStorage.setItem(name, value, options);
+  localStorage.setItem(name, value);
 }
 
 /***
  * Get a token from localstorage
+ * @param name of the token to retrieve
  */
-function getToken(name) {
+export function getToken(name) {
   return localStorage.getItem(name);
+}
+
+/***
+ * Set a user into localstorage
+ * @param username of the
+ */
+function setLoggedUser(username) {
+  const options = { path: "/", sameSite: true };
+
+  localStorage.setItem("username", username);
+}
+
+/***
+ * Get a user from localstorage
+ * @param name of the token to retrieve
+ */
+export function getLoggedUser() {
+  return localStorage.getItem("username");
 }
 
 /***
@@ -64,8 +88,6 @@ function getToken(name) {
  * Checks if there is a saved token and it's still valid
  */
 export function loggedIn() {
-  const options = { secure: true, httpOnly: true, sameSite: true };
-
   const token = getToken("refreshToken");
   return !!token && !tokenIsExpired(token); // handwaiving here
 }
@@ -80,9 +102,9 @@ export async function authenticate(username, password) {
     const json = await response.json();
     setToken("accessToken", json.accessToken);
     setToken("refreshToken", json.refreshToken);
+    setLoggedUser(username);
     return true;
   } else {
-    console.log("Not Auth");
     return false;
   }
 }

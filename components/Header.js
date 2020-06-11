@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Notification from "../public/icons/notification.svg";
@@ -63,7 +64,7 @@ const ProfileButtons = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Header() {
+export default function Header({ username }) {
   const [hideDropdown, setHideDropdown] = useState(true);
   const dropdownRef = useRef(null);
 
@@ -107,7 +108,12 @@ export default function Header() {
         <Icon color={"#fff"} size="24px">
           <Notification></Notification>
         </Icon>
-        <Avatar size={2.25} username={"Benny"}></Avatar>
+        <Avatar
+          size={2.25}
+          username={username}
+          href={"/profile/[username]"}
+          as={`/profile/${username}`}
+        />
         <Dropdown onClick={() => toggleDropdown()} reverse={!hideDropdown} />
       </ProfileButtons>
 
@@ -119,3 +125,7 @@ export default function Header() {
     </HeaderContainer>
   );
 }
+
+Header.propTypes = {
+  username: PropTypes.string.isRequired,
+};

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Header from "../Header";
+import { getLoggedUser } from "../../providers/Auth";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -18,9 +19,10 @@ const Content = styled.div`
 `;
 
 export default function BaseLayout({ children }) {
+  console.log(getLoggedUser());
   return (
     <Wrapper>
-      <Header />
+      <Header username={getLoggedUser()} />
       <Content>{children}</Content>
     </Wrapper>
   );
