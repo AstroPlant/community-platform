@@ -7,17 +7,19 @@ import NewsCard from "../components/cards/NewsCard";
 import DashboardGrid from "../components/grids/DashboardGrid";
 import BaseLayout from "../components/layouts/BaseLayout";
 import withAuth from "../hocs/withAuth";
+import { getCookieFromHttp, getLoggedUser } from "../providers/Auth";
 import HelpIcon from "../public/icons/help.svg";
 import SlackIcon from "../public/icons/slack.svg";
 import { getFeaturedArticle } from "../services/community";
+import { getFullKit, getUserMemberships } from "../services/data-api";
 
-function Home({ article }) {
+function Home({ article, mainKit }) {
   return (
     <BaseLayout>
-      <h1 className="title">Welcome, Matt!</h1>
+      <h1 className="title">Welcome, {getLoggedUser()} !</h1>
 
       <DashboardGrid>
-        <KitCard kitName={"The Best Kit"} kitType={"Explorer"} />
+        <KitCard kit={mainKit} />
         <NewsCard article={article} href={"/news"} />
         <ChallengeCard />
         <HelpCard
@@ -39,12 +41,16 @@ function Home({ article }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx) {
   const article = await getFeaturedArticle();
+  const username = getCookieFromHttp(ctx.req.headers.cookie, "username");
+  const memberships = await getUserMemberships(username);
+  const mainKit = await getFullKit(memberships[0].kit.serial);
 
   return {
     props: {
       article,
+      mainKit,
     },
   };
 }

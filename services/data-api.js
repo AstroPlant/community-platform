@@ -15,7 +15,11 @@ async function getRequest(apiPath) {
     },
   });
 
-  return res.json();
+  if (res.status === 200) {
+    return res.json();
+  } else {
+    return res;
+  }
 }
 
 /***
@@ -25,16 +29,20 @@ async function getRequest(apiPath) {
 async function postRequest(apiPath, body) {
   const url = API_URL + apiPath;
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: body,
-  });
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: body,
+    });
 
-  return res;
+    return res;
+  } catch (error) {
+    return {};
+  }
 }
 
 /***
@@ -114,7 +122,7 @@ export async function getUserDetails(username) {
  * Fetch the membership of a user
  * @param username the username of the wanted user
  */
-export async function getUserKits(username) {
+export async function getUserMemberships(username) {
   const path = `/users/${username}/kit-memberships`;
   const res = await getRequest(path);
   return res;
@@ -138,31 +146,89 @@ export async function getKitBySerial(serial) {
   return res;
 }
 
+/***
+ * Fetch kit configuration by serial
+ * @param serial the serial of the wanted kit
+ */
 export async function getKitConfigsBySerial(serial) {
-  const path = "/kit-configurations?kitSerial=" + serial;
+  const path = `/kits/${serial}/configurations`;
   const res = await getRequest(path);
   return res;
 }
 
-export async function getKitPeripherals() {
-  const path =
-    "/peripheral-definitions?after=" + 0 + "&withExpectedQuantityTypes=true";
-  const res = await getRequest(path);
-  return res;
+/***
+ * Fetch kit configuration by serial
+ * @param serial the serial of the wanted kit
+ */
+export async function getActiveConfigBySerial(serial) {
+  let activeConfig = {};
+
+  const path = `/kits/${serial}/configurations`;
+
+  try {
+    const res = await getRequest(path);
+
+    for (let config of res) {
+      if (config.active) {
+        activeConfig = config;
+      }
+    }
+
+    return activeConfig;
+  } catch (error) {
+    return activeConfig;
+  }
 }
 
-export async function getKitPeripheralByID(id) {
-  const json = await getKitPeripherals();
+/***
+ * Returns a kit with it's active configuration fully completed
+ * @param serial the serial of the fetched kit
+ */
+export async function getFullKit(serial) {
+  let kit = {};
+
+  try {
+    // fetch the kit's basic infos
+    let kit = await getKitBySerial(serial);
+
+    // fetch the kit's current active config
+    kit.config = await getActiveConfigBySerial(kit.serial);
+
+    /* for each peripherals and quantity types we get their details and add
+     * them to the config
+     */
+    for (let peripheral of kit.config.peripherals) {
+      peripheral.details = await getPeripheralDetails(
+        peripheral.peripheralDefinitionId
+      );
+      peripheral.details.quantityTypes = [];
+      for (let q of peripheral.details.expectedQuantityTypes) {
+        peripheral.details.quantityTypes.push(await getQuantityTypeDetails(q));
+      }
+    }
+    return kit;
+  } catch (error) {
+    return kit;
+  }
+}
+
+export async function getAllPeripherals() {
+  const path = "/peripheral-definitions?after=0&withExpectedQuantityTypes=true";
+  return await getRequest(path);
+}
+
+export async function getPeripheralDetails(id) {
+  const json = await getAllPeripherals();
   return json[id - 1];
 }
 
 export async function getQuantityTypes() {
-  let url = API_URL + "/quantity-types?after=0";
-  const res = await getRequest(url);
+  let path = "/quantity-types?after=0";
+  const res = await getRequest(path);
   return res;
 }
 
-export async function getQuantityTypesByID(id) {
+export async function getQuantityTypeDetails(id) {
   const json = await getQuantityTypes();
   return json[id - 1];
 }

@@ -33,17 +33,24 @@ const KitDataContainer = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
   height: 100%;
   width: 100%;
   padding: 1rem 0;
 `;
 
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
 const KitSensor = styled.div`
   display: block;
-  height: 150px;
-  width: 150px;
+  height: 75px;
+  width: 75px;
   border-radius: 50%;
   background-color: white;
 `;
@@ -59,31 +66,42 @@ const ShowAllButton = styled(Button)`
   }
 `;
 
-export default function KitCard({ className, kitName, kitType }) {
+export default function KitCard({ className, kit }) {
+  const isEmpty = !Object.keys(kit).length;
+
   return (
     <Container className={className}>
-      <TitleRow>
-        <KitName>{kitName}</KitName>
-        <KitType>{kitType}</KitType>
-      </TitleRow>
+      {!isEmpty ? (
+        <>
+          <TitleRow>
+            <KitName>{kit.name}</KitName>
+            <KitType>{kit.serial}</KitType>
+          </TitleRow>
 
-      <KitDataContainer>
-        <KitSensor />
-        <KitSensor />
-        <KitSensor />
-        <KitSensor />
-        <KitSensor />
-      </KitDataContainer>
+          <KitDataContainer>
+            {kit.config.peripherals.map((peripheral) => (
+              <Column>
+                <KitSensor />
+                <p>{peripheral.details.className}</p>
+              </Column>
+            ))}
+          </KitDataContainer>
 
-      <ButtonRow>
-        <ShowAllButton label={"Show All"} color={"#56F265"}></ShowAllButton>
-      </ButtonRow>
+          <ButtonRow>
+            <ShowAllButton label={"Show All"} color={"#56F265"} />
+          </ButtonRow>
+        </>
+      ) : (
+        <>
+          <p>No kits.</p>
+          <ShowAllButton label={"Add a kit."} color={"#56F265"} />
+        </>
+      )}
     </Container>
   );
 }
 
 KitCard.propTypes = {
   className: PropTypes.string,
-  kitName: PropTypes.string.isRequired,
-  kitType: PropTypes.string.isRequired,
+  kits: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
