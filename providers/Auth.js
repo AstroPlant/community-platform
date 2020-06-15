@@ -1,6 +1,10 @@
-import React from "react";
-import { login } from "../services/data-api";
 import { jwtDecode } from "jwt-decode";
+import React from "react";
+import { Cookies } from "react-cookie";
+import { login } from "../services/data-api";
+
+const cookies = new Cookies();
+const options = { path: "/", sameSite: true };
 
 // Creating authentication context
 const AuthContext = React.createContext({
@@ -47,40 +51,38 @@ export function useAuth() {
 }
 
 /***
- * Set a token into localstorage
+ * Set a token into cookies
  * @param name of the token
  * @param value of the token
  */
 function setToken(name, value) {
   const options = { path: "/", sameSite: true };
 
-  localStorage.setItem(name, value);
+  cookies.set(name, value, options);
 }
 
 /***
- * Get a token from localstorage
+ * Get a token from cookies
  * @param name of the token to retrieve
  */
 export function getToken(name) {
-  return localStorage.getItem(name);
+  return cookies.get(name);
 }
 
 /***
- * Set a user into localstorage
+ * Set a user into cookies
  * @param username of the
  */
 function setLoggedUser(username) {
-  const options = { path: "/", sameSite: true };
-
-  localStorage.setItem("username", username);
+  cookies.set("username", username, options);
 }
 
 /***
- * Get a user from localstorage
+ * Get a user from cookies
  * @param name of the token to retrieve
  */
 export function getLoggedUser() {
-  return localStorage.getItem("username");
+  return cookies.get("username");
 }
 
 /***
@@ -113,8 +115,8 @@ export async function authenticate(username, password) {
  * Removes items from local storage
  */
 export function logout() {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+  cookies.remove("accessToken");
+  cookies.remove("refreshToken");
 }
 
 /***
@@ -130,5 +132,32 @@ export function tokenIsExpired(token) {
     return Number(decoded.exp) < Number(currentTime);
   } catch (err) {
     return false;
+  }
+}
+
+/***
+ * parse the cookies in http header to find the value of the
+ * cookie given
+ * @param httpCookies the cookies string from https
+ * @param cookieName the name of the cookie we want to retrieve
+ */
+export function getCookieFromHttp(httpCookies, cookieName) {
+  let cookie = "";
+  const onBrowser = typeof window !== "undefined";
+
+  if (onBrowser) {
+    cookie = cookies.get(cookieName);
+    return cookie;
+  } else {
+    const toFind = cookieName + "=";
+    const cookiesArray = httpCookies.split(";");
+
+    for (let unparsedCookie of cookiesArray) {
+      if (unparsedCookie.includes(toFind)) {
+        cookie = unparsedCookie.replace(toFind, "").replace(" ", "");
+      }
+    }
+
+    return cookie;
   }
 }
