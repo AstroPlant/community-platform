@@ -10,14 +10,17 @@ export default {
   excludeStories: /.*Data$/,
 };
 
-const links = [
+const extraLinks = [
   {
-    name: "Linkeroonies",
+    label: "Settings",
+    slug: "settings",
   },
-  { name: "Peperonies" },
+  {
+    label: "Log Out",
+    slug: "logout",
+  },
 ];
 
 export const Default = () => {
-  console.log(links);
-  return <DropdownLinks links={object("links", links)} />;
+  return <DropdownLinks links={object("Links", extraLinks)} />;
 };

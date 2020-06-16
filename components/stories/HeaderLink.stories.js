@@ -14,10 +14,27 @@ export const actionsData = {
   onClick: action("clicked"),
 };
 
+const link = {
+  label: "Link",
+  slug: "link",
+};
+
 export const Default = () => {
-  return <HeaderLink label={text("Label", "Header")} {...actionsData} />;
+  return (
+    <HeaderLink
+      label={text("Label", link.label)}
+      slug={text("Slug", link.slug)}
+      {...actionsData}
+    />
+  );
 };
 
 export const active = () => {
-  return <HeaderLink active label={text("Label", "Hello")} {...actionsData} />;
+  return (
+    <HeaderLink
+      label={text("Label", link.label)}
+      slug={text("Slug", link.slug)}
+      {...actionsData}
+    />
+  );
 };

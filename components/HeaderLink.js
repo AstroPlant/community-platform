@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -38,17 +39,19 @@ const LinkContainer = styled.a`
   }
 `;
 
-export default function HeaderLink({
-  active,
-  label,
-  href,
-  className,
-  onClick,
-}) {
+export default function HeaderLink(props) {
+  const router = useRouter();
+  const path = `/${props.slug}`;
+  const active = router.asPath === path;
+
   return (
-    <Link passHref href={href}>
-      <LinkContainer className={className} active={active} onClick={onClick}>
-        {label}
+    <Link passHref href={path}>
+      <LinkContainer
+        className={props.className}
+        active={active}
+        onClick={props.onClick}
+      >
+        {props.label}
       </LinkContainer>
     </Link>
   );
@@ -56,12 +59,7 @@ export default function HeaderLink({
 
 HeaderLink.propTypes = {
   label: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
-  active: PropTypes.bool,
+  slug: PropTypes.string.isRequired,
   className: PropTypes.string,
   onClick: PropTypes.func,
-};
-
-HeaderLink.defaultProps = {
-  href: "/",
 };

@@ -47,12 +47,49 @@ export default function Header({ username }) {
 
   useOutsideClick(dropdownRef, closeDropdown.bind(this));
 
-  const extraLinks = [
+  const menuLinks = [
     {
-      name: "Settings",
+      label: "Home",
+      slug: "",
     },
     {
-      name: "Log Out",
+      label: "My Kits",
+      slug: "kits",
+    },
+    {
+      label: "Kit Map",
+      slug: "map",
+    },
+    {
+      label: "Challenges",
+      slug: "challenges",
+    },
+    {
+      label: "News",
+      slug: "news",
+    },
+    {
+      label: "Help",
+      slug: "help",
+    },
+    {
+      label: "Library",
+      slug: "library",
+    },
+    {
+      label: "Community",
+      slug: "community",
+    },
+  ];
+
+  const extraLinks = [
+    {
+      label: "Settings",
+      slug: "settings",
+    },
+    {
+      label: "Log Out",
+      slug: "logout",
     },
   ];
 
@@ -69,12 +106,9 @@ export default function Header({ username }) {
       <Brand />
 
       <LinksContainer>
-        <HeaderLink active label={"Home"} />
-        <HeaderLink label={"Kit Map"} />
-        <HeaderLink label={"News"} />
-        <HeaderLink label={"Help"} />
-        <HeaderLink label={"Library"} />
-        <HeaderLink label={"Community"} />
+        {menuLinks.map((link) => (
+          <HeaderLink key={link.key} label={link.label} slug={link.slug} />
+        ))}
       </LinksContainer>
 
       <ProfileButtons>

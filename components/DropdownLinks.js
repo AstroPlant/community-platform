@@ -25,7 +25,7 @@ export default function DropdownLinks({ links, hidden, forwardedRef }) {
   return (
     <Container ref={forwardedRef} hidden={hidden}>
       {links.map((link) => (
-        <HeaderLink key={link.name} label={link.name} />
+        <HeaderLink key={link.slug} label={link.label} />
       ))}
     </Container>
   );
