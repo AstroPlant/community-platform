@@ -18,7 +18,8 @@ async function getRequest(apiPath) {
   if (res.status === 200) {
     return res.json();
   } else {
-    return res;
+    console.log(res);
+    return {};
   }
 }
 
