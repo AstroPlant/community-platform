@@ -1,15 +1,15 @@
 import { boolean } from "@storybook/addon-knobs";
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import ActivityIndicator from "../ActivityIndicator";
+import Brand from "../Brand";
 
 export default {
-  component: ActivityIndicator,
-  title: "ActivityIndicator",
+  component: Brand,
+  title: "Brand",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
 
 export const Default = () => {
-  return <ActivityIndicator active={boolean("Active", true)} />;
+  return <Brand vertical={boolean("Vertical", false)} />;
 };

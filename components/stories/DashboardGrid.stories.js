@@ -1,6 +1,7 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import DashboardGrid from "../DashboardGrid";
+import Card from "../cards/Card";
+import DashboardGrid from "../grids/DashboardGrid";
 
 export default {
   component: DashboardGrid,
@@ -10,5 +11,17 @@ export default {
 };
 
 export const Default = () => {
-  return <DashboardGrid></DashboardGrid>;
+  return (
+    <DashboardGrid>
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+      <Card />
+    </DashboardGrid>
+  );
 };

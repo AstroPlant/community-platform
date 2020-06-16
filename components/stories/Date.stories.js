@@ -1,19 +1,15 @@
+import { text } from "@storybook/addon-knobs";
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import styled from "styled-components";
-import MapCard from "../cards/MapCard";
+import Date from "../Date";
 
 export default {
-  component: MapCard,
-  title: "MapCard",
+  component: Date,
+  title: "Date",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
 
-const Card = styled(MapCard)`
-  height: 50vh;
-`;
-
 export const Default = () => {
-  return <Card />;
+  return <Date dateString={text("Date", "2020-06-04T12:03:54.591Z")} />;
 };

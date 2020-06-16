@@ -1,19 +1,15 @@
+import { number } from "@storybook/addon-knobs";
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import styled from "styled-components";
-import MapCard from "../cards/MapCard";
+import Logo from "../Logo";
 
 export default {
-  component: MapCard,
-  title: "MapCard",
+  component: Logo,
+  title: "Logo",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
 
-const Card = styled(MapCard)`
-  height: 50vh;
-`;
-
 export const Default = () => {
-  return <Card />;
+  return <Logo size={number("Size", 2)} />;
 };

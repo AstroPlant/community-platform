@@ -46,5 +46,5 @@ MapCard.propTypes = {
 };
 
 MapCard.defaultProps = {
-  href: null,
+  href: "/",
 };

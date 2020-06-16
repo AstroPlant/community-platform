@@ -49,6 +49,6 @@ HelpCard.propTypes = {
 };
 
 HelpCard.defaultProps = {
-  href: null,
+  href: "/",
   as: null,
 };

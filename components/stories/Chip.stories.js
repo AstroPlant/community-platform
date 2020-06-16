@@ -1,19 +1,15 @@
+import { text } from "@storybook/addon-knobs";
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import styled from "styled-components";
-import MapCard from "../cards/MapCard";
+import Chip from "../Chip";
 
 export default {
-  component: MapCard,
-  title: "MapCard",
+  component: Chip,
+  title: "Chip",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
 
-const Card = styled(MapCard)`
-  height: 50vh;
-`;
-
 export const Default = () => {
-  return <Card />;
+  return <Chip label={text("Label", "Category")} />;
 };
