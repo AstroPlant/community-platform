@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Notification from "../public/icons/notification.svg";
 import { useOutsideClick } from "../utils/clickListener";
 import Avatar from "./Avatar";
+import Brand from "./Brand";
 import Dropdown from "./Dropdown";
 import DropdownLinks from "./DropdownLinks";
 import HeaderLink from "./HeaderLink";
@@ -25,30 +26,6 @@ const HeaderContainer = styled.header`
   font-weight: bold;
 
   max-height: ${(props) => props.theme.headerHeight};
-`;
-
-const BrandContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Logo = styled.div`
-  display: block;
-  height: 2rem;
-  width: 2rem;
-  background-color: white;
-`;
-
-const Separator = styled.div`
-  display: block;
-  height: 2rem;
-  width: 1px;
-  background-color: ${(props) => props.theme.grey};
-  margin: 0 1rem;
-`;
-
-const BrandName = styled.h3`
-  color: white;
 `;
 
 const LinksContainer = styled.nav`
@@ -89,11 +66,7 @@ export default function Header({ username }) {
 
   return (
     <HeaderContainer>
-      <BrandContainer>
-        <Logo></Logo>
-        <Separator></Separator>
-        <BrandName>astroplant</BrandName>
-      </BrandContainer>
+      <Brand />
 
       <LinksContainer>
         <HeaderLink active label={"Home"} />
