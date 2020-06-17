@@ -51,34 +51,42 @@ export default function Header({ username }) {
     {
       label: "Home",
       slug: "",
+      id: 1,
     },
     {
       label: "My Kits",
       slug: "kits",
+      id: 2,
     },
     {
       label: "Kit Map",
       slug: "map",
+      id: 3,
     },
     {
       label: "Challenges",
       slug: "challenges",
+      id: 4,
     },
     {
       label: "News",
       slug: "news",
+      id: 5,
     },
     {
       label: "Help",
       slug: "help",
+      id: 6,
     },
     {
       label: "Library",
       slug: "library",
+      id: 7,
     },
     {
       label: "Community",
       slug: "community",
+      id: 8,
     },
   ];
 
@@ -86,10 +94,12 @@ export default function Header({ username }) {
     {
       label: "Settings",
       slug: "settings",
+      id: 9,
     },
     {
       label: "Log Out",
       slug: "logout",
+      id: 10,
     },
   ];
 
@@ -107,7 +117,7 @@ export default function Header({ username }) {
 
       <LinksContainer>
         {menuLinks.map((link) => (
-          <HeaderLink key={link.key} label={link.label} slug={link.slug} />
+          <HeaderLink key={link.id} label={link.label} slug={link.slug} />
         ))}
       </LinksContainer>
 

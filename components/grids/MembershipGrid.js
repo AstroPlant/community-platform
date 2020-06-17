@@ -29,7 +29,6 @@ export default function MembershipGrid(props) {
     }
   }
 
-  console.log(OwnedKitMemberships, FollowedKitMemberShips);
   return (
     <Grid>
       <div>

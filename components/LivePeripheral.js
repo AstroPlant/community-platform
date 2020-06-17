@@ -32,7 +32,6 @@ const QuantityMeasured = styled.b`
 
 export default function LivePeripheral(props) {
   const quantityTypes = props.peripheral.details.quantityTypes;
-  console.log(props.peripheral.details);
   return (
     <Column>
       <DataRow>

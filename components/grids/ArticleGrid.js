@@ -46,10 +46,9 @@ export default function ArticleGrid({ articles }) {
       </FeaturedArticleContainer>
       <GridContainer>
         {otherArticles.map((anArticle) => (
-          <GridItem>
+          <GridItem key={anArticle.id}>
             <NewsCard
               article={anArticle}
-              key={anArticle.id}
               href={"/news/[slug]"}
               as={"/news/" + anArticle.slug}
             />

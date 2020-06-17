@@ -70,7 +70,9 @@ export default function KitCard({ className, kit, home }) {
               const isSensor =
                 peripheral.details.expectedQuantityTypes.length !== 0;
               if (isSensor) {
-                return <LivePeripheral peripheral={peripheral} />;
+                return (
+                  <LivePeripheral key={peripheral.id} peripheral={peripheral} />
+                );
               }
             })}
           </KitDataContainer>
@@ -95,5 +97,5 @@ export default function KitCard({ className, kit, home }) {
 
 KitCard.propTypes = {
   className: PropTypes.string,
-  kits: PropTypes.arrayOf(PropTypes.object).isRequired,
+  kit: PropTypes.object.isRequired,
 };

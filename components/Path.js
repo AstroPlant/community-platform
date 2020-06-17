@@ -1,34 +1,25 @@
+import Link from "next/link";
 import { withRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import HeaderLink from "./HeaderLink";
 
-//Declaring the separator component
-const SeparatorHolder = styled.b`
-  display: ${(props) => (props.active ? "none" : "block")};
-  color: ${(props) => props.theme.grey};
-  margin: 0 1rem;
-`;
-
-function Separator({ active }) {
-  return <SeparatorHolder active={active}>{">"}</SeparatorHolder>;
-}
-
-// Main styled components
-const Container = styled.div`
+const PathContainer = styled.nav`
   display: flex;
   align-items: center;
   margin: 1rem 0;
 `;
 
-const NavLink = styled(HeaderLink)`
-  && {
-    margin: 0;
-    color: ${(props) => (props.active ? props.theme.light : props.theme.grey)};
-    &:after {
-      display: none;
-    }
-  }
+const LinkContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  font-weight: bold;
+  color: ${(props) => (props.active ? props.theme.light : props.theme.grey)};
+`;
+
+const SeparatorHolder = styled.b`
+  display: ${(props) => (props.active ? "none" : "block")};
+  margin: 0 1rem;
 `;
 
 /***
@@ -40,21 +31,24 @@ function toTitleCase(word) {
 
 /***
  * Returns the steps from the home page
+ * a step looks like this :
+ * { id: value, active: value, link: value, label: value }
  */
 function getSteps(path) {
   const splitPath = path.split("/");
-  splitPath.shift();
 
+  // Initializing
   let steps = [];
-  steps.push({ active: false, path: "/", name: "Home" });
-
   let link = "";
+  steps.push({ id: 0, active: false, link: "/", label: "Home" });
 
-  for (let step of splitPath) {
+  for (let i = 1; i < splitPath.length; i++) {
+    // creating link of type /step1/step2
+    let step = splitPath[i];
     link += "/" + step;
-    let name = toTitleCase(step);
-    let isActive = path === link;
-    steps.push({ active: isActive, path: link, name: name });
+    let label = toTitleCase(step);
+    let isActive = i === splitPath.length - 1;
+    steps.push({ id: i, active: isActive, link: link, label: label });
   }
 
   return steps;
@@ -65,19 +59,19 @@ function Path({ router }) {
   const steps = getSteps(currentPath);
 
   return (
-    <Container>
+    <PathContainer>
       {steps.map((step) => (
-        <>
-          <NavLink
-            active={step.active}
-            key={step.name}
-            href={step.path}
-            label={step.name}
-          />
-          <Separator active={step.active} />
-        </>
+        <LinkContainer active={step.active} key={step.id}>
+          <Link passHref href={step.link}>
+            <a rel="prev" target="_self">
+              {step.label}
+            </a>
+          </Link>
+
+          <SeparatorHolder active={step.active}>{">"}</SeparatorHolder>
+        </LinkContainer>
       ))}
-    </Container>
+    </PathContainer>
   );
 }
 

@@ -30,6 +30,5 @@ for (let i = 0; i <= 4; i++) {
 }
 
 export const Default = () => {
-  console.log(articles);
   return <ArticleGrid articles={articles} />;
 };

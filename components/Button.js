@@ -25,26 +25,26 @@ const ButtonContainer = styled.button`
   outline: none;
 `;
 
-export default function Button({
-  className,
-  large,
-  inverted,
-  label,
-  color,
-  ...props
-}) {
-  return (
-    <ButtonContainer
-      className={className}
-      large={large}
-      inverted={inverted}
-      color={color}
-      {...props}
-    >
-      {label}
-    </ButtonContainer>
-  );
-}
+/***
+ * Button component
+ * Using forwaredref here to be able to pass the href to the component when using a Next.js link
+ */
+const Button = React.forwardRef(
+  ({ className, large, inverted, label, color, ...props }, ref) => {
+    return (
+      <ButtonContainer
+        className={className}
+        large={large}
+        inverted={inverted}
+        color={color}
+        ref={ref}
+        {...props}
+      >
+        {label}
+      </ButtonContainer>
+    );
+  }
+);
 
 Button.propTypes = {
   className: PropTypes.string,
@@ -59,3 +59,5 @@ Button.defaultProps = {
   large: false,
   inverted: false,
 };
+
+export default Button;
