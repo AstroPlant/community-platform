@@ -19,7 +19,7 @@ function Home({ article, mainKit }) {
       <h1 className="title">Welcome, {getLoggedUser()} !</h1>
 
       <DashboardGrid>
-        <KitCard kit={mainKit} />
+        <KitCard home kit={mainKit} />
         <NewsCard article={article} href={"/news"} />
         <ChallengeCard />
         <HelpCard

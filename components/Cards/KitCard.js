@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
+import LivePeripheral from "../LivePeripheral";
+import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
 const Container = styled(Card)`
@@ -14,8 +16,6 @@ const Container = styled(Card)`
 `;
 
 const TitleRow = styled.div`
-  flex: 1;
-
   display: flex;
   align-items: flex-end;
 `;
@@ -29,8 +29,6 @@ const KitType = styled.i`
 `;
 
 const KitDataContainer = styled.div`
-  flex: 7;
-
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -38,21 +36,6 @@ const KitDataContainer = styled.div`
   height: 100%;
   width: 100%;
   padding: 1rem 0;
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const KitSensor = styled.div`
-  display: block;
-  height: 75px;
-  width: 75px;
-  border-radius: 50%;
-  background-color: white;
 `;
 
 const ButtonRow = styled.div`
@@ -66,30 +49,39 @@ const ShowAllButton = styled(Button)`
   }
 `;
 
-export default function KitCard({ className, kit }) {
+export default function KitCard({ className, kit, home }) {
   const isEmpty = !Object.keys(kit).length;
 
   return (
     <Container className={className}>
       {!isEmpty ? (
         <>
-          <TitleRow>
-            <KitName>{kit.name}</KitName>
-            <KitType>{kit.serial}</KitType>
-          </TitleRow>
+          {home ? (
+            <TitleRow>
+              <KitName>{kit.name}</KitName>
+              <KitType>{kit.serial}</KitType>
+            </TitleRow>
+          ) : (
+            <></>
+          )}
 
           <KitDataContainer>
-            {kit.config.peripherals.map((peripheral) => (
-              <Column>
-                <KitSensor />
-                <p>{peripheral.details.className}</p>
-              </Column>
-            ))}
+            {kit.config.peripherals.map((peripheral) => {
+              const isSensor =
+                peripheral.details.expectedQuantityTypes.length !== 0;
+              if (isSensor) {
+                return <LivePeripheral peripheral={peripheral} />;
+              }
+            })}
           </KitDataContainer>
 
-          <ButtonRow>
-            <ShowAllButton label={"Show All"} color={"#56F265"} />
-          </ButtonRow>
+          {home && (
+            <ButtonRow>
+              <WrapInLink passHref href={"/kits"}>
+                <ShowAllButton label={"Show All"} color={"#56F265"} />
+              </WrapInLink>
+            </ButtonRow>
+          )}
         </>
       ) : (
         <>

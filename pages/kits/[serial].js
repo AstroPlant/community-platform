@@ -1,10 +1,15 @@
 import React from "react";
-import { getFullKit } from "../../services/data-api";
-import withAuth from "../../hocs/withAuth";
+import KitDashboardGrid from "../../components/grids/KitDashboardGrid";
 import MainLayout from "../../components/layouts/MainLayout";
+import withAuth from "../../hocs/withAuth";
+import { getFullKit } from "../../services/data-api";
 
 function KitDashBoard({ kit }) {
-  return <MainLayout pageTitle={kit.name}></MainLayout>;
+  return (
+    <MainLayout pageTitle={kit.name}>
+      <KitDashboardGrid kit={kit} />
+    </MainLayout>
+  );
 }
 
 export async function getServerSideProps(context) {

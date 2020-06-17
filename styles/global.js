@@ -31,6 +31,11 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 1.5rem;
   }
   
+  h5 {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
   p,b {
     font-size: 1em;
     line-height: 1.45em;
