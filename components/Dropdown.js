@@ -14,15 +14,13 @@ const Container = styled.div`
   transform: ${(props) => (props.reverse ? "rotate(180deg)" : "")};
 `;
 
-export default function Dropdown({ onClick, reverse, color }) {
-  return (
-    <Container reverse={reverse} onClick={onClick}>
-      <Icon size="24px" color={color}>
-        <DropdownIcon />
-      </Icon>
-    </Container>
-  );
-}
+const Dropdown = React.forwardRef(({ onClick, reverse, color }, ref) => (
+  <Container ref={ref} reverse={reverse} onClick={onClick}>
+    <Icon size="24px" color={color}>
+      <DropdownIcon />
+    </Icon>
+  </Container>
+));
 
 Dropdown.propTypes = {
   onClick: PropTypes.func,
@@ -33,3 +31,5 @@ Dropdown.propTypes = {
 Dropdown.defaultProps = {
   color: "#FFF",
 };
+
+export default Dropdown;

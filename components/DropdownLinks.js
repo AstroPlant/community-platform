@@ -21,23 +21,17 @@ const Container = styled.div`
   transition: opacity 0.2s ease-out, transform 0.4s ease;
 `;
 
-export default function DropdownLinks({ links, hidden, forwardedRef }) {
-  return (
-    <Container ref={forwardedRef} hidden={hidden}>
-      {links.map((link) => (
-        <HeaderLink key={link.id} label={link.label} slug={link.slug} />
-      ))}
-    </Container>
-  );
-}
+const DropdownLinks = React.forwardRef((props, ref) => (
+  <Container ref={ref} hidden={props.hidden}>
+    {props.links.map((link) => (
+      <HeaderLink key={link.id} label={link.label} slug={link.slug} />
+    ))}
+  </Container>
+));
 
 DropdownLinks.propTypes = {
   links: PropTypes.arrayOf(PropTypes.object).isRequired,
   hidden: PropTypes.bool.isRequired,
-  forwardedRef: PropTypes.oneOfType([
-    // Either a function
-    PropTypes.func,
-    // Or the instance of a DOM native element
-    PropTypes.shape({ current: PropTypes.instanceOf(PropTypes.element) }),
-  ]),
 };
+
+export default DropdownLinks;

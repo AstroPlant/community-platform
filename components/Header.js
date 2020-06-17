@@ -43,9 +43,15 @@ const ProfileButtons = styled.div`
 
 export default function Header({ username }) {
   const [hideDropdown, setHideDropdown] = useState(true);
-  const dropdownRef = useRef(null);
 
-  useOutsideClick(dropdownRef, closeDropdown.bind(this));
+  const dropdownLinksRef = useRef(null);
+  const dropdownButtonRef = useRef(null);
+
+  useOutsideClick(
+    dropdownLinksRef,
+    dropdownButtonRef,
+    closeDropdown.bind(this)
+  );
 
   const menuLinks = [
     {
@@ -131,11 +137,15 @@ export default function Header({ username }) {
           href={"/profile/[username]"}
           as={`/profile/${username}`}
         />
-        <Dropdown onClick={() => toggleDropdown()} reverse={!hideDropdown} />
+        <Dropdown
+          ref={dropdownButtonRef}
+          onClick={() => toggleDropdown()}
+          reverse={!hideDropdown}
+        />
       </ProfileButtons>
 
       <DropdownLinks
-        forwardedRef={dropdownRef}
+        ref={dropdownLinksRef}
         links={extraLinks}
         hidden={hideDropdown}
       />
