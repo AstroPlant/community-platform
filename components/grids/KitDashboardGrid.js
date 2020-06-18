@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import GraphCard from "../cards/GraphCard";
 import KitCard from "../cards/KitCard";
 import KitInformationCard from "../cards/KitInformationCard";
 import KitToolCard from "../cards/KitToolCard";
@@ -15,10 +16,8 @@ const GridContainer = styled.div`
 `;
 
 const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  display: grid;
+  grid-gap: 1.5rem;
 
   width: 100%;
 `;
@@ -30,6 +29,41 @@ const ColumnItem = styled.div`
 const ListTitle = styled.h5`
   margin-bottom: 0.5rem;
 `;
+
+const ToolsSection = () => {
+  return (
+    <SidepanelSection title={"Tools"}>
+      <KitToolCard title={"Graph Tool"} description={"Create a new graph"} />
+      <KitToolCard title={"Graph Tool"} description={"Create a new graph"} />
+      <KitToolCard title={"Graph Tool"} description={"Create a new graph"} />
+    </SidepanelSection>
+  );
+};
+
+const InformationSection = ({ config, collaborators }) => {
+  return (
+    <SidepanelSection title={"Information"}>
+      <KitInformationCard title={"Growing"} subtitle={"Carrots"} />
+      <KitInformationCard
+        title={"Current Config"}
+        subtitle={config.description}
+      >
+        <ListTitle>Peripherals</ListTitle>
+        {config.peripherals.map((peripheral) => (
+          <p key={peripheral.id}>
+            {peripheral.name} - {peripheral.details.brand} -{" "}
+            {peripheral.details.model}
+          </p>
+        ))}
+      </KitInformationCard>
+      <KitInformationCard title={"Collaborators"}>
+        {collaborators.map((collaborator) => (
+          <p key={collaborator.id}>{collaborator.displayName}</p>
+        ))}
+      </KitInformationCard>
+    </SidepanelSection>
+  );
+};
 
 export default function KitDashboardGrid(props) {
   const collabs = [
@@ -46,42 +80,15 @@ export default function KitDashboardGrid(props) {
         <ColumnItem>
           <KitCard kit={props.kit} />
         </ColumnItem>
+        <ColumnItem>
+          {props.graphs.map((graph) => (
+            <GraphCard key={graph.id} graph={graph} />
+          ))}
+        </ColumnItem>
       </Column>
       <Column>
-        <SidepanelSection title={"Information"}>
-          <KitInformationCard title={"Growing"} subtitle={"Carrots"} />
-          <KitInformationCard
-            title={"Current Config"}
-            subtitle={props.kit.config.description}
-          >
-            <ListTitle>Peripherals</ListTitle>
-            {props.kit.config.peripherals.map((peripheral) => (
-              <p key={peripheral.id}>
-                {peripheral.name} - {peripheral.details.brand} -{" "}
-                {peripheral.details.model}
-              </p>
-            ))}
-          </KitInformationCard>
-          <KitInformationCard title={"Collaborators"}>
-            {collabs.map((collaborator) => (
-              <p key={collaborator.id}>{collaborator.displayName}</p>
-            ))}
-          </KitInformationCard>
-        </SidepanelSection>
-        <SidepanelSection title={"Tools"}>
-          <KitToolCard
-            title={"Graph Tool"}
-            description={"Create a new graph"}
-          />
-          <KitToolCard
-            title={"Graph Tool"}
-            description={"Create a new graph"}
-          />
-          <KitToolCard
-            title={"Graph Tool"}
-            description={"Create a new graph"}
-          />
-        </SidepanelSection>
+        <InformationSection config={props.kit.config} collaborators={collabs} />
+        <ToolsSection />
       </Column>
     </GridContainer>
   );
@@ -89,4 +96,5 @@ export default function KitDashboardGrid(props) {
 
 KitDashboardGrid.propTypes = {
   kit: PropTypes.object.isRequired,
+  graphs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

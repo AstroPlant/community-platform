@@ -116,3 +116,34 @@ export async function getFullArticle(slug) {
 
   return res.data.articles[0];
 }
+
+export async function getUsersGraphs(username, kitSerial) {
+  const graphs = [
+    {
+      id: 24,
+      username: "rmnrss",
+      kitSerial: "k-krmw-vp3y-v4g9",
+      configId: 4,
+      title: "Temperature Over Time",
+      peripherals: [{ id: 12, peripheralDefinitionId: 1, quantityTypeId: 3 }],
+    },
+    {
+      id: 25,
+      username: "rmnrss",
+      kitSerial: "k-mqym-kdc8-b3t9",
+      configId: 14,
+      title: "Temperature Over Time",
+      peripherals: [{ id: 44, peripheralDefinitionId: 6, quantityTypeId: 1 }],
+    },
+  ];
+
+  let matchingGraphs = [];
+
+  for (let graph of graphs) {
+    if (username === graph.username && kitSerial === graph.kitSerial) {
+      matchingGraphs.push(graph);
+    }
+  }
+
+  return matchingGraphs;
+}

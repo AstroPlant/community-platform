@@ -233,3 +233,79 @@ export async function getQuantityTypeDetails(id) {
   const json = await getQuantityTypes();
   return json[id - 1];
 }
+
+/***
+ * function that returns the measurments based on a kit serial and other sorting parameters
+ * @param serial the kit serial. required
+ * @param optionalParameters can be configurationId, peripheralId, quantityTypeId
+ */
+export async function getKitMeasures(
+  serial,
+  optionalParameters = ({ configurationId, peripheralId, quantityTypeId } = {})
+) {
+  let path = `/kits/${serial}/aggregate-measurements?`;
+
+  // Building parameters string
+  let params = Object.keys(optionalParameters)
+    .map((key) => {
+      if (typeof optionalParameters[key] !== "undefined") {
+        return key.substring(0, key.length - 2) + "=" + optionalParameters[key];
+      }
+    })
+    .join("&");
+
+  // Building complete url
+  const url = API_URL + path + params;
+
+  // fetching measures
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+  const measures = await res.json();
+
+  if (res.status === 200 && measures.length !== 0) {
+    // headers are of type Headers
+    const unparsedLink = res.headers.get("link");
+    const parsedLink = unparsedLink.match(/<(.*?)>/)[1];
+
+    return { next: parsedLink, measures: measures };
+  } else {
+    console.log(res);
+    return [];
+  }
+}
+
+/***
+ * fetch more measures
+ * @param nextLink the link present on the previous response header
+ */
+export async function getMoreMeasures(nextLink) {
+  const url = API_URL + nextLink;
+
+  // fetching measures
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+  const measures = await res.json();
+
+  if (res.status === 200 && measures.length !== 0) {
+    // headers are of type Headers
+    const unparsedLink = res.headers.get("link");
+    const parsedLink = unparsedLink.match(/<(.*?)>/)[1];
+
+    return { next: parsedLink, measures: measures };
+  } else {
+    console.log(res);
+    return [];
+  }
+}
