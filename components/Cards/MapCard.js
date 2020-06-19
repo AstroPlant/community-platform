@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
+import WorldMap from "../../public/images/world-map.svg";
 
 const Container = styled(Card)`
   display: flex;
@@ -23,7 +24,10 @@ const MapContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
+`;
+
+const MapImage = styled.img`
+  object-fit: contain;
 `;
 
 export default function MapCard({ className, href }) {
@@ -33,7 +37,9 @@ export default function MapCard({ className, href }) {
         <TitleRow>
           <h3>Kit Map</h3>
         </TitleRow>
-        <MapContainer />
+        <MapContainer>
+          <MapImage src="/images/world-map.svg" />
+        </MapContainer>
       </Container>
     </WrapInLink>
   );
