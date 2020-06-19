@@ -1,19 +1,14 @@
 import { object, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import styled from "styled-components";
-import NewsCard from "../cards/NewsCard";
+import NewsCard from "../../cards/NewsCard";
 
 export default {
   component: NewsCard,
-  title: "NewsCard",
+  title: "Cards/NewsCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
-
-/* Gives height for the environment */
-const StoryContainer = styled.div`
-  height: 50vh;
-`;
 
 const articleData = {
   title: "An article title!",
@@ -24,9 +19,5 @@ const articleData = {
 };
 
 export const Default = () => {
-  return (
-    <StoryContainer>
-      <NewsCard article={object("Article", articleData)} />
-    </StoryContainer>
-  );
+  return <NewsCard article={object("Article", articleData)} />;
 };

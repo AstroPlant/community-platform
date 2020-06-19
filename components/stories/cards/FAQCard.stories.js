@@ -1,10 +1,10 @@
 import { date, text, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import FAQCard from "../cards/FAQCard";
+import FAQCard from "../../cards/FAQCard";
 
 export default {
   component: FAQCard,
-  title: "FAQCard",
+  title: "Cards/FAQCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

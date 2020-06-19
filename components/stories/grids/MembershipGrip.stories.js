@@ -1,10 +1,10 @@
 import { array, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import MembershipGrid from "../grids/MembershipGrid";
+import MembershipGrid from "../../grids/MembershipGrid";
 
 export default {
   component: MembershipGrid,
-  title: "MembershipGrid",
+  title: "Grids/MembershipGrid",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

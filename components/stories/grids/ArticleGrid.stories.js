@@ -1,10 +1,10 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import ArticleGrid from "../grids/ArticleGrid";
+import ArticleGrid from "../../grids/ArticleGrid";
 
 export default {
   component: ArticleGrid,
-  title: "ArticleGrid",
+  title: "Grids/ArticleGrid",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

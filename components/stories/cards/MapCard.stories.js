@@ -1,11 +1,11 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import styled from "styled-components";
-import MapCard from "../cards/MapCard";
+import MapCard from "../../cards/MapCard";
 
 export default {
   component: MapCard,
-  title: "MapCard",
+  title: "Cards/MapCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

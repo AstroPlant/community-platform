@@ -1,10 +1,10 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import KitCard from "../cards/KitCard";
+import KitCard from "../../cards/KitCard";
 
 export default {
   component: KitCard,
-  title: "KitCard",
+  title: "Cards/KitCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

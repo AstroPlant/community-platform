@@ -4,11 +4,11 @@ import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "../styles/global";
 import theme from "../styles/theme";
 
-addDecorator((s) => (
+addDecorator((story) => (
   <>
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      {s()}
+      {story()}
     </ThemeProvider>
   </>
 ));

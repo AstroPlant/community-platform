@@ -1,12 +1,12 @@
 import { text, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import Notification from "../../public/icons/notification.svg";
-import HelpCard from "../cards/HelpCard";
+import Notification from "../../../public/icons/notification.svg";
+import HelpCard from "../../cards/HelpCard";
 import styled from "styled-components";
 
 export default {
   component: HelpCard,
-  title: "HelpCard",
+  title: "Cards/HelpCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
