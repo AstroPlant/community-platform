@@ -58,7 +58,6 @@ export default function Avatar(props) {
 }
 
 Avatar.propTypes = {
-  hasPicture: PropTypes.bool,
   imgSrc: PropTypes.string,
   username: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
@@ -67,7 +66,6 @@ Avatar.propTypes = {
 };
 
 Avatar.defaultProps = {
-  hasPicture: false,
   imgSrc: null,
   href: null,
   as: null,

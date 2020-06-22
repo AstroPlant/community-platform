@@ -1,6 +1,6 @@
-export const API_URL = "http://localhost:1337";
-
 const GRAPHQL_URL = "http://localhost:1337/graphql";
+
+export const API_URL = "http://localhost:1337";
 
 /***
  * Fetch model to query data from the API
@@ -117,6 +117,29 @@ export async function getFullArticle(slug) {
   return res.data.articles[0];
 }
 
+/***
+ * Fetches the details of a user
+ * @param username the username to fetch
+ */
+export async function getUserDetails(username) {
+  const query = `{
+  users(where: { username: "${username}" }) {
+    username
+    firstName
+    lastName
+    description
+    slackUsername
+    picture {
+      url
+    }
+  }
+}`;
+
+  const res = await getQuery(query);
+
+  return res.data.users[0];
+}
+
 export async function getUsersGraphs(username, kitSerial) {
   const graphs = [
     {
@@ -146,4 +169,65 @@ export async function getUsersGraphs(username, kitSerial) {
   }
 
   return matchingGraphs;
+}
+
+/***
+ * POST request template
+ * @param apiPath the path of the api where to send the request
+ */
+async function postRequest(apiPath, body) {
+  const url = API_URL + apiPath;
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: body,
+    });
+
+    return res;
+  } catch (error) {
+    return {};
+  }
+}
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function login(username, password) {
+  const path = "/auth/local";
+
+  const body = JSON.stringify({
+    identifier: username,
+    password: password,
+  });
+
+  const res = await postRequest(path, body);
+
+  return res;
+}
+
+/***
+ * Creates a new user
+ * @param username the username from the user
+ * @param password the user's password
+ * @param email the user's email
+ */
+export async function signup(username, password, email) {
+  const path = "/users";
+
+  const body = JSON.stringify({
+    username: username,
+    password: password,
+    email: email,
+  });
+
+  const res = await postRequest(path, body);
+
+  return res;
 }

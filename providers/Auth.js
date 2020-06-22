@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { Cookies } from "react-cookie";
-import { login } from "../services/data-api";
+import { login } from "../services/community";
 
 const cookies = new Cookies();
 const options = { path: "/", sameSite: true };
@@ -81,8 +81,18 @@ function setLoggedUser(username) {
  * Get a user from cookies
  * @param name of the token to retrieve
  */
-export function getLoggedUser() {
-  return cookies.get("username");
+export function getLoggedUser(ctx) {
+  const onBrowser = typeof window !== "undefined";
+
+  if (onBrowser) {
+    return cookies.get("username");
+  } else {
+    if (ctx) {
+      return getCookieFromHttp(ctx.req.headers.cookie, "username");
+    } else {
+      return " ";
+    }
+  }
 }
 
 /***
@@ -102,6 +112,7 @@ export async function authenticate(username, password) {
 
   if (response.status === 200) {
     const json = await response.json();
+
     setToken("accessToken", json.accessToken);
     setToken("refreshToken", json.refreshToken);
     setLoggedUser(username);

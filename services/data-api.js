@@ -47,44 +47,6 @@ async function postRequest(apiPath, body) {
 }
 
 /***
- * Logs the user and stores the token cookies
- * @param username the username from the user
- * @param password the user's password
- */
-export async function login(username, password) {
-  const path = "/me/auth";
-
-  const body = JSON.stringify({
-    username: username,
-    password: password,
-  });
-
-  const res = await postRequest(path, body);
-
-  return res;
-}
-
-/***
- * Creates a new user
- * @param username the username from the user
- * @param password the user's password
- * @param email the user's email
- */
-export async function signup(username, password, email) {
-  const path = "/users";
-
-  const body = JSON.stringify({
-    username: username,
-    password: password,
-    email: email,
-  });
-
-  const res = await postRequest(path, body);
-
-  return res;
-}
-
-/***
  * Refreshes the accessToken with the refreshToken
  * return true on success false on failure
  * @param refreshToken the token use to refresh the access

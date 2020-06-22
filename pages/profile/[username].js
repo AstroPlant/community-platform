@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileGrid from "../../components/grids/ProfileGrid";
 import MainLayout from "../../components/layouts/MainLayout";
-import { getUserDetails } from "../../services/data-api";
+import { getUserDetails } from "../../services/community";
 
 export default function Profile({ user }) {
   return (
