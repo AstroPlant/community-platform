@@ -28,24 +28,28 @@ const KitType = styled.i`
   line-height: 32px;
 `;
 
-const KitDataContainer = styled.div`
+const KitSensorsRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 
   height: 100%;
   width: 100%;
+
+  margin: auto;
   padding: 1rem 0;
 `;
 
 const ButtonRow = styled.div`
-  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
 `;
 
-const ShowAllButton = styled(Button)`
+const MarginButton = styled(Button)`
   && {
-    margin: auto;
+    margin: 0 1rem;
   }
 `;
 
@@ -56,16 +60,14 @@ export default function KitCard({ className, kit, home }) {
     <Container className={className}>
       {!isEmpty ? (
         <>
-          {home ? (
+          {home && (
             <TitleRow>
               <KitName>{kit.name}</KitName>
               <KitType>{kit.serial}</KitType>
             </TitleRow>
-          ) : (
-            <></>
           )}
 
-          <KitDataContainer>
+          <KitSensorsRow>
             {kit.config.peripherals.map((peripheral) => {
               const isSensor =
                 peripheral.details.expectedQuantityTypes.length !== 0;
@@ -75,12 +77,19 @@ export default function KitCard({ className, kit, home }) {
                 );
               }
             })}
-          </KitDataContainer>
+          </KitSensorsRow>
 
           {home && (
             <ButtonRow>
+              <WrapInLink
+                passHref
+                href={"/kits/[serial]"}
+                as={`/kits/${kit.serial}`}
+              >
+                <MarginButton inverted label={"Inspect Kit"} color={"#000"} />
+              </WrapInLink>
               <WrapInLink passHref href={"/kits"}>
-                <ShowAllButton label={"Show All"} color={"#56F265"} />
+                <MarginButton label={"All My Kits"} color={"#56F265"} />
               </WrapInLink>
             </ButtonRow>
           )}
@@ -88,7 +97,7 @@ export default function KitCard({ className, kit, home }) {
       ) : (
         <>
           <p>No kits.</p>
-          <ShowAllButton label={"Add a kit."} color={"#56F265"} />
+          <MarginButton label={"Add a kit."} color={"#56F265"} />
         </>
       )}
     </Container>

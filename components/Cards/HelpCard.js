@@ -17,6 +17,10 @@ const ContentRow = styled.div`
   justify-content: center;
 `;
 
+const CardTitle = styled.h3`
+  width: min-content;
+`;
+
 export function PureCard(props) {
   return (
     <Container className={props.className}>
@@ -24,7 +28,7 @@ export function PureCard(props) {
         <Icon color={"#fff"} size={props.iconSize}>
           {props.iconSVG}
         </Icon>
-        <h3>{props.title}</h3>
+        <CardTitle>{props.title}</CardTitle>
       </ContentRow>
     </Container>
   );

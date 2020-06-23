@@ -3,7 +3,7 @@ import HelpCard from "../components/cards/HelpCard";
 import HelpGrid from "../components/grids/HelpGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import SlackIcon from "../public/icons/slack.svg";
-import { getFAQCategories } from "../services/community";
+import { getHelpSections } from "../services/community";
 
 export default function Help({ categories }) {
   return (
@@ -11,16 +11,16 @@ export default function Help({ categories }) {
       <HelpGrid>
         {categories.map((category) => (
           <CategoryCard
-            name={category.name}
+            name={category.title}
             slug={category.slug}
             key={category.id}
           />
         ))}
         <HelpCard
           iconSVG={<SlackIcon />}
-          iconSize={"72px"}
-          text={"Ask the community!"}
-          href={"/help"}
+          iconSize={"96px"}
+          title={"Ask the community!"}
+          href={"http://www.astroplant.slack.com/#/"}
         />
       </HelpGrid>
     </MainLayout>
@@ -30,7 +30,7 @@ export default function Help({ categories }) {
 export async function getServerSideProps() {
   return {
     props: {
-      categories: await getFAQCategories(),
+      categories: await getHelpSections(),
     },
   };
 }

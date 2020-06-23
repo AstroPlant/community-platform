@@ -23,25 +23,25 @@ async function getQuery(query) {
 /***
  * Fetches all the FAQs categories
  */
-export async function getFAQCategories() {
-  const query = `{ categories{
-      id
-      slug 
-      name
-    } }`;
+export async function getHelpSections() {
+  const query = `{ helpSections {
+    title
+    id
+    slug
+  }}`;
 
   const res = await getQuery(query);
 
-  return res.data.categories;
+  return res.data.helpSections;
 }
 
 /***
  * Fetches all the FAQs from a specific category
  */
-export async function getCategoryBySlug(slug) {
+export async function getHelpSectionBySlug(slug) {
   const query = `{ 
-        categories(where: { slug: "${slug}" }) {
-          name
+    helpSections(where: { slug: "${slug}" }) {
+          title
           faqs{
             id
             question 
@@ -53,7 +53,7 @@ export async function getCategoryBySlug(slug) {
 
   const res = await getQuery(query);
 
-  return res.data.categories[0];
+  return res.data.helpSections[0];
 }
 
 /***
@@ -99,17 +99,26 @@ export async function getArticlesPreview() {
  */
 export async function getFullArticle(slug) {
   const query = `{
-  articles(where: { slug: "${slug}" }) {
-    title
-    created_at
-    content
-    cover {
-      url
-      caption
+    articles(where: { slug: "${slug}" }) {
+      title
+      created_at
+      content
+      cover {
+        url
+        caption
+      }
+      created_at
+      author{ 
+        username
+        firstName
+        lastName
+        picture { url }
+      }
+      categories {
+        id
+        title
+      }
     }
-    created_at
-    author{ username }
-  }
 }`;
 
   const res = await getQuery(query);

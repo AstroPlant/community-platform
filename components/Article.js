@@ -40,6 +40,7 @@ const AuthorInfos = styled.div`
 `;
 
 const AuthorName = styled.b`
+  text-transform: capitalize;
   font-size: 1.2em;
 `;
 
@@ -53,6 +54,10 @@ const Column = styled.div`
   margin-left: 1.25rem;
 `;
 
+const Row = styled.div`
+  display: flex;
+`;
+
 export default function Article({ article }) {
   // Temporary dev env fixes
   const content = article.content.replace(/\/uploads/g, API_URL + "/uploads");
@@ -61,12 +66,19 @@ export default function Article({ article }) {
     <>
       <CoverImage src={coverURL} alt={article.cover.caption} />
       <Container>
-        <Chip label={"Article Category"} />
+        <Row>
+          {article.categories.map((category) => (
+            <Chip key={category.id} label={category.title} />
+          ))}
+        </Row>
+
         <Title>{article.title}</Title>
         <AuthorInfos>
           <Avatar size={3.5} username={article.author.username} />
           <Column>
-            <AuthorName>Thieme Hennis</AuthorName>
+            <AuthorName>
+              {article.author.firstName} {article.author.lastName}
+            </AuthorName>
             <ArticleDate dateString={article.created_at} />
           </Column>
         </AuthorInfos>

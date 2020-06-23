@@ -1,19 +1,14 @@
 import FAQCard from "../../components/cards/FAQCard";
 import FAQGrid from "../../components/grids/FAQGrid";
 import MainLayout from "../../components/layouts/MainLayout";
-import { getCategoryBySlug } from "../../services/community";
+import { getHelpSectionBySlug } from "../../services/community";
 
-export default function FAQ({ category }) {
+export default function FAQ({ section }) {
   return (
-    <MainLayout pageTitle={category.name}>
+    <MainLayout pageTitle={section.title}>
       <FAQGrid>
-        {category.faqs.map((faq) => (
-          <FAQCard
-            key={faq.id}
-            question={faq.question}
-            answer={faq.answer}
-            date={faq.created_at}
-          />
+        {section.faqs.map((faq) => (
+          <FAQCard key={faq.id} faq={faq} />
         ))}
       </FAQGrid>
     </MainLayout>
@@ -21,11 +16,11 @@ export default function FAQ({ category }) {
 }
 
 export async function getServerSideProps(context) {
-  const category = await getCategoryBySlug(context.params.slug);
+  const section = await getHelpSectionBySlug(context.params.slug);
 
   return {
     props: {
-      category,
+      section,
     },
   };
 }
