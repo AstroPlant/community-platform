@@ -32,10 +32,10 @@ export default function ChallengeCard({ className }) {
   return (
     <Container className={className}>
       <TitleRow>
-        <h2>Community Challenges</h2>
+        <h3>Community Challenges</h3>
       </TitleRow>
       <ChallengeContent>
-        <h3>Comming Soon...</h3>
+        <p>Comming Soon...</p>
       </ChallengeContent>
     </Container>
   );

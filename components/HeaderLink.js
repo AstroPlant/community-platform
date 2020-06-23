@@ -17,8 +17,8 @@ const LinkContainer = styled.a`
 
   text-align: center;
   font-size: 1em;
-  font-weight: bold;
-  letter-spacing: 0.01em;
+  font-weight: 550;
+  letter-spacing: 0.02em;
 
   cursor: pointer;
 

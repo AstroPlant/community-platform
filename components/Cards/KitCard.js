@@ -20,7 +20,7 @@ const TitleRow = styled.div`
   align-items: flex-end;
 `;
 
-const KitName = styled.h2`
+const KitName = styled.h3`
   margin-right: 2rem;
 `;
 

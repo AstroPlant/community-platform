@@ -28,6 +28,7 @@ const MapContainer = styled.div`
 
 const MapImage = styled.img`
   object-fit: contain;
+  padding-top: 1rem;
 `;
 
 export default function MapCard({ className, href }) {

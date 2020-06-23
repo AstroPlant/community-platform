@@ -18,9 +18,13 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${(props) => props.theme.dark};
   }
 
+  h1,
+  h2 {
+    font-weight: 600;
+  }
+
   h1 {
-      font-size: 3rem;
-      font-weight: bold;
+    font-size: 3rem;
   }
 
   h2 {
@@ -28,7 +32,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   h3 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+    font-weight: 550;
   }
   
   h5 {
@@ -42,7 +47,12 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   p {
-    font-weight: normal;
+    font-weight: 300;
+    text-transform: none;
+  }
+
+  b {
+    font-weight: 550;
     text-transform: none;
   }
   

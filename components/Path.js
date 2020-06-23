@@ -13,7 +13,8 @@ const LinkContainer = styled.div`
   display: flex;
   align-items: center;
 
-  font-weight: bold;
+  font-weight: 550;
+  letter-spacing: 0.02em;
   color: ${(props) => (props.active ? props.theme.light : props.theme.grey)};
 `;
 

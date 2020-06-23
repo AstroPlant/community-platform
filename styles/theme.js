@@ -12,7 +12,7 @@ const Theme = {
   grey: "#bcbcbc",
   error: "#FF3A3A",
 
-  fontFamily: "'Inter', sans-serif",
+  fontFamily: "'Poppins', sans-serif",
 
   gridGap: "2rem",
 
