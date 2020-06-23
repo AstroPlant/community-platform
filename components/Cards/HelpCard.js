@@ -17,38 +17,49 @@ const ContentRow = styled.div`
   justify-content: center;
 `;
 
-export default function HelpCard({
-  className,
-  iconSize,
-  iconSVG,
-  text,
-  href,
-  as,
-}) {
+export function PureCard(props) {
   return (
-    <WrapInLink href={href} as={as}>
-      <Container className={className}>
-        <ContentRow>
-          <Icon color={"#fff"} size={iconSize}>
-            {iconSVG}
-          </Icon>
-          <h3>{text}</h3>
-        </ContentRow>
-      </Container>
-    </WrapInLink>
+    <Container className={props.className}>
+      <ContentRow>
+        <Icon color={"#fff"} size={props.iconSize}>
+          {props.iconSVG}
+        </Icon>
+        <h3>{props.title}</h3>
+      </ContentRow>
+    </Container>
+  );
+}
+
+export default function HelpCard(props) {
+  const external = props.href.includes("http");
+  return (
+    <>
+      {external ? (
+        <a href={props.href} target="_blank">
+          <PureCard {...props} />
+        </a>
+      ) : (
+        <WrapInLink href={props.href}>
+          <PureCard {...props} />
+        </WrapInLink>
+      )}
+    </>
   );
 }
 
 HelpCard.propTypes = {
+  /* Used by styled-components to overides styling */
   className: PropTypes.string,
+  /* The size of the icon in pixels */
   iconSize: PropTypes.string.isRequired,
+  /* react component imported from the svgr webpack */
   iconSVG: PropTypes.node.isRequired,
-  text: PropTypes.string.isRequired,
+  /* Title displayed on the card next to the icon */
+  title: PropTypes.string.isRequired,
+  /* Destination to reach when clicking on the card */
   href: PropTypes.string,
-  as: PropTypes.string,
 };
 
 HelpCard.defaultProps = {
   href: "/",
-  as: null,
 };

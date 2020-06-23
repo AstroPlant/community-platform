@@ -25,14 +25,14 @@ function Home({ article, mainKit }) {
         <HelpCard
           iconSVG={<HelpIcon />}
           iconSize={"32px"}
-          text={"Help"}
+          title={"Help"}
           href={"/help"}
         />
         <HelpCard
           iconSVG={<SlackIcon />}
           iconSize={"96px"}
-          text={"Ask the community!"}
-          href={"/help"}
+          title={"Ask the community!"}
+          href={"http://www.astroplant.slack.com/#/"}
         />
         <MapCard href={"/map"} />
         <LibraryCard />
