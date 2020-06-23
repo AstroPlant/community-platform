@@ -11,6 +11,7 @@ const Container = styled(Card)`
   justify-content: center;
 
   padding: 1rem;
+  width: 100%;
 `;
 
 const HeadRow = styled.div`
@@ -23,6 +24,7 @@ const HeadRow = styled.div`
 
 const CardInfos = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
 `;
@@ -35,10 +37,11 @@ const Subtitle = styled.i`
   text-transform: italic;
   font-weight: 400;
   font-size: 14px;
+  color: ${(props) => props.theme.primary};
   margin-top: 2px;
 
   width: auto;
-  max-width: 128px;
+  max-width: 256px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,7 +53,8 @@ const ChildrenContainer = styled.div`
   align-items: flex-start;
   justify-content: center;
 
-  padding: 1rem 0;
+  width: 100%;
+  margin-top: 1rem;
 `;
 
 export default function KitInformationCard(props) {

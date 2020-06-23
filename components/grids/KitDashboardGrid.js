@@ -16,8 +16,10 @@ const GridContainer = styled.div`
 `;
 
 const Column = styled.div`
-  display: grid;
-  grid-gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 
   width: 100%;
 `;

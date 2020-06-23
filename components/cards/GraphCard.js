@@ -13,6 +13,7 @@ const Container = styled(Card)`
   justify-content: flex-start;
 
   padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
 `;
 
 const HeadRow = styled.div`

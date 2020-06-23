@@ -1,20 +1,24 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import Date from "../Date";
 import Dropdown from "../Dropdown";
 import Card from "./Card";
-import Date from "../Date";
 
 const Container = styled(Card)`
+  && {
+    height: unset;
+  }
+
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
-  transition: 0.3s ease;
+  transition: height 0.3s ease;
 `;
 
 const QuestionRow = styled.div`
-  flex: 1;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,27 +31,29 @@ const QuestionRow = styled.div`
   }
 `;
 
-const Question = styled.b``;
-
 const AnswerRow = styled.div`
-  flex: 3;
+  display: flex;
 
-  display: ${(props) => (props.open ? "flex" : "none")};
+  height: ${(props) => (props.open ? "auto" : "0")};
+
   flex-direction: column;
 
-  margin-top: 1rem;
+  margin-top: ${(props) => (props.open ? "1rem" : "0")};
+
+  overflow: hidden;
+
+  transition: margin-top 0.1s linear;
 `;
 
 const DateRow = styled.div`
-  flex: 3;
-
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-top: 1rem;
-`;
 
-const Answer = styled.p``;
+  margin-top: 1rem;
+
+  font-style: italic;
+`;
 
 export default function FAQCard(props) {
   const [open, setOpen] = useState(false);
@@ -55,7 +61,7 @@ export default function FAQCard(props) {
   return (
     <Container>
       <QuestionRow open={open}>
-        <Question>{faq.question}</Question>{" "}
+        <b>{faq.question}</b>
         <Dropdown
           onClick={() => setOpen(!open)}
           reverse={open}
@@ -63,7 +69,7 @@ export default function FAQCard(props) {
         />
       </QuestionRow>
       <AnswerRow open={open}>
-        <Answer>{faq.answer}</Answer>
+        <p>{faq.answer}</p>
         <DateRow>
           <Date dateString={faq.updated_at} />
         </DateRow>

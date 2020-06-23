@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Date({ className, dateString }) {
   const date = parseISO(dateString);
-  return <p className={className}>{format(date, "MMMM d yyyy")}</p>;
+  return <p className={className}>{format(date, "MMMM d, yyyy")}</p>;
 }
 
 Date.propTypes = {
