@@ -132,21 +132,98 @@ export async function getFullArticle(slug) {
  */
 export async function getUserDetails(username) {
   const query = `{
-  users(where: { username: "${username}" }) {
-    username
-    firstName
-    lastName
-    description
-    slackUsername
-    picture {
-      url
+    users(where: { username: "${username}" }) {
+      username
+      firstName
+      lastName
+      description
+      slackUsername
+      picture {
+        url
+      }
     }
-  }
-}`;
+  }`;
 
   const res = await getQuery(query);
 
   return res.data.users[0];
+}
+
+/***
+ * Fetches all library sections
+ */
+export async function getAllLibrarySections() {
+  const query = `{
+    librarySections {
+      id
+      slug
+      title
+      description
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches a library section
+ * @param slug of the section
+ */
+export async function getLibrarySection(slug) {
+  const query = `{
+    librarySections(where: { slug: "${slug}" }) {
+      id
+      slug
+      title
+      description
+      library_medias{
+        id
+        title
+        created_at
+      }
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections[0];
+}
+
+/***
+ * Fetches a library media
+ * @param slug of the media
+ */
+export async function getLibraryMedia(slug) {
+  const query = `{
+    libraryMedias(where: { slug: "${slug}" }) {
+      id
+      slug
+      title
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias[0];
+}
+
+/***
+ * Fetches featured library medias
+ */
+export async function getFeaturedLibraryMedias() {
+  const query = `{
+    libraryMedias {
+      id
+      slug
+      title
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias;
 }
 
 export async function getUsersGraphs(username, kitSerial) {

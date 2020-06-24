@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
 import Card from "./Card";
+import Link from "next/link";
 
 const Container = styled(Card)`
   display: flex;
@@ -23,7 +24,7 @@ const LibrairiesContainer = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 `;
 
 const ButtonRow = styled.div`
@@ -43,9 +44,9 @@ const ShowAllButton = styled(Button)`
   }
 `;
 
-export default function LibraryCard({ className }) {
+export default function LibraryCard(props) {
   return (
-    <Container className={className}>
+    <Container className={props.className}>
       <TitleRow>
         <h3>AstroPlant Library</h3>
       </TitleRow>
@@ -55,7 +56,9 @@ export default function LibraryCard({ className }) {
         <LibrairyPlaceholder />
       </LibrairiesContainer>
       <ButtonRow>
-        <ShowAllButton label={"Show All"} color={"#56F265"}></ShowAllButton>
+        <Link passHref href={"/library"}>
+          <ShowAllButton label={"Explore"} color={"#56F265"}></ShowAllButton>
+        </Link>
       </ButtonRow>
     </Container>
   );
@@ -63,7 +66,4 @@ export default function LibraryCard({ className }) {
 
 LibraryCard.propTypes = {
   className: PropTypes.string,
-  iconSize: PropTypes.string,
-  iconSVG: PropTypes.node,
-  text: PropTypes.string,
 };

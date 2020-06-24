@@ -11,6 +11,12 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.darkLight};
 
   padding: 1.5rem;
+
+  transition: border 0.3s ease-out;
+
+  &:hover {
+    border: 1px solid ${(props) => props.theme.primary};
+  }
 `;
 
 export default function Card({ children, className }) {
