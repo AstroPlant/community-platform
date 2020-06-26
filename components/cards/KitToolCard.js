@@ -36,7 +36,7 @@ export default function KitToolCard(props) {
         <Title>{props.title}</Title>
         <Description>{props.description}</Description>
       </CardInfos>
-      <Button label={"Open"} color={"#56F265"} />
+      <Button label={"Open"} color={"primary"} />
     </Container>
   );
 }

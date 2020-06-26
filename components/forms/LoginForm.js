@@ -72,7 +72,7 @@ const LoginForm = () => {
                 type="password"
                 placeholder="Password"
               />
-              <SubmitButton color={"#56F265"} label={"Sign In"} type="submit" />
+              <SubmitButton color={"primary"} label={"Sign In"} type="submit" />
               <Checkbox name="rememberMe">Remember Me</Checkbox>
             </CustomForm>
           </>

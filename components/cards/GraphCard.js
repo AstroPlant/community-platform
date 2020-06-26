@@ -72,11 +72,11 @@ export default function GraphCard(props) {
       <HeadRow>
         <Title>{props.graph.title}</Title>
         <Row>
-          <Button label={"Edit Graph"} color={"#56F265"} />
+          <Button label={"Edit Graph"} color={"primary"} />
           <Button
             inverted
             label={"More Data"}
-            color={"#000"}
+            color={"dark"}
             onClick={() => addMoreData()}
           />
         </Row>

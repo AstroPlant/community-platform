@@ -57,7 +57,7 @@ export default function LibraryCard(props) {
       </LibrairiesContainer>
       <ButtonRow>
         <Link passHref href={"/library"}>
-          <ShowAllButton label={"Explore"} color={"#56F265"}></ShowAllButton>
+          <ShowAllButton label={"Explore"} color={"primary"}></ShowAllButton>
         </Link>
       </ButtonRow>
     </Container>

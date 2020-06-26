@@ -86,10 +86,10 @@ export default function KitCard({ className, kit, home }) {
                 href={"/kits/[serial]"}
                 as={`/kits/${kit.serial}`}
               >
-                <MarginButton inverted label={"Inspect Kit"} color={"#000"} />
+                <MarginButton inverted label={"Inspect Kit"} color={"dark"} />
               </WrapInLink>
               <WrapInLink passHref href={"/kits"}>
-                <MarginButton label={"All My Kits"} color={"#56F265"} />
+                <MarginButton label={"All My Kits"} color={"primary"} />
               </WrapInLink>
             </ButtonRow>
           )}
@@ -97,7 +97,7 @@ export default function KitCard({ className, kit, home }) {
       ) : (
         <>
           <p>No kits.</p>
-          <MarginButton label={"Add a kit."} color={"#56F265"} />
+          <MarginButton label={"Add a kit."} color={"primary"} />
         </>
       )}
     </Container>

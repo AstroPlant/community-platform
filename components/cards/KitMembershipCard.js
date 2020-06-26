@@ -28,7 +28,7 @@ export default function KitMembershipCard(props) {
         <p>{kit.serial}</p>
       </InfoHolder>
       <WrapInLink passHref href={"/kits/[serial]"} as={`/kits/${kit.serial}`}>
-        <Button color={"#56F265"} label={"Inspect"} />
+        <Button color={"primary"} label={"Inspect"} />
       </WrapInLink>
     </Container>
   );

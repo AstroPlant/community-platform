@@ -21,7 +21,7 @@ const HeaderContainer = styled.header`
 
   padding: 1rem 2rem;
 
-  background-color: #1d1d1d;
+  background-color: ${(props) => props.theme.darkLight};
   color: #fff;
 
   font-size: 1em;
@@ -157,7 +157,7 @@ export default function Header() {
         </>
       ) : (
         <Link passhref href={"/login"}>
-          <Button color="#56F265" label={"Become a space farmer"} />
+          <Button color="primary" label={"Become a space farmer"} />
         </Link>
       )}
     </HeaderContainer>

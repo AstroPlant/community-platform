@@ -65,7 +65,7 @@ export default function KitInformationCard(props) {
           <Title>{props.title}</Title>
           <Subtitle>{props.subtitle}</Subtitle>
         </CardInfos>
-        <Button label={"Change"} color={"#56F265"} />
+        <Button label={"Change"} color={"primary"} />
       </HeadRow>
       {props.children && (
         <ChildrenContainer>{props.children}</ChildrenContainer>

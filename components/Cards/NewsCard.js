@@ -48,7 +48,7 @@ export default function NewsCard({ className, article, href, as }) {
         <Title>{article.title}</Title>
         <p>{article.short_description}</p>
         <Link passHref href={href} as={as}>
-          <CenteredButton label={"Show All"} color={"#56F265"} />
+          <CenteredButton label={"Show All"} color={"primary"} />
         </Link>
       </Content>
     </Container>

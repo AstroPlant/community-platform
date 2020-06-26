@@ -19,7 +19,7 @@ export const Default = () => {
   return (
     <Button
       label={text("Label", "Hello Storybook")}
-      color={text("Color", "#56F265")}
+      color={text("Color", "primary")}
       {...actionsData}
     />
   );
@@ -30,7 +30,7 @@ export const inverted = () => {
     <Button
       inverted
       label={text("Label", "Hello Storybook")}
-      color={text("Color", "#000")}
+      color={text("Color", "dark")}
       {...actionsData}
     />
   );
@@ -41,7 +41,7 @@ export const Large = () => {
     <Button
       large
       label={text("Label", "Hello Storybook")}
-      color={text("Color", "#56F265")}
+      color={text("Color", "primary")}
       {...actionsData}
     />
   );

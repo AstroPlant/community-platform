@@ -19,7 +19,7 @@ export const Default = () => {
   return (
     <Icon
       size={text("Size", "32px")}
-      color={text("Color", "#56F265")}
+      color={text("Color", "primary")}
       {...actionsData}
     >
       <Notification />

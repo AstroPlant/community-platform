@@ -65,7 +65,7 @@ export default function FAQCard(props) {
         <Dropdown
           onClick={() => setOpen(!open)}
           reverse={open}
-          color={open ? "#56F265" : "#fff"}
+          color={open ? "primary" : "#fff"}
         />
       </QuestionRow>
       <AnswerRow open={open}>

@@ -13,7 +13,7 @@ const ButtonContainer = styled.button`
 
   width: ${(props) => (props.large ? "20rem" : "")};
   background-color: ${(props) =>
-    props.disabled ? props.theme.grey : props.color};
+    props.disabled ? props.theme.grey : props.theme[props.color]};
 
   color: ${(props) => (props.inverted ? props.theme.light : props.theme.dark)};
   font-family: ${(props) => props.theme.fontFamily};
