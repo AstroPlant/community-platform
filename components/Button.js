@@ -16,13 +16,21 @@ const ButtonContainer = styled.button`
     props.disabled ? props.theme.grey : props.color};
 
   color: ${(props) => (props.inverted ? props.theme.light : props.theme.dark)};
+  font-family: ${(props) => props.theme.fontFamily};
   font-size: 1em;
-  font-weight: bold;
+  font-weight: 550;
 
   cursor: pointer;
 
   border: none;
   outline: none;
+
+  border: 1px solid transparent;
+  transition: border 0.3s ease-out;
+
+  &:hover {
+    border: 1px solid ${(props) => props.theme.light};
+  }
 `;
 
 /***
