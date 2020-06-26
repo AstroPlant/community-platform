@@ -26,12 +26,13 @@ export default function withAuthRedirect({
   const WithAuthRedirectWrapper = (props) => {
     const router = useRouter();
     const { isLoading } = useAuth();
+    const onClientSide = typeof window !== "undefined";
 
     if (isLoading) {
       return <LoadingComponent />;
     }
 
-    if (typeof window !== "undefined" && expectedAuth !== loggedIn()) {
+    if (onClientSide && expectedAuth !== loggedIn()) {
       router.push(location);
       return <></>;
     }

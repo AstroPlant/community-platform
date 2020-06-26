@@ -21,7 +21,7 @@ const Content = styled.div`
 export default function BaseLayout({ children }) {
   return (
     <Wrapper>
-      <Header username={getLoggedUser()} />
+      <Header />
       <Content>{children}</Content>
     </Wrapper>
   );

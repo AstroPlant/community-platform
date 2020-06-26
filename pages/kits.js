@@ -1,8 +1,8 @@
+import MembershipGrid from "../components/grids/MembershipGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import withAuth from "../hocs/withAuth";
-import { getCookieFromHttp } from "../providers/Auth";
+import { getLoggedUser } from "../providers/Auth";
 import { getUserMemberships } from "../services/data-api";
-import MembershipGrid from "../components/grids/MembershipGrid";
 
 function Kits({ memberships }) {
   return (
@@ -13,7 +13,7 @@ function Kits({ memberships }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const username = getCookieFromHttp(ctx.req.headers.cookie, "username");
+  const { username } = getLoggedUser(ctx.req.headers.cookie);
   const memberships = await getUserMemberships(username);
 
   return {

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import WrapInLink from "./WrapInLink";
+import { useAuth } from "../providers/Auth";
 
 const Container = styled.div`
   display: flex;
@@ -29,15 +30,15 @@ const Placeholder = styled.div`
   font-size: ${(props) => props.fontSize + "em"};
 `;
 
-function PureAvatar({ imgSrc, username, size }) {
-  const initial = username.charAt(0).toUpperCase();
-  const fontSize = size / 2;
+function PureAvatar(props) {
+  const initialLetter = props.username.charAt(0).toUpperCase();
+  const fontSize = props.size / 2;
   return (
-    <Container size={size}>
-      {imgSrc ? (
-        <img src={imgSrc} />
+    <Container size={props.size}>
+      {props.imgSrc ? (
+        <img src={props.imgSrc} />
       ) : (
-        <Placeholder fontSize={fontSize}>{initial}</Placeholder>
+        <Placeholder fontSize={fontSize}>{initialLetter}</Placeholder>
       )}
     </Container>
   );

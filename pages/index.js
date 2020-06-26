@@ -7,16 +7,18 @@ import NewsCard from "../components/cards/NewsCard";
 import DashboardGrid from "../components/grids/DashboardGrid";
 import BaseLayout from "../components/layouts/BaseLayout";
 import withAuth from "../hocs/withAuth";
-import { getCookieFromHttp, getLoggedUser } from "../providers/Auth";
+import { getLoggedUser, useAuth } from "../providers/Auth";
 import HelpIcon from "../public/icons/help.svg";
 import SlackIcon from "../public/icons/slack.svg";
 import { getFeaturedArticle } from "../services/community";
 import { getFullKit, getUserMemberships } from "../services/data-api";
 
 function Home({ article, mainKit }) {
+  const { user } = useAuth();
+
   return (
     <BaseLayout>
-      <h1 className="title">Welcome, {getLoggedUser()} !</h1>
+      <h1 className="title">Welcome, {user.username} !</h1>
 
       <DashboardGrid>
         <KitCard home kit={mainKit} />
@@ -43,9 +45,15 @@ function Home({ article, mainKit }) {
 
 export async function getServerSideProps(ctx) {
   const article = await getFeaturedArticle();
-  const username = getCookieFromHttp(ctx.req.headers.cookie, "username");
-  const memberships = await getUserMemberships(username);
-  const mainKit = await getFullKit(memberships[0].kit.serial);
+  let memberships = [];
+  let mainKit = {};
+
+  const user = getLoggedUser(ctx.req.headers.cookie);
+
+  if (typeof user !== "undefined") {
+    memberships = await getUserMemberships(user.username);
+    mainKit = await getFullKit(memberships[0].kit.serial);
+  }
 
   return {
     props: {

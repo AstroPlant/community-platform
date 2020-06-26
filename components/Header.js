@@ -1,10 +1,12 @@
-import PropTypes from "prop-types";
+import Link from "next/link";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { useAuth } from "../providers/Auth";
 import Notification from "../public/icons/notification.svg";
 import { useOutsideClick } from "../utils/clickListener";
 import Avatar from "./Avatar";
 import Brand from "./Brand";
+import Button from "./Button";
 import Dropdown from "./Dropdown";
 import DropdownLinks from "./DropdownLinks";
 import HeaderLink from "./HeaderLink";
@@ -41,9 +43,9 @@ const ProfileButtons = styled.div`
   justify-content: flex-end;
 `;
 
-export default function Header({ username }) {
+export default function Header() {
   const [hideDropdown, setHideDropdown] = useState(true);
-
+  const { user, isLogged } = useAuth();
   const dropdownLinksRef = useRef(null);
   const dropdownButtonRef = useRef(null);
 
@@ -127,32 +129,37 @@ export default function Header({ username }) {
         ))}
       </LinksContainer>
 
-      <ProfileButtons>
-        <Icon color={"#fff"} size="24px">
-          <Notification></Notification>
-        </Icon>
-        <Avatar
-          size={2.25}
-          username={username}
-          href={"/profile/[username]"}
-          as={`/profile/${username}`}
-        />
-        <Dropdown
-          ref={dropdownButtonRef}
-          onClick={() => toggleDropdown()}
-          reverse={!hideDropdown}
-        />
-      </ProfileButtons>
+      {isLogged ? (
+        <>
+          <ProfileButtons>
+            <Icon color={"#fff"} size="24px">
+              <Notification></Notification>
+            </Icon>
+            <Avatar
+              size={2.25}
+              imgSrc={user.avatarUrl}
+              username={user.username}
+              href={"/profile/[username]"}
+              as={`/profile/${user.username}`}
+            />
+            <Dropdown
+              ref={dropdownButtonRef}
+              onClick={() => toggleDropdown()}
+              reverse={!hideDropdown}
+            />
+          </ProfileButtons>
 
-      <DropdownLinks
-        ref={dropdownLinksRef}
-        links={extraLinks}
-        hidden={hideDropdown}
-      />
+          <DropdownLinks
+            ref={dropdownLinksRef}
+            links={extraLinks}
+            hidden={hideDropdown}
+          />
+        </>
+      ) : (
+        <Link passhref href={"/login"}>
+          <Button color="#56F265" label={"Become a space farmer"} />
+        </Link>
+      )}
     </HeaderContainer>
   );
 }
-
-Header.propTypes = {
-  username: PropTypes.string.isRequired,
-};

@@ -1,37 +1,47 @@
+import cookie from "cookie";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { Cookies } from "react-cookie";
-import { login } from "../services/community";
+import { API_URL, login } from "../services/community";
 
 const cookies = new Cookies();
 const options = { path: "/", sameSite: true };
 
-// Creating authentication context
+/* Creating authentication context
+ * Contains a user object and a isLogged boolean
+ * the isLoading boolean is used to avoid loading unauthorized pages
+ */
 const AuthContext = React.createContext({
-  isAuthenticated: false,
+  user: {},
+  isLogged: false,
   isLoading: true,
-  setAuthenticated: () => {},
+  setLogged: () => {},
 });
 
-// Authenticated if I have a refreshToken in my cookies
+// Provider passing the AuthContext to the app
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setAuthenticated] = React.useState(false);
+  // passing context values to states to avoid too many rendering
+  const [user, setUser] = React.useState({});
+  const [isLogged, setLogged] = React.useState(false);
   const [isLoading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const initializeAuth = async () => {
-      setAuthenticated(loggedIn());
+      setLogged(loggedIn());
+      setUser(getLoggedUser());
       setLoading(false);
     };
+
     initializeAuth();
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
+        user,
+        isLogged,
         isLoading,
-        setAuthenticated,
+        setLogged,
       }}
     >
       {children}
@@ -50,8 +60,93 @@ export function useAuth() {
   return context;
 }
 
+/******************************************
+ *              Log in tools              *
+ *****************************************/
+
 /***
- * Set a token into cookies
+ * Sends the login request to the community API
+ * saves the token into local storage on success
+ * @param username the username to try to authenticate
+ * @param password the password of the user
+ */
+export async function authenticate(username, password) {
+  const response = await login(username, password);
+
+  if (response.status === 200) {
+    const json = await response.json();
+
+    setToken("accessToken", json.accessToken);
+    setToken("refreshToken", json.refreshToken);
+    setToken("communityToken", json.communityToken);
+
+    const loggedUser = {
+      id: json.user.id,
+      username: username,
+      avatarUrl: API_URL + json.user.picture.formats.thumbnail.url,
+      role: json.user.role,
+    };
+
+    setLoggedUser(loggedUser);
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/***
+ * Checks if any user is logged in
+ * by verifying the presence and validity of the community token
+ */
+export function loggedIn() {
+  const token = getToken("communityToken");
+  return !!token && !tokenIsExpired(token); // handwaiving here
+}
+
+/***
+ * Set the logged user into cookies
+ * @param user to save as cookie
+ */
+function setLoggedUser(user) {
+  cookies.set("user", user, options);
+}
+
+/***
+ * Get the currently logged user from cookies (local or http)
+ */
+export function getLoggedUser(httpCookies) {
+  const onBrowser = typeof window !== "undefined";
+
+  if (onBrowser) {
+    return cookies.get("user");
+  } else {
+    let user = undefined;
+
+    if (httpCookies) {
+      const stringUser = getCookieFromHttp(httpCookies, "user");
+      user = JSON.parse(stringUser);
+    }
+
+    return user;
+  }
+}
+
+/***
+ * Removes items from local storage
+ */
+export function logout() {
+  cookies.remove("accessToken");
+  cookies.remove("refreshToken");
+  cookies.remove("user");
+  cookies.remove("communityToken");
+}
+
+/*************************************
+ *          Token utilities          *
+ *************************************/
+
+/***
+ * Set a token as cookies
  * @param name of the token
  * @param value of the token
  */
@@ -67,67 +162,6 @@ function setToken(name, value) {
  */
 export function getToken(name) {
   return cookies.get(name);
-}
-
-/***
- * Set a user into cookies
- * @param username of the
- */
-function setLoggedUser(username) {
-  cookies.set("username", username, options);
-}
-
-/***
- * Get a user from cookies
- * @param name of the token to retrieve
- */
-export function getLoggedUser(ctx) {
-  const onBrowser = typeof window !== "undefined";
-
-  if (onBrowser) {
-    return cookies.get("username");
-  } else {
-    if (ctx) {
-      return getCookieFromHttp(ctx.req.headers.cookie, "username");
-    } else {
-      return " ";
-    }
-  }
-}
-
-/***
- * Checks if any user is authenticated
- * Checks if there is a saved token and it's still valid
- */
-export function loggedIn() {
-  const token = getToken("refreshToken");
-  return !!token && !tokenIsExpired(token); // handwaiving here
-}
-
-/***
- * Logs the user in and saves the token into local storage
- */
-export async function authenticate(username, password) {
-  const response = await login(username, password);
-
-  if (response.status === 200) {
-    const json = await response.json();
-
-    setToken("accessToken", json.accessToken);
-    setToken("refreshToken", json.refreshToken);
-    setLoggedUser(username);
-    return true;
-  } else {
-    return false;
-  }
-}
-
-/***
- * Removes items from local storage
- */
-export function logout() {
-  cookies.remove("accessToken");
-  cookies.remove("refreshToken");
 }
 
 /***
@@ -147,28 +181,17 @@ export function tokenIsExpired(token) {
 }
 
 /***
- * parse the cookies in http header to find the value of the
- * cookie given
+ * parse the given http cookies and return the value connected to cookieName
  * @param httpCookies the cookies string from https
  * @param cookieName the name of the cookie we want to retrieve
  */
 export function getCookieFromHttp(httpCookies, cookieName) {
-  let cookie = "";
-  const onBrowser = typeof window !== "undefined";
+  let cookieValue = "";
 
-  if (onBrowser) {
-    cookie = cookies.get(cookieName);
-    return cookie;
-  } else {
-    const toFind = cookieName + "=";
-    const cookiesArray = httpCookies.split(";");
-
-    for (let unparsedCookie of cookiesArray) {
-      if (unparsedCookie.includes(toFind)) {
-        cookie = unparsedCookie.replace(toFind, "").replace(" ", "");
-      }
-    }
-
-    return cookie;
+  if (httpCookies) {
+    const jsonCookies = cookie.parse(httpCookies);
+    cookieValue = jsonCookies[cookieName];
   }
+
+  return cookieValue;
 }

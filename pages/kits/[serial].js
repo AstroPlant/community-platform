@@ -2,7 +2,7 @@ import React from "react";
 import KitDashboardGrid from "../../components/grids/KitDashboardGrid";
 import MainLayout from "../../components/layouts/MainLayout";
 import withAuth from "../../hocs/withAuth";
-import { getCookieFromHttp } from "../../providers/Auth";
+import { getLoggedUser } from "../../providers/Auth";
 import { getUsersGraphs } from "../../services/community";
 import { getFullKit } from "../../services/data-api";
 
@@ -15,7 +15,7 @@ function KitDashBoard({ kit, graphs }) {
 }
 
 export async function getServerSideProps(context) {
-  const username = getCookieFromHttp(context.req.headers.cookie, "username");
+  const { username } = getLoggedUser(context.req.headers.cookie);
   const kit = await getFullKit(context.params.serial);
   const graphs = await getUsersGraphs(username, context.params.serial);
 
