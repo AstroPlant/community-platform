@@ -1,7 +1,7 @@
 import { useField } from "formik";
 import React from "react";
-import ErrorMessage from "./ErrorMessage";
 import styled from "styled-components";
+import ErrorMessage from "./ErrorMessage";
 
 const Row = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const Checkbox = ({ children, ...props }) => {
       </Row>
 
       {meta.touched && meta.error ? (
-        <ErrorMessage>{meta.error}</ErrorMessage>
+        <ErrorMessage errorMessage={meta.error} />
       ) : null}
     </>
   );

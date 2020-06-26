@@ -304,16 +304,32 @@ export async function login(username, password) {
  * @param password the user's password
  * @param email the user's email
  */
-export async function signup(username, password, email) {
-  const path = "/users";
+export async function createUser(email, username, password) {
+  const mutation = `mutation {
+    createUser(
+      input: {
+        data: { username: "${username}", 
+        email: "${email}",
+        password: "${password}"}
+      }
+    ) {
+      user {
+        username
+        email
+      }
+    }
+  }`;
 
-  const body = JSON.stringify({
-    username: username,
-    password: password,
-    email: email,
+  const res = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      query: mutation,
+    }),
   });
-
-  const res = await postRequest(path, body);
 
   return res;
 }

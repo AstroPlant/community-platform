@@ -52,7 +52,8 @@ export async function getServerSideProps(ctx) {
 
   if (typeof user !== "undefined") {
     memberships = await getUserMemberships(user.username);
-    mainKit = await getFullKit(memberships[0].kit.serial);
+    mainKit =
+      memberships.length != 0 && (await getFullKit(memberships[0].kit.serial));
   }
 
   return {

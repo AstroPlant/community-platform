@@ -2,7 +2,8 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import { authenticate } from "../../providers/Auth";
+import * as Yup from "yup";
+import { authenticate, useAuth } from "../../providers/Auth";
 import Button from "../Button";
 import Checkbox from "./CheckBox";
 import TextInput from "./TextInput";
@@ -16,20 +17,26 @@ const SubmitButton = styled(Button)`
   margin: 1rem 0 1.5rem 0;
 `;
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.username) {
-    errors.username = "Required";
-  }
+const HelpMessage = styled.p`
+  margin-bottom: 1rem;
+  color: ${(props) => (props.error ? props.theme.error : props.theme.success)};
+`;
 
-  if (!values.password) {
-    errors.password = "Required";
-  }
-  return errors;
-};
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const LoginSchema = Yup.object().shape({
+  username: Yup.string().required("Required"),
+  password: Yup.string().required("Required"),
+  rememberMe: Yup.boolean(),
+});
 
 const LoginForm = () => {
   const router = useRouter();
+  const { setLogged } = useAuth();
 
   return (
     <>
@@ -40,12 +47,13 @@ const LoginForm = () => {
           rememberMe: false,
         }}
         initialStatus={{ success: null, error: null }}
-        validate={validate}
+        validationSchema={LoginSchema}
         onSubmit={async (values, actions) => {
           const auth = await authenticate(values.username, values.password);
 
           if (auth) {
             actions.setStatus({ success: "Logged In !" });
+            setLogged(true);
             actions.resetForm();
             router.push("/");
           } else {
@@ -58,8 +66,8 @@ const LoginForm = () => {
         {({ status, isValid }) => (
           <>
             <CustomForm>
-              {status.error && <div>{status.error}</div>}
-              {status.success && <div>{status.success}</div>}
+              {status.error && <HelpMessage error>{status.error}</HelpMessage>}
+              {status.success && <HelpMessage>{status.success}</HelpMessage>}
               <TextInput
                 label="Username"
                 name="username"
@@ -72,8 +80,11 @@ const LoginForm = () => {
                 type="password"
                 placeholder="Password"
               />
+              <Row>
+                <Checkbox name="rememberMe">Remember Me</Checkbox>
+                <a>Password Forgotten ?</a>
+              </Row>
               <SubmitButton color={"primary"} label={"Sign In"} type="submit" />
-              <Checkbox name="rememberMe">Remember Me</Checkbox>
             </CustomForm>
           </>
         )}

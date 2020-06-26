@@ -1,8 +1,12 @@
 import withAuth from "../hocs/withAuth";
-import { logout } from "../providers/Auth";
+import { logout, useAuth } from "../providers/Auth";
 
 function LogOut() {
+  const { setLogged } = useAuth();
+
   logout();
+  setLogged(false);
+
   return <p>Disconnecting...</p>;
 }
 

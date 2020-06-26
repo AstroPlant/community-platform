@@ -19,7 +19,7 @@ async function getRequest(apiPath) {
     return res.json();
   } else {
     console.log(res);
-    return {};
+    return [];
   }
 }
 

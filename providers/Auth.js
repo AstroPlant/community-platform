@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     initializeAuth();
-  }, []);
+  }, [isLogged]);
 
   return (
     <AuthContext.Provider
@@ -83,10 +83,12 @@ export async function authenticate(username, password) {
     const loggedUser = {
       id: json.user.id,
       username: username,
-      avatarUrl: API_URL + json.user.picture.formats.thumbnail.url,
+      avatarUrl:
+        json.user.picture && API_URL + json.user.picture.formats.thumbnail.url,
       role: json.user.role,
     };
 
+    console.log(loggedUser);
     setLoggedUser(loggedUser);
     return true;
   } else {
