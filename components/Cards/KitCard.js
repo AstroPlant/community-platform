@@ -9,10 +9,10 @@ import Card from "./Card";
 const Container = styled(Card)`
   display: flex;
   flex-flow: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: ${(props) => (props.isEmpty ? "center" : "flex-start")};
+  justify-content: ${(props) => (props.isEmpty ? "center" : "flex-start")};
 
-  text-align: start;
+  text-align: ${(props) => (props.isEmpty ? "center" : "start")};
 `;
 
 const TitleRow = styled.div`
@@ -53,11 +53,15 @@ const MarginButton = styled(Button)`
   }
 `;
 
+const NoKitsMessage = styled.p`
+  margin: 1rem 0;
+`;
+
 export default function KitCard({ className, kit, home }) {
   const isEmpty = !Object.keys(kit).length;
 
   return (
-    <Container className={className}>
+    <Container isEmpty={isEmpty} className={className}>
       {!isEmpty ? (
         <>
           {home && (
@@ -96,7 +100,7 @@ export default function KitCard({ className, kit, home }) {
         </>
       ) : (
         <>
-          <p>No kits.</p>
+          <NoKitsMessage>You are not the member of any kits! :(</NoKitsMessage>
           <MarginButton label={"Add a kit."} color={"primary"} />
         </>
       )}

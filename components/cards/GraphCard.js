@@ -5,6 +5,8 @@ import { getKitMeasures, getMoreMeasures } from "../../services/data-api";
 import Button from "../Button";
 import Graph from "../Graph";
 import Card from "./Card";
+import useSWR from "swr";
+import LoadingAnimation from "../LoadingAnimation";
 
 const Container = styled(Card)`
   display: flex;
@@ -39,32 +41,36 @@ const GraphHolder = styled.div`
 `;
 
 export default function GraphCard(props) {
-  const [data, setData] = useState([]);
-  const [next, setNext] = useState("");
+  const key = [
+    props.graph.kitSerial,
+    props.graph.peripherals[0].quantityTypeId,
+    props.graph.configId,
+    props.graph.peripherals[0].id,
+  ];
 
-  useEffect(() => {
-    async function getData() {
-      const res = await getKitMeasures(props.graph.kitSerial, {
-        quantityTypeId: props.graph.peripherals[0].quantityTypeId,
-        configurationId: props.graph.configId,
-        peripheralId: props.graph.peripherals[0].id,
-      });
+  const fetcher = (kitSerial, quantityTypeId, configurationId, peripheralId) =>
+    getKitMeasures(kitSerial, {
+      quantityTypeId: quantityTypeId,
+      configurationId: configurationId,
+      peripheralId: peripheralId,
+    });
 
-      setData(res.measures);
-      setNext(res.next);
-    }
-
-    getData();
-  }, []);
+  const { data, error, mutate } = useSWR(key, fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
 
   async function addMoreData() {
-    const response = await getMoreMeasures(next);
+    const response = await getMoreMeasures(data.next);
 
-    for (let measure of response.measures) {
-      data.push(measure);
-    }
-
-    setNext(response.next);
+    mutate(
+      {
+        ...data,
+        next: response.next,
+        measures: data.measures.concat(response.measures),
+      },
+      false
+    );
   }
 
   return (
@@ -83,7 +89,12 @@ export default function GraphCard(props) {
       </HeadRow>
 
       <GraphHolder>
-        <Graph graph={props.graph} data={data} />
+        {data ? (
+          <Graph graph={props.graph} data={data.measures} />
+        ) : (
+          <LoadingAnimation message="Fetching graph data..." />
+        )}
+        {error && <p>Could not fecth the data</p>}
       </GraphHolder>
     </Container>
   );

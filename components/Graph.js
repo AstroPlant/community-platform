@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 let myLineChart;
 
 //--Chart Style Options--//
-Chart.defaults.global.defaultFontFamily = "'Inter', sans-serif";
+Chart.defaults.global.defaultFontFamily = "'Arial', sans-serif";
 Chart.defaults.global.defaultFontColor = "white";
 
 export default function Graph(props) {
