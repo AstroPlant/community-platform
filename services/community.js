@@ -178,10 +178,34 @@ export async function getLibrarySection(slug) {
       slug
       title
       description
-      library_medias{
+      library_medias {
         id
         title
         created_at
+        media {
+          __typename
+          ... on ComponentMediaTypeLink {
+            id
+            url
+          }
+          ... on ComponentMediaTypeFile {
+            id
+            name
+            file {
+              id
+              created_at
+              caption
+            }
+          }
+          ... on ComponentMediaTypeArticle {
+            id
+            title
+            cover {
+              caption
+            }
+            content
+          }
+        }
       }
     }
   }`;
@@ -201,6 +225,30 @@ export async function getLibraryMedia(slug) {
       id
       slug
       title
+      media {
+        __typename
+        ... on ComponentMediaTypeLink {
+          id
+          url
+        }
+        ... on ComponentMediaTypeFile {
+          id
+          name
+          file {
+            id
+            created_at
+            caption
+          }
+        }
+        ... on ComponentMediaTypeArticle {
+          id
+          title
+          cover {
+            caption
+          }
+          content
+        }
+      }
     }
   }`;
 
@@ -218,6 +266,30 @@ export async function getFeaturedLibraryMedias() {
       id
       slug
       title
+      media {
+        __typename
+        ... on ComponentMediaTypeLink {
+          id
+          url
+        }
+        ... on ComponentMediaTypeFile {
+          id
+          name
+          file {
+            id
+            created_at
+            caption
+          }
+        }
+        ... on ComponentMediaTypeArticle {
+          id
+          title
+          cover {
+            caption
+          }
+          content
+        }
+      }
     }
   }`;
 
