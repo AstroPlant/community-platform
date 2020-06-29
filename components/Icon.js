@@ -8,8 +8,8 @@ const Content = styled.div`
   justify-content: center;
 
   margin: 0.5rem;
-  fill: ${(props) => props.color};
-  font-size: ${(props) => props.size};
+  fill: ${(props) => props.theme[props.color]};
+  font-size: ${(props) => props.size}px;
 
   cursor: pointer;
 `;
@@ -24,11 +24,13 @@ export default function Icon({ children, color, size }) {
 
 Icon.propTypes = {
   children: PropTypes.node.isRequired,
+  /* String corresponding to a theme color e.g "primary" */
   color: PropTypes.string,
-  size: PropTypes.string,
+  /* The size of the icon in pixels */
+  size: PropTypes.number,
 };
 
 Icon.defaultProps = {
-  color: "#FFF",
-  size: "1rem",
+  color: "light",
+  size: 16,
 };

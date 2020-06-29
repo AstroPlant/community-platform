@@ -16,7 +16,7 @@ const Container = styled.div`
 export default function SearchBar() {
   return (
     <Container>
-      <Icon color={"grey"} size="1.5rem">
+      <Icon color={"grey"} size={24}>
         <SearchIcon></SearchIcon>
       </Icon>
       <UserInput dark type={"text"} value={"Search"}></UserInput>

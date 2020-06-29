@@ -16,20 +16,23 @@ const Container = styled.div`
 
 const Dropdown = React.forwardRef(({ onClick, reverse, color }, ref) => (
   <Container ref={ref} reverse={reverse} onClick={onClick}>
-    <Icon size="24px" color={color}>
+    <Icon size={24} color={color}>
       <DropdownIcon />
     </Icon>
   </Container>
 ));
 
 Dropdown.propTypes = {
+  /* function to execute when the dropdown is clicked */
   onClick: PropTypes.func,
+  /* Indicates if the container should be rotated from 180° */
   reverse: PropTypes.bool.isRequired,
+  /* String representing the color of the dropdown, should be a string color from the theme. e.g "primary" */
   color: PropTypes.string,
 };
 
 Dropdown.defaultProps = {
-  color: "#FFF",
+  color: "light",
 };
 
 export default Dropdown;

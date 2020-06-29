@@ -25,7 +25,7 @@ export function PureCard(props) {
   return (
     <Container className={props.className}>
       <ContentRow>
-        <Icon color={"#fff"} size={props.iconSize}>
+        <Icon color={"light"} size={props.iconSize}>
           {props.iconSVG}
         </Icon>
         <CardTitle>{props.title}</CardTitle>

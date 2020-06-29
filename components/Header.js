@@ -137,8 +137,8 @@ export default function Header() {
       {isLogged ? (
         <>
           <ProfileButtons>
-            <Icon color={"#fff"} size="24px">
-              <Notification></Notification>
+            <Icon color={"light"} size={24}>
+              <Notification />
             </Icon>
             <Avatar
               size={2.25}
