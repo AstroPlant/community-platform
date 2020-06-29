@@ -55,7 +55,7 @@ HelpCard.propTypes = {
   /* Used by styled-components to overides styling */
   className: PropTypes.string,
   /* The size of the icon in pixels */
-  iconSize: PropTypes.string.isRequired,
+  iconSize: PropTypes.number.isRequired,
   /* react component imported from the svgr webpack */
   iconSVG: PropTypes.node.isRequired,
   /* Title displayed on the card next to the icon */
