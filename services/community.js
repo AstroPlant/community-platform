@@ -63,6 +63,7 @@ export async function getFeaturedArticle() {
   const query = `{
   articles(sort: "created_at:desc") {
     title
+    slug
     short_description
     cover {
       url
@@ -302,18 +303,20 @@ export async function getUsersGraphs(username, kitSerial) {
   const graphs = [
     {
       id: 24,
-      username: "rmnrss",
+      title: "Humidity Over Time",
+      type: "bar",
+      owner: "rmnrss",
       kitSerial: "k-krmw-vp3y-v4g9",
       configId: 4,
-      title: "Temperature Over Time",
-      peripherals: [{ id: 12, peripheralDefinitionId: 1, quantityTypeId: 3 }],
+      peripherals: [{ id: 12, peripheralDefinitionId: 3, quantityTypeId: 3 }],
     },
     {
       id: 25,
-      username: "rmnrss",
+      owner: "rmnrss",
+      title: "Temperature Over Time",
+      type: "line",
       kitSerial: "k-mqym-kdc8-b3t9",
       configId: 14,
-      title: "Temperature Over Time",
       peripherals: [{ id: 44, peripheralDefinitionId: 6, quantityTypeId: 1 }],
     },
   ];
@@ -321,7 +324,7 @@ export async function getUsersGraphs(username, kitSerial) {
   let matchingGraphs = [];
 
   for (let graph of graphs) {
-    if (username === graph.username && kitSerial === graph.kitSerial) {
+    if (username === graph.owner && kitSerial === graph.kitSerial) {
       matchingGraphs.push(graph);
     }
   }
@@ -404,4 +407,9 @@ export async function createUser(email, username, password) {
   });
 
   return res;
+}
+
+export async function getChallenges() {
+  //TODO Implement
+  return [];
 }

@@ -18,7 +18,7 @@ export default function Help({ categories }) {
         ))}
         <HelpCard
           iconSVG={<SlackIcon />}
-          iconSize={"96px"}
+          iconSize={96}
           title={"Ask the community!"}
           href={"http://www.astroplant.slack.com/#/"}
         />

@@ -4,8 +4,8 @@ import { logout, useAuth } from "../providers/Auth";
 function LogOut() {
   const { setLogged } = useAuth();
 
-  logout();
   setLogged(false);
+  logout();
 
   return <p>Disconnecting...</p>;
 }

@@ -34,7 +34,7 @@ const MapImage = styled.img`
 export default function MapCard({ className, href }) {
   return (
     <WrapInLink href={href}>
-      <Container className={className}>
+      <Container animateOnHover className={className}>
         <TitleRow>
           <h3>Kit Map</h3>
         </TitleRow>

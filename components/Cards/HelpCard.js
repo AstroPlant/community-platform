@@ -23,7 +23,7 @@ const CardTitle = styled.h3`
 
 export function PureCard(props) {
   return (
-    <Container className={props.className}>
+    <Container animateOnHover className={props.className}>
       <ContentRow>
         <Icon color={"light"} size={props.iconSize}>
           {props.iconSVG}

@@ -14,20 +14,23 @@ const Content = styled.div`
   cursor: pointer;
 `;
 
-export default function Icon({ children, color, size }) {
+export default function Icon({ children, color, size, className }) {
   return (
-    <Content color={color} size={size}>
+    <Content className={className} color={color} size={size}>
       {children}
     </Content>
   );
 }
 
 Icon.propTypes = {
+  /* SVG component to place inside the Icon markups */
   children: PropTypes.node.isRequired,
   /* String corresponding to a theme color e.g "primary" */
   color: PropTypes.string,
   /* The size of the icon in pixels */
   size: PropTypes.number,
+  /* className to customize the component with styled-component */
+  className: PropTypes.string,
 };
 
 Icon.defaultProps = {

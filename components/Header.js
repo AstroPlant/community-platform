@@ -161,7 +161,7 @@ export default function Header() {
           />
         </>
       ) : (
-        <Link passhref href={"/login"}>
+        <Link passHref href={"/login"}>
           <Button color="primary" label={"Become a space farmer"} />
         </Link>
       )}

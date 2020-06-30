@@ -47,11 +47,7 @@ export default function ArticleGrid({ articles }) {
       <GridContainer>
         {otherArticles.map((anArticle) => (
           <GridItem key={anArticle.id}>
-            <NewsCard
-              article={anArticle}
-              href={"/news/[slug]"}
-              as={"/news/" + anArticle.slug}
-            />
+            <NewsCard featuredArticle={anArticle} />
           </GridItem>
         ))}
       </GridContainer>
@@ -60,5 +56,6 @@ export default function ArticleGrid({ articles }) {
 }
 
 ArticleGrid.propTypes = {
+  /* Array of articles fetch from the api */
   articles: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

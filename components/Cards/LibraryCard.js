@@ -17,7 +17,7 @@ const TitleRow = styled.div`
   flex: 1;
 `;
 
-const LibrairiesContainer = styled.div`
+const LibrariesContainer = styled.div`
   flex: 10;
   width: 100%;
   margin: 1rem 0;
@@ -31,11 +31,23 @@ const ButtonRow = styled.div`
   flex: 1;
 `;
 
-const LibrairyPlaceholder = styled.div`
-  display: block;
-  height: 100px;
-  width: 75px;
-  background-color: white;
+const LibraryHolder = styled.div`
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  padding: 2rem 1rem;
+  margin: 0 1rem;
+
+  background-color: ${(props) => props.theme.dark};
+`;
+
+const LibraryName = styled.div`
+  font-size: 20px;
+  font-weight: 550;
 `;
 
 const ShowAllButton = styled(Button)`
@@ -46,15 +58,17 @@ const ShowAllButton = styled(Button)`
 
 export default function LibraryCard(props) {
   return (
-    <Container className={props.className}>
+    <Container>
       <TitleRow>
         <h3>AstroPlant Library</h3>
       </TitleRow>
-      <LibrairiesContainer>
-        <LibrairyPlaceholder />
-        <LibrairyPlaceholder />
-        <LibrairyPlaceholder />
-      </LibrairiesContainer>
+      <LibrariesContainer>
+        {props.featuredLibraries.map((library) => (
+          <LibraryHolder key={library.id}>
+            <LibraryName>{library.title}</LibraryName>
+          </LibraryHolder>
+        ))}
+      </LibrariesContainer>
       <ButtonRow>
         <Link passHref href={"/library"}>
           <ShowAllButton label={"Explore"} color={"primary"}></ShowAllButton>
@@ -65,5 +79,6 @@ export default function LibraryCard(props) {
 }
 
 LibraryCard.propTypes = {
-  className: PropTypes.string,
+  /* the librairies featured on the homepage */
+  featuredLibraries: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

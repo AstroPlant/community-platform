@@ -181,8 +181,8 @@ export async function getAllPeripherals() {
 }
 
 export async function getPeripheralDetails(id) {
-  const json = await getAllPeripherals();
-  return json[id - 1];
+  const allPeripherals = await getAllPeripherals();
+  return allPeripherals[id - 1];
 }
 
 export async function getQuantityTypes() {
@@ -192,8 +192,8 @@ export async function getQuantityTypes() {
 }
 
 export async function getQuantityTypeDetails(id) {
-  const json = await getQuantityTypes();
-  return json[id - 1];
+  const allQuantities = await getQuantityTypes();
+  return allQuantities[id - 1];
 }
 
 /***
@@ -261,11 +261,15 @@ export async function getMoreMeasures(nextLink) {
   const measures = await res.json();
 
   if (res.status === 200 && measures.length !== 0) {
-    // headers are of type Headers
-    const unparsedLink = res.headers.get("link");
-    const parsedLink = unparsedLink.match(/<(.*?)>/)[1];
-
-    return { next: parsedLink, measures: measures };
+    try {
+      // headers are of type Headers
+      const unparsedLink = res.headers.get("link");
+      const parsedLink = unparsedLink.match(/<(.*?)>/)[1];
+      return { next: parsedLink, measures: measures };
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
   } else {
     console.log(res);
     return [];

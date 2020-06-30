@@ -2,7 +2,22 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
+const HoverBar = styled.div`
+  position: absolute;
+  bottom: 0%;
+  left: 0%;
+
+  height: 2px;
+  width: 100%;
+  transform: scale(0);
+
+  background-color: transparent;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+`;
+
 const ButtonContainer = styled.button`
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,11 +40,10 @@ const ButtonContainer = styled.button`
   border: none;
   outline: none;
 
-  border: 1px solid transparent;
-  transition: border 0.3s ease-out;
-
-  &:hover {
-    border: 1px solid ${(props) => props.theme.light};
+  &:hover ${HoverBar} {
+    background-color: ${(props) =>
+      props.inverted ? props.theme.light : props.theme.dark};
+    transform: scale(1);
   }
 `;
 
@@ -48,6 +62,7 @@ const Button = React.forwardRef(
         ref={ref}
         {...props}
       >
+        <HoverBar />
         {label}
       </ButtonContainer>
     );

@@ -23,7 +23,7 @@ const Description = styled.div`
 export default function LibrarySectionCard(props) {
   return (
     <WrapInLink href={props.href} as={props.as}>
-      <Container className={props.className}>
+      <Container animateOnHover className={props.className}>
         <h3>{props.librarySection.title}</h3>
         <Description>{props.librarySection.description}</Description>
       </Container>

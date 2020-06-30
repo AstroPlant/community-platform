@@ -32,37 +32,66 @@ const Content = styled.div`
   justify-content: flex-start;
 
   background-color: ${(props) => props.theme.darkLight};
-  padding: 1rem;
+  padding: 1.5rem;
 `;
 
-const CenteredButton = styled(Button)`
+const ButtonRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  margin-top: 1rem;
+`;
+
+const MarginButton = styled(Button)`
   && {
-    margin: 1rem auto 0.5rem auto;
+    margin: 0 1rem;
   }
 `;
 
-export default function NewsCard({ className, article, href, as }) {
+export default function NewsCard(props) {
   return (
-    <Container className={className} imgSrc={API_URL + article.cover.url}>
+    <Container
+      className={props.className}
+      imgSrc={API_URL + props.featuredArticle.cover.url}
+    >
       <Content>
-        <Title>{article.title}</Title>
-        <p>{article.short_description}</p>
-        <Link passHref href={href} as={as}>
-          <CenteredButton label={"Show All"} color={"primary"} />
-        </Link>
+        <Title>{props.featuredArticle.title}</Title>
+        <p>{props.featuredArticle.short_description}</p>
+        <ButtonRow>
+          <Link
+            passHref
+            href={"/news/[slug]"}
+            as={`/news/${props.featuredArticle.slug}`}
+          >
+            <MarginButton
+              inverted={props.home}
+              label={"Read Article"}
+              color={props.home ? "dark" : "primary"}
+            />
+          </Link>
+
+          {props.home && (
+            <Link passHref href={"/news"}>
+              <MarginButton label={"All News"} color={"primary"} />
+            </Link>
+          )}
+        </ButtonRow>
       </Content>
     </Container>
   );
 }
 
 NewsCard.propTypes = {
+  /* className to customize the component with styled-component */
   className: PropTypes.string,
-  article: PropTypes.object.isRequired,
-  href: PropTypes.string,
-  as: PropTypes.string,
+  /* Article object containing the featured article infos to display */
+  featuredArticle: PropTypes.object.isRequired,
+  /* Wether or not the card is on the homescreen */
+  home: PropTypes.bool,
 };
 
 NewsCard.defaultProps = {
-  href: "/",
-  as: null,
+  home: false,
 };

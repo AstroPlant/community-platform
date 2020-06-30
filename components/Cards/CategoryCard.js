@@ -15,7 +15,7 @@ const Container = styled(Card)`
 export default function CategoryCard({ className, name, slug }) {
   return (
     <WrapInLink href="/help/[slug]" as={`/help/${slug}`}>
-      <Container className={className}>
+      <Container animateOnHover className={className}>
         <h3>{name}</h3>
       </Container>
     </WrapInLink>

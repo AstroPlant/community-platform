@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Avatar from "../../components/Avatar";
 import { API_URL } from "../../services/community";
+import InProgress from "../InProgress";
 
 const Grid = styled.div`
   display: grid;
@@ -24,7 +25,10 @@ const UserColumn = styled(Column)`
   justify-content: center;
 `;
 
-const SettingsColumn = styled(Column)``;
+const SettingsColumn = styled(Column)`
+  align-items: center;
+  justify-content: center;
+`;
 
 const FullName = styled.h3`
   margin: 1rem 0 0 0;
@@ -59,7 +63,14 @@ export default function ProfileGrid({ user }) {
         <SlackUsername>{user.slackUsername}</SlackUsername>
         <Description>{user.description}</Description>
       </UserColumn>
-      <SettingsColumn></SettingsColumn>
+      <SettingsColumn>
+        <InProgress
+          title={"Currently in the works"}
+          details={
+            "This section is currenly in the works, soon you should be able to customize your account here. If you have ideas for this section or want to help, please shoot us a message on the Slack!"
+          }
+        />
+      </SettingsColumn>
     </Grid>
   );
 }

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import GraphCard from "../cards/GraphCard";
 import KitCard from "../cards/KitCard";
@@ -68,6 +68,8 @@ const InformationSection = ({ config, collaborators }) => {
 };
 
 export default function KitDashboardGrid(props) {
+  const [currentConfig, setCurrentConfig] = useState(props.kit.config);
+
   const collabs = [
     { id: 1, displayName: "Arthur Dent" },
     { id: 2, displayName: "Ford Prefect" },
@@ -89,7 +91,7 @@ export default function KitDashboardGrid(props) {
         </ColumnItem>
       </Column>
       <Column>
-        <InformationSection config={props.kit.config} collaborators={collabs} />
+        <InformationSection config={currentConfig} collaborators={collabs} />
         <ToolsSection />
       </Column>
     </GridContainer>
