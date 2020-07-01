@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import React from "react";
+import React, { useState, useRef } from "react";
 import ErrorMessage from "./ErrorMessage";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -19,34 +19,15 @@ const Label = styled.label`
 `;
 
 const InputHolder = styled.div`
-  display: flex;
-
-  font: 400 1em ${(props) => props.theme.fontFamily};
+  position: relative;
 
   margin-bottom: ${(props) => (props.hasError ? "0.5rem" : "2rem")};
-`;
-
-const Addon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  border-radius: 1px 0 0 1px;
-
   color: ${(props) => (props.dark ? props.theme.light : props.theme.dark)};
-  background-color: ${(props) =>
-    props.dark ? props.theme.darkLight : props.theme.light};
-  opacity: ${(props) => (props.disabled ? 0.75 : 1)};
-
-  border-right: solid 1px ${(props) => props.theme.dark};
-
-  padding: 0 0.5rem;
 `;
 
-const Input = styled.input`
+const Input = styled.textarea`
   outline: none;
-
+  resize: none;
   border: ${(props) => (props.hasError ? "2px solid red" : "none")};
   border-radius: 1px;
 
@@ -55,7 +36,6 @@ const Input = styled.input`
   padding: 0.5rem 0.25rem;
 
   font: 400 1em ${(props) => props.theme.fontFamily};
-  color: ${(props) => (props.dark ? props.theme.light : props.theme.dark)};
   background-color: ${(props) =>
     props.dark ? props.theme.darkLight : props.theme.light};
   opacity: ${(props) => (props.disabled ? 0.75 : 1)};
@@ -63,39 +43,41 @@ const Input = styled.input`
   text-indent: 0.5rem;
 `;
 
-const TextInput = ({ label, dark, ...props }) => {
+const WordCount = styled.p`
+  position: absolute;
+  z-index: 1;
+
+  right: 1rem;
+  bottom: 1rem;
+
+  font-size: 14px;
+  font-weight: 450;
+`;
+
+export default function LongTextInput({ label, dark, ...props }) {
   const [field, meta] = useField(props);
   const hasError = meta.touched && meta.error;
+
   return (
     <Container className={props.className}>
       {label && <Label htmlFor={props.id || props.name}>{label}</Label>}
-      <InputHolder hasError={hasError}>
-        {props.addon && (
-          <Addon>
-            <p>@</p>
-          </Addon>
-        )}
+      <InputHolder dark={dark} hasError={hasError}>
         <Input dark={dark} {...field} {...props} />
+        <WordCount>{props.maxLength - meta.value.length}</WordCount>
       </InputHolder>
-
       {hasError ? <ErrorMessage errorMessage={meta.error} /> : null}
     </Container>
   );
-};
+}
 
-TextInput.propTypes = {
+LongTextInput.propTypes = {
   /* The label of the input */
   label: PropTypes.string,
-  /* The a string to add in front of the input. e.g @ */
-  addon: PropTypes.string,
   /* Use the input in darkmode */
   dark: PropTypes.bool,
 };
 
-TextInput.defaultProps = {
-  addon: null,
+LongTextInput.defaultProps = {
   label: null,
   dark: false,
 };
-
-export default TextInput;

@@ -164,6 +164,22 @@ export async function getUserDetails(username) {
 }
 
 /***
+ * Updates a user info on the API
+ * @param userInfos the updated user info
+ */
+export async function updateUserInfo(userInfos) {
+  //TODO Implement
+}
+
+/***
+ * Updates a user info on the API
+ * @param userInfos the updated user info
+ */
+export async function resetPassword(password, newPassword) {
+  //TODO Implement
+}
+
+/***
  * Fetches all library sections
  */
 export async function getAllLibrarySections() {
