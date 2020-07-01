@@ -5,7 +5,7 @@ import { Cookies } from "react-cookie";
 import { API_URL, login } from "../services/community";
 
 const cookies = new Cookies();
-const options = { path: "/", sameSite: true };
+const defaultOptions = { path: "/", sameSite: true, maxAge: 3600 };
 
 /* Creating authentication context
  * Contains a user object and a isLogged boolean
@@ -69,16 +69,21 @@ export function useAuth() {
  * saves the token into local storage on success
  * @param username the username to try to authenticate
  * @param password the password of the user
+ * @param rememberMe if the cookies should be stored indefinetly of not
  */
-export async function authenticate(username, password) {
+export async function authenticate(username, password, rememberMe) {
+  const cookieOptions = defaultOptions;
+
+  console.log("REMEMBER", rememberMe);
+
+  if (rememberMe) {
+    cookieOptions.maxAge = null;
+  }
+
   const response = await login(username, password);
 
   if (response.status === 200) {
     const json = await response.json();
-
-    setToken("accessToken", json.accessToken);
-    setToken("refreshToken", json.refreshToken);
-    setToken("communityToken", json.communityToken);
 
     const loggedUser = {
       id: json.user.id,
@@ -88,8 +93,11 @@ export async function authenticate(username, password) {
       role: json.user.role,
     };
 
-    console.log(loggedUser);
-    setLoggedUser(loggedUser);
+    setLoggedUser(loggedUser, cookieOptions);
+    setToken("accessToken", json.accessToken, cookieOptions);
+    setToken("refreshToken", json.refreshToken, cookieOptions);
+    setToken("communityToken", json.communityToken, cookieOptions);
+
     return true;
   } else {
     return false;
@@ -108,8 +116,9 @@ export function loggedIn() {
 /***
  * Set the logged user into cookies
  * @param user to save as cookie
+ * @param options parameters for the cookies
  */
-function setLoggedUser(user) {
+function setLoggedUser(user, options) {
   cookies.set("user", user, options);
 }
 
@@ -122,7 +131,7 @@ export function getLoggedUser(httpCookies) {
   if (onBrowser) {
     return cookies.get("user");
   } else {
-    let user = undefined;
+    let user = null;
 
     if (httpCookies) {
       const stringUser = getCookieFromHttp(httpCookies, "user");
@@ -152,9 +161,7 @@ export function logout() {
  * @param name of the token
  * @param value of the token
  */
-function setToken(name, value) {
-  const options = { path: "/", sameSite: true };
-
+function setToken(name, value, options) {
   cookies.set(name, value, options);
 }
 

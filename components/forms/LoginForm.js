@@ -49,7 +49,11 @@ const LoginForm = () => {
         initialStatus={{ success: null, error: null }}
         validationSchema={LoginSchema}
         onSubmit={async (values, actions) => {
-          const auth = await authenticate(values.username, values.password);
+          const auth = await authenticate(
+            values.username,
+            values.password,
+            values.rememberMe
+          );
 
           if (auth) {
             actions.setStatus({ success: "Logged In !" });
