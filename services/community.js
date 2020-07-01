@@ -64,9 +64,11 @@ export async function getFeaturedArticle() {
   articles(sort: "created_at:desc") {
     title
     slug
+    created_at
     short_description
     cover {
       url
+      alternativeText
     }
   }
 }`;
@@ -80,15 +82,24 @@ export async function getFeaturedArticle() {
  * Fetches the first articles previews
  */
 export async function getArticlesPreview() {
-  const query = `{articles(sort: "created_at:desc"){
+  const query = `{
+    articles(sort: "created_at:desc") {
       id
       slug 
       created_at
       title
       short_description
-      cover { url }
-      author{ username }
-    }}`;
+      cover { 
+        url 
+        alternativeText
+      }
+      author { 
+        username
+        firstName
+        lastName
+      }
+    }
+  }`;
 
   const res = await getQuery(query);
 
@@ -106,14 +117,16 @@ export async function getFullArticle(slug) {
       content
       cover {
         url
-        caption
+        alternativeText
       }
-      created_at
       author{ 
         username
         firstName
         lastName
-        picture { url }
+        picture { 
+          url
+          alternativeText
+        }
       }
       categories {
         id

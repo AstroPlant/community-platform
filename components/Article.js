@@ -21,7 +21,7 @@ const Container = styled.div`
   align-items: flex-start;
 
   width: 95%;
-  max-width: 840px;
+  max-width: 744px;
 
   margin: -3rem auto 0 auto;
   padding: 2rem;
@@ -30,6 +30,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   margin: 2rem 0;
+  line-height: 1.2;
 `;
 
 const AuthorInfos = styled.div`
@@ -62,6 +63,8 @@ export default function Article({ article }) {
   // Temporary dev env fixes
   const content = article.content.replace(/\/uploads/g, API_URL + "/uploads");
   const coverURL = API_URL + article.cover.url;
+  const hasFullName = article.author.firstName && article.author.lastName;
+
   return (
     <>
       <CoverImage src={coverURL} alt={article.cover.caption} />
@@ -77,7 +80,9 @@ export default function Article({ article }) {
           <Avatar size={3.5} username={article.author.username} />
           <Column>
             <AuthorName>
-              {article.author.firstName} {article.author.lastName}
+              {hasFullName
+                ? `${article.author.firstName} ${article.author.lastName}`
+                : article.author.username}
             </AuthorName>
             <ArticleDate dateString={article.created_at} />
           </Column>

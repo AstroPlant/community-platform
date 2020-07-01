@@ -12,7 +12,7 @@ const Container = styled(Card)`
   }
 
   background-image: url(${(props) => props.imgSrc});
-  background-position: center;
+  background-position: top;
   background-size: cover;
 
   display: flex;

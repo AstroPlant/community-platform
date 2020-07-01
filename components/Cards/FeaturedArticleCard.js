@@ -43,10 +43,20 @@ const InfoName = styled.p`
 `;
 
 export default function FeaturedArticleCard({ featuredArticle, href, as }) {
+  const hasFullName =
+    featuredArticle.author.firstName && featuredArticle.author.lastName;
+
   return (
     <WrapInLink href={href} as={as}>
       <Container>
-        <img src={API_URL + featuredArticle.cover.url}></img>
+        <img
+          src={API_URL + featuredArticle.cover.url}
+          alt={
+            featuredArticle.cover.alternativeText
+              ? featuredArticle.cover.alternativeText
+              : " "
+          }
+        />
         <InfosContainer>
           <Row>
             <Row>
@@ -55,7 +65,11 @@ export default function FeaturedArticleCard({ featuredArticle, href, as }) {
             </Row>
             <AuthorRow>
               <InfoName>Author:</InfoName>
-              <b>{featuredArticle.author.username}</b>
+              <b>
+                {hasFullName
+                  ? `${featuredArticle.author.firstName} ${featuredArticle.author.lastName}`
+                  : featuredArticle.author.username}
+              </b>
             </AuthorRow>
           </Row>
           <Title>{featuredArticle.title}</Title>

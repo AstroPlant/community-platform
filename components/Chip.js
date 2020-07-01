@@ -7,8 +7,11 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-  padding: 1rem;
-  background-color: #0072ff;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+
+  margin-right: 1rem;
+  background-color: ${(props) => props.theme.secondaryDark};
 `;
 
 export default function Chip({ label }) {

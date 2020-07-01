@@ -10,18 +10,17 @@ import withAuth from "../hocs/withAuth";
 import { getLoggedUser, useAuth } from "../providers/Auth";
 import HelpIcon from "../public/icons/help.svg";
 import SlackIcon from "../public/icons/slack.svg";
-import {
-  getAllLibrarySections,
-  getFeaturedArticle,
-} from "../services/community";
+import { getFeaturedArticle } from "../services/community";
 import { getFullKit, getUserMemberships } from "../services/data-api";
 
-function Home({ featuredArticle, mainKit, featuredLibraries }) {
+function Home({ featuredArticle, mainKit }) {
   const { user } = useAuth();
 
   return (
     <BaseLayout>
-      <h1 className="title">Welcome, {user.username} !</h1>
+      <h1 className="title">
+        Welcome, {user.firstname ? user.firstname : user.username} !
+      </h1>
 
       <DashboardGrid>
         <KitCard home kit={mainKit} />
@@ -40,7 +39,7 @@ function Home({ featuredArticle, mainKit, featuredLibraries }) {
           href={"http://www.astroplant.slack.com/#/"}
         />
         <MapCard href={"/map"} />
-        <LibraryCard featuredLibraries={featuredLibraries} />
+        <LibraryCard />
       </DashboardGrid>
     </BaseLayout>
   );
@@ -48,8 +47,6 @@ function Home({ featuredArticle, mainKit, featuredLibraries }) {
 
 export async function getServerSideProps(ctx) {
   const featuredArticle = await getFeaturedArticle();
-  const libraries = await getAllLibrarySections();
-  const featuredLibraries = libraries.slice(0, 2);
 
   let memberships = [];
   let mainKit = {};
@@ -66,7 +63,6 @@ export async function getServerSideProps(ctx) {
     props: {
       featuredArticle,
       mainKit,
-      featuredLibraries: libraries,
     },
   };
 }

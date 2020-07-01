@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Card from "./Card";
+import WrapInLink from "../WrapInLink";
 
 const Container = styled(Card)`
   display: flex;
@@ -30,14 +31,16 @@ const ChallengeContent = styled.div`
 
 export default function ChallengeCard({ className }) {
   return (
-    <Container className={className}>
-      <TitleRow>
-        <h3>Community Challenges</h3>
-      </TitleRow>
-      <ChallengeContent>
-        <p>Comming Soon...</p>
-      </ChallengeContent>
-    </Container>
+    <WrapInLink href={"/challenges"}>
+      <Container animateOnHover className={className}>
+        <TitleRow>
+          <h3>Community Challenges</h3>
+        </TitleRow>
+        <ChallengeContent>
+          <p>Comming Soon...</p>
+        </ChallengeContent>
+      </Container>
+    </WrapInLink>
   );
 }
 
