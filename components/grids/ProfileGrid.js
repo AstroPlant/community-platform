@@ -54,7 +54,7 @@ export default function ProfileGrid({ user }) {
       <UserColumn>
         <Avatar
           size={12}
-          imgSrc={user.picture.url && API_URL + user.picture.url}
+          imgSrc={user.picture && API_URL + user.picture.url}
           username={user.username}
         />
         <FullName>

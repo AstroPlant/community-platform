@@ -105,11 +105,6 @@ export default function Header() {
 
   const extraLinks = [
     {
-      label: "Settings",
-      slug: "settings",
-      id: 9,
-    },
-    {
       label: "Log Out",
       slug: "logout",
       id: 10,
@@ -144,8 +139,7 @@ export default function Header() {
               size={2.25}
               imgSrc={user.avatarUrl}
               username={user.username}
-              href={"/profile/[username]"}
-              as={`/profile/${user.username}`}
+              href={"/settings"}
             />
             <Dropdown
               ref={dropdownButtonRef}
