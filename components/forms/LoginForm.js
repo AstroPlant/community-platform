@@ -7,6 +7,7 @@ import { authenticate, useAuth } from "../../providers/Auth";
 import Button from "../Button";
 import Checkbox from "./CheckBox";
 import TextInput from "./TextInput";
+import { forgotPassword } from "../../services/community";
 
 const CustomForm = styled(Form)`
   display: flex;
@@ -86,7 +87,14 @@ const LoginForm = () => {
               />
               <Row>
                 <Checkbox name="rememberMe">Remember Me</Checkbox>
-                <a>Password Forgotten ?</a>
+                <a
+                  onClick={async () => {
+                    const res = await forgotPassword("test@example.com");
+                    alert("Send password reset email !");
+                  }}
+                >
+                  Password Forgotten ?
+                </a>
               </Row>
               <SubmitButton color={"primary"} label={"Sign In"} type="submit" />
             </CustomForm>

@@ -27,7 +27,10 @@ const Row = styled.div`
   align-items: flex-start;
 `;
 
-const UserInfoSchema = Yup.object().shape({});
+const UserInfoSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email"),
+  description: Yup.string().max(140),
+});
 
 const AccountForm = (props) => {
   let {
@@ -70,7 +73,7 @@ const AccountForm = (props) => {
                   type="text"
                 />
 
-                <TextInput label="email" name="email" type="email" />
+                <TextInput label="Email" name="email" type="email" />
               </Row>
 
               <Row>
@@ -99,7 +102,8 @@ const AccountForm = (props) => {
               </Row>
 
               <SubmitButton
-                color={"primary"}
+                inverted
+                color={"secondaryDark"}
                 label={"Confirm Change"}
                 type="submit"
               />
