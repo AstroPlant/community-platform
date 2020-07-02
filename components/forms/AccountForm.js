@@ -24,21 +24,39 @@ const InputWithMargin = styled(TextInput)`
 
 const Row = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const UserInfoSchema = Yup.object().shape({});
 
 const AccountForm = (props) => {
-  console.log(props);
+  let {
+    id,
+    email,
+    username,
+    slackUsername,
+    firstName,
+    lastName,
+    description,
+  } = props.initialInfos;
+
   return (
     <>
       <Formik
-        initialValues={props.initialInfos}
+        initialValues={{
+          username: username,
+          email: email,
+          slackUsername: slackUsername,
+          firstName: firstName,
+          lastName: lastName,
+          description: description,
+        }}
         initialStatus={{ success: null, error: null }}
         validationSchema={UserInfoSchema}
         onSubmit={async (values, actions) => {
-          const update = await updateUserInfo();
+          const update = await updateUserInfo(id, values);
+
+          console.log(update);
         }}
       >
         {({ status, isValid }) => (
@@ -50,15 +68,9 @@ const AccountForm = (props) => {
                   label="Username"
                   name="username"
                   type="text"
-                  placeholder="SpaceFarmer"
                 />
 
-                <TextInput
-                  addon={"@"}
-                  label="Slack Username"
-                  name="slackUsername"
-                  type="text"
-                />
+                <TextInput label="email" name="email" type="email" />
               </Row>
 
               <Row>
@@ -71,6 +83,13 @@ const AccountForm = (props) => {
               </Row>
 
               <Row>
+                <InputWithMargin
+                  addon={"@"}
+                  label="Slack username"
+                  name="slackUsername"
+                  type="text"
+                />
+
                 <LongTextInput
                   label="Description"
                   name="description"

@@ -1,9 +1,16 @@
+import { getToken } from "../providers/Auth";
+
 const GRAPHQL_URL = "http://localhost:1337/graphql";
 
 export const API_URL = "http://localhost:1337";
 
+/**********************************************
+ *             GENERIC FETCH TOOLS            *
+ **********************************************/
+
 /***
  * Fetch model to query data from the API
+ * @param query a graphQL query
  */
 async function getQuery(query) {
   const res = await fetch(GRAPHQL_URL, {
@@ -19,6 +26,66 @@ async function getQuery(query) {
 
   return res.json();
 }
+
+/***
+ * POST request template
+ * @param apiPath the path of the api where to send the request
+ */
+async function postRequest(apiPath, body) {
+  const url = API_URL + apiPath;
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: body,
+    });
+
+    return res;
+  } catch (error) {
+    return {};
+  }
+}
+
+/**
+ * Queryfy.
+ *
+ * Prep javascript objects for interpolation within graphql queries.
+ *
+ * @param {mixed} obj
+ * @return template string.
+ */
+function queryfy(obj) {
+  // Make sure we don't alter integers.
+  if (obj === null) {
+    return null;
+  }
+
+  // Make sure we don't alter integers.
+  if (typeof obj === "number") {
+    return obj;
+  }
+
+  // Stringify everything other than objects.
+  if (typeof obj !== "object" || Array.isArray(obj)) {
+    return JSON.stringify(obj);
+  }
+
+  // Iterate through object keys to convert into a string
+  // to be interpolated into the query.
+  let props = Object.keys(obj)
+    .map((key) => `${key}:${queryfy(obj[key])}`)
+    .join(",");
+
+  return `{${props}}`;
+}
+
+/**********************************************
+ *             HELP SECTIONS                  *
+ **********************************************/
 
 /***
  * Fetches all the FAQs categories
@@ -55,6 +122,10 @@ export async function getHelpSectionBySlug(slug) {
 
   return res.data.helpSections[0];
 }
+
+/**********************************************
+ *             ARTICLES                       *
+ **********************************************/
 
 /***
  * Fetches the latest article
@@ -140,6 +211,46 @@ export async function getFullArticle(slug) {
   return res.data.articles[0];
 }
 
+/**********************************************
+ *                 USERS                      *
+ **********************************************/
+
+/***
+ * Creates a new user
+ * @param username the username from the user
+ * @param password the user's password
+ * @param email the user's email
+ */
+export async function createUser(email, username, password) {
+  const mutation = `mutation {
+    createUser(
+      input: {
+        data: { username: "${username}", 
+        email: "${email}",
+        password: "${password}"}
+      }
+    ) {
+      user {
+        username
+        email
+      }
+    }
+  }`;
+
+  const res = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      query: mutation,
+    }),
+  });
+
+  return res;
+}
+
 /***
  * Fetches the details of a user
  * @param username the username to fetch
@@ -147,11 +258,13 @@ export async function getFullArticle(slug) {
 export async function getUserDetails(username) {
   const query = `{
     users(where: { username: "${username}" }) {
+      id
       username
+      email
+      slackUsername
       firstName
       lastName
       description
-      slackUsername
       picture {
         url
       }
@@ -165,10 +278,46 @@ export async function getUserDetails(username) {
 
 /***
  * Updates a user info on the API
- * @param userInfos the updated user info
+ * @param updatedInfos the updated user info
  */
-export async function updateUserInfo(userInfos) {
-  //TODO Implement
+export async function updateUserInfo(id, updatedInfos) {
+  const token = getToken("communityToken");
+  const bearer = "Bearer " + token;
+
+  const mutation = `mutation {
+    updateUser(
+      input: { 
+        where: { 
+          id: "${id}" 
+        }, 
+        data: ${queryfy(updatedInfos)}
+      }) 
+      {
+      user {
+        username
+        email
+        slackUsername
+        firstName
+        lastName
+        description
+      }
+    }
+  }`;
+
+  const response = await fetch(GRAPHQL_URL, {
+    method: "POST",
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: bearer,
+    },
+    body: JSON.stringify({
+      query: mutation,
+    }),
+  });
+
+  return response.json();
 }
 
 /***
@@ -178,6 +327,10 @@ export async function updateUserInfo(userInfos) {
 export async function resetPassword(password, newPassword) {
   //TODO Implement
 }
+
+/**********************************************
+ *             LIBRARY SECTIONS               *
+ **********************************************/
 
 /***
  * Fetches all library sections
@@ -244,6 +397,10 @@ export async function getLibrarySection(slug) {
 
   return res.data.librarySections[0];
 }
+
+/**********************************************
+ *             LIBRARY MEDIAS                 *
+ **********************************************/
 
 /***
  * Fetches a library media
@@ -328,6 +485,15 @@ export async function getFeaturedLibraryMedias() {
   return res.data.libraryMedias;
 }
 
+/**********************************************
+ *                USERS GRAPHS                *
+ **********************************************/
+
+/**
+ *
+ * @param {*} username
+ * @param {*} kitSerial
+ */
 export async function getUsersGraphs(username, kitSerial) {
   const graphs = [
     {
@@ -362,29 +528,6 @@ export async function getUsersGraphs(username, kitSerial) {
 }
 
 /***
- * POST request template
- * @param apiPath the path of the api where to send the request
- */
-async function postRequest(apiPath, body) {
-  const url = API_URL + apiPath;
-
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: body,
-    });
-
-    return res;
-  } catch (error) {
-    return {};
-  }
-}
-
-/***
  * Logs the user and stores the token cookies
  * @param username the username from the user
  * @param password the user's password
@@ -402,41 +545,9 @@ export async function login(username, password) {
   return res;
 }
 
-/***
- * Creates a new user
- * @param username the username from the user
- * @param password the user's password
- * @param email the user's email
- */
-export async function createUser(email, username, password) {
-  const mutation = `mutation {
-    createUser(
-      input: {
-        data: { username: "${username}", 
-        email: "${email}",
-        password: "${password}"}
-      }
-    ) {
-      user {
-        username
-        email
-      }
-    }
-  }`;
-
-  const res = await fetch(GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      query: mutation,
-    }),
-  });
-
-  return res;
-}
+/**********************************************
+ *                CHALLENGES                  *
+ **********************************************/
 
 export async function getChallenges() {
   //TODO Implement
