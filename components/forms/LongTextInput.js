@@ -33,14 +33,12 @@ const Input = styled.textarea`
 
   width: 100%;
 
-  padding: 0.5rem 0.25rem;
+  padding: 0.5rem 0.75rem 2rem 0.75rem;
 
   font: 400 1em ${(props) => props.theme.fontFamily};
   background-color: ${(props) =>
     props.dark ? props.theme.darkLight : props.theme.light};
   opacity: ${(props) => (props.disabled ? 0.75 : 1)};
-
-  text-indent: 0.5rem;
 `;
 
 const WordCount = styled.p`

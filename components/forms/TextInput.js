@@ -32,16 +32,14 @@ const Addon = styled.div`
   justify-content: center;
   text-align: center;
 
-  border-radius: 1px 0 0 1px;
+  border-radius: 2px 0 0 2px;
 
-  color: ${(props) => (props.dark ? props.theme.light : props.theme.dark)};
-  background-color: ${(props) =>
-    props.dark ? props.theme.darkLight : props.theme.light};
+  color: ${(props) => props.theme.light};
+
+  background-color: ${(props) => props.theme.secondaryDark};
   opacity: ${(props) => (props.disabled ? 0.75 : 1)};
 
-  border-right: solid 1px ${(props) => props.theme.dark};
-
-  padding: 0 0.5rem;
+  padding: 0 0.75rem;
 `;
 
 const Input = styled.input`
