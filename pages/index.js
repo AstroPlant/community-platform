@@ -53,7 +53,7 @@ export async function getServerSideProps(ctx) {
 
   const user = getLoggedUser(ctx.req.headers.cookie);
 
-  if (typeof user !== "undefined") {
+  if (user != null) {
     memberships = await getUserMemberships(user.username);
     mainKit =
       memberships.length != 0 && (await getFullKit(memberships[0].kit.serial));
