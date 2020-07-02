@@ -1,12 +1,19 @@
 import React from "react";
-import ProfileGrid from "../../components/grids/ProfileGrid";
 import MainLayout from "../../components/layouts/MainLayout";
 import { getUserDetails } from "../../services/community";
+import ProfileCard from "../../components/cards/ProfileCard";
+import styled from "styled-components";
 
+const ProfileLayout = styled.div`
+  margin: 0 auto;
+  padding: 2rem 0;
+`;
 export default function Profile({ user }) {
   return (
     <MainLayout pageTitle={user.username}>
-      <ProfileGrid user={user} />
+      <ProfileLayout>
+        <ProfileCard user={user} />
+      </ProfileLayout>
     </MainLayout>
   );
 }

@@ -1,13 +1,14 @@
 import React from "react";
-import ProfileGrid from "../components/grids/ProfileGrid";
+import SettingsGrid from "../components/grids/SettingsGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getLoggedUser } from "../providers/Auth";
 import { getUserDetails } from "../services/community";
+import withAuth from "../hocs/withAuth";
 
-export default function Settings({ user }) {
+function Settings({ user }) {
   return (
     <MainLayout pageTitle={"Settings"}>
-      <ProfileGrid user={user} />
+      <SettingsGrid user={user} />
     </MainLayout>
   );
 }
@@ -22,3 +23,5 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+
+export default withAuth(Settings);
