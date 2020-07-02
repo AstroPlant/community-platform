@@ -75,8 +75,9 @@ export default function SettingsGrid({ user }) {
           >
             Profile
           </Tab>
+        </Tabs>
+
         {currentTab === "Profile" && <AccountForm initialInfos={user} />}
-        {currentTab === "Password" && <ChangePasswordForm user={user} />}
       </SettingsColumn>
     </Grid>
   );
