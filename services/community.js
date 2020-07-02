@@ -324,8 +324,25 @@ export async function updateUserInfo(id, updatedInfos) {
  * Updates a user info on the API
  * @param userInfos the updated user info
  */
-export async function resetPassword(password, newPassword) {
-  //TODO Implement
+export async function changePassword(oldPassword, newPassword) {
+  const token = getToken("communityToken");
+  const bearer = "Bearer " + token;
+
+  const body = JSON.stringify({ oldPassword, newPassword });
+
+  console.log(body);
+  const res = await fetch(API_URL + "/users/changePassword", {
+    method: "POST",
+    withCredentials: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: bearer,
+    },
+    body: body,
+  });
+
+  return res;
 }
 
 /**********************************************
@@ -538,6 +555,23 @@ export async function login(username, password) {
   const body = JSON.stringify({
     identifier: username,
     password: password,
+  });
+
+  const res = await postRequest(path, body);
+
+  return res;
+}
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function forgotPassword(email) {
+  const path = "/auth/forgot-password";
+
+  const body = JSON.stringify({
+    email: email,
   });
 
   const res = await postRequest(path, body);

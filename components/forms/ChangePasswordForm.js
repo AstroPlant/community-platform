@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { resetPassword } from "../../services/community";
+import { changePassword } from "../../services/community";
 import Button from "../Button";
 import TextInput from "./TextInput";
 
@@ -15,7 +15,7 @@ const SubmitButton = styled(Button)`
   margin: 1rem 0 1.5rem 0;
 `;
 
-const ResetPasswordSchema = Yup.object().shape({
+const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Required"),
   newPassword: Yup.string()
     .min(6, "Your password must be at least 6 characters long.")
@@ -24,10 +24,10 @@ const ResetPasswordSchema = Yup.object().shape({
     .required("Field Required"),
   validatePassword: Yup.string()
     .required("Field Required")
-    .oneOf([Yup.ref("password"), ""], "Passwords don't match!"),
+    .oneOf([Yup.ref("newPassword"), ""], "Passwords don't match!"),
 });
 
-export default function ResetPasswordForm() {
+export default function ChangePasswordForm() {
   return (
     <>
       <Formik
@@ -37,12 +37,14 @@ export default function ResetPasswordForm() {
           validatePassword: "",
         }}
         initialStatus={{ success: null, error: null }}
-        validationSchema={ResetPasswordSchema}
+        validationSchema={ChangePasswordSchema}
         onSubmit={async (values, actions) => {
-          const res = await resetPassword(
+          const res = await changePassword(
             values.oldPassword,
             values.newPassword
           );
+
+          console.log(res);
         }}
       >
         {({ status, isValid }) => (
