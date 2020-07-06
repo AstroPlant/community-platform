@@ -6,6 +6,7 @@ import KitCountCard from "../components/cards/KitCountCard";
 import MapGrid from "../components/grids/MapGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getKits } from "../services/data-api";
+import { useState } from "react";
 
 const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,
@@ -18,7 +19,32 @@ const InstructionCard = styled(Card)`
   }
 `;
 
+const KitDetailsCard = styled(Card)`
+  && {
+    margin-bottom: 1rem;
+    height: unset;
+  }
+`;
+
+const CardTitle = styled.b`
+  line-height: 2em;
+`;
+
 export default function Map({ kits }) {
+  const [selectedKit, setSelectedKit] = useState(null);
+
+  function changeSelectedKit(kitSerial) {
+    if (kitSerial === null) {
+      setSelectedKit(null);
+    }
+
+    for (let kit of kits) {
+      if (kit.serial === kitSerial) {
+        setSelectedKit(kit);
+      }
+    }
+  }
+
   return (
     <>
       <Head>
@@ -30,19 +56,26 @@ export default function Map({ kits }) {
       <MainLayout pageTitle={"All AstroPlant kits"}>
         <MapGrid>
           <div>
-            <NoSSRMapBuilder kits={kits} />
+            <NoSSRMapBuilder kits={kits} changeKit={changeSelectedKit} />
           </div>
           <div>
-            <InstructionCard>
-              <b>How to use the kit map ?</b>
-              <p>
-                Here you can find out what other AstroPlant kits around the
-                world are doing and what makes them unique! Try to click on the
-                icons to find out more!
-              </p>
-            </InstructionCard>
-
             <KitCountCard title={"Active kits"} count={kits.length} />
+
+            {selectedKit ? (
+              <KitDetailsCard>
+                <CardTitle>{selectedKit.name}</CardTitle>
+                <p>{selectedKit.description}</p>
+              </KitDetailsCard>
+            ) : (
+              <InstructionCard>
+                <CardTitle>How to use the kit map ?</CardTitle>
+                <p>
+                  Here you can find out what other AstroPlant kits around the
+                  world are doing and what makes them unique! Try to click on
+                  the icons to find out more!
+                </p>
+              </InstructionCard>
+            )}
           </div>
         </MapGrid>
       </MainLayout>

@@ -3,6 +3,7 @@ import React from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import styled from "styled-components";
 import Logo from "./Logo";
+import PropTypes from "prop-types";
 
 const MarginLogo = styled(Logo)`
   margin-right: 1rem;
@@ -12,7 +13,7 @@ const KitName = styled.b`
   margin: 0;
 `;
 
-function MapBuilder({ kits }) {
+export default function MapBuilder(props) {
   const Netherlands = [52.1326, 5.2913];
 
   const attribution =
@@ -36,19 +37,23 @@ function MapBuilder({ kits }) {
         style={{ width: "100%", height: "100%" }}
       >
         <TileLayer attribution={attribution} url={tilesUrl} />
-        {kits.map((kit) => {
+        {props.kits.map((kit) => {
           if (kit.latitude != null && kit.longitude != null) {
             const position = [kit.latitude, kit.longitude];
 
             return (
-              <>
-                <Marker key={kit.serial} position={position} icon={markerIcon}>
-                  <Popup className={"custom-popup"}>
-                    <MarginLogo size={1.05} color={"dark"} />
-                    <KitName>{kit.name}</KitName>
-                  </Popup>
-                </Marker>
-              </>
+              <Marker
+                key={kit.serial}
+                position={position}
+                icon={markerIcon}
+                onclick={() => props.changeKit(kit.serial)}
+                onpopupclose={() => props.changeKit(null)}
+              >
+                <Popup className={"custom-popup"}>
+                  <MarginLogo size={1.05} color={"dark"} />
+                  <KitName>{kit.name}</KitName>
+                </Popup>
+              </Marker>
             );
           }
         })}
@@ -57,4 +62,7 @@ function MapBuilder({ kits }) {
   );
 }
 
-export default MapBuilder;
+MapBuilder.propTypes = {
+  kits: PropTypes.arrayOf(PropTypes.object),
+  changeKit: PropTypes.func,
+};
