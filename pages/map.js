@@ -11,7 +11,7 @@ const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,
 });
 
-const MarginCard = styled(Card)`
+const InstructionCard = styled(Card)`
   && {
     margin-bottom: 1rem;
     height: unset;
@@ -30,22 +30,19 @@ export default function Map({ kits }) {
       <MainLayout pageTitle={"All AstroPlant kits"}>
         <MapGrid>
           <div>
-            <NoSSRMapBuilder kits={kits}></NoSSRMapBuilder>
+            <NoSSRMapBuilder kits={kits} />
           </div>
           <div>
-            <MarginCard>
+            <InstructionCard>
               <b>How to use the kit map ?</b>
               <p>
                 Here you can find out what other AstroPlant kits around the
-                world are doing and what makes them unique! Try to hover on the
-                icons or typ a specific region, city or kitname to find out
-                more!
+                world are doing and what makes them unique! Try to click on the
+                icons to find out more!
               </p>
-            </MarginCard>
+            </InstructionCard>
 
             <KitCountCard title={"Active kits"} count={kits.length} />
-            <KitCountCard title={"Active countries"} count={12} />
-            <KitCountCard title={"Community Challenges Kits"} count={35} />
           </div>
         </MapGrid>
       </MainLayout>

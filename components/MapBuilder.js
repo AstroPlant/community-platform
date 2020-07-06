@@ -1,38 +1,59 @@
+import Leaflet from "leaflet";
 import React from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import styled from "styled-components";
+import Logo from "./Logo";
+
+const MarginLogo = styled(Logo)`
+  margin-right: 1rem;
+`;
+
+const KitName = styled.b`
+  margin: 0;
+`;
 
 function MapBuilder({ kits }) {
   const Netherlands = [52.1326, 5.2913];
 
-  const locations = [];
-  kits.map((kit) => {
-    let location = { latitude: kit.latitude, longitude: kit.longitude };
-    locations.push(location);
-  });
-  return (
-    <Map
-      center={Netherlands}
-      zoom={3}
-      style={{ width: "100%", height: "100%" }}
-    >
-      <TileLayer
-        attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {kits.map((kit) => {
-        if (kit.latitude != null && kit.longitude != null) {
-          const position = [kit.latitude, kit.longitude];
+  const attribution =
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  const tilesUrl =
+    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 
-          return (
-            <Marker position={position} key={kit.serial}>
-              <Popup>
-                <p>{kit.name}</p>
-              </Popup>
-            </Marker>
-          );
-        }
-      })}
-    </Map>
+  const markerIcon = Leaflet.icon({
+    iconUrl: "/icons/map-marker.svg",
+    iconRetinaUrl: "/icons/map-marker.svg",
+
+    iconSize: [32, 32],
+    iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
+  });
+
+  return (
+    <>
+      <Map
+        center={Netherlands}
+        zoom={3}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <TileLayer attribution={attribution} url={tilesUrl} />
+        {kits.map((kit) => {
+          if (kit.latitude != null && kit.longitude != null) {
+            const position = [kit.latitude, kit.longitude];
+
+            return (
+              <>
+                <Marker key={kit.serial} position={position} icon={markerIcon}>
+                  <Popup className={"custom-popup"}>
+                    <MarginLogo size={1.05} color={"dark"} />
+                    <KitName>{kit.name}</KitName>
+                  </Popup>
+                </Marker>
+              </>
+            );
+          }
+        })}
+      </Map>
+    </>
   );
 }
 

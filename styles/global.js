@@ -72,4 +72,39 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
     border: none;
   }
+
+  .custom-popup {
+    top: -16px !important;
+    left: -16px !important;
+  }
+
+  .custom-popup .leaflet-popup-content-wrapper {
+    display: flex;
+
+    padding: 0;
+    height: 32px;
+    border-radius: 16px;
+    
+    background: #56F265;
+    color: #000;
+
+    font-family: ${(props) => props.theme.fontFamily};
+    font-size: 16px;
+    font-weight: 450;
+    line-height: 32px;
+  }
+
+  .custom-popup .leaflet-popup-content {
+    display: flex;
+    align-items: center;
+
+    margin: 0 16px 0 8px;
+  }
+
+  .custom-popup .leaflet-popup-content-wrapper a,
+  .custom-popup .leaflet-popup-tip-container,
+  .custom-popup .leaflet-popup-tip,
+  .custom-popup .leaflet-popup-close-button  {
+    display: none;
+  }
 `;
