@@ -1,8 +1,22 @@
 import { useRouter } from "next/router";
 import { loggedIn, useAuth } from "../providers/Auth";
+import LoadingAnimation from "../components/LoadingAnimation";
+import styled from "styled-components";
+
+const Center = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+`;
 
 function DefaultLoadingFallback() {
-  return <p>Loading...</p>;
+  return (
+    <Center>
+      <LoadingAnimation message={"Loading..."} />
+    </Center>
+  );
 }
 
 /**

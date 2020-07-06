@@ -1,10 +1,10 @@
 import { Form, Formik } from "formik";
-import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createUser } from "../../services/community";
 import Button from "../Button";
+import LoadingAnimation from "../LoadingAnimation";
 import Checkbox from "./CheckBox";
 import TextInput from "./TextInput";
 
@@ -40,7 +40,7 @@ const SignupSchema = Yup.object().shape({
 });
 
 const SignUpForm = () => {
-  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
@@ -52,21 +52,28 @@ const SignUpForm = () => {
           validatePassword: "",
           acceptTerms: false,
         }}
-        initialStatus={{ success: "Please enter the following", error: null }}
+        initialStatus={{ success: null, error: null }}
         validationSchema={SignupSchema}
         onSubmit={async (values, actions) => {
+          setLoading(true);
+
           const res = await createUser(
             values.email,
             values.username,
             values.password
           );
+
           if (res.status === 200) {
+            setLoading(false);
+
             actions.setStatus({
               success:
-                "You're signed up ! Check your emails to confirm your account !",
+                "You're all signed up ! Check your emails to confirm your account !",
             });
             actions.resetForm();
           } else {
+            setLoading(false);
+
             actions.setStatus({
               error: "Whoops ! Could not sign you up, check your credentials.",
             });
@@ -107,11 +114,15 @@ const SignUpForm = () => {
                 I agree to the terms and condtions
               </Checkbox>
 
-              <SubmitButton
-                color={"primary"}
-                label={"Sign Up!"}
-                type="submit"
-              />
+              {loading ? (
+                <LoadingAnimation />
+              ) : (
+                <SubmitButton
+                  color={"primary"}
+                  label={"Sign Up!"}
+                  type="submit"
+                />
+              )}
             </CustomForm>
           </>
         )}

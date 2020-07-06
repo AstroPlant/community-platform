@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { authenticate, useAuth } from "../../providers/Auth";
@@ -8,6 +8,7 @@ import Button from "../Button";
 import Checkbox from "./CheckBox";
 import TextInput from "./TextInput";
 import { forgotPassword } from "../../services/community";
+import LoadingAnimation from "../LoadingAnimation";
 
 const CustomForm = styled(Form)`
   display: flex;
@@ -37,6 +38,7 @@ const LoginSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const { setLogged } = useAuth();
 
   return (
@@ -50,6 +52,7 @@ const LoginForm = () => {
         initialStatus={{ success: null, error: null }}
         validationSchema={LoginSchema}
         onSubmit={async (values, actions) => {
+          setLoading(true);
           const auth = await authenticate(
             values.username,
             values.password,
@@ -57,11 +60,15 @@ const LoginForm = () => {
           );
 
           if (auth) {
+            setLoading(false);
+
             actions.setStatus({ success: "Logged In !" });
             setLogged(true);
-            actions.resetForm();
-            router.push("/");
+
+            router.replace("/");
           } else {
+            setLoading(false);
+
             actions.setStatus({
               error: "Whoops ! Could not log in, check your credentials.",
             });
@@ -96,7 +103,15 @@ const LoginForm = () => {
                   Password Forgotten ?
                 </a>
               </Row>
-              <SubmitButton color={"primary"} label={"Sign In"} type="submit" />
+              {loading ? (
+                <LoadingAnimation />
+              ) : (
+                <SubmitButton
+                  color={"primary"}
+                  label={"Sign In"}
+                  type="submit"
+                />
+              )}
             </CustomForm>
           </>
         )}
