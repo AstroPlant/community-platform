@@ -17,7 +17,7 @@ const HeaderContainer = styled.header`
   top: 0%;
   left: 0%;
 
-  z-index: 999;
+  z-index: 2;
 
   width: 100%;
   max-height: ${(props) => props.theme.headerHeight};
