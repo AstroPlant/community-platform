@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProfileCard from "../cards/ProfileCard";
+import UploadForm from "../forms/UploadForm";
 import AccountForm from "../forms/AccountForm";
-import ChangePasswordForm from "../forms/ChangePasswordForm";
-import { format } from "date-fns";
+import Overlay from "../overlay";
 
 const Grid = styled.div`
   display: grid;
@@ -61,28 +61,43 @@ const Tab = styled.p`
 
 export default function SettingsGrid({ user }) {
   const [currentTab, setCurrentTab] = useState("Profile");
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  function editPicture() {
+    setShowOverlay(true);
+  }
+
+  function closeOverlay() {
+    setShowOverlay(false);
+  }
 
   return (
-    <Grid>
-      <UserColumn>
-        <ProfileCard user={user} />
-      </UserColumn>
-      <SettingsColumn>
-        <Tabs>
-          <Tab
-            active={currentTab === "Profile"}
-            onClick={() => setCurrentTab("Profile")}
-          >
-            Profile
-          </Tab>
-        </Tabs>
+    <>
+      <Overlay show={showOverlay}>
+        <UploadForm closeOverlay={closeOverlay} />
+      </Overlay>
+      <Grid>
+        <UserColumn>
+          <ProfileCard editPicture={editPicture} user={user} />
+        </UserColumn>
+        <SettingsColumn>
+          <Tabs>
+            <Tab
+              active={currentTab === "Profile"}
+              onClick={() => setCurrentTab("Profile")}
+            >
+              Profile
+            </Tab>
+          </Tabs>
 
-        {currentTab === "Profile" && <AccountForm initialInfos={user} />}
-      </SettingsColumn>
-    </Grid>
+          {currentTab === "Profile" && <AccountForm initialInfos={user} />}
+        </SettingsColumn>
+      </Grid>
+    </>
   );
 }
 
 SettingsGrid.propTypes = {
+  /* User to display */
   user: PropTypes.object.isRequired,
 };

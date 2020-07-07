@@ -80,7 +80,7 @@ const SignUpForm = () => {
           }
         }}
       >
-        {({ status, isValid }) => (
+        {({ status, isSubmitting, isValid }) => (
           <>
             <CustomForm>
               {status.error && <div>{status.error}</div>}
@@ -121,6 +121,7 @@ const SignUpForm = () => {
                   color={"primary"}
                   label={"Sign Up!"}
                   type="submit"
+                  disabled={isSubmitting || !isValid}
                 />
               )}
             </CustomForm>

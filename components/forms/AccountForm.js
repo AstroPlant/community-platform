@@ -58,11 +58,9 @@ const AccountForm = (props) => {
         validationSchema={UserInfoSchema}
         onSubmit={async (values, actions) => {
           const update = await updateUserInfo(id, values);
-
-          console.log(update);
         }}
       >
-        {({ status, isValid }) => (
+        {({ isSubmitting, isValid }) => (
           <>
             <CustomForm>
               <Row>
@@ -106,6 +104,7 @@ const AccountForm = (props) => {
                 color={"secondaryDark"}
                 label={"Confirm Change"}
                 type="submit"
+                disabled={isSubmitting || !isValid}
               />
             </CustomForm>
           </>

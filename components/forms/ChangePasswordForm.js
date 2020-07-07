@@ -47,7 +47,7 @@ export default function ChangePasswordForm() {
           console.log(res);
         }}
       >
-        {({ status, isValid }) => (
+        {({ isSubmitting, isValid }) => (
           <>
             <CustomForm>
               {status.error && <div>{status.error}</div>}
@@ -76,6 +76,7 @@ export default function ChangePasswordForm() {
               <SubmitButton
                 color={"primary"}
                 label={"Change Password"}
+                disabled={isSubmitting || !isValid}
                 type="submit"
               />
             </CustomForm>

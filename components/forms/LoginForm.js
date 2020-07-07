@@ -75,7 +75,7 @@ const LoginForm = () => {
           }
         }}
       >
-        {({ status, isValid }) => (
+        {({ status, isSubmitting, isValid }) => (
           <>
             <CustomForm>
               {status.error && <HelpMessage error>{status.error}</HelpMessage>}
@@ -110,6 +110,7 @@ const LoginForm = () => {
                   color={"primary"}
                   label={"Sign In"}
                   type="submit"
+                  disabled={isSubmitting || !isValid}
                 />
               )}
             </CustomForm>
