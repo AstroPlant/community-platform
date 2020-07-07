@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Card from "./Card";
 import Avatar from "../Avatar";
+import EditIcon from "../../public/icons/edit.svg";
+import Icon from "../Icon";
 
 const UserColumn = styled(Card)`
   display: flex;
@@ -29,16 +31,43 @@ const Description = styled.p`
   text-align: center;
 `;
 
+const AvatarHolder = styled.div`
+  position: relative;
+`;
+
+const IconHolder = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content center;
+
+  background-color: ${(props) => props.theme.secondaryDark};
+  border-radius: 50%;
+`;
+
 export default function ProfileCard(props) {
   const hasFullName = props.user.firstName && props.user.lastName;
 
   return (
     <UserColumn>
-      <Avatar
-        size={12}
-        imgSrc={props.user.picture && API_URL + props.user.picture.url}
-        username={props.user.username}
-      />
+      <AvatarHolder>
+        <Avatar
+          size={12}
+          imgSrc={props.user.picture && API_URL + props.user.picture.url}
+          username={props.user.username}
+        />
+        {props.editPicture && (
+          <IconHolder onClick={() => props.editPicture()}>
+            <Icon size={32} color={"light"}>
+              <EditIcon />
+            </Icon>
+          </IconHolder>
+        )}
+      </AvatarHolder>
+
       <FullName>
         {hasFullName
           ? `${props.user.firstName} ${props.user.lastName}`
@@ -51,5 +80,12 @@ export default function ProfileCard(props) {
 }
 
 ProfileCard.propTypes = {
+  /* User to display */
   user: PropTypes.object.isRequired,
+  /* function to open the picture edition form */
+  editPicture: PropTypes.func,
+};
+
+ProfileCard.defaultProps = {
+  editPicture: null,
 };
