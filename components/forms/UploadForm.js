@@ -1,15 +1,19 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useAuth } from "../../providers/Auth";
 import { upload } from "../../services/community";
 import Button from "../Button";
+import LoadingAnimation from "../LoadingAnimation";
 import ErrorMessage from "./ErrorMessage";
 import FileInput from "./FileInput";
 
 const CustomForm = styled.form`
   display: flex;
   flex-direction: column;
+`;
+
+const FormTitle = styled.h3`
+  margin-bottom: 1.5rem;
 `;
 
 const Row = styled.div`
@@ -36,12 +40,11 @@ const FilePreview = styled.img`
 `;
 
 export default function UploadForm(props) {
-  const { user } = useAuth();
-
   const [previews, setPreviews] = useState([]);
   const [fileList, setFileList] = useState({});
   const [error, setError] = useState("");
   const [valid, setValid] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function handleChange(event) {
     const list = event.target.files;
@@ -57,6 +60,7 @@ export default function UploadForm(props) {
         setFileList(list);
         setPreviews(temp);
         setValid(true);
+        setError("");
       })
       .catch((err) => {
         setValid(false);
@@ -66,30 +70,33 @@ export default function UploadForm(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
 
-    const res = await upload(fileList, {
-      refId: user.id,
-      ref: "user",
-      source: "users-permissions",
-      field: "picture",
-    });
+    const res = await upload(fileList, props.uploadParameters);
 
     if (res.status === 200) {
+      setLoading(false);
+      props.callback();
       reset();
     } else {
+      setLoading(false);
     }
   }
 
   function reset() {
     setFileList({});
     setPreviews([]);
+    setValid(false);
+    setLoading(false);
+    setError("");
     props.closeForm();
   }
 
   return (
     <>
       <CustomForm onSubmit={handleSubmit}>
-        {previews && (
+        <FormTitle>{props.title}</FormTitle>
+        {previews.length != 0 && (
           <>
             <Row justify={"center"}>
               <b>Previews</b>
@@ -120,12 +127,17 @@ export default function UploadForm(props) {
             onClick={() => props.closeForm()}
             type="reset"
           />
-          <Button
-            label={"Upload"}
-            color={"primary"}
-            disabled={!valid}
-            type="submit"
-          />
+
+          {loading ? (
+            <LoadingAnimation />
+          ) : (
+            <Button
+              label={"Upload"}
+              color={"primary"}
+              disabled={!valid}
+              type="submit"
+            />
+          )}
         </Row>
       </CustomForm>
     </>
@@ -137,13 +149,18 @@ UploadForm.propTypes = {
   closeForm: PropTypes.func,
   /* Yup schema to validate the inputs */
   validationSchema: PropTypes.object.isRequired,
-  /* Actions to take on form submit */
-  handleSubmit: PropTypes.func.isRequired,
+  /* Additional & optional upload parameters */
+  uploadParameters: PropTypes.object,
+  /* Function called on submit success */
+  callback: PropTypes.func,
   /* Whether or not the form should accept multiple file input */
   multiple: PropTypes.bool,
+  /* The title of the form */
+  title: PropTypes.string.isRequired,
 };
 
 UploadForm.defaultProps = {
   closeForm: null,
   multiple: false,
+  uploadParameters: {},
 };

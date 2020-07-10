@@ -60,7 +60,7 @@ const AccountForm = (props) => {
           const update = await updateUserInfo(id, values);
         }}
       >
-        {({ isSubmitting, isValid }) => (
+        {({ touched, isSubmitting, isValid }) => (
           <>
             <CustomForm>
               <Row>
@@ -104,7 +104,7 @@ const AccountForm = (props) => {
                 color={"secondaryDark"}
                 label={"Confirm Change"}
                 type="submit"
-                disabled={isSubmitting || !isValid}
+                disabled={touched && (isSubmitting || !isValid)}
               />
             </CustomForm>
           </>

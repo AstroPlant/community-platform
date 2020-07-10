@@ -1,7 +1,9 @@
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { updateLoggedUser } from "../../providers/Auth";
 import Card from "../cards/Card";
 import ProfileCard from "../cards/ProfileCard";
 import AccountForm from "../forms/AccountForm";
@@ -91,6 +93,7 @@ const validationSchema = Yup.object().shape({
 export default function SettingsGrid({ user }) {
   const [currentTab, setCurrentTab] = useState("Profile");
   const [showOverlay, setShowOverlay] = useState(false);
+  const router = useRouter();
 
   function editPicture() {
     setShowOverlay(true);
@@ -105,8 +108,19 @@ export default function SettingsGrid({ user }) {
       <Overlay show={showOverlay}>
         <OverlayCard>
           <UploadForm
+            title={"Change profile picture"}
             closeForm={closeOverlay}
             validationSchema={validationSchema}
+            uploadParameters={{
+              refId: user.id,
+              ref: "user",
+              source: "users-permissions",
+              field: "picture",
+            }}
+            callback={() => {
+              updateLoggedUser(user.username);
+              router.replace("/settings");
+            }}
           />
         </OverlayCard>
       </Overlay>
