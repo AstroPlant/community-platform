@@ -46,7 +46,12 @@ const IconHolder = styled.div`
   justify-content center;
 
   background-color: ${(props) => props.theme.secondaryDark};
+  border: 4px solid ${(props) => props.theme.darkLight};
   border-radius: 50%;
+
+  &:hover {
+    border-color: ${(props) => props.theme.light};
+  }
 `;
 
 export default function ProfileCard(props) {
@@ -56,6 +61,7 @@ export default function ProfileCard(props) {
     <UserColumn>
       <AvatarHolder>
         <Avatar
+          bordered
           size={12}
           imgSrc={props.user.picture && API_URL + props.user.picture.url}
           username={props.user.username}
