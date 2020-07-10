@@ -36,13 +36,14 @@ const ButtonContainer = styled.button`
   font-weight: 550;
 
   cursor: pointer;
+  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
 
   border: none;
   outline: none;
 
   &:hover ${HoverBar} {
     background-color: ${(props) =>
-      props.inverted ? props.theme.light : props.theme.dark};
+      props.inverted && !props.disbaled ? props.theme.light : props.theme.dark};
     transform: scale(1);
   }
 `;
