@@ -2,7 +2,7 @@ import cookie from "cookie";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { Cookies } from "react-cookie";
-import { API_URL, login } from "../services/community";
+import { API_URL, login, getUserDetails } from "../services/community";
 
 const cookies = new Cookies();
 const defaultOptions = { path: "/", sameSite: true, maxAge: 3600 };
@@ -74,8 +74,6 @@ export function useAuth() {
 export async function authenticate(username, password, rememberMe) {
   const cookieOptions = defaultOptions;
 
-  console.log("REMEMBER", rememberMe);
-
   if (rememberMe) {
     cookieOptions.maxAge = null;
   }
@@ -85,15 +83,7 @@ export async function authenticate(username, password, rememberMe) {
   if (response.status === 200) {
     const json = await response.json();
 
-    const loggedUser = {
-      id: json.user.id,
-      username: username,
-      avatarUrl:
-        json.user.picture && API_URL + json.user.picture.formats.thumbnail.url,
-      role: json.user.role,
-    };
-
-    setLoggedUser(loggedUser, cookieOptions);
+    setLoggedUser(json.user, cookieOptions);
     setToken("accessToken", json.accessToken, cookieOptions);
     setToken("refreshToken", json.refreshToken, cookieOptions);
     setToken("communityToken", json.communityToken, cookieOptions);
@@ -119,7 +109,14 @@ export function loggedIn() {
  * @param options parameters for the cookies
  */
 function setLoggedUser(user, options) {
-  cookies.set("user", user, options);
+  const loggedUser = {
+    id: user.id,
+    username: user.username,
+    avatarUrl: user.picture && API_URL + user.picture.url,
+    role: user.role,
+  };
+
+  cookies.set("user", loggedUser, options);
 }
 
 /***
@@ -143,13 +140,25 @@ export function getLoggedUser(httpCookies) {
 }
 
 /***
+ * Update the current users local information with information from the api
+ * @param username of the user to update
+ */
+export async function updateLoggedUser(username) {
+  const res = await getUserDetails(username);
+
+  if (res.username === username) {
+    setLoggedUser(res, { path: "/", sameSite: true });
+  }
+}
+
+/***
  * Removes items from local storage
  */
 export function logout() {
+  cookies.remove("communityToken");
   cookies.remove("accessToken");
   cookies.remove("refreshToken");
   cookies.remove("user");
-  cookies.remove("communityToken");
 }
 
 /*************************************
