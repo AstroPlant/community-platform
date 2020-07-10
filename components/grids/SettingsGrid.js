@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import * as Yup from "yup";
+import Card from "../cards/Card";
 import ProfileCard from "../cards/ProfileCard";
-import UploadForm from "../forms/UploadForm";
 import AccountForm from "../forms/AccountForm";
+import UploadForm from "../forms/UploadForm";
 import Overlay from "../overlay";
 
 const Grid = styled.div`
@@ -59,6 +61,33 @@ const Tab = styled.p`
   }
 `;
 
+const OverlayCard = styled(Card)`
+  && {
+    width: unset;
+    height: unset;
+  }
+`;
+
+const validationSchema = Yup.object().shape({
+  files: Yup.mixed()
+    .required("Please select a file before uploading.")
+    .test(
+      "fileSize",
+      "Your file is too big ! The file size must be under 8 mb",
+      (value) => value && value[0].size <= 8000000
+    )
+    .test(
+      "fileFormat",
+      "Wrong format. Must be an image (png, jpeg, jfif ...)",
+      (value) => {
+        return (
+          value &&
+          ["image/png", "image/jpeg", "image/jfif"].includes(value[0].type)
+        );
+      }
+    ),
+});
+
 export default function SettingsGrid({ user }) {
   const [currentTab, setCurrentTab] = useState("Profile");
   const [showOverlay, setShowOverlay] = useState(false);
@@ -74,7 +103,12 @@ export default function SettingsGrid({ user }) {
   return (
     <>
       <Overlay show={showOverlay}>
-        <UploadForm closeOverlay={closeOverlay} />
+        <OverlayCard>
+          <UploadForm
+            closeForm={closeOverlay}
+            validationSchema={validationSchema}
+          />
+        </OverlayCard>
       </Overlay>
       <Grid>
         <UserColumn>

@@ -330,7 +330,6 @@ export async function changePassword(oldPassword, newPassword) {
 
   const body = JSON.stringify({ oldPassword, newPassword });
 
-  console.log(body);
   const res = await fetch(API_URL + "/users/changePassword", {
     method: "POST",
     withCredentials: true,
@@ -586,4 +585,47 @@ export async function forgotPassword(email) {
 export async function getChallenges() {
   //TODO Implement
   return [];
+}
+
+/**********************************************
+ *                UPLOAD                      *
+ **********************************************/
+
+/**
+ * Upload a file related to an instance to the communtiy API
+ * @param {FileList} files The file(s) to upload. The value(s) can be a Buffer or Stream.
+ * @param {object} optionalParameters
+ * refId:  The ID of the entry which the file(s) will be linked to.
+ * ref:  The name of the model which the file(s) will be linked to (see more below).
+ * field: The field of the entry which the file(s) will be precisely linked to.
+ * source: The name of the plugin where the model is located.
+ */
+export async function upload(
+  files,
+  optionalParameters = ({ refId, ref, field, source } = {})
+) {
+  const token = getToken("communityToken");
+  const bearer = "Bearer " + token;
+
+  const formData = new FormData();
+
+  for (let i = 0; i < files.length; i++) {
+    formData.append("files", files[i]);
+  }
+
+  Object.keys(optionalParameters).map((key) => {
+    if (typeof optionalParameters[key] !== "undefined") {
+      formData.append(key, optionalParameters[key]);
+    }
+  });
+
+  const res = await fetch(API_URL + "/upload", {
+    method: "POST",
+    headers: {
+      Authorization: bearer,
+    },
+    body: formData,
+  });
+
+  return res;
 }

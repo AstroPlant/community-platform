@@ -1,90 +1,149 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Card from "../cards/Card";
+import { useAuth } from "../../providers/Auth";
+import { upload } from "../../services/community";
 import Button from "../Button";
-import FileInput from "./FileInput";
-import { Form, Formik } from "formik";
-import * as Yup from "yup";
 import ErrorMessage from "./ErrorMessage";
+import FileInput from "./FileInput";
 
-const CustomForm = styled(Form)`
+const CustomForm = styled.form`
   display: flex;
   flex-direction: column;
-`;
-
-const Container = styled(Card)`
-  && {
-    width: unset;
-    height: unset;
-  }
 `;
 
 const Row = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: ${(props) => props.justify};
 `;
 
-const UploadSchema = Yup.object().shape({
-  file: Yup.mixed()
-    .required("The file must an Image!")
-    .test(
-      "fileSize",
-      "The image size must be under 5 mb",
-      (value) => value && value.size <= 5000000
-    )
-    .test("fileFormat", "Wrong format. Must be .png or .jpeg", (value) => {
-      console.log(value);
-      return value && ["image/jpeg", "image/png"].includes(value.type);
-    }),
-});
+const ThumbnailHolder = styled.div`
+  height: 160px;
+  max-width: 192px;
+
+  padding: 0.5rem;
+  margin: 1rem;
+
+  border-radius: 8px;
+  background-color: ${(props) => props.theme.dark};
+`;
+
+const FilePreview = styled.img`
+  && {
+    object-fit: contain;
+  }
+`;
 
 export default function UploadForm(props) {
+  const { user } = useAuth();
+
+  const [previews, setPreviews] = useState([]);
+  const [fileList, setFileList] = useState({});
+  const [error, setError] = useState("");
+  const [valid, setValid] = useState(false);
+
+  function handleChange(event) {
+    const list = event.target.files;
+
+    props.validationSchema
+      .validate({ files: list })
+      .then(async () => {
+        let temp = [];
+        for (let i = 0; i < list.length; i++) {
+          temp.push(URL.createObjectURL(list[i]));
+        }
+
+        setFileList(list);
+        setPreviews(temp);
+        setValid(true);
+      })
+      .catch((err) => {
+        setValid(false);
+        setError(err.errors[0]);
+      });
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const res = await upload(fileList, {
+      refId: user.id,
+      ref: "user",
+      source: "users-permissions",
+      field: "picture",
+    });
+
+    if (res.status === 200) {
+      reset();
+    } else {
+    }
+  }
+
+  function reset() {
+    setFileList({});
+    setPreviews([]);
+    props.closeForm();
+  }
+
   return (
-    <Container>
-      <Formik
-        initialValues={{
-          file: null,
-        }}
-        initialStatus={{ success: null, error: null }}
-        validationSchema={UploadSchema}
-        onSubmit={async (values, actions) => {
-          console.log(values.file);
-        }}
-      >
-        {({ errors, touched, setFieldValue }) => (
+    <>
+      <CustomForm onSubmit={handleSubmit}>
+        {previews && (
           <>
-            <CustomForm>
-              <FileInput
-                name={"file"}
-                accept="image/*"
-                onChange={(event) => {
-                  setFieldValue("file", event.currentTarget.files[0]);
-                }}
-              />
-              <ErrorMessage errorMessage={errors.file} />
-              <Row>
-                <Button
-                  inverted
-                  label={"Cancel"}
-                  color={"error"}
-                  onClick={() => props.closeOverlay()}
-                />
-                <Button label={"Upload"} color={"primary"} type="submit" />
-              </Row>
-            </CustomForm>
+            <Row justify={"center"}>
+              <b>Previews</b>
+            </Row>
+            <Row justify={"space-evenly"}>
+              {previews &&
+                previews.map((preview) => (
+                  <ThumbnailHolder key={preview}>
+                    <FilePreview src={preview} />
+                  </ThumbnailHolder>
+                ))}
+            </Row>
           </>
         )}
-      </Formik>
-    </Container>
+
+        <FileInput
+          name={"files"}
+          accept="image/*"
+          multiple={props.multiple}
+          onChange={handleChange}
+        />
+        <ErrorMessage errorMessage={error} />
+        <Row justify={"flex-end"}>
+          <Button
+            inverted
+            label={"Cancel"}
+            color={"error"}
+            onClick={() => props.closeForm()}
+            type="reset"
+          />
+          <Button
+            label={"Upload"}
+            color={"primary"}
+            disabled={!valid}
+            type="submit"
+          />
+        </Row>
+      </CustomForm>
+    </>
   );
 }
 
 UploadForm.propTypes = {
-  closeOverlay: PropTypes.func,
+  /* Function use to hide the form if used on an overlay */
+  closeForm: PropTypes.func,
+  /* Yup schema to validate the inputs */
+  validationSchema: PropTypes.object.isRequired,
+  /* Actions to take on form submit */
+  handleSubmit: PropTypes.func.isRequired,
+  /* Whether or not the form should accept multiple file input */
+  multiple: PropTypes.bool,
 };
 
 UploadForm.defaultProps = {
-  closeOverlay: null,
+  closeForm: null,
+  multiple: false,
 };

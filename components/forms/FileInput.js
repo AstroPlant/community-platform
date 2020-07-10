@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import InputLabel from "./InputLabel";
-import { useField } from "formik";
 
 const Container = styled.div`
   display: flex;

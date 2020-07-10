@@ -5,6 +5,7 @@ import Card from "./Card";
 import Avatar from "../Avatar";
 import EditIcon from "../../public/icons/edit.svg";
 import Icon from "../Icon";
+import { API_URL } from "../../services/community";
 
 const UserColumn = styled(Card)`
   display: flex;

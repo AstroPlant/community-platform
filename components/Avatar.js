@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import WrapInLink from "./WrapInLink";
-import { useAuth } from "../providers/Auth";
 
 const Container = styled.div`
   display: flex;
