@@ -4,36 +4,25 @@ import Brand from "../components/Brand";
 import Button from "../components/Button";
 import LoginForm from "../components/forms/LoginForm";
 import SignUpForm from "../components/forms/SignUpForm";
+import SplitLayout from "../components/layouts/SplitLayout";
 import withoutAuth from "../hocs/withoutAuth";
 
-const LoginLayout = styled.div`
-  height: 100vh;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  @media (screen and max-width: 1024px) {
-    display: block;
-  }
-`;
-
 const LeftColumn = styled.div`
-  padding: 2rem;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
+  padding: 2rem;
+
   background-color: ${(props) => props.theme.dark};
 `;
 
 const FormHolder = styled.div`
-  width: 100%;
-  max-width: 22.5rem;
-
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 22.5rem;
 `;
 
 const SwitchButton = styled(Button)`
@@ -55,7 +44,7 @@ function Login() {
   }
 
   return (
-    <LoginLayout>
+    <SplitLayout>
       <LeftColumn>
         <Brand vertical />
         <FormHolder>
@@ -71,7 +60,7 @@ function Login() {
         </FormHolder>
       </LeftColumn>
       <img src="./placeholder.jpg" />
-    </LoginLayout>
+    </SplitLayout>
   );
 }
 
