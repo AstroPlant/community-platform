@@ -1,13 +1,8 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
 import KitMembershipCard from "../cards/KitMembershipCard";
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  padding: 2rem 0;
-`;
+import Grid from "./Grid";
 
 const ListTitle = styled.h3`
   margin-bottom: 1rem;

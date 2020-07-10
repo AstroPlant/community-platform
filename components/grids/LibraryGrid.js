@@ -1,32 +1,31 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
-import LibrarySectionCard from "../cards/LibrarySectionCard";
 import LibraryMediaCard from "../cards/LibraryMediaCard";
+import LibrarySectionCard from "../cards/LibrarySectionCard";
+import Grid from "./Grid";
 
 const Container = styled.div`
-  height: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
 
-  padding: 2rem 0;
+  height: 100%;
 `;
 
-const SectionGrid = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: repeat(3, 1fr);
+const SectionGrid = styled(Grid)`
+  && {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
   width: 100%;
 `;
 
-const MediaGrid = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: repeat(6, 1fr);
+const MediaGrid = styled(Grid)`
+  && {
+    grid-template-columns: repeat(6, 1fr);
+  }
 
   width: 100%;
 `;
@@ -61,6 +60,8 @@ export default function LibraryGrid(props) {
 }
 
 LibraryGrid.propTypes = {
+  /* Array containing the featured medias objects */
   featuredMedias: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /* Array containing the library sections objects */
   librarySections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

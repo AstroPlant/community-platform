@@ -1,16 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Grid from "./Grid";
 
-const GridContainer = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 1fr 0.5fr 1fr;
+const GridContainer = styled(Grid)`
+  && {
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 1fr 0.5fr 1fr;
 
-  padding: 1rem 0;
-
-  height: 100%;
+    padding: 1rem 0;
+  }
 `;
 
 const Top = styled.div`
@@ -53,18 +52,18 @@ const BotRight = styled(Bottom)`
   grid-column: 9 / span 4;
 `;
 
-export default function DashboardGrid({ children }) {
-  const content = React.Children.toArray(children);
+export default function DashboardGrid(props) {
+  const dashboardItems = React.Children.toArray(props.children);
 
   return (
-    <GridContainer>
-      <TopLeft>{content[0]}</TopLeft>
-      <TopRight>{content[1]}</TopRight>
-      <MidLeft>{content[2]}</MidLeft>
-      <MidRight>{content[3]}</MidRight>
-      <BotRight>{content[4]}</BotRight>
-      <BotLeft>{content[5]}</BotLeft>
-      <BotMid>{content[6]}</BotMid>
+    <GridContainer fill>
+      <TopLeft>{dashboardItems[0]}</TopLeft>
+      <TopRight>{dashboardItems[1]}</TopRight>
+      <MidLeft>{dashboardItems[2]}</MidLeft>
+      <MidRight>{dashboardItems[3]}</MidRight>
+      <BotRight>{dashboardItems[4]}</BotRight>
+      <BotLeft>{dashboardItems[5]}</BotLeft>
+      <BotMid>{dashboardItems[6]}</BotMid>
     </GridContainer>
   );
 }

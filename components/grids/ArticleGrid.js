@@ -3,29 +3,21 @@ import React from "react";
 import styled from "styled-components";
 import FeaturedArticleCard from "../cards/FeaturedArticleCard";
 import NewsCard from "../cards/NewsCard";
+import Grid from "./Grid";
 
-const Container = styled.div`
-  height: 100%;
+const FeaturedArticleContainer = styled.div`
+  height: 50vh;
+  margin: 2rem 0;
 `;
 
-const GridContainer = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-
-  padding: 2rem 0;
+const GridContainer = styled(Grid)`
+  && {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const GridItem = styled.div`
   height: 30vh;
-`;
-
-const FeaturedArticleContainer = styled.div`
-  margin: 2rem 0;
-  grid-row: 1;
-  grid-column: 1 / span 3;
-  height: 50vh;
 `;
 
 export default function ArticleGrid({ articles }) {
@@ -36,7 +28,7 @@ export default function ArticleGrid({ articles }) {
   }
 
   return (
-    <Container>
+    <>
       <FeaturedArticleContainer>
         <FeaturedArticleCard
           featuredArticle={featured}
@@ -51,11 +43,11 @@ export default function ArticleGrid({ articles }) {
           </GridItem>
         ))}
       </GridContainer>
-    </Container>
+    </>
   );
 }
 
 ArticleGrid.propTypes = {
-  /* Array of articles fetch from the api */
+  /* Array of articles */
   articles: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

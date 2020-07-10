@@ -6,14 +6,7 @@ import KitCard from "../cards/KitCard";
 import KitInformationCard from "../cards/KitInformationCard";
 import KitToolCard from "../cards/KitToolCard";
 import SidepanelSection from "../SidepanelSection";
-
-const GridContainer = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: 2fr 1fr;
-
-  padding: 2rem 0;
-`;
+import Grid from "./Grid";
 
 const Column = styled.div`
   display: flex;
@@ -79,7 +72,7 @@ export default function KitDashboardGrid(props) {
   ];
 
   return (
-    <GridContainer>
+    <Grid>
       <Column>
         <ColumnItem>
           <KitCard kit={props.kit} />
@@ -94,7 +87,7 @@ export default function KitDashboardGrid(props) {
         <InformationSection config={currentConfig} collaborators={collabs} />
         <ToolsSection />
       </Column>
-    </GridContainer>
+    </Grid>
   );
 }
 

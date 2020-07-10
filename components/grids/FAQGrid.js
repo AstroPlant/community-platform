@@ -2,21 +2,18 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import FAQCard from "../../components/cards/FAQCard";
+import Grid from "./Grid";
 
-const GridContainer = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: repeat(2, 1fr);
-
-  padding: 2rem 0;
+const GridContainer = styled(Grid)`
+  && {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const Column = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  padding: 2rem 0;
 `;
 
 export default function FAQGrid(props) {
@@ -49,6 +46,6 @@ export default function FAQGrid(props) {
 }
 
 FAQGrid.propTypes = {
-  /* The Frequently asked questions to displat=y */
+  /* Array containing the frequently asked questions */
   faqs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

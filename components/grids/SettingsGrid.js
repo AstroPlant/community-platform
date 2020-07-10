@@ -9,13 +9,7 @@ import ProfileCard from "../cards/ProfileCard";
 import AccountForm from "../forms/AccountForm";
 import UploadForm from "../forms/UploadForm";
 import Overlay from "../overlay";
-
-const Grid = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: 1fr 2fr;
-  padding: 2rem 0;
-`;
+import Grid from "./Grid";
 
 const Column = styled.div`
   background-color: ${(props) => props.theme.darkLight};
@@ -90,7 +84,7 @@ const validationSchema = Yup.object().shape({
     ),
 });
 
-export default function SettingsGrid({ user }) {
+export default function SettingsGrid(props) {
   const [currentTab, setCurrentTab] = useState("Profile");
   const [showOverlay, setShowOverlay] = useState(false);
   const router = useRouter();
@@ -112,21 +106,22 @@ export default function SettingsGrid({ user }) {
             closeForm={closeOverlay}
             validationSchema={validationSchema}
             uploadParameters={{
-              refId: user.id,
+              refId: props.user.id,
               ref: "user",
               source: "users-permissions",
               field: "picture",
             }}
             callback={() => {
-              updateLoggedUser(user.username);
+              updateLoggedUser(props.user.username);
               router.replace("/settings");
             }}
           />
         </OverlayCard>
       </Overlay>
-      <Grid>
+
+      <Grid inverted>
         <UserColumn>
-          <ProfileCard editPicture={editPicture} user={user} />
+          <ProfileCard editPicture={editPicture} user={props.user} />
         </UserColumn>
         <SettingsColumn>
           <Tabs>
@@ -138,7 +133,9 @@ export default function SettingsGrid({ user }) {
             </Tab>
           </Tabs>
 
-          {currentTab === "Profile" && <AccountForm initialInfos={user} />}
+          {currentTab === "Profile" && (
+            <AccountForm initialInfos={props.user} />
+          )}
         </SettingsColumn>
       </Grid>
     </>

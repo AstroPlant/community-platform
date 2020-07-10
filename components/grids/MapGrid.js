@@ -1,19 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Grid from "./Grid";
 
-const GridContainer = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: 2fr 1fr;
-
-  padding: 2rem 0;
-
+const GridContainer = styled(Grid)`
   height: 100%;
 `;
 
-export default function MapGrid({ children }) {
-  return <GridContainer>{children}</GridContainer>;
+export default function MapGrid(props) {
+  return <GridContainer>{props.children}</GridContainer>;
 }
 
 MapGrid.propTypes = {

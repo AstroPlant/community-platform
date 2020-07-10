@@ -1,14 +1,14 @@
-import { getLibrarySection } from "../../services/community";
-import MainLayout from "../../components/layouts/MainLayout";
-import LibraryMediaCard from "../../components/cards/LibraryMediaCard";
 import styled from "styled-components";
+import LibraryMediaCard from "../../components/cards/LibraryMediaCard";
+import Grid from "../../components/grids/Grid";
+import MainLayout from "../../components/layouts/MainLayout";
+import { getLibrarySection } from "../../services/community";
 
-const TempGrid = styled.div`
-  display: grid;
-  grid-gap: ${(props) => props.theme.gridGap};
-  grid-template-columns: repeat(6, 1fr);
+const TempGrid = styled(Grid)`
+  && {
+    grid-template-columns: repeat(6, 1fr);
+  }
 
-  padding: 2rem 0;
   width: 100%;
 `;
 

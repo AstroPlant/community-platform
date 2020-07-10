@@ -37,10 +37,10 @@ const ItemsContainer = styled.div`
   display: grid;
   grid-gap: 1.5rem;
 
-  width: 100%;
-  margin-bottom: ${(props) => (props.open ? "1.5rem" : "0")};
-
   height: ${(props) => (props.open ? "auto" : "0")};
+  width: 100%;
+
+  margin-bottom: ${(props) => (props.open ? "1.5rem" : "0")};
 
   visibility: ${(props) => (props.open ? "visible" : "hidden")};
 `;

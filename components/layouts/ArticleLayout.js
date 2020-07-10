@@ -13,12 +13,12 @@ const PageLayout = styled.div`
   padding: 0 2rem;
 `;
 
-export default function ArticleLayout({ children }) {
+export default function ArticleLayout(props) {
   return (
     <BaseLayout>
       <PageLayout>
         <Path />
-        {children}
+        {props.children}
       </PageLayout>
     </BaseLayout>
   );
