@@ -17,7 +17,7 @@ const HoverBar = styled.div`
 
 const Container = styled.div`
   position: relative;
-  display: block;
+  display: flex;
 
   width: 100%;
   height: 100%;
