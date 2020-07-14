@@ -1,70 +1,68 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
 
-.article {
-  margin: 2rem 0 0 0;
-
+.md {
   font-family: "Open Sans", sans-serif;
   color: #f3f3f3;
   word-break: break-word;
 }
 
-.article h1,
-.article h2 {
+.md h1,
+.md h2 {
   margin: 2rem 0 1rem 0;
 }
 
-.article h3,
-.article h4 {
+.md h3,
+.md h4 {
   margin: 1rem 0;
 }
 
-.article h1 {
+.md h1 {
   font-size: 32px;
 }
 
-.article h2 {
+.md h2 {
   font-size: 26px;
 }
 
-.article h3 {
+.md h3 {
   font-size: 20px;
 }
 
-.article h4,
-.article h5 {
+.md h4,
+.md h5 {
   font-size: 16px;
 }
 
-.article h6 {
+.md h6 {
   font-size: 0.8em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
-.article h2,
-.article h4,
-.article h6 {
-  color: #ddd;
+.md h2,
+.md h4,
+.md h6 {
+  color: #bcbcbc;
 }
 
-.article p,
-.article u,
-.article li {
+.md p,
+.md u,
+.md li {
   font-size: 1.15em;
   font-weight: 400;
 }
 
-.article p {
+.md p {
   margin-bottom: 2em;
 }
 
-.article a,
-.article u {
+.md a,
+.md u {
   margin-bottom: 0.75rem;
 }
 
-.article pre {
+.md pre {
   width: 100%;
   padding: 2rem;
   margin: 1rem 0;
@@ -74,25 +72,25 @@
   overflow: auto;
 }
 
-.article a {
+.md a {
   color: #56f265;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 700;
 }
 
-.article ul,
-.article ol {
+.md ul,
+.md ol {
   margin: 0.5rem 0 2rem 2rem;
   margin-left: 2em;
 }
 
-.article img {
+.md img {
   opacity: 0.7;
   margin: 0.5rem;
   transition: opacity 0.4s ease, transform 0.6s ease;
 }
 
-.article img:hover {
+.md img:hover {
   opacity: 1;
   transform: scale(1.02);
 }

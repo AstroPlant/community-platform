@@ -3,7 +3,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { API_URL } from "../services/community";
-import styles from "../styles/article.module.css";
+import styles from "../styles/markdown.module.css";
 import Avatar from "./Avatar";
 import Chip from "./Chip";
 import Date from "./Date";
@@ -46,7 +46,11 @@ const AuthorName = styled.b`
 `;
 
 const ArticleDate = styled(Date)`
-  color: #cacaca;
+  color: ${(props) => props.theme.grey};
+`;
+
+const ArticleContainer = styled.div`
+  margin: 2rem 0 0 0;
 `;
 
 const Column = styled.div`
@@ -87,10 +91,9 @@ export default function Article({ article }) {
             <ArticleDate dateString={article.created_at} />
           </Column>
         </AuthorInfos>
-
-        <div className={styles.article}>
-          <ReactMarkdown source={content} />
-        </div>
+        <ArticleContainer>
+          <ReactMarkdown source={content} className={styles.md} />
+        </ArticleContainer>
       </Container>
     </>
   );

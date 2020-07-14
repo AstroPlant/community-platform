@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Date from "../Date";
 import Dropdown from "../Dropdown";
 import Card from "./Card";
+import ReactMarkdown from "react-markdown";
+import styles from "../../styles/markdown.module.css";
 
 const Container = styled(Card)`
   && {
@@ -61,7 +63,7 @@ export default function FAQCard(props) {
   return (
     <Container>
       <QuestionRow open={open}>
-        <b>{faq.question}</b>
+        <ReactMarkdown source={faq.question} />
         <Dropdown
           onClick={() => setOpen(!open)}
           reverse={open}
@@ -69,7 +71,7 @@ export default function FAQCard(props) {
         />
       </QuestionRow>
       <AnswerRow open={open}>
-        <p>{faq.answer}</p>
+        <ReactMarkdown source={faq.answer} className={styles.md} />
         <DateRow>
           <Date dateString={faq.updated_at} />
         </DateRow>
