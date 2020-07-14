@@ -7,7 +7,9 @@ import SearchBar from "../SearchBar";
 import BaseLayout from "./BaseLayout";
 
 const HeadRow = styled(Grid)`
-  align-items: center;
+  && {
+    padding: 0;
+  }
 `;
 
 export default function MainLayout(props) {
