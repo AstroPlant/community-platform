@@ -26,6 +26,10 @@ const Container = styled.div`
 
   padding: 1.5rem;
 
+  &:hover {
+    cursor: ${(props) => props.clickable && "pointer"};
+  }
+
   &:hover ${HoverBar} {
     background-color: ${(props) => props.theme.primary};
     transform: scale(1);
@@ -34,7 +38,7 @@ const Container = styled.div`
 
 export default function Card(props) {
   return (
-    <Container className={props.className}>
+    <Container clickable={props.animateOnHover} className={props.className}>
       {props.animateOnHover && <HoverBar />}
       {props.children}
     </Container>
