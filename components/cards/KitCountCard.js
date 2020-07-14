@@ -9,10 +9,7 @@ const MarginCard = styled(Card)`
     margin-bottom: 1rem;
     height: unset;
   }
-`;
 
-const CardContent = styled.div`
-  display: flex;
   align-items: center;
   justify-content: space-between;
 `;
@@ -32,21 +29,21 @@ const Count = styled.p`
   font-weight: 600;
 `;
 
-export default function KitCountCard({ title, count }) {
+export default function KitCountCard(props) {
   return (
     <MarginCard>
-      <CardContent>
-        <Title>{title}</Title>
-        <CountRow>
-          <ActivityIndicator active />
-          <Count>{count}</Count>
-        </CountRow>
-      </CardContent>
+      <Title>{props.title}</Title>
+      <CountRow>
+        <ActivityIndicator active />
+        <Count>{props.count}</Count>
+      </CountRow>
     </MarginCard>
   );
 }
 
 KitCountCard.propTypes = {
+  /* Title of the card */
   title: PropTypes.string.isRequired,
+  /* The main number to be featured */
   count: PropTypes.number.isRequired,
 };

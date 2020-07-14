@@ -17,6 +17,8 @@ const InstructionCard = styled(Card)`
     margin-bottom: 1rem;
     height: unset;
   }
+
+  flex-direction: column;
 `;
 
 const KitDetailsCard = styled(Card)`
@@ -26,9 +28,7 @@ const KitDetailsCard = styled(Card)`
   }
 `;
 
-const CardTitle = styled.b`
-  line-height: 2em;
-`;
+const CardTitle = styled.h4``;
 
 export default function Map({ kits }) {
   const [selectedKit, setSelectedKit] = useState(null);
