@@ -358,8 +358,43 @@ export async function getAllLibrarySections() {
       slug
       title
       description
+      featured_medias: library_medias(limit: 3, sort: "created_at:desc") {
+        id
+        title
+        slug
+        created_at
+        media {
+          type: __typename
+          ... on ComponentMediaTypeLink {
+            id
+            url
+          }
+          ... on ComponentMediaTypeFile {
+            id
+            name
+            file {
+              id
+              created_at
+              caption
+            }
+          }
+          ... on ComponentMediaTypeArticle {
+            id
+            title
+            cover {
+              url
+              caption
+            }
+            content
+          }
+        }
+      }
+      all_medias: library_medias {
+        id
+      }
     }
-  }`;
+  }
+  `;
 
   const res = await getQuery(query);
 
@@ -382,7 +417,7 @@ export async function getLibrarySection(slug) {
         title
         created_at
         media {
-          __typename
+          type: __typename
           ... on ComponentMediaTypeLink {
             id
             url
@@ -400,6 +435,7 @@ export async function getLibrarySection(slug) {
             id
             title
             cover {
+              url
               caption
             }
             content
@@ -407,11 +443,18 @@ export async function getLibrarySection(slug) {
         }
       }
     }
+    mediaCount: libraryMediasConnection(
+      where: { library_section: { slug: "${slug}" } }
+    ) {
+      aggregate {
+        count
+      }
+    }
   }`;
 
   const res = await getQuery(query);
 
-  return res.data.librarySections[0];
+  return res.data;
 }
 
 /**********************************************

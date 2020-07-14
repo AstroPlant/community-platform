@@ -4,32 +4,45 @@ import Grid from "../../components/grids/Grid";
 import MainLayout from "../../components/layouts/MainLayout";
 import { getLibrarySection } from "../../services/community";
 
-const TempGrid = styled(Grid)`
+const MediasGrid = styled(Grid)`
   && {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0;
   }
 
   width: 100%;
 `;
 
-export default function LibrarySectionPage({ section }) {
+const MediaNumber = styled.h3`
+  color: ${(props) => props.theme.primary};
+`;
+
+export default function LibrarySectionPage({ data }) {
+  const section = data.librarySections[0];
+  const mediaCount = data.mediaCount.aggregate.count;
   return (
     <MainLayout pageTitle={section.title}>
-      <TempGrid>
-        {section.library_medias.map((media) => (
-          <LibraryMediaCard key={media.id} media={media} />
-        ))}
-      </TempGrid>
+      <Grid>
+        <MediasGrid>
+          {section.library_medias.map((media) => (
+            <LibraryMediaCard key={media.id} media={media} />
+          ))}
+        </MediasGrid>
+        <div>
+          <MediaNumber>{mediaCount} medias</MediaNumber>
+          <p>{section.description}</p>
+        </div>
+      </Grid>
     </MainLayout>
   );
 }
 
 export async function getServerSideProps(context) {
-  const section = await getLibrarySection(context.params.slug);
+  const data = await getLibrarySection(context.params.slug);
 
   return {
     props: {
-      section,
+      data,
     },
   };
 }

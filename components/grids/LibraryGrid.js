@@ -16,45 +16,28 @@ const Container = styled.div`
 
 const SectionGrid = styled(Grid)`
   && {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   width: 100%;
-`;
-
-const MediaGrid = styled(Grid)`
-  && {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  width: 100%;
-`;
-
-const SubTitle = styled.h2`
-  margin: 1rem 0;
 `;
 
 export default function LibraryGrid(props) {
   return (
     <Container>
-      <SectionGrid>
-        {props.librarySections.map((section) => (
+      {props.librarySections.map((section) => (
+        <SectionGrid key={section.id}>
           <LibrarySectionCard
-            key={section.id}
             librarySection={section}
+            mediaCount={section.all_medias.length}
             href={"/library/[slug]"}
             as={`/library/${section.slug}`}
           />
-        ))}
-      </SectionGrid>
-
-      <SubTitle>Featured Media</SubTitle>
-
-      <MediaGrid>
-        {props.featuredMedias.map((media) => (
-          <LibraryMediaCard key={media.id} media={media} />
-        ))}
-      </MediaGrid>
+          {section.featured_medias.map((media) => (
+            <LibraryMediaCard key={media.id} media={media} />
+          ))}
+        </SectionGrid>
+      ))}
     </Container>
   );
 }
