@@ -112,7 +112,7 @@ function setLoggedUser(user, options) {
   const loggedUser = {
     id: user.id,
     username: user.username,
-    avatarUrl: user.picture && API_URL + user.picture.url,
+    avatarUrl: user.avatar && API_URL + user.avatar.url,
     role: user.role,
   };
 

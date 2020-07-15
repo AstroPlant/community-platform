@@ -194,7 +194,7 @@ export async function getFullArticle(slug) {
         username
         firstName
         lastName
-        picture { 
+        avatar { 
           url
           alternativeText
         }
@@ -265,8 +265,9 @@ export async function getUserDetails(username) {
       firstName
       lastName
       description
-      picture {
+      avatar {
         url
+        alternativeText
       }
     }
   }`;

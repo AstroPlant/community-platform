@@ -89,7 +89,7 @@ export default function SettingsGrid(props) {
   const [showOverlay, setShowOverlay] = useState(false);
   const router = useRouter();
 
-  function editPicture() {
+  function editAvatar() {
     setShowOverlay(true);
   }
 
@@ -102,14 +102,14 @@ export default function SettingsGrid(props) {
       <Overlay show={showOverlay}>
         <OverlayCard>
           <UploadForm
-            title={"Change profile picture"}
+            title={"Edit avatar"}
             closeForm={closeOverlay}
             validationSchema={validationSchema}
             uploadParameters={{
               refId: props.user.id,
               ref: "user",
               source: "users-permissions",
-              field: "picture",
+              field: "avatar",
             }}
             callback={() => {
               updateLoggedUser(props.user.username);
@@ -121,7 +121,7 @@ export default function SettingsGrid(props) {
 
       <Grid inverted>
         <UserColumn>
-          <ProfileCard editPicture={editPicture} user={props.user} />
+          <ProfileCard editAvatar={editAvatar} user={props.user} />
         </UserColumn>
         <SettingsColumn>
           <Tabs>

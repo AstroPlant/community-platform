@@ -63,11 +63,11 @@ export default function ProfileCard(props) {
         <Avatar
           bordered
           size={12}
-          imgSrc={props.user.picture && API_URL + props.user.picture.url}
+          imgSrc={props.user.avatar && API_URL + props.user.avatar.url}
           username={props.user.username}
         />
-        {props.editPicture && (
-          <IconHolder onClick={() => props.editPicture()}>
+        {props.editAvatar && (
+          <IconHolder onClick={() => props.editAvatar()}>
             <Icon size={32} color={"light"}>
               <EditIcon />
             </Icon>
@@ -89,10 +89,10 @@ export default function ProfileCard(props) {
 ProfileCard.propTypes = {
   /* User to display */
   user: PropTypes.object.isRequired,
-  /* function to open the picture edition form */
-  editPicture: PropTypes.func,
+  /* function to open the avatar edition form */
+  editAvatar: PropTypes.func,
 };
 
 ProfileCard.defaultProps = {
-  editPicture: null,
+  editAvatar: null,
 };
