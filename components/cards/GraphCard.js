@@ -61,16 +61,20 @@ export default function GraphCard(props) {
   });
 
   async function addMoreData() {
-    const response = await getMoreMeasures(data.next);
+    if (data.next != null) {
+      const response = await getMoreMeasures(data.next);
 
-    mutate(
-      {
-        ...data,
-        next: response.next,
-        measures: data.measures.concat(response.measures),
-      },
-      false
-    );
+      mutate(
+        {
+          ...data,
+          next: response.next,
+          measures: data.measures.concat(response.measures),
+        },
+        false
+      );
+    } else {
+      alert("No more data available.");
+    }
   }
 
   return (
@@ -89,17 +93,18 @@ export default function GraphCard(props) {
       </HeadRow>
 
       <GraphHolder>
-        {data ? (
+        {data && typeof error === "undefined" ? (
           <Graph graph={props.graph} data={data.measures} />
         ) : (
           <LoadingAnimation message="Fetching graph data..." />
         )}
-        {error && <p>Could not fecth the data</p>}
+        {error && <p>Could not load graph data.</p>}
       </GraphHolder>
     </Container>
   );
 }
 
 GraphCard.propTypes = {
+  /* the graph to display */
   graph: PropTypes.object.isRequired,
 };

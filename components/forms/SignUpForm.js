@@ -63,7 +63,7 @@ const SignUpForm = () => {
             values.password
           );
 
-          if (res.status === 200) {
+          if (!res.error) {
             setLoading(false);
 
             actions.setStatus({
@@ -75,7 +75,7 @@ const SignUpForm = () => {
             setLoading(false);
 
             actions.setStatus({
-              error: "Whoops ! Could not sign you up, check your credentials.",
+              error: `Whoops! Could not sign you up, ${res.message[0].messages[0].message}`,
             });
           }
         }}

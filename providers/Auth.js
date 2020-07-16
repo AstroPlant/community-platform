@@ -71,27 +71,17 @@ export function useAuth() {
  * @param password the password of the user
  * @param rememberMe if the cookies should be stored indefinetly of not
  */
-export async function authenticate(username, password, rememberMe) {
+export function authenticate(authInfos, rememberMe) {
   const cookieOptions = defaultOptions;
 
   if (rememberMe) {
     cookieOptions.maxAge = null;
   }
 
-  const response = await login(username, password);
-
-  if (response.status === 200) {
-    const json = await response.json();
-
-    setLoggedUser(json.user, cookieOptions);
-    setToken("accessToken", json.accessToken, cookieOptions);
-    setToken("refreshToken", json.refreshToken, cookieOptions);
-    setToken("communityToken", json.communityToken, cookieOptions);
-
-    return true;
-  } else {
-    return false;
-  }
+  setLoggedUser(authInfos.user, cookieOptions);
+  setToken("accessToken", authInfos.accessToken, cookieOptions);
+  setToken("refauthInfoshToken", authInfos.refreshToken, cookieOptions);
+  setToken("communityToken", authInfos.communityToken, cookieOptions);
 }
 
 /***

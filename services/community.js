@@ -1,86 +1,12 @@
 import { getToken } from "../providers/Auth";
+import { queryfy, gqQuery, postJson, postRaw } from "../utils/fetchTools";
 
 const GRAPHQL_URL = "http://localhost:1337/graphql";
 
 export const API_URL = "http://localhost:1337";
 
-/**********************************************
- *             GENERIC FETCH TOOLS            *
- **********************************************/
-
-/***
- * Fetch model to query data from the API
- * @param query a graphQL query
- */
-async function getQuery(query) {
-  const res = await fetch(GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      query: query,
-    }),
-  });
-
-  return res.json();
-}
-
-/***
- * POST request template
- * @param apiPath the path of the api where to send the request
- */
-async function postRequest(apiPath, body) {
-  const url = API_URL + apiPath;
-
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: body,
-    });
-
-    return res;
-  } catch (error) {
-    return {};
-  }
-}
-
-/**
- * Queryfy.
- *
- * Prep javascript objects for interpolation within graphql queries.
- *
- * @param {mixed} obj
- * @return template string.
- */
-function queryfy(obj) {
-  // Make sure we don't alter integers.
-  if (obj === null) {
-    return null;
-  }
-
-  // Make sure we don't alter integers.
-  if (typeof obj === "number") {
-    return obj;
-  }
-
-  // Stringify everything other than objects.
-  if (typeof obj !== "object" || Array.isArray(obj)) {
-    return JSON.stringify(obj);
-  }
-
-  // Iterate through object keys to convert into a string
-  // to be interpolated into the query.
-  let props = Object.keys(obj)
-    .map((key) => `${key}:${queryfy(obj[key])}`)
-    .join(",");
-
-  return `{${props}}`;
+function getQuery(query, options = {}) {
+  return gqQuery(GRAPHQL_URL, query, options);
 }
 
 /**********************************************
@@ -237,18 +163,7 @@ export async function createUser(email, username, password) {
     }
   }`;
 
-  const res = await fetch(GRAPHQL_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      query: mutation,
-    }),
-  });
-
-  return res;
+  return getQuery(mutation);
 }
 
 /***
@@ -285,6 +200,9 @@ export async function updateUserInfo(id, updatedInfos) {
   const token = getToken("communityToken");
   const bearer = "Bearer " + token;
 
+  const options = {};
+  options.headers = { Authorization: bearer };
+
   const mutation = `mutation {
     updateUser(
       input: { 
@@ -305,20 +223,7 @@ export async function updateUserInfo(id, updatedInfos) {
     }
   }`;
 
-  const response = await fetch(GRAPHQL_URL, {
-    method: "POST",
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: bearer,
-    },
-    body: JSON.stringify({
-      query: mutation,
-    }),
-  });
-
-  return response.json();
+  return getQuery(mutation, options);
 }
 
 /***
@@ -329,20 +234,12 @@ export async function changePassword(oldPassword, newPassword) {
   const token = getToken("communityToken");
   const bearer = "Bearer " + token;
 
-  const body = JSON.stringify({ oldPassword, newPassword });
+  const options = {};
+  options.headers = { Authorization: bearer };
 
-  const res = await fetch(API_URL + "/users/changePassword", {
-    method: "POST",
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: bearer,
-    },
-    body: body,
-  });
+  const body = { oldPassword, newPassword };
 
-  return res;
+  return postJson(API_URL + "/users/changePassword", body, options);
 }
 
 /**********************************************
@@ -595,14 +492,12 @@ export async function getUsersGraphs(username, kitSerial) {
 export async function login(username, password) {
   const path = "/auth/local";
 
-  const body = JSON.stringify({
+  const body = {
     identifier: username,
     password: password,
-  });
+  };
 
-  const res = await postRequest(path, body);
-
-  return res;
+  return postJson(API_URL + path, body);
 }
 
 /***
@@ -613,11 +508,9 @@ export async function login(username, password) {
 export async function forgotPassword(email) {
   const path = "/auth/forgot-password";
 
-  const body = JSON.stringify({
-    email: email,
-  });
+  const body = { email };
 
-  const res = await postRequest(path, body);
+  const res = await postJson(API_URL + path, body);
 
   return res;
 }
@@ -663,13 +556,9 @@ export async function upload(
     }
   });
 
-  const res = await fetch(API_URL + "/upload", {
-    method: "POST",
+  return postRaw(API_URL + "/upload", formData, {
     headers: {
       Authorization: bearer,
     },
-    body: formData,
   });
-
-  return res;
 }

@@ -5,9 +5,8 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { updateUserInfo } from "../../services/community";
 import Button from "../Button";
-import Checkbox from "./CheckBox";
-import TextInput from "./TextInput";
 import LongTextInput from "./LongTextInput";
+import TextInput from "./TextInput";
 
 const CustomForm = styled(Form)`
   display: flex;
@@ -57,7 +56,16 @@ const AccountForm = (props) => {
         initialStatus={{ success: null, error: null }}
         validationSchema={UserInfoSchema}
         onSubmit={async (values, actions) => {
-          const update = await updateUserInfo(id, values);
+          const res = await updateUserInfo(id, values);
+
+          if (!res.error) {
+            // Show feedback
+            actions.setStatus({ success: "Information successfly updated!" });
+          } else {
+            actions.setStatus({
+              error: `Whoops! Something went wrong!`,
+            });
+          }
         }}
       >
         {({ touched, isSubmitting, isValid }) => (

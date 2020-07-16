@@ -50,8 +50,6 @@ const MediaTitle = styled.b`
 export default function LibraryMediaCard(props) {
   const type = props.media.media[0].type.replace("ComponentMediaType", "");
 
-  console.log(props.media);
-
   return (
     <Container animateOnHover className={props.className}>
       <CoverHolder>

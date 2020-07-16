@@ -1,49 +1,15 @@
+import { postJson, fetchJson } from "../utils/fetchTools";
+
 export const API_URL = "https://api.astroplant.sda-projects.nl";
 
-/***
- * GET request template
- * @param apiPath the path of the api where to send the request
- */
-async function getRequest(apiPath) {
-  const url = API_URL + apiPath;
-
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
-
-  if (res.status === 200) {
-    return res.json();
-  } else {
-    console.log(res);
-    return [];
-  }
+function postRequest(path, body, options) {
+  const url = API_URL + path;
+  return postJson(url, body, options);
 }
 
-/***
- * POST request template
- * @param apiPath the path of the api where to send the request
- */
-async function postRequest(apiPath, body) {
-  const url = API_URL + apiPath;
-
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: body,
-    });
-
-    return res;
-  } catch (error) {
-    return {};
-  }
+function getRequest(path, options) {
+  const url = API_URL + path;
+  return fetchJson(url, options);
 }
 
 /***
@@ -77,8 +43,7 @@ export async function getAPIVersion() {
  */
 export async function getUserDetails(username) {
   const path = `/users/${username}`;
-  const res = await getRequest(path);
-  return res;
+  return getRequest(path);
 }
 
 /***
@@ -87,65 +52,60 @@ export async function getUserDetails(username) {
  */
 export async function getUserMemberships(username) {
   const path = `/users/${username}/kit-memberships`;
-  const res = await getRequest(path);
-  return res;
+  return getRequest(path);
 }
 
 /***
  * Fetch all the public kits
  */
 export async function getKits() {
-  const res = await getRequest("/kits");
-  return res;
+  const path = `/kits`;
+  return getRequest(path);
 }
 
 /***
- * Fetch a specific
- * @param serial the serial of the wanted kit
+ * Fetch a specific kit
+ * @param serial of the kit
  */
 export async function getKitBySerial(serial) {
-  const path = "/kits/" + serial;
-  const res = await getRequest(path);
-  return res;
+  const path = `/kits/${serial}`;
+  return getRequest(path);
 }
 
 /***
- * Fetch kit configuration by serial
- * @param serial the serial of the wanted kit
+ * Fetch kit configurations
+ * @param serial of the kit
  */
 export async function getKitConfigsBySerial(serial) {
   const path = `/kits/${serial}/configurations`;
-  const res = await getRequest(path);
-  return res;
+  return getRequest(path);
 }
 
 /***
- * Fetch kit configuration by serial
- * @param serial the serial of the wanted kit
+ * Fetch the active configuration of a kit
+ * @param serial of the kit
  */
 export async function getActiveConfigBySerial(serial) {
   let activeConfig = {};
 
   const path = `/kits/${serial}/configurations`;
 
-  try {
-    const res = await getRequest(path);
+  const res = await getRequest(path);
 
+  if (!res.error) {
     for (let config of res) {
       if (config.active) {
         activeConfig = config;
       }
     }
-
-    return activeConfig;
-  } catch (error) {
-    return activeConfig;
   }
+
+  return activeConfig;
 }
 
 /***
- * Returns a kit with it's active configuration fully completed
- * @param serial the serial of the fetched kit
+ * Returns a full kit with its active configuration
+ * @param serial of the kit
  */
 export async function getFullKit(serial) {
   let kit = {};
@@ -155,7 +115,7 @@ export async function getFullKit(serial) {
     let kit = await getKitBySerial(serial);
 
     // fetch the kit's current active config
-    kit.config = await getActiveConfigBySerial(kit.serial);
+    kit.config = await getActiveConfigBySerial(serial);
 
     /* for each peripherals and quantity types we get their details and add
      * them to the config
@@ -175,25 +135,68 @@ export async function getFullKit(serial) {
   }
 }
 
+/**
+ * Fetches a list of all the known peripheral definitions
+ */
 export async function getAllPeripherals() {
   const path = "/peripheral-definitions?after=0&withExpectedQuantityTypes=true";
-  return await getRequest(path);
+  return getRequest(path);
 }
 
+/**
+ * Fetches a specific peripheral definition
+ * @param {number} id of the peripheral definition
+ */
 export async function getPeripheralDetails(id) {
   const allPeripherals = await getAllPeripherals();
   return allPeripherals[id - 1];
 }
 
+/**
+ * Fetches a list of all the known quantity types
+ */
 export async function getQuantityTypes() {
   let path = "/quantity-types?after=0";
-  const res = await getRequest(path);
-  return res;
+  return getRequest(path);
 }
 
+/**
+ * Fetch a specific quantity type
+ * @param {number} id of the quantityType
+ */
 export async function getQuantityTypeDetails(id) {
   const allQuantities = await getQuantityTypes();
   return allQuantities[id - 1];
+}
+
+/**
+ * Fetches an array of measure and it's cursor if there is one
+ * @param {string} url of the measures
+ */
+async function getMeasures(url) {
+  let next = null;
+  let measures = [];
+
+  // fetching measures
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (res.ok) {
+    measures = await res.json();
+
+    // headers are of type Headers
+    const unparsedLink = res.headers.get("link");
+
+    if (unparsedLink != null) {
+      next = unparsedLink.match(/<(.*?)>/)[1];
+    }
+  }
+
+  return { next, measures };
 }
 
 /***
@@ -219,59 +222,15 @@ export async function getKitMeasures(
   // Building complete url
   const url = API_URL + path + params;
 
-  // fetching measures
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
-
-  const measures = await res.json();
-
-  if (res.status === 200 && measures.length !== 0) {
-    // headers are of type Headers
-    const unparsedLink = res.headers.get("link");
-    const parsedLink = unparsedLink.match(/<(.*?)>/)[1];
-
-    return { next: parsedLink, measures: measures };
-  } else {
-    console.log(res);
-    return [];
-  }
+  return getMeasures(url);
 }
 
 /***
- * fetch more measures
- * @param nextLink the link present on the previous response header
+ * Fetch more measures
+ * @param nextLink the "next" link present on the previous response header
  */
 export async function getMoreMeasures(nextLink) {
   const url = API_URL + nextLink;
 
-  // fetching measures
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
-
-  const measures = await res.json();
-
-  if (res.status === 200 && measures.length !== 0) {
-    try {
-      // headers are of type Headers
-      const unparsedLink = res.headers.get("link");
-      const parsedLink = unparsedLink.match(/<(.*?)>/)[1];
-      return { next: parsedLink, measures: measures };
-    } catch (err) {
-      console.log(err);
-      return [];
-    }
-  } else {
-    console.log(res);
-    return [];
-  }
+  return getMeasures(url);
 }

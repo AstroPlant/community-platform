@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { authenticate, useAuth } from "../../providers/Auth";
+import { forgotPassword, login } from "../../services/community";
 import Button from "../Button";
+import LoadingAnimation from "../LoadingAnimation";
 import Checkbox from "./CheckBox";
 import TextInput from "./TextInput";
-import { forgotPassword } from "../../services/community";
-import LoadingAnimation from "../LoadingAnimation";
 
 const CustomForm = styled(Form)`
   display: flex;
@@ -53,24 +53,26 @@ const LoginForm = () => {
         validationSchema={LoginSchema}
         onSubmit={async (values, actions) => {
           setLoading(true);
-          const auth = await authenticate(
-            values.username,
-            values.password,
-            values.rememberMe
-          );
+          const res = await login(values.username, values.password);
 
-          if (auth) {
+          if (!res.error) {
+            // Show feedback
+            actions.setStatus({ success: "Logged In !" });
             setLoading(false);
 
-            actions.setStatus({ success: "Logged In !" });
+            // Updates local infos
+            authenticate(res, values.rememberMe);
             setLogged(true);
 
-            router.replace("/");
+            // Navigate to the home page
+            setTimeout(function() {
+              actions.resetForm();
+              router.replace("/");
+            }, 2000);
           } else {
             setLoading(false);
-
             actions.setStatus({
-              error: "Whoops ! Could not log in, check your credentials.",
+              error: `Whoops! Could not log in, ${res.message[0].messages[0].message}`,
             });
           }
         }}
