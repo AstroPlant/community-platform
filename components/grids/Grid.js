@@ -9,13 +9,13 @@ const GridContainer = styled.div`
 
   padding: 2rem 0;
 
-  height: ${(props) => props.fill && "100%"};
+  height: ${(props) => props.fillHeight && "100%"};
 `;
 
 export default function Grid(props) {
   return (
     <GridContainer
-      fill={props.fill}
+      fillHeight={props.fillHeight}
       inverted={props.inverted}
       className={props.className}
       {...props}
@@ -30,10 +30,10 @@ Grid.propTypes = {
   /* Whether or not the classic ratio of 2/3 1/3 should be inverted to 1/3 2/3 */
   inverted: PropTypes.bool,
   /* Makes the grid fill it's container's height */
-  fill: PropTypes.bool,
+  fillHeight: PropTypes.bool,
 };
 
 Grid.defaultProps = {
   inverted: false,
-  fill: false,
+  fillHeight: false,
 };

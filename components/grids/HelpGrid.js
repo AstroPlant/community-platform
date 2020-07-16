@@ -12,13 +12,15 @@ const GridContainer = styled(Grid)`
 
 export default function HelpGrid(props) {
   return (
-    <GridContainer fill className={props.className}>
+    <GridContainer fillHeight className={props.className}>
       {props.children}
     </GridContainer>
   );
 }
 
 HelpGrid.propTypes = {
-  className: PropTypes.node,
+  /* attribute to edit the component style using styled-component */
+  className: PropTypes.string,
+  /* Node children of the component */
   children: PropTypes.node,
 };

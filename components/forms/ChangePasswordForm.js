@@ -43,8 +43,6 @@ export default function ChangePasswordForm() {
             values.oldPassword,
             values.newPassword
           );
-
-          console.log(res);
         }}
       >
         {({ isSubmitting, isValid }) => (

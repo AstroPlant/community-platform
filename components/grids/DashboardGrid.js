@@ -56,7 +56,7 @@ export default function DashboardGrid(props) {
   const dashboardItems = React.Children.toArray(props.children);
 
   return (
-    <GridContainer fill>
+    <GridContainer fillHeight>
       <TopLeft>{dashboardItems[0]}</TopLeft>
       <TopRight>{dashboardItems[1]}</TopRight>
       <MidLeft>{dashboardItems[2]}</MidLeft>

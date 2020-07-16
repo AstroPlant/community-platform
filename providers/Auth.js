@@ -2,7 +2,7 @@ import cookie from "cookie";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { Cookies } from "react-cookie";
-import { API_URL, login, getUserDetails } from "../services/community";
+import { API_URL, getUserDetails } from "../services/community";
 
 const cookies = new Cookies();
 const defaultOptions = { path: "/", sameSite: true, maxAge: 3600 };
