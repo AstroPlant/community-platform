@@ -17,11 +17,13 @@ function getQuery(query, options = {}) {
  * Fetches all the FAQs categories
  */
 export async function getHelpSections() {
-  const query = `{ helpSections {
-    title
-    id
-    slug
-  }}`;
+  const query = `{ 
+    helpSections {
+      id
+      slug
+      title
+    }
+  }`;
 
   const res = await getQuery(query);
 
@@ -34,19 +36,46 @@ export async function getHelpSections() {
 export async function getHelpSectionBySlug(slug) {
   const query = `{ 
     helpSections(where: { slug: "${slug}" }) {
-          title
-          faqs{
-            id
-            question 
-            answer
-            updated_at
-          }
-        } 
-      }`;
+      title
+      faqs {
+        id
+        question 
+        answer
+        updated_at
+      }
+    } 
+  }`;
 
   const res = await getQuery(query);
 
   return res.data.helpSections[0];
+}
+
+/**
+ * Search through the FAQs
+ * @param {string} search words to look for
+ * @param {int} start where to start on the result array
+ * @param {int} limit maximum number of answers
+ * @param {string} sort keywords to sort the results
+ */
+export async function searchFAQs(
+  search,
+  start = 0,
+  limit = 10,
+  sort = "id:desc"
+) {
+  const query = `{
+    results: searchFaqs(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      question 
+      answer
+      updated_at
+    }
+  }`;
+
+  console.log(query);
+
+  return getQuery(query);
 }
 
 /**********************************************
@@ -135,6 +164,41 @@ export async function getFullArticle(slug) {
   const res = await getQuery(query);
 
   return res.data.articles[0];
+}
+
+/**
+ * Search through the Articles
+ * @param {string} search words to look for
+ * @param {int} start where to start on the result array
+ * @param {int} limit maximum number of answers
+ * @param {string} sort keywords to sort the results
+ */
+export async function searchArticles(
+  search,
+  start = 0,
+  limit = 10,
+  sort = "id:desc"
+) {
+  const query = `{
+    results: searchArticles(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      slug 
+      created_at
+      title
+      short_description
+      cover { 
+        url 
+        alternativeText
+      }
+      author { 
+        username
+        firstName
+        lastName
+      }
+    }
+  }`;
+
+  return getQuery(query);
 }
 
 /**********************************************
@@ -440,6 +504,54 @@ export async function getFeaturedLibraryMedias() {
   const res = await getQuery(query);
 
   return res.data.libraryMedias;
+}
+
+/**
+ * Search through the libraryMedias
+ * @param {string} search words to look for
+ * @param {int} start where to start on the result array
+ * @param {int} limit maximum number of answers
+ * @param {string} sort keywords to sort the results
+ */
+export async function searchLibraryMedias(
+  search,
+  start = 0,
+  limit = 10,
+  sort = "id:desc"
+) {
+  const query = `{
+    results: searchMedias(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+        id
+        slug
+        title
+        media {
+          __typename
+          ... on ComponentMediaTypeLink {
+            id
+            url
+          }
+          ... on ComponentMediaTypeFile {
+            id
+            name
+            file {
+              id
+              created_at
+              caption
+            }
+          }
+          ... on ComponentMediaTypeArticle {
+            id
+            title
+            cover {
+              caption
+            }
+            content
+          }
+        }
+      }
+  }`;
+
+  return getQuery(query);
 }
 
 /**********************************************
