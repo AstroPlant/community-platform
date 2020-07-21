@@ -12,8 +12,7 @@ export default {
 
 const articleData = {
   title: "An article title!",
-  short_description:
-    "I am describing what the news is about and it's actually amazing",
+  preview: "I am describing what the news is about and it's actually amazing",
   cover: { url: "/uploads/placeholder_c8fa25810a.jpeg" },
   author: { username: "DouglasAdams" },
 };

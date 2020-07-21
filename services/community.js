@@ -1,5 +1,5 @@
 import { getToken } from "../providers/Auth";
-import { queryfy, gqQuery, postJson, postRaw } from "../utils/fetchTools";
+import { gqQuery, postJson, postRaw, queryfy } from "../utils/fetchTools";
 
 const GRAPHQL_URL = "http://localhost:1337/graphql";
 
@@ -92,7 +92,7 @@ export async function getArticles() {
       slug
       created_at
       title
-      short_description
+      preview
       cover {
         url
         alternativeText
@@ -108,7 +108,7 @@ export async function getArticles() {
       slug
       created_at
       title
-      short_description
+      preview
       cover {
         url
         alternativeText
@@ -131,7 +131,7 @@ export async function getFeaturedArticle() {
       slug
       created_at
       title
-      short_description
+      preview
       cover {
         url
         alternativeText
@@ -149,7 +149,7 @@ export async function getFeaturedArticle() {
  */
 export async function getFullArticle(slug) {
   const query = `{
-    articles(where: { slug: "${slug}" }) {
+    main_article: articles(where: { slug: "${slug}" }) {
       title
       created_at
       content
@@ -171,11 +171,22 @@ export async function getFullArticle(slug) {
         title
       }
     }
+    related_articles: articles(sort: "created_at:desc", limit: 3) {
+      id
+      slug
+      created_at
+      title
+      preview
+      cover {
+        url
+        alternativeText
+      }
+    }
 }`;
 
   const res = await getQuery(query);
 
-  return res.data.articles[0];
+  return res.data;
 }
 
 /**
@@ -197,7 +208,7 @@ export async function searchArticles(
       slug 
       created_at
       title
-      short_description
+      preview
       cover { 
         url 
         alternativeText

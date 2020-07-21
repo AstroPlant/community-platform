@@ -1,26 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
-import styled from "styled-components";
-import Path from "../Path";
-import BaseLayout from "./BaseLayout";
-
-const PageLayout = styled.div`
-  position: relative;
-
-  width: 100%;
-  max-width: 1280px;
-  margin: auto;
-  padding: 0 2rem;
-`;
+import Grid from "../grids/Grid";
+import MainLayout from "./MainLayout";
 
 export default function ArticleLayout(props) {
   return (
-    <BaseLayout>
-      <PageLayout>
-        <Path />
-        {props.children}
-      </PageLayout>
-    </BaseLayout>
+    <MainLayout>
+      <Grid>{props.children}</Grid>
+    </MainLayout>
   );
 }
 

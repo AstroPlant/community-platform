@@ -1,10 +1,10 @@
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { API_URL } from "../../services/community";
 import Button from "../Button";
 import Card from "./Card";
-import Link from "next/link";
-import { API_URL } from "../../services/community";
 
 const Container = styled(Card)`
   && {
@@ -21,7 +21,13 @@ const Container = styled(Card)`
 `;
 
 const Title = styled.b`
+  height: 1.5em;
+
   margin-bottom: 0.5rem;
+
+  line-height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Content = styled.div`
@@ -58,7 +64,6 @@ export default function NewsCard(props) {
     >
       <Content>
         <Title>{props.featuredArticle.title}</Title>
-        <p>{props.featuredArticle.short_description}</p>
         <ButtonRow>
           <Link
             passHref
@@ -72,11 +77,9 @@ export default function NewsCard(props) {
             />
           </Link>
 
-          {props.home && (
-            <Link passHref href={"/news"}>
-              <MarginButton label={"All News"} color={"primary"} />
-            </Link>
-          )}
+          <Link passHref href={"/news"}>
+            <MarginButton label={"All News"} color={"primary"} />
+          </Link>
         </ButtonRow>
       </Content>
     </Container>
@@ -88,10 +91,4 @@ NewsCard.propTypes = {
   className: PropTypes.string,
   /* Article object containing the featured article infos to display */
   featuredArticle: PropTypes.object.isRequired,
-  /* Wether or not the card is on the homescreen */
-  home: PropTypes.bool,
-};
-
-NewsCard.defaultProps = {
-  home: false,
 };

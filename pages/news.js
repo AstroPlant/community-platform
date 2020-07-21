@@ -10,11 +10,7 @@ export default function News({ featured, articles }) {
       searchFor={"articles"}
       pageTitle={"The latest updates!"}
     >
-      <FeaturedArticleCard
-        featuredArticle={featured}
-        href={"/news/[slug]"}
-        as={"/news/" + featured.slug}
-      />
+      <FeaturedArticleCard featuredArticle={featured} />
       <ArticleGrid articles={articles} />
     </MainLayout>
   );

@@ -4,9 +4,7 @@ import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { API_URL } from "../services/community";
 import styles from "../styles/markdown.module.css";
-import Avatar from "./Avatar";
 import Chip from "./Chip";
-import Date from "./Date";
 
 const CoverImage = styled.img`
   position: relative;
@@ -33,70 +31,42 @@ const Title = styled.h1`
   line-height: 1.2;
 `;
 
-const AuthorInfos = styled.div`
-  display: flex;
-  align-items: center;
-
-  width: 100%;
-`;
-
-const AuthorName = styled.b`
-  text-transform: capitalize;
-  font-size: 1.2em;
-`;
-
-const ArticleDate = styled(Date)`
-  color: ${(props) => props.theme.grey};
-`;
-
 const ArticleContainer = styled.div`
   margin: 2rem 0 0 0;
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 1.25rem;
 `;
 
 const Row = styled.div`
   display: flex;
 `;
 
-export default function Article({ article }) {
+export default function Article(props) {
   // Temporary dev env fixes
-  const content = article.content.replace(/\/uploads/g, API_URL + "/uploads");
-  const coverURL = API_URL + article.cover.url;
-  const hasFullName = article.author.firstName && article.author.lastName;
+  const content = props.article.content.replace(
+    /\/uploads/g,
+    API_URL + "/uploads"
+  );
+  const coverURL = API_URL + props.article.cover.url;
 
   return (
-    <>
-      <CoverImage src={coverURL} alt={article.cover.caption} />
+    <div>
+      <CoverImage src={coverURL} alt={props.article.cover.caption} />
       <Container>
         <Row>
-          {article.categories.map((category) => (
+          {props.article.categories.map((category) => (
             <Chip key={category.id} label={category.title} />
           ))}
         </Row>
 
-        <Title>{article.title}</Title>
-        <AuthorInfos>
-          <Avatar size={3.5} username={article.author.username} />
-          <Column>
-            <AuthorName>
-              {hasFullName
-                ? `${article.author.firstName} ${article.author.lastName}`
-                : article.author.username}
-            </AuthorName>
-            <ArticleDate dateString={article.created_at} />
-          </Column>
-        </AuthorInfos>
+        <Title>{props.article.title}</Title>
         <ArticleContainer>
           <ReactMarkdown source={content} className={styles.md} />
         </ArticleContainer>
       </Container>
-    </>
+    </div>
   );
 }
 
-Article.propTypes = { article: PropTypes.object.isRequired };
+Article.propTypes = {
+  /* Object containing the article informations*/
+  article: PropTypes.object.isRequired,
+};

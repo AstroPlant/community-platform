@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import NewsCard from "../cards/NewsCard";
+import ArticleCard from "../cards/ArticleCard";
 import Grid from "./Grid";
 
 const GridContainer = styled(Grid)`
@@ -19,7 +19,7 @@ export default function ArticleGrid(props) {
     <GridContainer>
       {props.articles.map((article) => (
         <GridItem key={article.id}>
-          <NewsCard featuredArticle={article} />
+          <ArticleCard article={article} />
         </GridItem>
       ))}
     </GridContainer>

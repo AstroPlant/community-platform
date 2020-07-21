@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import { API_URL } from "../../services/community";
-import Date from "../Date";
+import ArticleInfos from "../ArticleInfos";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
@@ -24,59 +24,40 @@ const InfosContainer = styled.div`
 
 const Title = styled.h2`
   color: ${(props) => props.theme.primary};
+`;
+
+const Preview = styled.p`
   margin: 1rem 0;
+  max-height: 100%;
+  overflow: hidden;
 `;
 
-const Row = styled.div`
-  display: flex;
+const InfosBottom = styled(ArticleInfos)`
+  margin-top: auto;
 `;
 
-const BoldDate = styled(Date)`
-  font-weight: bold;
-`;
-
-const AuthorRow = styled.div`
-  display: flex;
-  margin-left: 2rem;
-`;
-
-const InfoName = styled.p`
-  font-weight: 300;
-  margin-right: 1rem;
-`;
-
-export default function FeaturedArticleCard({ featuredArticle, href, as }) {
-  const hasFullName =
-    featuredArticle.author.firstName && featuredArticle.author.lastName;
-
+export default function FeaturedArticleCard(props) {
   return (
-    <WrapInLink href={href} as={as}>
+    <WrapInLink
+      href={"/news/[slug]"}
+      as={`/news/${props.featuredArticle.slug}`}
+    >
       <Container>
         <img
-          src={API_URL + featuredArticle.cover.url}
+          src={API_URL + props.featuredArticle.cover.url}
           alt={
-            featuredArticle.cover.alternativeText
-              ? featuredArticle.cover.alternativeText
+            props.featuredArticle.cover.alternativeText
+              ? props.featuredArticle.cover.alternativeText
               : " "
           }
         />
         <InfosContainer>
-          <Row>
-            <Row>
-              <InfoName>Date:</InfoName>
-              <BoldDate dateString={featuredArticle.created_at} />
-            </Row>
-            <AuthorRow>
-              <InfoName>Author:</InfoName>
-              <b>
-                {hasFullName
-                  ? `${featuredArticle.author.firstName} ${featuredArticle.author.lastName}`
-                  : featuredArticle.author.username}
-              </b>
-            </AuthorRow>
-          </Row>
-          <Title>{featuredArticle.title}</Title>
-          <p>{featuredArticle.short_description}</p>
+          <Title>{props.featuredArticle.title}</Title>
+          <Preview>{props.featuredArticle.preview}</Preview>
+          <InfosBottom
+            author={props.featuredArticle.author}
+            date={props.featuredArticle.created_at}
+          />
         </InfosContainer>
       </Container>
     </WrapInLink>
@@ -84,5 +65,6 @@ export default function FeaturedArticleCard({ featuredArticle, href, as }) {
 }
 
 FeaturedArticleCard.propTypes = {
+  /* Object containing the information of the article to feature */
   featuredArticle: PropTypes.object.isRequired,
 };
