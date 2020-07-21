@@ -2,6 +2,9 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Grid from "./Grid";
+import SlackIcon from "../../public/icons/slack.svg";
+import CategoryCard from "../cards/CategoryCard";
+import HelpCard from "../cards/HelpCard";
 
 const GridContainer = styled(Grid)`
   && {
@@ -13,7 +16,19 @@ const GridContainer = styled(Grid)`
 export default function HelpGrid(props) {
   return (
     <GridContainer fillHeight className={props.className}>
-      {props.children}
+      {props.helpSections.map((category) => (
+        <CategoryCard
+          name={category.title}
+          slug={category.slug}
+          key={category.id}
+        />
+      ))}
+      <HelpCard
+        iconSVG={<SlackIcon />}
+        iconSize={96}
+        title={"Ask the community!"}
+        href={"http://www.astroplant.slack.com/#/"}
+      />
     </GridContainer>
   );
 }
@@ -23,4 +38,6 @@ HelpGrid.propTypes = {
   className: PropTypes.string,
   /* Node children of the component */
   children: PropTypes.node,
+  /* arroy of helpSections objects */
+  helpSections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

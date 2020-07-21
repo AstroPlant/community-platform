@@ -1,19 +1,33 @@
+import FeaturedArticleCard from "../components/cards/FeaturedArticleCard";
 import ArticleGrid from "../components/grids/ArticleGrid";
 import MainLayout from "../components/layouts/MainLayout";
-import { getArticlesPreview } from "../services/community";
+import { getArticles } from "../services/community";
 
-export default function News({ articles }) {
+export default function News({ featured, articles }) {
   return (
-    <MainLayout pageTitle={"The latest updates!"}>
+    <MainLayout
+      enableSearch
+      searchFor={"articles"}
+      pageTitle={"The latest updates!"}
+    >
+      <FeaturedArticleCard
+        featuredArticle={featured}
+        href={"/news/[slug]"}
+        as={"/news/" + featured.slug}
+      />
       <ArticleGrid articles={articles} />
     </MainLayout>
   );
 }
 
 export async function getServerSideProps() {
+  const data = await getArticles();
+  const featured = data.featured[0];
+  const articles = data.previews;
   return {
     props: {
-      articles: await getArticlesPreview(),
+      articles,
+      featured,
     },
   };
 }

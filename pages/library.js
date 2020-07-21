@@ -5,7 +5,11 @@ import { getAllLibrarySections } from "../services/community";
 
 export default function Library({ librarySections }) {
   return (
-    <MainLayout pageTitle={"AstroPlant Library"}>
+    <MainLayout
+      enableSearch
+      searchFor={"libraryMedias"}
+      pageTitle={"AstroPlant Library"}
+    >
       <LibraryGrid librarySections={librarySections} />
     </MainLayout>
   );

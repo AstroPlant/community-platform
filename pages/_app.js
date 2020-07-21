@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import { AuthProvider } from "../providers/Auth";
+import { SearchProvider } from "../providers/Search";
 import { GlobalStyle } from "../styles/global";
 import theme from "../styles/theme";
 
@@ -20,7 +21,9 @@ export default function MyApp({ Component, pageProps }) {
       </Head>
       <AuthProvider>
         <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
+          <SearchProvider>
+            <Component {...pageProps} />
+          </SearchProvider>
           <GlobalStyle />
         </ThemeProvider>
       </AuthProvider>

@@ -1,16 +1,19 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
+import { API_URL } from "../../services/community";
 import Date from "../Date";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
-import { API_URL } from "../../services/community";
 
 const Container = styled(Card)`
+  height: 50vh;
+
   padding: 0;
+  margin: 2rem 0;
 
   display: grid;
-  grid-template-columns: 0.6fr 1fr;
+  grid-template-columns: 0.75fr 1fr;
 `;
 
 const InfosContainer = styled.div`

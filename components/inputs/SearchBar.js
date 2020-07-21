@@ -1,11 +1,15 @@
-import { Field, Formik } from "formik";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
-import * as Yup from "yup";
+import { useSearch } from "../../providers/Search";
 import SearchIcon from "../../public/icons/search.svg";
+import CloseIcon from "../../public/icons/close.svg";
+import {
+  searchArticles,
+  searchFAQs,
+  searchLibraryMedias,
+} from "../../services/community";
 import Icon from "../Icon";
-import { searchFAQs } from "../../services/community";
 
 const Form = styled.form`
   display: flex;
@@ -41,6 +45,25 @@ const Hidden = styled.input`
 
 export default function SearchBar(props) {
   const [query, setQuery] = useState("");
+  const { results, setResults, setParams } = useSearch();
+  let search = null;
+
+  switch (props.searchFor) {
+    case "libraryMedias":
+      search = searchLibraryMedias;
+      break;
+
+    case "faqs":
+      search = searchFAQs;
+      break;
+
+    case "articles":
+      search = searchArticles;
+      break;
+
+    default:
+      break;
+  }
 
   function handleChange(event) {
     setQuery(event.target.value);
@@ -48,12 +71,25 @@ export default function SearchBar(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const results = await props.search(query);
-    console.log(results);
+    if (query && query !== "") {
+      setParams({ query });
+      const res = await search(query);
+      setResults(res.data.results);
+    }
+  }
+
+  function handleReset(event) {
+    event.preventDefault();
+
+    document.getElementById("searchbar").reset();
+
+    setQuery(null);
+    setParams({});
+    setResults(null);
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} id="searchbar">
       <IconHolder color={"grey"} size={24}>
         <SearchIcon />
       </IconHolder>
@@ -64,11 +100,18 @@ export default function SearchBar(props) {
         onChange={handleChange}
       />
       <Hidden type="submit" />
+      {query && (
+        <div onClick={handleReset}>
+          <IconHolder color={"grey"} size={24}>
+            <CloseIcon />
+          </IconHolder>
+        </div>
+      )}
     </Form>
   );
 }
 
 SearchBar.propTypes = {
-  /* The function to execute on submit */
-  search: PropTypes.func.isRequired,
+  /* The type of content to search */
+  searchFor: PropTypes.string.isRequired,
 };

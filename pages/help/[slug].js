@@ -1,10 +1,10 @@
 import FAQGrid from "../../components/grids/FAQGrid";
 import MainLayout from "../../components/layouts/MainLayout";
-import { getHelpSectionBySlug } from "../../services/community";
+import { getHelpSectionBySlug, searchFAQs } from "../../services/community";
 
 export default function FAQ({ section }) {
   return (
-    <MainLayout pageTitle={section.title}>
+    <MainLayout enableSearch searchFor={"faqs"} pageTitle={section.title}>
       <FAQGrid faqs={section.faqs} />
     </MainLayout>
   );

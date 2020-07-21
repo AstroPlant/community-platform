@@ -5,6 +5,7 @@ import Grid from "../grids/Grid";
 import Path from "../Path";
 import BaseLayout from "./BaseLayout";
 import SearchBar from "../inputs/SearchBar";
+import SearchableContent from "../SearchableContent";
 
 const HeadRow = styled(Grid)`
   && {
@@ -18,9 +19,16 @@ export default function MainLayout(props) {
       <Path />
       <HeadRow>
         <h2>{props.pageTitle}</h2>
-        {!props.hideSearch && <SearchBar search={null} />}
+        {props.enableSearch && <SearchBar searchFor={props.searchFor} />}
       </HeadRow>
-      {props.children}
+
+      {props.enableSearch ? (
+        <SearchableContent type={props.searchFor}>
+          {props.children}
+        </SearchableContent>
+      ) : (
+        <>{props.children}</>
+      )}
     </BaseLayout>
   );
 }
@@ -29,9 +37,12 @@ MainLayout.propTypes = {
   /* Node children of the component */
   children: PropTypes.node.isRequired,
   /* Whether or not to hide the searchbar */
-  hideSearch: PropTypes.bool,
+  enableSearch: PropTypes.bool,
+  /* The type of content to search */
+  searchFor: PropTypes.string,
 };
 
 MainLayout.defaultProps = {
-  hideSearch: false,
+  enableSearch: false,
+  searchFor: null,
 };

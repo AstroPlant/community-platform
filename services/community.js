@@ -83,53 +83,65 @@ export async function searchFAQs(
  **********************************************/
 
 /***
- * Fetches the latest article
- */
-export async function getFeaturedArticle() {
-  const query = `{
-  articles(sort: "created_at:desc") {
-    title
-    slug
-    created_at
-    short_description
-    cover {
-      url
-      alternativeText
-    }
-  }
-}`;
-
-  const res = await getQuery(query);
-
-  return res.data.articles[0];
-}
-
-/***
  * Fetches the first articles previews
  */
-export async function getArticlesPreview() {
+export async function getArticles() {
   const query = `{
-    articles(sort: "created_at:desc") {
+    featured: articles(sort: "created_at:desc", limit: 1) {
       id
-      slug 
+      slug
       created_at
       title
       short_description
-      cover { 
-        url 
+      cover {
+        url
         alternativeText
       }
-      author { 
+      author {
         username
         firstName
         lastName
+      }
+    }
+    previews: articles(sort: "created_at:desc", start: 1) {
+      id
+      slug
+      created_at
+      title
+      short_description
+      cover {
+        url
+        alternativeText
       }
     }
   }`;
 
   const res = await getQuery(query);
 
-  return res.data.articles;
+  return res.data;
+}
+
+/***
+ * Fetches the last published article
+ */
+export async function getFeaturedArticle() {
+  const query = `{
+    articles(sort: "created_at:desc", start: 1) {
+      id
+      slug
+      created_at
+      title
+      short_description
+      cover {
+        url
+        alternativeText
+      }
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.articles[0];
 }
 
 /***
@@ -433,8 +445,9 @@ export async function getLibraryMedia(slug) {
       id
       slug
       title
+      created_at
       media {
-        __typename
+        type: __typename
         ... on ComponentMediaTypeLink {
           id
           url
@@ -474,8 +487,9 @@ export async function getFeaturedLibraryMedias() {
       id
       slug
       title
+      created_at
       media {
-        __typename
+        type: __typename
         ... on ComponentMediaTypeLink {
           id
           url
@@ -524,8 +538,9 @@ export async function searchLibraryMedias(
         id
         slug
         title
+        created_at
         media {
-          __typename
+          type: __typename
           ... on ComponentMediaTypeLink {
             id
             url
