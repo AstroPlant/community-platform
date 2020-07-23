@@ -72,7 +72,7 @@ const TextInput = ({ label, dark, ...props }) => {
         <Input {...field} {...props} />
       </InputHolder>
 
-      {hasError ? <ErrorMessage errorMessage={meta.error} /> : null}
+      {hasError ? <ErrorMessage message={meta.error} /> : null}
     </Container>
   );
 };

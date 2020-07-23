@@ -24,7 +24,7 @@ const Checkbox = ({ children, ...props }) => {
       </Row>
 
       {meta.touched && meta.error ? (
-        <ErrorMessage errorMessage={meta.error} />
+        <ErrorMessage message={meta.error} />
       ) : null}
     </>
   );

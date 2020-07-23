@@ -4,15 +4,10 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { changePassword } from "../../services/community";
 import Button from "../Button";
-import TextInput from "./TextInput";
-
-const CustomForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
-`;
+import TextInput from "../inputs/TextInput";
 
 const SubmitButton = styled(Button)`
-  margin: 1rem 0 1.5rem 0;
+  margin: 0 0 0 auto;
 `;
 
 const ChangePasswordSchema = Yup.object().shape({
@@ -43,13 +38,20 @@ export default function ChangePasswordForm() {
             values.oldPassword,
             values.newPassword
           );
+
+          if (!res.error) {
+            // Show feedback
+            actions.setStatus({ success: "Password Changed !" });
+          } else {
+            actions.setStatus({
+              error: `Whoops! Could not update your password, ${res.message[0].messages[0].message}`,
+            });
+          }
         }}
       >
-        {({ isSubmitting, isValid }) => (
+        {({ status, isSubmitting, isValid, isValidating }) => (
           <>
-            <CustomForm>
-              {status.error && <div>{status.error}</div>}
-              {status.success && <div>{status.success}</div>}
+            <Form>
               <TextInput
                 label="Current Password"
                 name="oldPassword"
@@ -71,13 +73,20 @@ export default function ChangePasswordForm() {
                 placeholder="Validate new password"
               />
 
-              <SubmitButton
-                color={"primary"}
-                label={"Change Password"}
-                disabled={isSubmitting || !isValid}
-                type="submit"
-              />
-            </CustomForm>
+              {isSubmitting ? (
+                <LoadingAnimation />
+              ) : (
+                <SubmitButton
+                  type="submit"
+                  color={"primary"}
+                  label={"Change Password"}
+                  disabled={isSubmitting || isValidating || !isValid}
+                />
+              )}
+
+              {status.error && <ErrorMessage message={status.error} />}
+              {status.success && <p>{status.success}</p>}
+            </Form>
           </>
         )}
       </Formik>

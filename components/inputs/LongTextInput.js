@@ -73,7 +73,7 @@ export default function LongTextInput({ label, dark, ...props }) {
           <WordCount>{props.maxLength - meta.value.length}</WordCount>
         )}
       </InputHolder>
-      {hasError ? <ErrorMessage errorMessage={meta.error} /> : null}
+      {hasError ? <ErrorMessage message={meta.error} /> : null}
     </Container>
   );
 }

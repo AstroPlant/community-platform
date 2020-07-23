@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { upload } from "../../services/community";
 import Button from "../Button";
+import ErrorMessage from "../inputs/ErrorMessage";
 import LoadingAnimation from "../LoadingAnimation";
-import ErrorMessage from "./ErrorMessage";
-import FileInput from "./FileInput";
+import FileInput from "../inputs/FileInput";
 
 const CustomForm = styled.form`
   display: flex;
@@ -118,7 +118,7 @@ export default function UploadForm(props) {
           multiple={props.multiple}
           onChange={handleChange}
         />
-        <ErrorMessage errorMessage={error} />
+        <ErrorMessage message={error} />
         <Row justify={"flex-end"}>
           <Button
             inverted

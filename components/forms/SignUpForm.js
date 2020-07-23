@@ -4,17 +4,14 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { createUser } from "../../services/community";
 import Button from "../Button";
+import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
-import Checkbox from "./CheckBox";
-import TextInput from "./TextInput";
-
-const CustomForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
-`;
+import Checkbox from "../inputs/CheckBox";
 
 const SubmitButton = styled(Button)`
   margin: 1rem 0 1.5rem 0;
+
+  width: 100%;
 `;
 
 const SignupSchema = Yup.object().shape({
@@ -80,11 +77,9 @@ const SignUpForm = () => {
           }
         }}
       >
-        {({ status, isSubmitting, isValid }) => (
+        {({ status, isValidating, isSubmitting, isValid }) => (
           <>
-            <CustomForm>
-              {status.error && <div>{status.error}</div>}
-              {status.success && <div>{status.success}</div>}
+            <Form>
               <TextInput
                 label="email"
                 name="email"
@@ -114,17 +109,20 @@ const SignUpForm = () => {
                 I agree to the terms and condtions
               </Checkbox>
 
-              {loading ? (
+              {isSubmitting ? (
                 <LoadingAnimation />
               ) : (
                 <SubmitButton
-                  color={"primary"}
-                  label={"Sign Up!"}
                   type="submit"
-                  disabled={isSubmitting || !isValid}
+                  color={"primary"}
+                  label={"Sign Up !"}
+                  disabled={isSubmitting || isValidating || !isValid}
                 />
               )}
-            </CustomForm>
+
+              {status.error && <ErrorMessage message={status.error} />}
+              {status.success && <p>{status.success}</p>}
+            </Form>
           </>
         )}
       </Formik>
