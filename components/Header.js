@@ -8,7 +8,7 @@ import Avatar from "./Avatar";
 import Brand from "./Brand";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
-import DropdownLinks from "./DropdownLinks";
+import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
 
@@ -19,14 +19,14 @@ const HeaderContainer = styled.header`
 
   z-index: 2;
 
-  width: 100%;
-  max-height: ${(props) => props.theme.headerHeight};
-
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 1rem 2rem;
+  width: 100%;
+  max-height: ${(props) => props.theme.headerHeight};
+
+  padding: 0.75rem 2rem;
 
   background-color: ${(props) => props.theme.darkLight};
 
@@ -42,23 +42,80 @@ const LinksContainer = styled.nav`
   text-align: center;
 `;
 
-const ProfileButtons = styled.div`
+const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
 `;
 
-export default function Header() {
-  const [hideDropdown, setHideDropdown] = useState(true);
-  const { user, isLogged } = useAuth();
-  const dropdownLinksRef = useRef(null);
-  const dropdownButtonRef = useRef(null);
+const ClickableItems = styled(Row)`
+  cursor: pointer;
+`;
 
-  useOutsideClick(
-    dropdownLinksRef,
-    dropdownButtonRef,
-    closeDropdown.bind(this)
+const Separator = styled.div`
+  display: block;
+
+  height: 1px;
+  width: 100%;
+
+  margin: 0.5rem 0;
+
+  background-color: ${(props) => props.theme.light};
+`;
+
+const NotificationHolder = styled(Icon)`
+  transform: rotate(45deg);
+`;
+export default function Header() {
+  const { user, isLogged } = useAuth();
+
+  // Variables to handles opening & closing dropdown menus
+  const [hideMenu, setHideMenu] = useState(true);
+  const [hideNotif, setHideNotif] = useState(true);
+
+  const ddMenuRef = useRef(null);
+  const ddMenuTriggerRef = useRef(null);
+
+  const ddNotifRef = useRef(null);
+  const ddNotifTriggerRef = useRef(null);
+
+  const ddMenuClick = useOutsideClick(
+    ddMenuRef,
+    ddMenuTriggerRef,
+    closeMenu.bind(this)
   );
+
+  const ddNotificationsClick = useOutsideClick(
+    ddNotifRef,
+    ddNotifTriggerRef,
+    closeNotif.bind(this)
+  );
+
+  /**
+   * Changes the state of the selected menu
+   * @param {string} selected menus
+   */
+  function toggleDropdown(selected) {
+    if (selected === "Menu") {
+      setHideMenu(!hideMenu);
+    } else {
+      setHideNotif(!hideNotif);
+    }
+  }
+
+  /**
+   * Closes the dropdown menu
+   */
+  function closeMenu() {
+    setHideMenu(true);
+  }
+
+  /**
+   * Closes the notification menu
+   */
+  function closeNotif() {
+    setHideNotif(true);
+  }
 
   const menuLinks = [
     {
@@ -103,22 +160,6 @@ export default function Header() {
     },
   ];
 
-  const extraLinks = [
-    {
-      label: "Log Out",
-      slug: "logout",
-      id: 10,
-    },
-  ];
-
-  function toggleDropdown() {
-    setHideDropdown(!hideDropdown);
-  }
-
-  function closeDropdown() {
-    setHideDropdown(true);
-  }
-
   return (
     <HeaderContainer>
       <Brand />
@@ -131,28 +172,56 @@ export default function Header() {
 
       {isLogged ? (
         <>
-          <ProfileButtons>
-            <Icon color={"light"} size={24}>
-              <Notification />
-            </Icon>
-            <Avatar
-              size={2.25}
-              imgSrc={user.avatarUrl}
-              username={user.username}
-              href={"/settings"}
-            />
-            <Dropdown
-              ref={dropdownButtonRef}
-              onClick={() => toggleDropdown()}
-              reverse={!hideDropdown}
-            />
-          </ProfileButtons>
+          <Row>
+            <div
+              ref={ddNotifTriggerRef}
+              onClick={() => toggleDropdown("Notification")}
+            >
+              <Icon color={"light"} size={24}>
+                <Notification />
+              </Icon>
+              <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
+                <b>Notifications</b>
+                <Separator />
 
-          <DropdownLinks
-            ref={dropdownLinksRef}
-            links={extraLinks}
-            hidden={hideDropdown}
-          />
+                <p>No notifications yet</p>
+              </DropdownMenu>
+            </div>
+
+            <ClickableItems
+              ref={ddMenuTriggerRef}
+              onClick={() => toggleDropdown("Menu")}
+            >
+              <div>
+                <Avatar
+                  size={2.25}
+                  imgSrc={user.avatarUrl}
+                  username={user.username}
+                />
+                <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
+                  <p>
+                    Signed in as <b>{user.username}</b>
+                  </p>
+                  <Link
+                    passHref
+                    href={"/users/[username]"}
+                    as={`/users/${user.username}`}
+                  >
+                    <a>My profile</a>
+                  </Link>
+                  <Link passHref href={"/settings"}>
+                    <a>Settings</a>
+                  </Link>
+                  <Separator />
+                  <Link passHref href={"/logout"}>
+                    <a>Log out</a>
+                  </Link>
+                </DropdownMenu>
+              </div>
+
+              <Dropdown reverse={!hideMenu} />
+            </ClickableItems>
+          </Row>
         </>
       ) : (
         <Link passHref href={"/login"}>
