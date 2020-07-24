@@ -5,6 +5,7 @@ import { API_URL } from "../../services/community";
 import ArticleInfos from "../ArticleInfos";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
+import ReactMarkdown from "react-markdown";
 
 const Container = styled(Card)`
   height: 50vh;
@@ -53,10 +54,13 @@ export default function FeaturedArticleCard(props) {
         />
         <InfosContainer>
           <Title>{props.featuredArticle.title}</Title>
-          <Preview>{props.featuredArticle.preview}</Preview>
+
+          <Preview>
+            <ReactMarkdown source={props.featuredArticle.preview} />
+          </Preview>
           <InfosBottom
             author={props.featuredArticle.author}
-            date={props.featuredArticle.created_at}
+            date={props.featuredArticle.published_at}
           />
         </InfosContainer>
       </Container>

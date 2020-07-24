@@ -66,6 +66,7 @@ const Separator = styled.div`
 const NotificationHolder = styled(Icon)`
   transform: rotate(45deg);
 `;
+
 export default function Header() {
   const { user, isLogged } = useAuth();
 
@@ -177,9 +178,9 @@ export default function Header() {
               ref={ddNotifTriggerRef}
               onClick={() => toggleDropdown("Notification")}
             >
-              <Icon color={"light"} size={24}>
+              <NotificationHolder color={"light"} size={24}>
                 <Notification />
-              </Icon>
+              </NotificationHolder>
               <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
                 <b>Notifications</b>
                 <Separator />

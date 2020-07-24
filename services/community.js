@@ -79,18 +79,22 @@ export async function searchFAQs(
 }
 
 /**********************************************
- *             ARTICLES                       *
+ *                 ARTICLES                   *
  **********************************************/
 
 /***
- * Fetches the first articles previews
+ * Fetches articles previews
  */
 export async function getArticles() {
   const query = `{
-    featured: articles(sort: "created_at:desc", limit: 1) {
+    featured: articles(
+      where: { published: true }
+      sort: "published_at:desc"
+      limit: 1
+    ) {
       id
       slug
-      created_at
+      published_at
       title
       preview
       cover {
@@ -103,10 +107,14 @@ export async function getArticles() {
         lastName
       }
     }
-    previews: articles(sort: "created_at:desc", start: 1) {
+    previews: articles(
+      where: { published: true }
+      sort: "published_at:desc"
+      start: 1
+    ) {
       id
       slug
-      created_at
+      published_at
       title
       preview
       cover {
@@ -122,14 +130,18 @@ export async function getArticles() {
 }
 
 /***
- * Fetches the last published article
+ * Fetches the latest article to be displayed on the home page
  */
 export async function getFeaturedArticle() {
   const query = `{
-    articles(sort: "created_at:desc", start: 1) {
+    articles(
+      where: { published: true }
+      sort: "published_at:desc"
+      start: 1
+    ) {
       id
       slug
-      created_at
+      published_at
       title
       preview
       cover {
@@ -151,7 +163,7 @@ export async function getFullArticle(slug) {
   const query = `{
     main_article: articles(where: { slug: "${slug}" }) {
       title
-      created_at
+      published_at
       content
       cover {
         url
@@ -171,10 +183,13 @@ export async function getFullArticle(slug) {
         title
       }
     }
-    related_articles: articles(sort: "created_at:desc", limit: 3) {
+    related_articles: articles(
+      where: { published: true, slug_ne: "${slug}" },
+      limit: 3
+    ) {
       id
       slug
-      created_at
+      published_at
       title
       preview
       cover {
@@ -206,7 +221,7 @@ export async function searchArticles(
     results: searchArticles(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       id
       slug 
-      created_at
+      published_at
       title
       preview
       cover { 

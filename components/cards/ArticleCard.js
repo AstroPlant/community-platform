@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import { API_URL } from "../../services/community";
+import Date from "../Date";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
@@ -17,6 +18,17 @@ const Container = styled(Card)`
   display: flex;
   align-items: flex-end;
   justify-content: center;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  background-color: ${(props) => props.theme.darkLight};
+  padding: 1.5rem;
 `;
 
 const Title = styled.b`
@@ -40,15 +52,9 @@ const Preview = styled.p`
   text-overflow: ellipsis;
 `;
 
-const Content = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-
-  background-color: ${(props) => props.theme.darkLight};
-  padding: 1.5rem;
+const ArticleDate = styled(Date)`
+  align-self: flex-end;
+  color: ${(props) => props.theme.grey};
 `;
 
 export default function ArticleCard(props) {
@@ -66,6 +72,7 @@ export default function ArticleCard(props) {
         <Content>
           <Title>{props.article.title}</Title>
           <Preview>{props.article.preview}</Preview>
+          <ArticleDate dateString={props.article.published_at} />
         </Content>
       </Container>
     </WrapInLink>

@@ -27,11 +27,11 @@ export default function ArticlePage({ article, related }) {
       <div>
         <h3>Author</h3>
         <AuthorCard>
-          <ArticleInfos author={article.author} date={article.created_at} />
+          <ArticleInfos author={article.author} date={article.published_at} />
         </AuthorCard>
         <h3>Related Article</h3>
         {related.map((a) => (
-          <RelatedArticle article={a} />
+          <RelatedArticle key={a.id} article={a} />
         ))}
       </div>
     </ArticleLayout>
