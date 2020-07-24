@@ -25,11 +25,16 @@
         "media-type.file",
         "media-type.article"
       ],
-      "required": true
+      "required": true,
+      "max": 1
     },
     "library_section": {
-      "via": "library_medias",
-      "model": "library-section"
+      "model": "library-section",
+      "via": "library_medias"
+    },
+    "author": {
+      "plugin": "users-permissions",
+      "model": "user"
     }
   }
 }

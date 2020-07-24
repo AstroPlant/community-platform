@@ -7,6 +7,7 @@ import FileIcon from "../../public/icons/file.svg";
 import { API_URL } from "../../services/community";
 import Date from "../Date";
 import Icon from "../Icon";
+import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
 const Container = styled(Card)`
@@ -47,9 +48,7 @@ const MediaTitle = styled.b`
   margin-bottom: 0.5rem;
 `;
 
-export default function LibraryMediaCard(props) {
-  const type = props.media.media[0].type.replace("ComponentMediaType", "");
-
+function PureMediaCard(props) {
   return (
     <Container animateOnHover className={props.className}>
       <CoverHolder>
@@ -60,9 +59,9 @@ export default function LibraryMediaCard(props) {
           />
         ) : (
           <PaddedIcon color="primary" size={48}>
-            {type === "Link" && <LinkIcon />}
-            {type === "File" && <FileIcon />}
-            {type === "Article" && <ArticleIcon />}
+            {props.type === "Link" && <LinkIcon />}
+            {props.type === "File" && <FileIcon />}
+            {props.type === "Article" && <ArticleIcon />}
           </PaddedIcon>
         )}
       </CoverHolder>
@@ -71,6 +70,35 @@ export default function LibraryMediaCard(props) {
         <Date dateString={props.media.created_at} />
       </InfoHolder>
     </Container>
+  );
+}
+
+export default function LibraryMediaCard(props) {
+  const media = props.media.media[0];
+  const type = media.type.replace("ComponentMediaType", "");
+
+  console.log(media);
+  return (
+    <>
+      {type === "Link" && (
+        <a target="_blank" href={media.url}>
+          <PureMediaCard type={type} {...props} />
+        </a>
+      )}
+      {type === "File" && (
+        <a target="_parent" href={API_URL + media.file.url}>
+          <PureMediaCard type={type} {...props} />
+        </a>
+      )}
+      {type === "Article" && (
+        <WrapInLink
+          href={"/library/medias/[id]"}
+          as={`/library/medias/${props.media.id}`}
+        >
+          <PureMediaCard type={type} {...props} />
+        </WrapInLink>
+      )}
+    </>
   );
 }
 

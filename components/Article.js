@@ -52,9 +52,10 @@ export default function Article(props) {
       <CoverImage src={coverURL} alt={props.article.cover.caption} />
       <Container>
         <Row>
-          {props.article.categories.map((category) => (
-            <Chip key={category.id} label={category.title} />
-          ))}
+          {props.article.categories &&
+            props.article.categories.map((category) => (
+              <Chip key={category.id} label={category.title} />
+            ))}
         </Row>
 
         <Title>{props.article.title}</Title>

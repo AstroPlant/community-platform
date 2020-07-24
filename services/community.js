@@ -73,8 +73,6 @@ export async function searchFAQs(
     }
   }`;
 
-  console.log(query);
-
   return getQuery(query);
 }
 
@@ -364,11 +362,12 @@ export async function getAllLibrarySections() {
           }
           ... on ComponentMediaTypeFile {
             id
-            name
             file {
               id
               created_at
               caption
+              url
+              mime
             }
           }
           ... on ComponentMediaTypeArticle {
@@ -417,11 +416,12 @@ export async function getLibrarySection(slug) {
           }
           ... on ComponentMediaTypeFile {
             id
-            name
             file {
               id
               created_at
               caption
+              url
+              mime
             }
           }
           ... on ComponentMediaTypeArticle {
@@ -458,13 +458,18 @@ export async function getLibrarySection(slug) {
  * Fetches a library media
  * @param slug of the media
  */
-export async function getLibraryMedia(slug) {
+export async function getLibraryMedia(id) {
   const query = `{
-    libraryMedias(where: { slug: "${slug}" }) {
+    libraryMedia(id: ${id}) {
       id
       slug
       title
       created_at
+      author {
+        username
+        firstName
+        lastName
+      }
       media {
         type: __typename
         ... on ComponentMediaTypeLink {
@@ -473,20 +478,22 @@ export async function getLibraryMedia(slug) {
         }
         ... on ComponentMediaTypeFile {
           id
-          name
           file {
             id
             created_at
             caption
+            url
+            mime
           }
         }
         ... on ComponentMediaTypeArticle {
           id
           title
+          content
           cover {
+            url
             caption
           }
-          content
         }
       }
     }
@@ -494,49 +501,7 @@ export async function getLibraryMedia(slug) {
 
   const res = await getQuery(query);
 
-  return res.data.libraryMedias[0];
-}
-
-/***
- * Fetches featured library medias
- */
-export async function getFeaturedLibraryMedias() {
-  const query = `{
-    libraryMedias {
-      id
-      slug
-      title
-      created_at
-      media {
-        type: __typename
-        ... on ComponentMediaTypeLink {
-          id
-          url
-        }
-        ... on ComponentMediaTypeFile {
-          id
-          name
-          file {
-            id
-            created_at
-            caption
-          }
-        }
-        ... on ComponentMediaTypeArticle {
-          id
-          title
-          cover {
-            caption
-          }
-          content
-        }
-      }
-    }
-  }`;
-
-  const res = await getQuery(query);
-
-  return res.data.libraryMedias;
+  return res.data.libraryMedia;
 }
 
 /**
@@ -566,11 +531,12 @@ export async function searchLibraryMedias(
           }
           ... on ComponentMediaTypeFile {
             id
-            name
             file {
               id
               created_at
               caption
+              url
+              mime
             }
           }
           ... on ComponentMediaTypeArticle {

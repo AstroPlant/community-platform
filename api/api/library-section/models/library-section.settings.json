@@ -26,8 +26,8 @@
       "maxLength": 180
     },
     "library_medias": {
-      "collection": "library-media",
-      "via": "library_section"
+      "via": "library_section",
+      "collection": "library-media"
     }
   }
 }

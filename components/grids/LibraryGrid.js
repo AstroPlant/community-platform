@@ -43,8 +43,6 @@ export default function LibraryGrid(props) {
 }
 
 LibraryGrid.propTypes = {
-  /* Array containing the featured medias objects */
-  featuredMedias: PropTypes.arrayOf(PropTypes.object).isRequired,
   /* Array containing the library sections objects */
   librarySections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
