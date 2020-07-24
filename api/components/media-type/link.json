@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_media_type_links",
+  "info": {
+    "name": "link",
+    "icon": "external-link-alt"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

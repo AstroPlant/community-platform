@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "library_medias",
+  "info": {
+    "name": "LibraryMedia"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "media": {
+      "type": "dynamiczone",
+      "components": [
+        "media-type.link",
+        "media-type.file",
+        "media-type.article"
+      ],
+      "required": true
+    },
+    "library_section": {
+      "via": "library_medias",
+      "model": "library-section"
+    }
+  }
+}

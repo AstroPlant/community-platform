@@ -27,7 +27,7 @@ const Title = styled.h2`
   color: ${(props) => props.theme.primary};
 `;
 
-const Preview = styled.p`
+const Preview = styled.div`
   margin: 1rem 0;
   max-height: 100%;
   overflow: hidden;

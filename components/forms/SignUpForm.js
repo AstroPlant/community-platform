@@ -37,8 +37,6 @@ const SignupSchema = Yup.object().shape({
 });
 
 const SignUpForm = () => {
-  const [loading, setLoading] = useState(false);
-
   return (
     <>
       <Formik
@@ -52,25 +50,21 @@ const SignUpForm = () => {
         initialStatus={{ success: null, error: null }}
         validationSchema={SignupSchema}
         onSubmit={async (values, actions) => {
-          setLoading(true);
-
           const res = await createUser(
             values.email,
             values.username,
             values.password
           );
 
-          if (!res.error) {
-            setLoading(false);
+          console.log(res);
 
+          if (!res.error) {
             actions.setStatus({
               success:
                 "You're all signed up ! Check your emails to confirm your account !",
             });
             actions.resetForm();
           } else {
-            setLoading(false);
-
             actions.setStatus({
               error: `Whoops! Could not sign you up, ${res.message[0].messages[0].message}`,
             });

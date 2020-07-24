@@ -137,7 +137,7 @@ export async function getFeaturedArticle() {
     articles(
       where: { published: true }
       sort: "published_at:desc"
-      start: 1
+      limit: 1
     ) {
       id
       slug
@@ -250,22 +250,15 @@ export async function searchArticles(
  * @param email the user's email
  */
 export async function createUser(email, username, password) {
-  const mutation = `mutation {
-    createUser(
-      input: {
-        data: { username: "${username}", 
-        email: "${email}",
-        password: "${password}"}
-      }
-    ) {
-      user {
-        username
-        email
-      }
-    }
-  }`;
+  const path = "/auth/local/register";
 
-  return getQuery(mutation);
+  const body = {
+    email: email,
+    username: username,
+    password: password,
+  };
+
+  return postJson(API_URL + path, body);
 }
 
 /***

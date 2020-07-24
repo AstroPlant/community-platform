@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "faqs",
+  "info": {
+    "name": "FAQ"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "question": {
+      "type": "richtext",
+      "required": true,
+      "default": "A question ?"
+    },
+    "answer": {
+      "type": "richtext",
+      "default": "An answer.",
+      "required": true
+    },
+    "help_section": {
+      "model": "help-section",
+      "via": "faqs"
+    }
+  }
+}

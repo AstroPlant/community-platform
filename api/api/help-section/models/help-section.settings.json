@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "help_sections",
+  "info": {
+    "name": "HelpSection"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "required": true,
+      "targetField": "title"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "faqs": {
+      "via": "help_section",
+      "collection": "faq"
+    }
+  }
+}
