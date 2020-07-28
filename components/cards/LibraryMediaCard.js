@@ -77,7 +77,6 @@ export default function LibraryMediaCard(props) {
   const media = props.media.media[0];
   const type = media.type.replace("ComponentMediaType", "");
 
-  console.log(media);
   return (
     <>
       {type === "Link" && (

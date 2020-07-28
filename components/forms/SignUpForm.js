@@ -1,12 +1,12 @@
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { createUser } from "../../services/community";
 import Button from "../Button";
+import Checkbox from "../inputs/CheckBox";
 import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
-import Checkbox from "../inputs/CheckBox";
 
 const SubmitButton = styled(Button)`
   margin: 1rem 0 1.5rem 0;
@@ -55,8 +55,6 @@ const SignUpForm = () => {
             values.username,
             values.password
           );
-
-          console.log(res);
 
           if (!res.error) {
             actions.setStatus({

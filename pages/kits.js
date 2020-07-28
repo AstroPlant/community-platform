@@ -13,8 +13,12 @@ function Kits({ memberships }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const { username } = getLoggedUser(ctx.req.headers.cookie);
-  const memberships = await getUserMemberships(username);
+  const user = getLoggedUser(ctx.req.headers.cookie);
+  let memberships = [];
+
+  if (user != null) {
+    memberships = await getUserMemberships(user.username);
+  }
 
   return {
     props: {
