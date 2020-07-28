@@ -6,6 +6,9 @@ import Path from "../Path";
 import BaseLayout from "./BaseLayout";
 import SearchBar from "../inputs/SearchBar";
 import SearchableContent from "../SearchableContent";
+import { useAuth } from "../../providers/Auth";
+import Button from "../Button";
+import Link from "next/link";
 
 const HeadRow = styled(Grid)`
   && {
@@ -13,13 +16,28 @@ const HeadRow = styled(Grid)`
   }
 `;
 
+const Row = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export default function MainLayout(props) {
+  const { isLogged } = useAuth();
+
   return (
     <BaseLayout>
       <Path />
       <HeadRow>
         <h2>{props.pageTitle}</h2>
-        {props.enableSearch && <SearchBar searchFor={props.searchFor} />}
+
+        <Row>
+          {isLogged && (
+            <Link passHref href="/library/medias/create">
+              <Button label={"+"} color={"primary"} />
+            </Link>
+          )}
+          {props.enableSearch && <SearchBar searchFor={props.searchFor} />}
+        </Row>
       </HeadRow>
 
       {props.enableSearch ? (
