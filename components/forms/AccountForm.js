@@ -42,10 +42,10 @@ function AccountForm(props) {
       initialValues={{
         username: username,
         email: email,
-        slackUsername: slackUsername,
-        firstName: firstName,
-        lastName: lastName,
-        description: description,
+        slackUsername: slackUsername || "",
+        firstName: firstName || "",
+        lastName: lastName || "",
+        description: description || "",
       }}
       initialStatus={{ success: null, error: null }}
       validationSchema={UserInfoSchema}
