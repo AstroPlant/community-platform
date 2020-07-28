@@ -1,3 +1,4 @@
+import slugify from "slugify";
 import { getToken } from "../providers/Auth";
 import { gqQuery, postJson, postRaw, queryfy } from "../utils/fetchTools";
 
@@ -394,6 +395,23 @@ export async function getAllLibrarySections() {
 }
 
 /***
+ * Fetches all library sections titles
+ */
+export async function getAllLibrarySectionNames() {
+  const query = `{
+    librarySections {
+      id
+      title
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
  * Fetches a library section
  * @param slug of the section
  */
@@ -554,6 +572,103 @@ export async function searchLibraryMedias(
   return getQuery(query);
 }
 
+/***
+ * Creates a library media
+ * @param body necessary informations to create the media
+ */
+export async function createLibraryMedia(body) {
+  const token = getToken("communityToken");
+  const bearer = "Bearer " + token;
+
+  // Escaping quote carracters
+  body.title = body.title.split('"').join('\\"');
+
+  // Creating a slug
+  const slug = slugify(body.title, {
+    lower: true, // convert to lower case
+    strict: true, // strip special characters except replacement
+    locale: "en", // language code of the locale to use
+    remove: /[*+~.()'"!:@]/g,
+  });
+
+  // Building typeName
+  const typeName = `ComponentMediaType${body.type}`;
+
+  // Building queries
+  let fileID = null;
+  let mediaQL = ``;
+
+  switch (body.type) {
+    case "Link":
+      mediaQL = `url: "${body.url}"`;
+      break;
+
+    case "Article":
+      if (body.articleCover) {
+        const res = await upload([body.articleCover], {});
+
+        if (!res.error) {
+          fileID = res[0].id;
+        } else {
+          return res;
+        }
+      }
+
+      mediaQL = `
+        title: "${body.articleTitle}"
+        content: "${body.articleContent}"
+        cover: "${fileID}"
+      `;
+      break;
+
+    case "File":
+      if (body.file) {
+        const res = await upload([body.file], {});
+
+        if (!res.error) {
+          fileID = res[0].id;
+        } else {
+          return res;
+        }
+      }
+
+      mediaQL = `file: "${fileID}"`;
+      break;
+
+    default:
+      break;
+  }
+
+  const mutation = `mutation {
+    createLibraryMedia(
+      input: {
+        data: {
+          title: "${body.title}"
+          slug: "${slug}"
+          library_section: ${body.librarySection}
+          author: ${body.user}
+          media: {
+            __typename: "${typeName}"
+            ${mediaQL}
+          }
+        }
+      }
+    ) {
+      libraryMedia {
+        id
+        created_at
+        title
+      }
+    }
+  }
+  `;
+
+  const options = {};
+  options.headers = { Authorization: bearer };
+
+  return getQuery(mutation, options);
+}
+
 /**********************************************
  *                USERS GRAPHS                *
  **********************************************/
@@ -564,6 +679,7 @@ export async function searchLibraryMedias(
  * @param {*} kitSerial
  */
 export async function getUsersGraphs(username, kitSerial) {
+  // TODO Implement with a real API Call
   const graphs = [
     {
       id: 24,

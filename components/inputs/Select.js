@@ -27,39 +27,26 @@ const InputHolder = styled.div`
   opacity: ${(props) => (props.disabled ? 0.75 : 1)};
 `;
 
-const Addon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  padding: 0 0.75rem;
-
-  border-radius: 2px 0 0 2px;
-
-  color: ${(props) => props.theme.light};
-
-  background-color: ${(props) => props.theme.secondaryDark};
-  opacity: ${(props) => (props.disabled ? 0.75 : 1)};
-`;
-
-const Input = styled.input`
+const SelectInput = styled.select`
   width: 100%;
 
-  padding: 0.5rem 0.75rem;
+  margin: 0 0.5rem;
+  padding: 0.75rem 0.5rem;
 
   font: 400 1em ${(props) => props.theme.fontFamily};
 
   background-color: transparent;
 
   outline: none;
+  border: 0;
 `;
 
-export default function TextInput(props) {
+export default function Select(props) {
   const { className, ...otherProps } = props;
 
   const [field, meta] = useField(otherProps);
   const hasError = meta.touched && meta.error;
+  const disabled = otherProps.disabled;
 
   return (
     <Container className={className}>
@@ -70,16 +57,11 @@ export default function TextInput(props) {
         />
       )}
       <InputHolder
-        disabled={otherProps.disabled}
+        disabled={disabled}
         dark={otherProps.dark}
         hasError={hasError}
       >
-        {otherProps.addon && (
-          <Addon>
-            <p>{otherProps.addon}</p>
-          </Addon>
-        )}
-        <Input {...field} {...otherProps} />
+        <SelectInput {...field} {...otherProps} />
       </InputHolder>
 
       {hasError ? <ErrorMessage message={meta.error} /> : null}
@@ -87,16 +69,14 @@ export default function TextInput(props) {
   );
 }
 
-TextInput.propTypes = {
+Select.propTypes = {
   /* The label of the input */
   label: PropTypes.string,
-  /* The a string to add in front of the input. e.g @ */
-  addon: PropTypes.string,
   /* Use the input in darkmode */
   dark: PropTypes.bool,
 };
 
-TextInput.defaultProps = {
+Select.defaultProps = {
   addon: null,
   label: null,
   dark: false,

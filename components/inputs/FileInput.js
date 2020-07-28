@@ -12,24 +12,29 @@ const Container = styled.div`
 
 const DropZone = styled.div`
   width: 100%;
-  border: 2px dashed ${(props) => props.theme.light};
-  border-radius: 8px;
 
   padding: 4rem;
   margin: 0 0 2rem 0;
+
+  border: 2px dashed ${(props) => props.theme.light};
+  border-radius: 8px;
+
+  text-align: center;
 `;
 
-const FileInput = ({ label, ...props }) => {
+export default function FileInput(props) {
   return (
     <Container className={props.className}>
-      {label && <InputLabel label={label} htmlFor={props.id || props.name} />}
+      {props.label && (
+        <InputLabel label={props.label} htmlFor={props.id || props.name} />
+      )}
       <DropZone>
         <h3>Drop your files here</h3>
       </DropZone>
       <input type="file" {...props} />
     </Container>
   );
-};
+}
 
 FileInput.propTypes = {
   /* The label of the input */
@@ -39,5 +44,3 @@ FileInput.propTypes = {
 FileInput.defaultProps = {
   label: null,
 };
-
-export default FileInput;
