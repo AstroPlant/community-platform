@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { useAuth } from "../../providers/Auth";
@@ -12,6 +12,7 @@ import InputLabel from "../inputs/InputLabel";
 import Select from "../inputs/Select";
 import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
+import MarkdownEditor from "../inputs/MarkdownEditor";
 
 const Container = styled.div`
   padding: 2rem 0;
@@ -31,8 +32,8 @@ const MarginRightInput = styled(Select)`
   margin-right: 1.5rem;
 `;
 
-const MarginTopInput = styled(TextInput)`
-  margin-top: 2rem;
+const MarkdownContainer = styled(Col)`
+  margin: 2rem 0;
 `;
 
 const Separator = styled.div`
@@ -66,6 +67,7 @@ const MediaSchema = Yup.object().shape({
 export default function MediaCreationForm(props) {
   const router = useRouter();
   const { user } = useAuth();
+  const [value, setValue] = useState("");
 
   return (
     <Formik
@@ -160,12 +162,21 @@ export default function MediaCreationForm(props) {
                   />
                 </Col>
 
-                <MarginTopInput
-                  label="Article Content"
-                  name="articleContent"
-                  type="text"
-                  placeholder="Space plants are fun and very intriguing!"
-                />
+                <MarkdownContainer>
+                  <InputLabel
+                    htmlFor="articleContent"
+                    label={"Article Content"}
+                  />
+
+                  <MarkdownEditor
+                    id="articleContent"
+                    value={value}
+                    onChange={(value) => {
+                      setValue(value);
+                      setFieldValue("articleContent", value);
+                    }}
+                  />
+                </MarkdownContainer>
               </div>
             )}
 

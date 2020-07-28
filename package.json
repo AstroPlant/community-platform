@@ -23,6 +23,7 @@
     "react-dom": "16.13.1",
     "react-leaflet": "^2.7.0",
     "react-markdown": "^4.3.1",
+    "react-mde": "^10.1.0",
     "slugify": "^1.4.5",
     "styled-components": "^5.1.1",
     "swr": "^0.2.3",
