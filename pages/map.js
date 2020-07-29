@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useState } from "react";
 import styled from "styled-components";
 import Card from "../components/cards/Card";
 import KitCountCard from "../components/cards/KitCountCard";
 import MapGrid from "../components/grids/MapGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getKits } from "../services/data-api";
-import { useState } from "react";
 
 const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,
@@ -27,8 +27,6 @@ const KitDetailsCard = styled(Card)`
     height: unset;
   }
 `;
-
-const CardTitle = styled.h4``;
 
 export default function Map({ kits }) {
   const [selectedKit, setSelectedKit] = useState(null);
@@ -63,12 +61,12 @@ export default function Map({ kits }) {
 
             {selectedKit ? (
               <KitDetailsCard>
-                <CardTitle>{selectedKit.name}</CardTitle>
+                <h4>{selectedKit.name}</h4>
                 <p>{selectedKit.description}</p>
               </KitDetailsCard>
             ) : (
               <InstructionCard>
-                <CardTitle>How to use the kit map ?</CardTitle>
+                <h4>How to use the kit map ?</h4>
                 <p>
                   Here you can find out what other AstroPlant kits around the
                   world are doing and what makes them unique! Try to click on
@@ -84,10 +82,9 @@ export default function Map({ kits }) {
 }
 
 export async function getServerSideProps() {
-  const kits = await getKits();
   return {
     props: {
-      kits,
+      kits: await getKits(),
     },
   };
 }

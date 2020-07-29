@@ -9,6 +9,8 @@ export default function News({ featured, articles }) {
       enableSearch
       searchFor={"articles"}
       pageTitle={"The latest updates!"}
+      metaTitle={"News"}
+      metaDescription={"All the official news and update about AstroPlant !"}
     >
       <FeaturedArticleCard featuredArticle={featured} />
       <ArticleGrid articles={articles} />
@@ -18,12 +20,11 @@ export default function News({ featured, articles }) {
 
 export async function getServerSideProps() {
   const data = await getArticles();
-  const featured = data.featured[0];
-  const articles = data.previews;
+
   return {
     props: {
-      articles,
-      featured,
+      articles: data.previews,
+      featured: data.featured[0],
     },
   };
 }

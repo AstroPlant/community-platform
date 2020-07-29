@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import ArticleLayout from "../../../components/layouts/ArticleLayout";
 import Article from "../../../components/Article";
 import ArticleInfos from "../../../components/ArticleInfos";
 import Card from "../../../components/cards/Card";
+import Grid from "../../../components/grids/Grid";
+import PageLayout from "../../../components/layouts/PageLayout";
 import { getLibraryMedia } from "../../../services/community";
 
 const AuthorCard = styled(Card)`
@@ -16,24 +17,24 @@ export default function CommunityArticlePage({ media }) {
   const article = media.media[0];
 
   return (
-    <ArticleLayout>
-      <Article article={article} />
-      <div>
-        <h3>Author</h3>
-        <AuthorCard>
-          <ArticleInfos author={media.author} date={media.created_at} />
-        </AuthorCard>
-      </div>
-    </ArticleLayout>
+    <PageLayout metaTitle={article.title}>
+      <Grid>
+        <Article article={article} />
+        <div>
+          <h3>Author</h3>
+          <AuthorCard>
+            <ArticleInfos author={media.author} date={media.created_at} />
+          </AuthorCard>
+        </div>
+      </Grid>
+    </PageLayout>
   );
 }
 
 export async function getServerSideProps(context) {
-  const media = await getLibraryMedia(context.params.id);
-
   return {
     props: {
-      media,
+      media: await getLibraryMedia(context.params.id),
     },
   };
 }

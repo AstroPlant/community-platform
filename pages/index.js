@@ -5,7 +5,7 @@ import LibraryCard from "../components/cards/LibraryCard";
 import MapCard from "../components/cards/MapCard";
 import NewsCard from "../components/cards/NewsCard";
 import DashboardGrid from "../components/grids/DashboardGrid";
-import BaseLayout from "../components/layouts/BaseLayout";
+import PageLayout from "../components/layouts/PageLayout";
 import { getLoggedUser, useAuth } from "../providers/Auth";
 import HelpIcon from "../public/icons/help.svg";
 import SlackIcon from "../public/icons/slack.svg";
@@ -16,7 +16,12 @@ function Home({ featuredArticle, mainKit }) {
   const { user, isLogged } = useAuth();
 
   return (
-    <BaseLayout>
+    <PageLayout
+      metaTitle={"Home"}
+      metaDescription={
+        "AstroPlant platform. Grow with the community, manage your kits. Growing a new generation of urban and space farmers."
+      }
+    >
       <h1>
         Welcome
         {isLogged && `, ${user.firstname ? user.firstname : user.username} `} !
@@ -41,7 +46,7 @@ function Home({ featuredArticle, mainKit }) {
         <MapCard href={"/map"} />
         <LibraryCard />
       </DashboardGrid>
-    </BaseLayout>
+    </PageLayout>
   );
 }
 

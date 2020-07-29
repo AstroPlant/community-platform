@@ -9,6 +9,8 @@ export default function Library({ librarySections }) {
       enableSearch
       searchFor={"libraryMedias"}
       pageTitle={"AstroPlant Library"}
+      metaTitle={"Library"}
+      metaDescription={"Everything you need to get started and contribute."}
     >
       <LibraryGrid librarySections={librarySections} />
     </MainLayout>
@@ -16,11 +18,9 @@ export default function Library({ librarySections }) {
 }
 
 export async function getServerSideProps() {
-  const librarySections = await getAllLibrarySections();
-
   return {
     props: {
-      librarySections,
+      librarySections: await getAllLibrarySections(),
     },
   };
 }

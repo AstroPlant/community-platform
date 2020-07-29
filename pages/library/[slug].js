@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import LibraryMediaCard from "../../components/cards/LibraryMediaCard";
 import Grid from "../../components/grids/Grid";
+import MediasGrid from "../../components/grids/MediasGrid";
 import MainLayout from "../../components/layouts/MainLayout";
 import { getLibrarySection } from "../../services/community";
-import MediasGrid from "../../components/grids/MediasGrid";
 
 const MediaNumber = styled.h3`
   color: ${(props) => props.theme.primary};
@@ -17,6 +16,8 @@ export default function LibrarySectionPage({ data }) {
       enableSearch
       searchFor={"libraryMedias"}
       pageTitle={section.title}
+      metaTitle={section.title + " Library"}
+      metaDescription={section.description}
     >
       <Grid>
         <MediasGrid medias={section.library_medias} />
@@ -30,11 +31,9 @@ export default function LibrarySectionPage({ data }) {
 }
 
 export async function getServerSideProps(context) {
-  const data = await getLibrarySection(context.params.slug);
-
   return {
     props: {
-      data,
+      data: await getLibrarySection(context.params.slug),
     },
   };
 }

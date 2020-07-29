@@ -4,13 +4,19 @@ import { getHelpSections } from "../services/community";
 
 export default function Help({ helpSections }) {
   return (
-    <MainLayout
-      enableSearch
-      searchFor={"faqs"}
-      pageTitle={"How can we help you ?"}
-    >
-      <HelpGrid helpSections={helpSections} />
-    </MainLayout>
+    <>
+      <MainLayout
+        enableSearch
+        searchFor={"faqs"}
+        pageTitle={"How can we help you ?"}
+        metaTitle={"Help"}
+        metaDescription={
+          "Help section of AstroPlant, frequently asked questions, community support."
+        }
+      >
+        <HelpGrid helpSections={helpSections} />
+      </MainLayout>
+    </>
   );
 }
 

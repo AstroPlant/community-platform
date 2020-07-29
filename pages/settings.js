@@ -1,13 +1,13 @@
 import React from "react";
 import SettingsGrid from "../components/grids/SettingsGrid";
 import MainLayout from "../components/layouts/MainLayout";
+import withAuth from "../hocs/withAuth";
 import { getLoggedUser } from "../providers/Auth";
 import { getUserDetails } from "../services/community";
-import withAuth from "../hocs/withAuth";
 
 function Settings({ user }) {
   return (
-    <MainLayout pageTitle={"Settings"}>
+    <MainLayout pageTitle={"Settings"} metaTitle={"Settings"}>
       <SettingsGrid user={user} />
     </MainLayout>
   );
@@ -15,7 +15,11 @@ function Settings({ user }) {
 
 export async function getServerSideProps(ctx) {
   const user = getLoggedUser(ctx.req.headers.cookie);
-  const completeUser = await getUserDetails(user.username);
+  let completeUser = null;
+
+  if (user != null) {
+    completeUser = await getUserDetails(user.username);
+  }
 
   return {
     props: {

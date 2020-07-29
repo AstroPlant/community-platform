@@ -14,8 +14,9 @@ import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
 import MarkdownEditor from "../inputs/MarkdownEditor";
 
-const Container = styled.div`
-  padding: 2rem 0;
+const PageTitle = styled.h1`
+  font-size: 2rem;
+  margin: 1rem 0;
 `;
 
 const Row = styled.div`
@@ -111,7 +112,8 @@ export default function MediaCreationForm(props) {
         isValidating,
         setFieldValue,
       }) => (
-        <Container>
+        <div>
+          <PageTitle>Create Media</PageTitle>
           <Form>
             <Row>
               <MarginRightInput label="Media Type" name="type">
@@ -222,7 +224,7 @@ export default function MediaCreationForm(props) {
             {status.error && <ErrorMessage message={status.error} />}
             {status.success && <p>{status.success}</p>}
           </Form>
-        </Container>
+        </div>
       )}
     </Formik>
   );

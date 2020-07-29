@@ -6,7 +6,7 @@ import { getUserMemberships } from "../services/data-api";
 
 function Kits({ memberships }) {
   return (
-    <MainLayout pageTitle={"Your kits"}>
+    <MainLayout pageTitle={"My kits"} metaTitle={"My kits"}>
       <MembershipGrid memberships={memberships} />
     </MainLayout>
   );
@@ -22,7 +22,7 @@ export async function getServerSideProps(ctx) {
 
   return {
     props: {
-      memberships: memberships,
+      memberships,
     },
   };
 }

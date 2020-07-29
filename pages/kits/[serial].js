@@ -8,7 +8,7 @@ import { getFullKit } from "../../services/data-api";
 
 function KitDashBoard({ kit, graphs }) {
   return (
-    <MainLayout pageTitle={kit.name}>
+    <MainLayout pageTitle={kit.name} metaTitle={kit.name}>
       <KitDashboardGrid kit={kit} graphs={graphs} />
     </MainLayout>
   );
@@ -16,13 +16,11 @@ function KitDashBoard({ kit, graphs }) {
 
 export async function getServerSideProps(context) {
   const { username } = getLoggedUser(context.req.headers.cookie);
-  const kit = await getFullKit(context.params.serial);
-  const graphs = await getUsersGraphs(username, context.params.serial);
 
   return {
     props: {
-      kit,
-      graphs,
+      kit: await getFullKit(context.params.serial),
+      graphs: await getUsersGraphs(username, context.params.serial),
     },
   };
 }

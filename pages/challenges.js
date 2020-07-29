@@ -14,7 +14,13 @@ const Content = styled.div`
 
 export default function Challenges({ challenges }) {
   return (
-    <MainLayout pageTitle={"Community Challenges"}>
+    <MainLayout
+      pageTitle={"Community Challenges"}
+      metaTitle={"Challenges"}
+      metaDescription={
+        "All the community challenges proposed by AstroPlant. Join a challenge now and help scientist around the world."
+      }
+    >
       <Content>
         <InProgress
           title={"Currently in the works"}

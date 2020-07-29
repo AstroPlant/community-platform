@@ -1,14 +1,14 @@
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import Grid from "../grids/Grid";
-import Path from "../Path";
-import BaseLayout from "./BaseLayout";
-import SearchBar from "../inputs/SearchBar";
-import SearchableContent from "../SearchableContent";
 import { useAuth } from "../../providers/Auth";
 import Button from "../Button";
-import Link from "next/link";
+import Grid from "../grids/Grid";
+import SearchBar from "../inputs/SearchBar";
+import Path from "../Path";
+import SearchableContent from "../SearchableContent";
+import PageLayout from "./PageLayout";
 
 const HeadRow = styled(Grid)`
   && {
@@ -25,7 +25,10 @@ export default function MainLayout(props) {
   const { isLogged } = useAuth();
 
   return (
-    <BaseLayout>
+    <PageLayout
+      metaTitle={props.metaTitle}
+      metaDescription={props.metaDescription}
+    >
       <Path />
       <HeadRow>
         <h2>{props.pageTitle}</h2>
@@ -47,7 +50,7 @@ export default function MainLayout(props) {
       ) : (
         <>{props.children}</>
       )}
-    </BaseLayout>
+    </PageLayout>
   );
 }
 
@@ -58,9 +61,15 @@ MainLayout.propTypes = {
   enableSearch: PropTypes.bool,
   /* The type of content to search */
   searchFor: PropTypes.string,
+  /* Meta title of the page */
+  metaTitle: PropTypes.string,
+  /* Meta description of the page */
+  metaDescription: PropTypes.string,
 };
 
 MainLayout.defaultProps = {
   enableSearch: false,
   searchFor: null,
+  metaTitle: null,
+  metaDescription: null,
 };

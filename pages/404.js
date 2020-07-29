@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import BaseLayout from "../components/layouts/BaseLayout";
+import PageLayout from "../components/layouts/PageLayout";
 import WrapInLink from "../components/WrapInLink";
 
 const Center = styled.div`
@@ -40,9 +40,9 @@ const Intructions = styled.p`
   }
 `;
 
-export default function ErrorPage(props) {
+export default function ErrorPage() {
   return (
-    <BaseLayout>
+    <PageLayout metaTitle="Page not found">
       <Center>
         <ErrorHolder>
           <ErrorTitle>404</ErrorTitle>
@@ -55,6 +55,6 @@ export default function ErrorPage(props) {
           page.
         </Intructions>
       </Center>
-    </BaseLayout>
+    </PageLayout>
   );
 }
