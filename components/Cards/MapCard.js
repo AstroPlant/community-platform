@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
-import WorldMap from "../../public/images/world-map.svg";
 
 const Container = styled(Card)`
   display: flex;
@@ -31,10 +30,10 @@ const MapImage = styled.img`
   padding-top: 1rem;
 `;
 
-export default function MapCard({ className, href }) {
+export default function MapCard(props) {
   return (
-    <WrapInLink href={href}>
-      <Container animateOnHover className={className}>
+    <WrapInLink href={"/map"}>
+      <Container animateOnHover className={props.className}>
         <TitleRow>
           <h3>Kit Map</h3>
         </TitleRow>
@@ -47,11 +46,6 @@ export default function MapCard({ className, href }) {
 }
 
 MapCard.propTypes = {
+  /* Styling class of the container. Used by styled-components. */
   className: PropTypes.string,
-  href: PropTypes.string,
-  as: PropTypes.string,
-};
-
-MapCard.defaultProps = {
-  href: "/",
 };

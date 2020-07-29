@@ -65,7 +65,11 @@ export default function KitInformationCard(props) {
           <Title>{props.title}</Title>
           <Subtitle>{props.subtitle}</Subtitle>
         </CardInfos>
-        <Button label={"Change"} color={"primary"} />
+        <Button
+          label={"Change"}
+          color={"primary"}
+          onClick={() => props.action()}
+        />
       </HeadRow>
       {props.children && (
         <ChildrenContainer>{props.children}</ChildrenContainer>
@@ -75,11 +79,17 @@ export default function KitInformationCard(props) {
 }
 
 KitInformationCard.propTypes = {
+  /* Title of the card */
   title: PropTypes.string.isRequired,
+  /* Subtitle of the card */
   subtitle: PropTypes.string,
+  /* Content of the card */
   children: PropTypes.node,
+  /* function to execute on button click */
+  action: PropTypes.func,
 };
 
 KitInformationCard.defaultProps = {
-  subtitle: "",
+  subtitle: null,
+  action: null,
 };

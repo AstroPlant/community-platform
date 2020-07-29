@@ -8,11 +8,12 @@ import { useAuth } from "../../providers/Auth";
 import { createLibraryMedia } from "../../services/community";
 import Button from "../Button";
 import ErrorMessage from "../inputs/ErrorMessage";
+import FileInput from "../inputs/FileInput";
 import InputLabel from "../inputs/InputLabel";
+import MarkdownEditor from "../inputs/MarkdownEditor";
 import Select from "../inputs/Select";
 import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
-import MarkdownEditor from "../inputs/MarkdownEditor";
 
 const PageTitle = styled.h1`
   font-size: 2rem;
@@ -149,9 +150,8 @@ export default function MediaCreationForm(props) {
                 />
 
                 <Col>
-                  <InputLabel htmlFor="articleCover" label={"Article Cover"} />
-
-                  <input
+                  <FileInput
+                    label={"Article Cover"}
                     id="articleCover"
                     name="articleCover"
                     type="file"
@@ -184,9 +184,8 @@ export default function MediaCreationForm(props) {
 
             {values.type === "File" && (
               <Col>
-                <InputLabel htmlFor="file" label={"File to upload"} />
-
-                <input
+                <FileInput
+                  label={"File to upload"}
                   id="file"
                   name="file"
                   type="file"

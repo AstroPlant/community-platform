@@ -12,6 +12,7 @@ import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
 import { API_URL } from "../services/community";
+import DropdownIcon from "../public/icons/more.svg";
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -155,11 +156,6 @@ export default function Header() {
       slug: "library",
       id: 7,
     },
-    {
-      label: "Community",
-      slug: "community",
-      id: 8,
-    },
   ];
 
   return (
@@ -196,7 +192,7 @@ export default function Header() {
             >
               <div>
                 <Avatar
-                  size={2.25}
+                  size={36}
                   imgSrc={API_URL + user.avatar.url}
                   username={user.username}
                 />
@@ -221,7 +217,7 @@ export default function Header() {
                 </DropdownMenu>
               </div>
 
-              <Dropdown reverse={!hideMenu} />
+              <Dropdown reverse={!hideMenu} icon={<DropdownIcon />} />
             </ClickableItems>
           </Row>
         </>

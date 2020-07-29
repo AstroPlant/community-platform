@@ -55,31 +55,26 @@ const Input = styled.input`
   outline: none;
 `;
 
-export default function TextInput(props) {
-  const { className, ...otherProps } = props;
-
-  const [field, meta] = useField(otherProps);
+export default function TextInput({ className, ...props }) {
+  const [field, meta] = useField(props);
   const hasError = meta.touched && meta.error;
 
   return (
     <Container className={className}>
-      {otherProps.label && (
-        <InputLabel
-          label={otherProps.label}
-          htmlFor={otherProps.id || otherProps.name}
-        />
+      {props.label && (
+        <InputLabel label={props.label} htmlFor={props.id || props.name} />
       )}
       <InputHolder
-        disabled={otherProps.disabled}
-        dark={otherProps.dark}
+        disabled={props.disabled}
+        dark={props.dark}
         hasError={hasError}
       >
-        {otherProps.addon && (
+        {props.addon && (
           <Addon>
-            <p>{otherProps.addon}</p>
+            <p>{props.addon}</p>
           </Addon>
         )}
-        <Input {...field} {...otherProps} />
+        <Input {...field} {...props} />
       </InputHolder>
 
       {hasError ? <ErrorMessage message={meta.error} /> : null}

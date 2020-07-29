@@ -29,7 +29,7 @@ function Home({ featuredArticle, mainKit }) {
 
       <DashboardGrid>
         <KitCard home kit={mainKit} />
-        <NewsCard featuredArticle={featuredArticle} href={"/news"} />
+        <NewsCard featuredArticle={featuredArticle} />
         <ChallengeCard />
         <HelpCard
           iconSVG={<HelpIcon />}
@@ -43,7 +43,7 @@ function Home({ featuredArticle, mainKit }) {
           title={"Ask the community!"}
           href={"http://www.astroplant.slack.com/#/"}
         />
-        <MapCard href={"/map"} />
+        <MapCard />
         <LibraryCard />
       </DashboardGrid>
     </PageLayout>

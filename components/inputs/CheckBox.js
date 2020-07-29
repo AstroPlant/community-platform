@@ -14,7 +14,7 @@ const Input = styled.input`
   margin-right: 1rem;
 `;
 
-const Checkbox = ({ children, ...props }) => {
+export default function Checkbox({ children, ...props }) {
   const [field, meta] = useField({ ...props, type: "checkbox" });
   return (
     <>
@@ -28,6 +28,4 @@ const Checkbox = ({ children, ...props }) => {
       ) : null}
     </>
   );
-};
-
-export default Checkbox;
+}

@@ -105,6 +105,6 @@ export default function GraphCard(props) {
 }
 
 GraphCard.propTypes = {
-  /* the graph to display */
+  /* Object containing the graph to display */
   graph: PropTypes.object.isRequired,
 };

@@ -28,7 +28,7 @@ const BrandName = styled.h3`
 export default function Brand(props) {
   return (
     <Container className={props.className} vertical={props.vertical}>
-      <Logo size={props.vertical ? 2.5 : 2} />
+      <Logo size={props.vertical ? 40 : 32} />
       <Separator vertical={props.vertical} />
       <BrandName vertical={props.vertical}>astroplant</BrandName>
     </Container>

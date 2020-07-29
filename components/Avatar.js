@@ -8,8 +8,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: ${(props) => props.size + "rem"};
-  height: ${(props) => props.size + "rem"};
+  width: ${(props) => props.size + "px"};
+  height: ${(props) => props.size + "px"};
 
   border: ${(props) => props.bordered && `4px solid ${props.theme.primary}`};
   border-radius: 50%;
@@ -27,7 +27,7 @@ const Placeholder = styled.div`
   text-align: center;
 
   font-weight: bold;
-  font-size: ${(props) => props.fontSize + "em"};
+  font-size: ${(props) => props.fontSize + "px"};
 `;
 
 function PureAvatar(props) {
@@ -60,10 +60,11 @@ export default function Avatar(props) {
 }
 
 Avatar.propTypes = {
-  /* Path to the user's avatar */
+  /* Path to the image */
   imgSrc: PropTypes.string,
+  /* Username of the avatar owner */
   username: PropTypes.string.isRequired,
-  /* The size of the avatar in rem */
+  /* The size of the avatar in pixel */
   size: PropTypes.number.isRequired,
   /* If the avatar is interactive where it should lead */
   href: PropTypes.string,

@@ -3,6 +3,12 @@ import React from "react";
 import styled from "styled-components";
 import KitMembershipCard from "../cards/KitMembershipCard";
 import Grid from "./Grid";
+import Button from "../Button";
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ListTitle = styled.h3`
   margin-bottom: 1rem;
@@ -10,6 +16,12 @@ const ListTitle = styled.h3`
 
 const KitList = styled.div`
   margin-bottom: 2rem;
+`;
+
+const AddButton = styled(Button)`
+  margin: auto 0 0 0;
+  width: auto;
+  align-self: flex-end;
 `;
 
 export default function MembershipGrid(props) {
@@ -24,9 +36,11 @@ export default function MembershipGrid(props) {
     }
   }
 
+  //TODO Implement add kit functionality
+
   return (
     <Grid>
-      <div>
+      <Column>
         <ListTitle>Owned</ListTitle>
         <KitList>
           {OwnedKitMemberships.length === 0 ? (
@@ -58,12 +72,14 @@ export default function MembershipGrid(props) {
             </>
           )}
         </KitList>
-      </div>
+        <AddButton disabled label={"Add a kit"} color={"primary"} />
+      </Column>
       <div />
     </Grid>
   );
 }
 
 MembershipGrid.propTypes = {
+  /* Array containing membership objects */
   memberships: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

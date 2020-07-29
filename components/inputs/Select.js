@@ -41,27 +41,18 @@ const SelectInput = styled.select`
   border: 0;
 `;
 
-export default function Select(props) {
-  const { className, ...otherProps } = props;
-
-  const [field, meta] = useField(otherProps);
+export default function Select({ className, ...props }) {
+  const [field, meta] = useField(props);
   const hasError = meta.touched && meta.error;
-  const disabled = otherProps.disabled;
+  const disabled = props.disabled;
 
   return (
     <Container className={className}>
-      {otherProps.label && (
-        <InputLabel
-          label={otherProps.label}
-          htmlFor={otherProps.id || otherProps.name}
-        />
+      {props.label && (
+        <InputLabel label={props.label} htmlFor={props.id || props.name} />
       )}
-      <InputHolder
-        disabled={disabled}
-        dark={otherProps.dark}
-        hasError={hasError}
-      >
-        <SelectInput {...field} {...otherProps} />
+      <InputHolder disabled={disabled} dark={props.dark} hasError={hasError}>
+        <SelectInput {...field} {...props} />
       </InputHolder>
 
       {hasError ? <ErrorMessage message={meta.error} /> : null}
@@ -70,14 +61,15 @@ export default function Select(props) {
 }
 
 Select.propTypes = {
+  /* Styling class of the container. Used by styled-components. */
+  className: PropTypes.string,
   /* The label of the input */
   label: PropTypes.string,
-  /* Use the input in darkmode */
+  /* Whether or not to use the input in darkmode */
   dark: PropTypes.bool,
 };
 
 Select.defaultProps = {
-  addon: null,
   label: null,
   dark: false,
 };

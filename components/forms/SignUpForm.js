@@ -36,7 +36,7 @@ const SignupSchema = Yup.object().shape({
   ),
 });
 
-const SignUpForm = () => {
+export default function SignUpForm() {
   return (
     <>
       <Formik
@@ -120,6 +120,4 @@ const SignUpForm = () => {
       </Formik>
     </>
   );
-};
-
-export default SignUpForm;
+}

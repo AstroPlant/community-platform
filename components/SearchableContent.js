@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import LoadingAnimation from "./LoadingAnimation";
-import { useSearch } from "../providers/Search";
-import SearchResults from "./SearchResults";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+import { useSearch } from "../providers/Search";
+import LoadingAnimation from "./LoadingAnimation";
+import SearchResults from "./SearchResults";
 
 const Center = styled.div`
   display: flex;

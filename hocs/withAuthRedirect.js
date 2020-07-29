@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { loggedIn, useAuth } from "../providers/Auth";
-import LoadingAnimation from "../components/LoadingAnimation";
 import styled from "styled-components";
+import LoadingAnimation from "../components/LoadingAnimation";
+import { loggedIn, useAuth } from "../providers/Auth";
 
 const Center = styled.div`
   display: flex;

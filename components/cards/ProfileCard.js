@@ -1,11 +1,11 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
-import Card from "./Card";
-import Avatar from "../Avatar";
 import EditIcon from "../../public/icons/edit.svg";
-import Icon from "../Icon";
 import { API_URL } from "../../services/community";
+import Avatar from "../Avatar";
+import Icon from "../Icon";
+import Card from "./Card";
 
 const UserColumn = styled(Card)`
   display: flex;
@@ -62,7 +62,7 @@ export default function ProfileCard(props) {
       <AvatarHolder>
         <Avatar
           bordered
-          size={12}
+          size={256}
           imgSrc={props.user.avatar && API_URL + props.user.avatar.url}
           username={props.user.username}
         />
@@ -87,9 +87,9 @@ export default function ProfileCard(props) {
 }
 
 ProfileCard.propTypes = {
-  /* User to display */
+  /* Object containing the user information */
   user: PropTypes.object.isRequired,
-  /* function to open the avatar edition form */
+  /* Function to open the avatar edition form */
   editAvatar: PropTypes.func,
 };
 

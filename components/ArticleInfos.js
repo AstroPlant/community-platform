@@ -29,7 +29,7 @@ export default function ArticleInfos(props) {
 
   return (
     <AuthorInfos className={props.className}>
-      <Avatar size={3.5} username={props.author.username} />
+      <Avatar size={64} username={props.author.username} />
       <Column>
         <AuthorName>
           {hasFullName
@@ -43,7 +43,7 @@ export default function ArticleInfos(props) {
 }
 
 ArticleInfos.propTypes = {
-  /* object containing the author informations */
+  /* object containing the author information */
   author: PropTypes.object.isRequired,
   /* publication data of the article */
   date: PropTypes.string.isRequired,

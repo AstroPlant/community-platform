@@ -114,7 +114,6 @@ export default function Graph(props) {
 }
 
 Graph.propTypes = {
-  datasets: PropTypes.arrayOf(object),
-  labels: PropTypes.arrayOf(PropTypes.string),
-  type: PropTypes.string,
+  /* object containing the graph information */
+  graph: PropTypes.object.isRequired,
 };

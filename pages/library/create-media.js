@@ -6,7 +6,7 @@ import { getAllLibrarySectionNames } from "../../services/community";
 
 function CreateMediaPage({ librarySections }) {
   return (
-    <PageLayout pageTitle={"Create Media"}>
+    <PageLayout metaTitle={"Create Media"}>
       <MediaCreationForm librarySections={librarySections} />
     </PageLayout>
   );

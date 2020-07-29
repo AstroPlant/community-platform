@@ -36,13 +36,20 @@ export default function KitToolCard(props) {
         <Title>{props.title}</Title>
         <Description>{props.description}</Description>
       </CardInfos>
-      <Button label={"Open"} color={"primary"} />
+      <Button label={"Open"} color={"primary"} onClick={() => props.action()} />
     </Container>
   );
 }
 
 KitToolCard.propTypes = {
+  /* Title of the card (Tool Name) */
   title: PropTypes.string.isRequired,
+  /* Description of the tool */
   description: PropTypes.string.isRequired,
-  onClick: PropTypes.string,
+  /* Function to execute on button push */
+  action: PropTypes.string,
+};
+
+KitToolCard.defaultProps = {
+  action: null,
 };

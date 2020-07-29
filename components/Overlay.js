@@ -25,9 +25,9 @@ export default function Overlay(props) {
 }
 
 Overlay.propTypes = {
-  /* Control the overlay visibility */
+  /* Whether or not to show the overlay */
   show: PropTypes.bool,
-  /* Elements to be shown on the overlay */
+  /* Content of the overlay */
   children: PropTypes.node,
 };
 

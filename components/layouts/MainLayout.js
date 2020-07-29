@@ -4,7 +4,6 @@ import React from "react";
 import styled from "styled-components";
 import { useAuth } from "../../providers/Auth";
 import Button from "../Button";
-import Grid from "../grids/Grid";
 import SearchBar from "../inputs/SearchBar";
 import Path from "../Path";
 import SearchableContent from "../SearchableContent";
@@ -32,7 +31,6 @@ const SearchbarHolder = styled.div`
 export default function MainLayout(props) {
   const { isLogged, user } = useAuth();
 
-  console.log(user);
   return (
     <PageLayout
       metaTitle={props.metaTitle}
@@ -45,7 +43,7 @@ export default function MainLayout(props) {
         {isLogged && (
           <>
             {props.toolsFor === "libraryMedias" && (
-              <Link passHref href="/library/create-medias">
+              <Link passHref href="/library/create-media">
                 <CreateButton label={"Create Media"} color={"primary"} />
               </Link>
             )}

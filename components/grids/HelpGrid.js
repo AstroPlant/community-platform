@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import Grid from "./Grid";
 import SlackIcon from "../../public/icons/slack.svg";
-import CategoryCard from "../cards/CategoryCard";
 import HelpCard from "../cards/HelpCard";
+import HelpSectionCard from "../cards/HelpSectionCard";
+import Grid from "./Grid";
 
 const GridContainer = styled(Grid)`
   && {
@@ -17,11 +17,7 @@ export default function HelpGrid(props) {
   return (
     <GridContainer fillHeight className={props.className}>
       {props.helpSections.map((category) => (
-        <CategoryCard
-          name={category.title}
-          slug={category.slug}
-          key={category.id}
-        />
+        <HelpSectionCard helpSection={category} key={category.id} />
       ))}
       <HelpCard
         iconSVG={<SlackIcon />}

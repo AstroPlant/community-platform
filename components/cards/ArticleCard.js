@@ -80,8 +80,8 @@ export default function ArticleCard(props) {
 }
 
 ArticleCard.propTypes = {
-  /* className to customize the component with styled-component */
+  /* Styling class of the container. Used by styled-components. */
   className: PropTypes.string,
-  /* Article object containing infos to display */
+  /* object containing the article information */
   article: PropTypes.object.isRequired,
 };

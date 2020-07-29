@@ -42,7 +42,7 @@ export default function LibrarySectionCard(props) {
 }
 
 LibrarySectionCard.propTypes = {
-  /* Object containing the section to display */
+  /* Object containing the section information */
   librarySection: PropTypes.object.isRequired,
   /* Total number of medias in the section */
   mediaCount: PropTypes.number.isRequired,

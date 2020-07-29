@@ -5,8 +5,8 @@ import theme from "../styles/theme";
 
 const LogoHolder = styled.div`
   display: block;
-  height: ${(props) => props.size}rem;
-  width: ${(props) => props.size}rem;
+  height: ${(props) => props.size}px;
+  width: ${(props) => props.size}px;
 `;
 
 export default function Logo(props) {
@@ -29,8 +29,11 @@ export default function Logo(props) {
 }
 
 Logo.propTypes = {
+  /* Styling class of the container. Used by styled-components. */
   className: PropTypes.string,
+  /* The color of the logo */
   color: PropTypes.string,
+  /* The size of the logo in pixel */
   size: PropTypes.number,
 };
 

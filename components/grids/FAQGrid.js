@@ -17,15 +17,16 @@ const Column = styled.div`
 `;
 
 export default function FAQGrid(props) {
-  const faqs = props.faqs;
+  // Sorting questions to be placed into columns
+  // Avoids big gaps on opposite side when a FAQ is open on one dide
   let leftQuestions = [];
   let rightQuestions = [];
 
-  for (let i = 0; i < faqs.length; i++) {
-    if (i < faqs.length / 2) {
-      leftQuestions.push(faqs[i]);
+  for (let i = 0; i < props.faqs.length; i++) {
+    if (i < props.faqs.length / 2) {
+      leftQuestions.push(props.faqs[i]);
     } else {
-      rightQuestions.push(faqs[i]);
+      rightQuestions.push(props.faqs[i]);
     }
   }
 

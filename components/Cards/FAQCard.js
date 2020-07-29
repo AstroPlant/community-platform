@@ -6,6 +6,7 @@ import Dropdown from "../Dropdown";
 import Card from "./Card";
 import ReactMarkdown from "react-markdown";
 import styles from "../../styles/markdown.module.css";
+import ArrowIcon from "../../public/icons/arrow-down.svg";
 
 const Container = styled(Card)`
   && {
@@ -68,6 +69,7 @@ export default function FAQCard(props) {
           onClick={() => setOpen(!open)}
           reverse={open}
           color={open ? "primary" : "light"}
+          icon={<ArrowIcon />}
         />
       </QuestionRow>
       <AnswerRow open={open}>
@@ -81,6 +83,6 @@ export default function FAQCard(props) {
 }
 
 FAQCard.propTypes = {
-  /* the faq object */
+  /* Object containing the FAQ information*/
   faq: PropTypes.object.isRequired,
 };

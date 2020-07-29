@@ -45,5 +45,6 @@ export default function LivePeripheral(props) {
 }
 
 LivePeripheral.propTypes = {
+  /* Object containing the peripheral information */
   peripheral: PropTypes.object.isRequired,
 };

@@ -7,9 +7,9 @@ import { authenticate, useAuth } from "../../providers/Auth";
 import { forgotPassword, login } from "../../services/community";
 import Button from "../Button";
 import Checkbox from "../inputs/CheckBox";
+import ErrorMessage from "../inputs/ErrorMessage";
 import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
-import ErrorMessage from "../inputs/ErrorMessage";
 
 const SubmitButton = styled(Button)`
   margin: 1rem 0 1.5rem 0;
@@ -29,7 +29,7 @@ const LoginSchema = Yup.object().shape({
   rememberMe: Yup.boolean(),
 });
 
-const LoginForm = () => {
+export default function LoginForm() {
   const router = useRouter();
   const { isLogged, setLogged } = useAuth();
 
@@ -112,6 +112,4 @@ const LoginForm = () => {
       )}
     </Formik>
   );
-};
-
-export default LoginForm;
+}

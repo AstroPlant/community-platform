@@ -50,7 +50,7 @@ export default function MapBuilder(props) {
                 onpopupclose={() => props.changeKit(null)}
               >
                 <Popup className={"custom-popup"}>
-                  <MarginLogo size={1.05} color={"dark"} />
+                  <MarginLogo size={8} color={"dark"} />
                   <KitName>{kit.name}</KitName>
                 </Popup>
               </Marker>

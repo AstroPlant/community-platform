@@ -4,10 +4,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import Card from "../components/cards/Card";
 import KitCountCard from "../components/cards/KitCountCard";
-import MapGrid from "../components/grids/MapGrid";
+import Grid from "../components/grids/Grid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getKits } from "../services/data-api";
-import Grid from "../components/grids/Grid";
 
 const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,

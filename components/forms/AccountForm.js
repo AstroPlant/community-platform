@@ -28,7 +28,7 @@ const UserInfoSchema = Yup.object().shape({
   description: Yup.string().max(140),
 });
 
-function AccountForm(props) {
+export default function AccountForm(props) {
   let {
     id,
     email,
@@ -139,5 +139,3 @@ AccountForm.propTypes = {
   /* User information on page load */
   initialInfos: PropTypes.object.isRequired,
 };
-
-export default AccountForm;

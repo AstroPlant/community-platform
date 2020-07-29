@@ -24,72 +24,70 @@ const ChangePasswordSchema = Yup.object().shape({
 
 export default function ChangePasswordForm() {
   return (
-    <>
-      <Formik
-        initialValues={{
-          oldPassword: "",
-          newPassword: "",
-          validatePassword: "",
-        }}
-        initialStatus={{ success: null, error: null }}
-        validationSchema={ChangePasswordSchema}
-        onSubmit={async (values, actions) => {
-          const res = await changePassword(
-            values.oldPassword,
-            values.newPassword
-          );
+    <Formik
+      initialValues={{
+        oldPassword: "",
+        newPassword: "",
+        validatePassword: "",
+      }}
+      initialStatus={{ success: null, error: null }}
+      validationSchema={ChangePasswordSchema}
+      onSubmit={async (values, actions) => {
+        const res = await changePassword(
+          values.oldPassword,
+          values.newPassword
+        );
 
-          if (!res.error) {
-            // Show feedback
-            actions.setStatus({ success: "Password Changed !" });
-          } else {
-            actions.setStatus({
-              error: `Whoops! Could not update your password, ${res.message[0].messages[0].message}`,
-            });
-          }
-        }}
-      >
-        {({ status, isSubmitting, isValid, isValidating }) => (
-          <>
-            <Form>
-              <TextInput
-                label="Current Password"
-                name="oldPassword"
-                type="password"
-                placeholder="Current"
+        if (!res.error) {
+          // Show feedback
+          actions.setStatus({ success: "Password Changed !" });
+        } else {
+          actions.setStatus({
+            error: `Whoops! Could not update your password, ${res.message[0].messages[0].message}`,
+          });
+        }
+      }}
+    >
+      {({ status, isSubmitting, isValid, isValidating }) => (
+        <>
+          <Form>
+            <TextInput
+              label="Current Password"
+              name="oldPassword"
+              type="password"
+              placeholder="Current"
+            />
+
+            <TextInput
+              label="New password"
+              name="newPassword"
+              type="password"
+              placeholder="New secure password"
+            />
+
+            <TextInput
+              label="Validate password"
+              name="validatePassword"
+              type="password"
+              placeholder="Validate new password"
+            />
+
+            {isSubmitting ? (
+              <LoadingAnimation />
+            ) : (
+              <SubmitButton
+                type="submit"
+                color={"primary"}
+                label={"Change Password"}
+                disabled={isSubmitting || isValidating || !isValid}
               />
+            )}
 
-              <TextInput
-                label="New password"
-                name="newPassword"
-                type="password"
-                placeholder="New secure password"
-              />
-
-              <TextInput
-                label="Validate password"
-                name="validatePassword"
-                type="password"
-                placeholder="Validate new password"
-              />
-
-              {isSubmitting ? (
-                <LoadingAnimation />
-              ) : (
-                <SubmitButton
-                  type="submit"
-                  color={"primary"}
-                  label={"Change Password"}
-                  disabled={isSubmitting || isValidating || !isValid}
-                />
-              )}
-
-              {status.error && <ErrorMessage message={status.error} />}
-              {status.success && <p>{status.success}</p>}
-            </Form>
-          </>
-        )}
-      </Formik>
-    </>
+            {status.error && <ErrorMessage message={status.error} />}
+            {status.success && <p>{status.success}</p>}
+          </Form>
+        </>
+      )}
+    </Formik>
   );
 }

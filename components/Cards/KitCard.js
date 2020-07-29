@@ -131,6 +131,7 @@ export default function KitCard(props) {
 }
 
 KitCard.propTypes = {
+  /* Styling class of the container. Used by styled-components. */
   className: PropTypes.string,
   /* Object containing the kit information to display */
   kit: PropTypes.object.isRequired,

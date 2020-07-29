@@ -29,10 +29,10 @@ const ChallengeContent = styled.div`
   padding: 1rem 0;
 `;
 
-export default function ChallengeCard({ className }) {
+export default function ChallengeCard(props) {
   return (
     <WrapInLink href={"/challenges"}>
-      <Container animateOnHover className={className}>
+      <Container animateOnHover className={props.className}>
         <TitleRow>
           <h3>Community Challenges</h3>
         </TitleRow>
@@ -45,5 +45,6 @@ export default function ChallengeCard({ className }) {
 }
 
 ChallengeCard.propTypes = {
+  /* Styling class of the container. Used by styled-components. */
   className: PropTypes.string,
 };

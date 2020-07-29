@@ -26,6 +26,7 @@ export default function Grid(props) {
 }
 
 Grid.propTypes = {
+  /* Content of the grid */
   children: PropTypes.node.isRequired,
   /* Whether or not the classic ratio of 2/3 1/3 should be inverted to 1/3 2/3 */
   inverted: PropTypes.bool,

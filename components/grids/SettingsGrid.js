@@ -143,6 +143,6 @@ export default function SettingsGrid(props) {
 }
 
 SettingsGrid.propTypes = {
-  /* User to display */
+  /* Object containing user information */
   user: PropTypes.object.isRequired,
 };

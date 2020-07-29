@@ -14,10 +14,11 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.secondaryDark};
 `;
 
-export default function Chip({ label }) {
-  return <Container>{label}</Container>;
+export default function Chip(props) {
+  return <Container {...props}>{props.label}</Container>;
 }
 
 Chip.propTypes = {
+  /* label of the chip */
   label: PropTypes.string.isRequired,
 };

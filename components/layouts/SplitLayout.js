@@ -18,5 +18,6 @@ export default function SplitLayout(props) {
 }
 
 SplitLayout.propTypes = {
+  /* Content of the layout */
   children: PropTypes.node.isRequired,
 };

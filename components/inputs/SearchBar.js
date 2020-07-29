@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSearch } from "../../providers/Search";
-import SearchIcon from "../../public/icons/search.svg";
 import CloseIcon from "../../public/icons/close.svg";
+import SearchIcon from "../../public/icons/search.svg";
 import {
   searchArticles,
   searchFAQs,

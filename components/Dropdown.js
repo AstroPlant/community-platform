@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import DropdownIcon from "../public/icons/dropdown.svg";
 import Icon from "./Icon";
 
 const Container = styled.div`
@@ -14,11 +13,13 @@ const Container = styled.div`
   transform: ${(props) => (props.reverse ? "rotate(180deg)" : "")};
 `;
 
-const Dropdown = React.forwardRef(({ onClick, reverse, color }, ref) => (
-  <Container ref={ref} reverse={reverse} onClick={onClick}>
-    <Icon size={24} color={color}>
-      <DropdownIcon />
-    </Icon>
+const Dropdown = React.forwardRef((props, ref) => (
+  <Container ref={ref} reverse={props.reverse} onClick={props.onClick}>
+    {props.icon && (
+      <Icon size={24} color={props.color}>
+        {props.icon}
+      </Icon>
+    )}
   </Container>
 ));
 
@@ -29,10 +30,13 @@ Dropdown.propTypes = {
   reverse: PropTypes.bool.isRequired,
   /* String representing the color of the dropdown, should be a string color from the theme. e.g "primary" */
   color: PropTypes.string,
+  /* Icon Component to use for the dropdown */
+  icon: PropTypes.node,
 };
 
 Dropdown.defaultProps = {
   color: "light",
+  icon: null,
 };
 
 export default Dropdown;

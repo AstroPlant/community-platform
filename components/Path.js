@@ -2,6 +2,8 @@ import Link from "next/link";
 import { withRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
+import Icon from "./Icon";
+import ArrowIcon from "../public/icons/arrow-down.svg";
 
 const PathContainer = styled.nav`
   display: flex;
@@ -18,9 +20,8 @@ const LinkContainer = styled.div`
   color: ${(props) => (props.active ? props.theme.light : props.theme.grey)};
 `;
 
-const SeparatorHolder = styled.b`
-  display: ${(props) => (props.active ? "none" : "block")};
-  margin: 0 1rem;
+const Separator = styled(Icon)`
+  transform: rotate(-90deg);
 `;
 
 /***
@@ -69,7 +70,11 @@ function Path({ router }) {
             </a>
           </Link>
 
-          <SeparatorHolder active={step.active}>{">"}</SeparatorHolder>
+          {!step.active && (
+            <Separator size={24} color={"grey"}>
+              <ArrowIcon />
+            </Separator>
+          )}
         </LinkContainer>
       ))}
     </PathContainer>

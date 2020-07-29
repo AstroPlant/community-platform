@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { upload } from "../../services/community";
 import Button from "../Button";
 import ErrorMessage from "../inputs/ErrorMessage";
-import LoadingAnimation from "../LoadingAnimation";
 import FileInput from "../inputs/FileInput";
+import LoadingAnimation from "../LoadingAnimation";
 
 const CustomForm = styled.form`
   display: flex;
@@ -93,54 +93,52 @@ export default function UploadForm(props) {
   }
 
   return (
-    <>
-      <CustomForm onSubmit={handleSubmit}>
-        <FormTitle>{props.title}</FormTitle>
-        {previews.length != 0 && (
-          <>
-            <Row justify={"center"}>
-              <b>Previews</b>
-            </Row>
-            <Row justify={"space-evenly"}>
-              {previews &&
-                previews.map((preview) => (
-                  <ThumbnailHolder key={preview}>
-                    <FilePreview src={preview} />
-                  </ThumbnailHolder>
-                ))}
-            </Row>
-          </>
-        )}
+    <form onSubmit={handleSubmit}>
+      <FormTitle>{props.title}</FormTitle>
+      {previews.length != 0 && (
+        <>
+          <Row justify={"center"}>
+            <b>Previews</b>
+          </Row>
+          <Row justify={"space-evenly"}>
+            {previews &&
+              previews.map((preview) => (
+                <ThumbnailHolder key={preview}>
+                  <FilePreview src={preview} />
+                </ThumbnailHolder>
+              ))}
+          </Row>
+        </>
+      )}
 
-        <FileInput
-          name={"files"}
-          accept="image/*"
-          multiple={props.multiple}
-          onChange={handleChange}
+      <FileInput
+        name={"files"}
+        accept="image/*"
+        multiple={props.multiple}
+        onChange={handleChange}
+      />
+      <ErrorMessage message={error} />
+      <Row justify={"flex-end"}>
+        <Button
+          inverted
+          label={"Cancel"}
+          color={"error"}
+          onClick={() => props.closeForm()}
+          type="reset"
         />
-        <ErrorMessage message={error} />
-        <Row justify={"flex-end"}>
-          <Button
-            inverted
-            label={"Cancel"}
-            color={"error"}
-            onClick={() => props.closeForm()}
-            type="reset"
-          />
 
-          {loading ? (
-            <LoadingAnimation />
-          ) : (
-            <Button
-              label={"Upload"}
-              color={"primary"}
-              disabled={!valid}
-              type="submit"
-            />
-          )}
-        </Row>
-      </CustomForm>
-    </>
+        {loading ? (
+          <LoadingAnimation />
+        ) : (
+          <Button
+            label={"Upload"}
+            color={"primary"}
+            disabled={!valid}
+            type="submit"
+          />
+        )}
+      </Row>
+    </form>
   );
 }
 

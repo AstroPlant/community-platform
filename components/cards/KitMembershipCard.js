@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
-import Card from "./Card";
 import WrapInLink from "../WrapInLink";
+import Card from "./Card";
 
 const Container = styled(Card)`
   display: flex;
@@ -35,5 +35,6 @@ export default function KitMembershipCard(props) {
 }
 
 KitMembershipCard.propTypes = {
+  /* Object containing the membership inforamtion */
   membership: PropTypes.object.isRequired,
 };

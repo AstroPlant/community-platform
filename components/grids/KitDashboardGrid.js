@@ -63,6 +63,8 @@ const InformationSection = ({ config, collaborators }) => {
 export default function KitDashboardGrid(props) {
   const [currentConfig, setCurrentConfig] = useState(props.kit.config);
 
+  // TODO Implement function to switch between configs
+
   const collabs = [
     { id: 1, displayName: "Arthur Dent" },
     { id: 2, displayName: "Ford Prefect" },
@@ -92,6 +94,8 @@ export default function KitDashboardGrid(props) {
 }
 
 KitDashboardGrid.propTypes = {
+  /* Object containing the kit information */
   kit: PropTypes.object.isRequired,
+  /* Array of graph object */
   graphs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

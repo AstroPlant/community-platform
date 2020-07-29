@@ -17,6 +17,7 @@ const LinkContainer = styled.a`
 
   text-align: center;
   font-size: 1em;
+  line-height: 1em;
   font-weight: 550;
   letter-spacing: 0.02em;
 
@@ -58,8 +59,16 @@ export default function HeaderLink(props) {
 }
 
 HeaderLink.propTypes = {
-  label: PropTypes.string.isRequired,
-  slug: PropTypes.string.isRequired,
+  /* Styling class of the container. Used by styled-components. */
   className: PropTypes.string,
+  /* label of the link */
+  label: PropTypes.string.isRequired,
+  /* slug of the link (destination) */
+  slug: PropTypes.string.isRequired,
+  /* function to execute on click  */
   onClick: PropTypes.func,
+};
+
+HeaderLink.defaultProps = {
+  onClick: null,
 };
