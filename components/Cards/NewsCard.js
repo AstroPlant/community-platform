@@ -70,11 +70,7 @@ export default function NewsCard(props) {
             href={"/news/[slug]"}
             as={`/news/${props.featuredArticle.slug}`}
           >
-            <MarginButton
-              inverted={props.home}
-              label={"Read Article"}
-              color={props.home ? "dark" : "primary"}
-            />
+            <MarginButton inverted label={"Read Article"} color={"dark"} />
           </Link>
 
           <Link passHref href={"/news"}>

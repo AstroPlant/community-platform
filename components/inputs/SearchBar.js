@@ -16,6 +16,8 @@ const Form = styled.form`
   align-items: center;
   justify-content: flex-start;
 
+  width: 100%;
+
   background-color: ${(props) => props.theme.darkLight};
 `;
 
@@ -45,7 +47,7 @@ const Hidden = styled.input`
 
 export default function SearchBar(props) {
   const [query, setQuery] = useState("");
-  const { results, setResults, setParams } = useSearch();
+  const { setResults, setParams } = useSearch();
   let search = null;
 
   switch (props.searchFor) {

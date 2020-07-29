@@ -12,13 +12,6 @@ const Center = styled.div`
   height: 100vh;
 `;
 
-/**
- * @param WrappedComponent The component that this functionality
- * will be added to.
- * @param LoadingComponent The component that will be rendered while
- * the auth state is loading.
- * @param type the type of object query by the search
- */
 export default function SearchableContent(props) {
   const { results, params, isLoading } = useSearch();
 

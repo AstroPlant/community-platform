@@ -2,7 +2,7 @@ import cookie from "cookie";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { Cookies } from "react-cookie";
-import { API_URL, getUserDetails } from "../services/community";
+import { getUserDetails } from "../services/community";
 
 const cookies = new Cookies();
 const defaultOptions = { path: "/", sameSite: true, maxAge: 3600 };
@@ -99,11 +99,18 @@ export function loggedIn() {
  * @param options parameters for the cookies
  */
 function setLoggedUser(user, options) {
+  const currentUser = cookies.get("user");
+
   const loggedUser = {
-    id: user.id,
-    username: user.username,
-    avatarUrl: user.avatar && API_URL + user.avatar.url,
-    role: user.role,
+    id: user.id || currentUser.id,
+    username: user.username || currentUser.username,
+    email: user.email || currentUser.email,
+    avatar: user.avatar || currentUser.avatar,
+    description: user.description || currentUser.description,
+    firstName: user.firstName || currentUser.firstName,
+    lastName: user.lastName || currentUser.lastName,
+    slackUsername: user.slackUsername || currentUser.slackUsername,
+    role: user.role || currentUser.role,
   };
 
   cookies.set("user", loggedUser, options);
@@ -136,8 +143,11 @@ export function getLoggedUser(httpCookies) {
 export async function updateLoggedUser(username) {
   const res = await getUserDetails(username);
 
-  if (res.username === username) {
+  if (!res.error && !res.errors) {
     setLoggedUser(res, { path: "/", sameSite: true });
+    return cookies.get("user");
+  } else {
+    return res;
   }
 }
 

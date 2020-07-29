@@ -11,6 +11,7 @@ import Dropdown from "./Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
+import { API_URL } from "../services/community";
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -196,7 +197,7 @@ export default function Header() {
               <div>
                 <Avatar
                   size={2.25}
-                  imgSrc={user.avatarUrl}
+                  imgSrc={API_URL + user.avatar.url}
                   username={user.username}
                 />
                 <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>

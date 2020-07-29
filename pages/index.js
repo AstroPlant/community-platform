@@ -24,12 +24,12 @@ function Home({ featuredArticle, mainKit }) {
     >
       <h1>
         Welcome
-        {isLogged && `, ${user.firstname ? user.firstname : user.username} `} !
+        {isLogged && ` ${user.firstName ? user.firstName : user.username}`}!
       </h1>
 
       <DashboardGrid>
         <KitCard home kit={mainKit} />
-        <NewsCard home featuredArticle={featuredArticle} href={"/news"} />
+        <NewsCard featuredArticle={featuredArticle} href={"/news"} />
         <ChallengeCard />
         <HelpCard
           iconSVG={<HelpIcon />}

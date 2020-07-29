@@ -8,6 +8,7 @@ export default function Library({ librarySections }) {
     <MainLayout
       enableSearch
       searchFor={"libraryMedias"}
+      toolsFor={"libraryMedias"}
       pageTitle={"AstroPlant Library"}
       metaTitle={"Library"}
       metaDescription={"Everything you need to get started and contribute."}

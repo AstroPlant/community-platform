@@ -8,6 +8,7 @@ export default function News({ featured, articles }) {
     <MainLayout
       enableSearch
       searchFor={"articles"}
+      toolsFor={"articles"}
       pageTitle={"The latest updates!"}
       metaTitle={"News"}
       metaDescription={"All the official news and update about AstroPlant !"}

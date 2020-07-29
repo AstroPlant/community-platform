@@ -15,6 +15,7 @@ export default function LibrarySectionPage({ data }) {
     <MainLayout
       enableSearch
       searchFor={"libraryMedias"}
+      toolsFor={"libraryMedias"}
       pageTitle={section.title}
       metaTitle={section.title + " Library"}
       metaDescription={section.description}

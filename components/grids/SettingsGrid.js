@@ -111,8 +111,8 @@ export default function SettingsGrid(props) {
               source: "users-permissions",
               field: "avatar",
             }}
-            callback={() => {
-              updateLoggedUser(props.user.username);
+            callback={async () => {
+              await updateLoggedUser(props.user.username);
               router.replace("/settings");
             }}
           />

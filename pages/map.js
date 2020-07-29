@@ -7,25 +7,19 @@ import KitCountCard from "../components/cards/KitCountCard";
 import MapGrid from "../components/grids/MapGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getKits } from "../services/data-api";
+import Grid from "../components/grids/Grid";
 
 const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,
 });
 
-const InstructionCard = styled(Card)`
+const CustomCard = styled(Card)`
   && {
     margin-bottom: 1rem;
     height: unset;
   }
 
   flex-direction: column;
-`;
-
-const KitDetailsCard = styled(Card)`
-  && {
-    margin-bottom: 1rem;
-    height: unset;
-  }
 `;
 
 export default function Map({ kits }) {
@@ -52,7 +46,7 @@ export default function Map({ kits }) {
         />
       </Head>
       <MainLayout pageTitle={"All AstroPlant kits"}>
-        <MapGrid>
+        <Grid fillHeight>
           <div>
             <NoSSRMapBuilder kits={kits} changeKit={changeSelectedKit} />
           </div>
@@ -60,22 +54,22 @@ export default function Map({ kits }) {
             <KitCountCard title={"Active kits"} count={kits.length} />
 
             {selectedKit ? (
-              <KitDetailsCard>
+              <CustomCard>
                 <h4>{selectedKit.name}</h4>
                 <p>{selectedKit.description}</p>
-              </KitDetailsCard>
+              </CustomCard>
             ) : (
-              <InstructionCard>
+              <CustomCard>
                 <h4>How to use the kit map ?</h4>
                 <p>
                   Here you can find out what other AstroPlant kits around the
                   world are doing and what makes them unique! Try to click on
                   the icons to find out more!
                 </p>
-              </InstructionCard>
+              </CustomCard>
             )}
           </div>
-        </MapGrid>
+        </Grid>
       </MainLayout>
     </>
   );

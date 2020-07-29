@@ -3,10 +3,12 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { updateLoggedUser } from "../../providers/Auth";
 import { updateUserInfo } from "../../services/community";
 import Button from "../Button";
 import LongTextInput from "../inputs/LongTextInput";
 import TextInput from "../inputs/TextInput";
+import LoadingAnimation from "../LoadingAnimation";
 
 const InputWithMargin = styled(TextInput)`
   margin-right: 1.5rem;
@@ -52,9 +54,19 @@ function AccountForm(props) {
       onSubmit={async (values, actions) => {
         const res = await updateUserInfo(id, values);
 
-        if (!res.error) {
-          // Show feedback
-          actions.setStatus({ success: "Information successfly updated!" });
+        if (!res.error && !res.errors) {
+          // Updating local user
+          const update = await updateLoggedUser(values.username);
+
+          if (!update.error && !update.errors) {
+            // Show feedback
+            actions.setStatus({ success: "Information successfly updated!" });
+          } else {
+            // Show Error
+            actions.setStatus({
+              error: `Whoops! Something went wrong! ${update.message[0].messages[0].message}`,
+            });
+          }
         } else {
           // Show Error
           actions.setStatus({

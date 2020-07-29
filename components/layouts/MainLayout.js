@@ -10,20 +10,29 @@ import Path from "../Path";
 import SearchableContent from "../SearchableContent";
 import PageLayout from "./PageLayout";
 
-const HeadRow = styled(Grid)`
-  && {
-    padding: 0;
-  }
-`;
-
-const Row = styled.div`
+const HeadRow = styled.div`
   display: flex;
+  align-items: center;
   justify-content: flex-end;
 `;
 
-export default function MainLayout(props) {
-  const { isLogged } = useAuth();
+const PageTitle = styled.h2`
+  margin-right: auto;
+`;
 
+const CreateButton = styled(Button)`
+  margin: 0;
+`;
+
+const SearchbarHolder = styled.div`
+  width: 33%;
+  margin-left: 2rem;
+`;
+
+export default function MainLayout(props) {
+  const { isLogged, user } = useAuth();
+
+  console.log(user);
   return (
     <PageLayout
       metaTitle={props.metaTitle}
@@ -31,16 +40,33 @@ export default function MainLayout(props) {
     >
       <Path />
       <HeadRow>
-        <h2>{props.pageTitle}</h2>
+        <PageTitle>{props.pageTitle}</PageTitle>
 
-        <Row>
-          {isLogged && (
-            <Link passHref href="/library/medias/create">
-              <Button label={"+"} color={"primary"} />
-            </Link>
-          )}
-          {props.enableSearch && <SearchBar searchFor={props.searchFor} />}
-        </Row>
+        {isLogged && (
+          <>
+            {props.toolsFor === "libraryMedias" && (
+              <Link passHref href="/library/create-medias">
+                <CreateButton label={"Create Media"} color={"primary"} />
+              </Link>
+            )}
+
+            {props.toolsFor === "articles" && user.role.name === "Editor" && (
+              <Link passHref href="/">
+                <CreateButton
+                  disabled
+                  label={"Create Article"}
+                  color={"primary"}
+                />
+              </Link>
+            )}
+          </>
+        )}
+
+        {props.enableSearch && (
+          <SearchbarHolder>
+            <SearchBar searchFor={props.searchFor} />
+          </SearchbarHolder>
+        )}
       </HeadRow>
 
       {props.enableSearch ? (
@@ -61,6 +87,8 @@ MainLayout.propTypes = {
   enableSearch: PropTypes.bool,
   /* The type of content to search */
   searchFor: PropTypes.string,
+  /* Whether or not to hide the tools */
+  toolsFor: PropTypes.string,
   /* Meta title of the page */
   metaTitle: PropTypes.string,
   /* Meta description of the page */
@@ -70,6 +98,7 @@ MainLayout.propTypes = {
 MainLayout.defaultProps = {
   enableSearch: false,
   searchFor: null,
+  toolsFor: null,
   metaTitle: null,
   metaDescription: null,
 };
