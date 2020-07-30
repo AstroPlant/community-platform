@@ -14,22 +14,30 @@ const Content = styled.div`
   cursor: pointer;
 `;
 
-export default function Icon({ children, color, size, className }) {
+export default function Icon(props) {
   return (
-    <Content className={className} color={color} size={size}>
-      {children}
+    <Content className={props.className} color={props.color} size={props.size}>
+      {props.children}
     </Content>
   );
 }
 
 Icon.propTypes = {
-  /* SVG component to place inside the Icon markups */
+  /**
+   * SVG component to place inside the Icon markups
+   */
   children: PropTypes.node.isRequired,
-  /* String corresponding to a theme color e.g "primary" */
+  /**
+   * String corresponding to a theme color e.g "primary"
+   */
   color: PropTypes.string,
-  /* The size of the icon in pixels */
+  /**
+   *  The size of the icon in pixels
+   */
   size: PropTypes.number,
-  /* className to customize the component with styled-component */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
 };
 

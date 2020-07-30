@@ -31,10 +31,16 @@ export default function SearchResults(props) {
 }
 
 SearchResults.propTypes = {
-  /* object containing the parameters used for the search */
+  /**
+   * object containing the parameters used for the search
+   */
   params: PropTypes.object.isRequired,
-  /* the results of the search */
+  /**
+   * the results of the search
+   */
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  /* the type of the result to display */
+  /**
+   * the type of the result to display
+   */
   resultsType: PropTypes.string.isRequired,
 };

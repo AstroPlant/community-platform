@@ -1,7 +1,9 @@
+import { action } from "@storybook/addon-actions";
+import { boolean, select } from "@storybook/addon-knobs";
 import { withKnobs } from "@storybook/addon-knobs/react";
-import React, { useState } from "react";
+import React from "react";
+import Arrow from "../../public/icons/arrow-down.svg";
 import Dropdown from "../Dropdown";
-
 export default {
   component: Dropdown,
   title: "Dropdown",
@@ -10,7 +12,21 @@ export default {
 };
 
 export const Default = () => {
-  const [reverse, setReverse] = useState(false);
+  const reverse = boolean("Reverse", false);
 
-  return <Dropdown reverse={reverse} onClick={() => setReverse(!reverse)} />;
+  return (
+    <Dropdown
+      color={select("Color", [
+        "light",
+        "darkLight",
+        "primary",
+        "secondary",
+        "secondaryDark",
+        "error",
+      ])}
+      reverse={reverse}
+      onClick={action("Clicked !")}
+      icon={<Arrow />}
+    />
+  );
 };

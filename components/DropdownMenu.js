@@ -82,9 +82,13 @@ const DropdownMenu = React.forwardRef((props, ref) => {
 });
 
 DropdownMenu.propTypes = {
-  /* Content to be displayed inside the menu */
+  /**
+   * Content to be displayed inside the menu
+   */
   children: PropTypes.arrayOf(PropTypes.object).isRequired,
-  /* Whether or not the menu is visible */
+  /**
+   * Whether or not the menu is visible
+   */
   hidden: PropTypes.bool.isRequired,
 };
 

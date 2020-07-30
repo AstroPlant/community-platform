@@ -43,8 +43,12 @@ export default function ArticleInfos(props) {
 }
 
 ArticleInfos.propTypes = {
-  /* object containing the author information */
+  /**
+   * object containing the author information
+   */
   author: PropTypes.object.isRequired,
-  /* publication data of the article */
+  /**
+   * publication data of the article
+   */
   date: PropTypes.string.isRequired,
 };

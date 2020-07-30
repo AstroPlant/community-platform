@@ -1,5 +1,5 @@
 import { number } from "@storybook/addon-knobs";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { select, withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import Logo from "../Logo";
 
@@ -11,5 +11,17 @@ export default {
 };
 
 export const Default = () => {
-  return <Logo size={number("Size", 2)} />;
+  return (
+    <Logo
+      color={select("Color", [
+        "light",
+        "darkLight",
+        "primary",
+        "secondary",
+        "secondaryDark",
+        "error",
+      ])}
+      size={number("Size", 32)}
+    />
+  );
 };

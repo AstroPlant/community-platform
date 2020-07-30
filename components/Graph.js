@@ -114,6 +114,12 @@ export default function Graph(props) {
 }
 
 Graph.propTypes = {
-  /* object containing the graph information */
+  /**
+   * object containing the graph information
+   */
   graph: PropTypes.object.isRequired,
+  /**
+   * object containing the datapoints
+   */
+  data: PropTypes.array.isRequired,
 };

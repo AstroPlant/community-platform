@@ -29,11 +29,17 @@ export default function Logo(props) {
 }
 
 Logo.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
-  /* The color of the logo */
+  /**
+   *  The color of the logo
+   */
   color: PropTypes.string,
-  /* The size of the logo in pixel */
+  /**
+   * The size of the logo in pixel
+   */
   size: PropTypes.number,
 };
 

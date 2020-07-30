@@ -8,17 +8,20 @@ const Container = styled.div`
   align-items: center;
 
   padding: 0.5rem 1rem;
+  margin-right: 1rem;
+
   border-radius: 50px;
 
-  margin-right: 1rem;
   background-color: ${(props) => props.theme.secondaryDark};
 `;
 
-export default function Chip(props) {
-  return <Container {...props}>{props.label}</Container>;
+export default function Chip({ label, ...props }) {
+  return <Container {...props}>{label}</Container>;
 }
 
 Chip.propTypes = {
-  /* label of the chip */
+  /**
+   * label of the chip
+   */
   label: PropTypes.string.isRequired,
 };

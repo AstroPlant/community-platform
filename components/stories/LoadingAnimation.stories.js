@@ -1,25 +1,19 @@
-import { action } from "@storybook/addon-actions";
-import { number, select } from "@storybook/addon-knobs";
+import { select, text } from "@storybook/addon-knobs";
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import Notification from "../../public/icons/notification.svg";
-import Icon from "../Icon";
+import LoadingAnimation from "../LoadingAnimation";
 
 export default {
-  component: Icon,
-  title: "Icon",
+  component: LoadingAnimation,
+  title: "LoadingAnimation",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
 
-export const actionsData = {
-  onClick: action("clicked"),
-};
-
 export const Default = () => {
   return (
-    <Icon
-      size={number("Size", 32)}
+    <LoadingAnimation
+      message={text("Message", "Loading...")}
       color={select("Color", [
         "light",
         "darkLight",
@@ -28,9 +22,8 @@ export const Default = () => {
         "secondaryDark",
         "error",
       ])}
-      {...actionsData}
     >
       <Notification />
-    </Icon>
+    </LoadingAnimation>
   );
 };

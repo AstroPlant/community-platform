@@ -63,6 +63,12 @@ export default function MapBuilder(props) {
 }
 
 MapBuilder.propTypes = {
+  /**
+   * Array containing kit objects
+   */
   kits: PropTypes.arrayOf(PropTypes.object),
+  /**
+   * Function to change the selected kit
+   */
   changeKit: PropTypes.func,
 };

@@ -24,13 +24,21 @@ const Dropdown = React.forwardRef((props, ref) => (
 ));
 
 Dropdown.propTypes = {
-  /* function to execute when the dropdown is clicked */
+  /**
+   * function to execute when the dropdown is clicked
+   */
   onClick: PropTypes.func,
-  /* Indicates if the container should be rotated from 180° */
+  /**
+   * Indicates if the container should be rotated from 180°
+   */
   reverse: PropTypes.bool.isRequired,
-  /* String representing the color of the dropdown, should be a string color from the theme. e.g "primary" */
+  /**
+   * String representing the color of the dropdown, should be a string color from the theme. e.g "primary"
+   */
   color: PropTypes.string,
-  /* Icon Component to use for the dropdown */
+  /**
+   * Icon Component to use for the dropdown
+   */
   icon: PropTypes.node,
 };
 

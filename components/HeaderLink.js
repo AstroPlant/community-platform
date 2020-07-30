@@ -59,13 +59,21 @@ export default function HeaderLink(props) {
 }
 
 HeaderLink.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
-  /* label of the link */
+  /**
+   * label of the link
+   * */
   label: PropTypes.string.isRequired,
-  /* slug of the link (destination) */
+  /**
+   * slug of the link (destination)
+   */
   slug: PropTypes.string.isRequired,
-  /* function to execute on click  */
+  /**
+   * function to execute on click
+   */
   onClick: PropTypes.func,
 };
 

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import Dropdown from "./Dropdown";
+import ArrowIcon from "../public/icons/arrow-down.svg";
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +53,11 @@ export default function SidepanelSection(props) {
     <Container>
       <TitleContainer>
         <Title>{props.title}</Title>
-        <Dropdown reverse={open} onClick={() => setOpen(!open)} />
+        <Dropdown
+          reverse={open}
+          onClick={() => setOpen(!open)}
+          icon={<ArrowIcon />}
+        />
       </TitleContainer>
       <ItemsContainer open={open}>{props.children}</ItemsContainer>
     </Container>
@@ -60,6 +65,12 @@ export default function SidepanelSection(props) {
 }
 
 SidepanelSection.propTypes = {
+  /**
+   * Title of the section
+   */
   title: PropTypes.string.isRequired,
+  /**
+   * Content of the section
+   */
   children: PropTypes.node.isRequired,
 };

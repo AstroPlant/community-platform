@@ -12,17 +12,30 @@ export default {
 
 export const Default = () => {
   return (
-    <Avatar username={text("Username", "Michel")} size={number("Size", 4)} />
+    <Avatar
+      size={number("Size", 96)}
+      username={text("Username", "PlantLover")}
+    />
   );
 };
 
 export const withPicture = () => {
   return (
     <Avatar
-      hasPicture
       imgSrc={imageFile}
-      size={number("Size", 4)}
-      username={text("Username", "Michel")}
+      size={number("Size", 96)}
+      username={text("Username", "PlantLover")}
+    />
+  );
+};
+
+export const withBorders = () => {
+  return (
+    <Avatar
+      bordered
+      imgSrc={imageFile}
+      size={number("Size", 96)}
+      username={text("Username", "PlantLover")}
     />
   );
 };

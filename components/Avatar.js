@@ -60,23 +60,35 @@ export default function Avatar(props) {
 }
 
 Avatar.propTypes = {
-  /* Path to the image */
+  /**
+   * Path to the image
+   */
   imgSrc: PropTypes.string,
-  /* Username of the avatar owner */
+  /**
+   * Username of the avatar owner
+   */
   username: PropTypes.string.isRequired,
-  /* The size of the avatar in pixel */
+  /**
+   * The size of the avatar in pixel
+   */
   size: PropTypes.number.isRequired,
-  /* If the avatar is interactive where it should lead */
+  /**
+   * If the avatar is interactive where it should lead
+   */
   href: PropTypes.string,
-  /* url "as" path from next link. If the avatar is leading to a dynamic page */
+  /**
+   * url "as" path from next link. If the avatar is leading to a dynamic page
+   */
   as: PropTypes.string,
-  /* Whether or not the avatar should be outlined by a green border */
+  /**
+   * Whether or not the avatar should be outlined by a green border
+   */
   bordered: PropTypes.bool,
 };
 
 Avatar.defaultProps = {
   imgSrc: null,
-  href: null,
-  as: null,
+  href: "/",
+  as: "/",
   bordered: false,
 };

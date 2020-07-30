@@ -8,6 +8,8 @@ export default function Date({ dateString, ...props }) {
 }
 
 Date.propTypes = {
-  /* Date to display in string format */
+  /**
+   * Date to display in string format
+   */
   dateString: PropTypes.string.isRequired,
 };

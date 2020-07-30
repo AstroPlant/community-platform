@@ -68,6 +68,8 @@ export default function Article(props) {
 }
 
 Article.propTypes = {
-  /* Object containing the article informations*/
+  /**
+   * Object containing the article informations
+   */
   article: PropTypes.object.isRequired,
 };

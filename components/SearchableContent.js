@@ -39,8 +39,12 @@ export default function SearchableContent(props) {
 }
 
 SearchableContent.propTypes = {
-  /* Node children of the component */
+  /**
+   * Node children of the component
+   */
   children: PropTypes.node.isRequired,
-  /* type of content to search for */
+  /**
+   * type of content to search for
+   */
   type: PropTypes.string.isRequired,
 };

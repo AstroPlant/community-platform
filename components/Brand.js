@@ -36,7 +36,13 @@ export default function Brand(props) {
 }
 
 Brand.propTypes = {
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
+  /**
+   * Whether or not to display the logo & separator vertically
+   */
   vertical: PropTypes.bool,
 };
 

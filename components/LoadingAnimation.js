@@ -79,9 +79,13 @@ export default function LoadingAnimation(props) {
 }
 
 LoadingAnimation.propTypes = {
-  /* The color of the animation */
+  /**
+   * Color of the animation
+   */
   color: PropTypes.string,
-  /* Message to display under the loading animation */
+  /**
+   * Message to display under the loading animation
+   */
   message: PropTypes.string,
 };
 

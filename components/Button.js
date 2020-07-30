@@ -52,34 +52,43 @@ const ButtonContainer = styled.button`
  * Button component
  * Using forwaredref here to be able to pass the href to the component when using a Next.js link
  */
-const Button = React.forwardRef((props, ref) => {
-  return (
-    <ButtonContainer
-      className={props.className}
-      large={props.large}
-      inverted={props.inverted}
-      color={props.color}
-      ref={ref}
-      {...props}
-    >
-      <HoverBar />
-      {props.label}
-    </ButtonContainer>
-  );
-});
+const Button = React.forwardRef(
+  ({ large, inverted, color, label, ...props }, ref) => {
+    return (
+      <ButtonContainer
+        large={large}
+        inverted={inverted}
+        color={color}
+        ref={ref}
+        {...props}
+      >
+        <HoverBar />
+        {label}
+      </ButtonContainer>
+    );
+  }
+);
 
 Button.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
-  className: PropTypes.string,
-  /* Label of the button */
+  /**
+   * Label of the button
+   */
   label: PropTypes.string.isRequired,
-  /* Background color of the button */
+  /**
+   * Background color of the button
+   */
   color: PropTypes.string.isRequired,
-  /* Whether or not to apply the large style button */
+  /**
+   * Whether or not to apply the large style button
+   */
   large: PropTypes.bool,
-  /* Whether or not to apply the inverted style (text color white) */
+  /**
+   * Whether or not to apply the inverted style (text color white)
+   */
   inverted: PropTypes.bool,
-  /* Function to execute on button click */
+  /**
+   * Function to execute on button click
+   */
   onClick: PropTypes.func,
 };
 

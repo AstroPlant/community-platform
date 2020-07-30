@@ -12,11 +12,13 @@ const Circle = styled.div`
   margin: 0 0.5rem;
 `;
 
-export default function ActivityIndicator(props) {
-  return <Circle active={props.active} {...props} />;
+export default function ActivityIndicator({ active, ...props }) {
+  return <Circle active={active} {...props} />;
 }
 
 ActivityIndicator.propTypes = {
-  /* Whether or not the indicator is active */
+  /**
+   * Whether or not the indicator is active
+   */
   active: PropTypes.bool.isRequired,
 };

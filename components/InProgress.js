@@ -50,9 +50,13 @@ export default function InProgress(props) {
 }
 
 InProgress.propTypes = {
-  /* The title to display under the icon. e.g Work in progress */
+  /**
+   * The title to display under the icon. e.g Work in progress
+   */
   title: PropTypes.string.isRequired,
-  /* Description of the work that's being done */
+  /**
+   * Description of the work that's being done
+   */
   details: PropTypes.string,
 };
 
