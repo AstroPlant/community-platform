@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
+import ArrowIcon from "../../public/icons/arrow-down.svg";
+import styles from "../../styles/markdown.module.css";
 import Date from "../Date";
 import Dropdown from "../Dropdown";
 import Card from "./Card";
-import ReactMarkdown from "react-markdown";
-import styles from "../../styles/markdown.module.css";
-import ArrowIcon from "../../public/icons/arrow-down.svg";
 
 const Container = styled(Card)`
   && {
@@ -83,6 +83,8 @@ export default function FAQCard(props) {
 }
 
 FAQCard.propTypes = {
-  /* Object containing the FAQ information*/
+  /**
+   * Object containing the FAQ information
+   */
   faq: PropTypes.object.isRequired,
 };

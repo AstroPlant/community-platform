@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import useSWR from "swr";
 import { getKitMeasures, getMoreMeasures } from "../../services/data-api";
 import Button from "../Button";
 import Graph from "../Graph";
-import Card from "./Card";
-import useSWR from "swr";
 import LoadingAnimation from "../LoadingAnimation";
+import Card from "./Card";
 
 const Container = styled(Card)`
   display: flex;
@@ -82,7 +82,11 @@ export default function GraphCard(props) {
       <HeadRow>
         <Title>{props.graph.title}</Title>
         <Row>
-          <Button label={"Edit Graph"} color={"primary"} />
+          <Button
+            label={"Edit Graph"}
+            color={"primary"}
+            onClick={() => props.editGraph()}
+          />
           <Button
             inverted
             label={"More Data"}
@@ -105,6 +109,16 @@ export default function GraphCard(props) {
 }
 
 GraphCard.propTypes = {
-  /* Object containing the graph to display */
+  /**
+   * Object containing the graph to display
+   */
   graph: PropTypes.object.isRequired,
+  /**
+   * Function to execute when the "Edit graph" button is clicked
+   */
+  editGraph: PropTypes.func,
+};
+
+GraphCard.defaultProps = {
+  editGraph: null,
 };

@@ -1,4 +1,4 @@
-import { date, text, withKnobs } from "@storybook/addon-knobs/react";
+import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import ChallengeCard from "../../cards/ChallengeCard";
 

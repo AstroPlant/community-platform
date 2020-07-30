@@ -140,9 +140,7 @@ export async function getFeaturedArticle() {
     ) {
       id
       slug
-      published_at
       title
-      preview
       cover {
         url
         alternativeText

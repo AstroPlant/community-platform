@@ -42,11 +42,17 @@ export default function KitToolCard(props) {
 }
 
 KitToolCard.propTypes = {
-  /* Title of the card (Tool Name) */
+  /**
+   * Title of the card (Tool Name)
+   */
   title: PropTypes.string.isRequired,
-  /* Description of the tool */
+  /**
+   * Description of the tool
+   */
   description: PropTypes.string.isRequired,
-  /* Function to execute on button push */
+  /**
+   * Function to execute on button push
+   */
   action: PropTypes.string,
 };
 

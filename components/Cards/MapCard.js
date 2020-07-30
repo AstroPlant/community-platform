@@ -46,6 +46,8 @@ export default function MapCard(props) {
 }
 
 MapCard.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
 };

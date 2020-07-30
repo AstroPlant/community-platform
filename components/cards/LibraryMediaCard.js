@@ -102,6 +102,8 @@ export default function LibraryMediaCard(props) {
 }
 
 LibraryMediaCard.propTypes = {
-  /* Object containing the media information */
+  /**
+   * Object containing the media information
+   */
   media: PropTypes.object.isRequired,
 };

@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { API_URL } from "../../services/community";
 import ArticleInfos from "../ArticleInfos";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
-import ReactMarkdown from "react-markdown";
 
 const Container = styled(Card)`
   height: 50vh;
@@ -69,6 +69,8 @@ export default function FeaturedArticleCard(props) {
 }
 
 FeaturedArticleCard.propTypes = {
-  /* Object containing the information of the article to feature */
+  /**
+   * Object containing the information of the article to feature
+   */
   featuredArticle: PropTypes.object.isRequired,
 };

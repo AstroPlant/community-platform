@@ -1,6 +1,6 @@
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
-import SearchBar from "../SearchBar";
+import SearchBar from "../inputs/SearchBar";
 
 export default {
   component: SearchBar,
@@ -10,5 +10,5 @@ export default {
 };
 
 export const Default = () => {
-  return <SearchBar />;
+  return <SearchBar searchFor={"libraryMedias"} />;
 };

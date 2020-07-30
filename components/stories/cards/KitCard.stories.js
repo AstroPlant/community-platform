@@ -1,3 +1,4 @@
+import { object } from "@storybook/addon-knobs";
 import { withKnobs } from "@storybook/addon-knobs/react";
 import React from "react";
 import KitCard from "../../cards/KitCard";
@@ -62,5 +63,5 @@ const kit = {
 };
 
 export const Default = () => {
-  return <KitCard kit={kit} />;
+  return <KitCard kit={object("Kit", kit)} />;
 };

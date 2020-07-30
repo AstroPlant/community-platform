@@ -87,9 +87,14 @@ export default function ProfileCard(props) {
 }
 
 ProfileCard.propTypes = {
-  /* Object containing the user information */
+  /**
+   * Object containing the user information
+   */
   user: PropTypes.object.isRequired,
-  /* Function to open the avatar edition form */
+
+  /**
+   * Function to open the avatar edition form
+   */
   editAvatar: PropTypes.func,
 };
 

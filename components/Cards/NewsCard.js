@@ -83,8 +83,12 @@ export default function NewsCard(props) {
 }
 
 NewsCard.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
-  /* Object containing the featured article information */
+  /**
+   * Object containing the featured article information
+   */
   featuredArticle: PropTypes.object.isRequired,
 };

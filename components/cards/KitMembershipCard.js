@@ -35,6 +35,8 @@ export default function KitMembershipCard(props) {
 }
 
 KitMembershipCard.propTypes = {
-  /* Object containing the membership inforamtion */
+  /**
+   * Object containing the membership inforamtion
+   */
   membership: PropTypes.object.isRequired,
 };

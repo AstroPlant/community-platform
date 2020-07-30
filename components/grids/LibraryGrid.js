@@ -30,8 +30,6 @@ export default function LibraryGrid(props) {
           <LibrarySectionCard
             librarySection={section}
             mediaCount={section.all_medias.length}
-            href={"/library/[slug]"}
-            as={`/library/${section.slug}`}
           />
           {section.featured_medias.map((media) => (
             <LibraryMediaCard key={media.id} media={media} />

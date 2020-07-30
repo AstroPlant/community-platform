@@ -46,11 +46,17 @@ export default function Card(props) {
 }
 
 Card.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
-  /* Card content */
+  /**
+   * Card content
+   */
   children: PropTypes.node,
-  /* Whether or not to animate the card on hover */
+  /**
+   * Whether or not to animate the card on hover
+   */
   animateOnHover: PropTypes.bool,
 };
 

@@ -79,13 +79,21 @@ export default function KitInformationCard(props) {
 }
 
 KitInformationCard.propTypes = {
-  /* Title of the card */
+  /**
+   * Title of the card
+   */
   title: PropTypes.string.isRequired,
-  /* Subtitle of the card */
+  /**
+   * Subtitle of the card
+   */
   subtitle: PropTypes.string,
-  /* Content of the card */
+  /**
+   * Content of the card
+   */
   children: PropTypes.node,
-  /* function to execute on button click */
+  /**
+   * function to execute on button click
+   */
   action: PropTypes.func,
 };
 

@@ -52,15 +52,25 @@ export default function HelpCard(props) {
 }
 
 HelpCard.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
-  /* The size of the icon in pixels */
+  /**
+   * The size of the icon in pixels
+   */
   iconSize: PropTypes.number.isRequired,
-  /* react component imported from the svgr webpack */
+  /**
+   * React component imported from the svgr webpack
+   */
   iconSVG: PropTypes.node.isRequired,
-  /* Title displayed on the card next to the icon */
+  /**
+   * Title displayed on the card next to the icon
+   */
   title: PropTypes.string.isRequired,
-  /* Destination to reach when clicking on the card */
+  /**
+   * Destination to reach when clicking on the card
+   */
   href: PropTypes.string,
 };
 

@@ -3,6 +3,7 @@ import React from "react";
 import Notification from "../../../public/icons/notification.svg";
 import HelpCard from "../../cards/HelpCard";
 import styled from "styled-components";
+import { number } from "@storybook/addon-knobs";
 
 export default {
   component: HelpCard,
@@ -18,9 +19,9 @@ const Card = styled(HelpCard)`
 export const Default = () => {
   return (
     <Card
-      iconSize={text("Icon Size", "32px")}
-      text={text("Text", "Help Card")}
+      iconSize={number("Icon Size", 32)}
       iconSVG={<Notification />}
+      title={text("Title", "Help Card")}
     />
   );
 };

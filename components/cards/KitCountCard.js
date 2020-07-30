@@ -42,8 +42,12 @@ export default function KitCountCard(props) {
 }
 
 KitCountCard.propTypes = {
-  /* Title of the card */
+  /**
+   * Title of the card
+   */
   title: PropTypes.string.isRequired,
-  /* The main number to be featured */
+  /**
+   * The main number to be featured
+   */
   count: PropTypes.number.isRequired,
 };

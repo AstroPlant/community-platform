@@ -23,8 +23,12 @@ export default function HelpSectionCard(props) {
 }
 
 HelpSectionCard.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
-  /* Object containing the help section information */
+  /**
+   * Object containing the help section information
+   */
   helpSection: PropTypes.object.isRequired,
 };

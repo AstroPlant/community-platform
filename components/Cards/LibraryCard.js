@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import LibraryIcon from "../../public/icons/library.svg";
+import Icon from "../Icon";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
-import Icon from "../Icon";
 
 const Container = styled(Card)`
   display: flex;

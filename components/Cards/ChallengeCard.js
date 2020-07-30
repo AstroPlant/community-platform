@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import Card from "./Card";
 import WrapInLink from "../WrapInLink";
+import Card from "./Card";
 
 const Container = styled(Card)`
   display: flex;
@@ -45,6 +45,8 @@ export default function ChallengeCard(props) {
 }
 
 ChallengeCard.propTypes = {
-  /* Styling class of the container. Used by styled-components. */
+  /**
+   * Styling class of the container. Used by styled-components.
+   */
   className: PropTypes.string,
 };

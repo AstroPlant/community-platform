@@ -34,7 +34,10 @@ export default function LibrarySectionCard(props) {
       <h3>{props.librarySection.title}</h3>
       <Subtitle>{props.mediaCount} medias</Subtitle>
       <Description>{props.librarySection.description}</Description>
-      <Link href={props.href} as={props.as}>
+      <Link
+        href={"/library/[slug]"}
+        as={`/library/${props.librarySection.slug}`}
+      >
         <AlignBottomButton color={"primary"} label={"Explore"} />
       </Link>
     </Container>
@@ -42,8 +45,12 @@ export default function LibrarySectionCard(props) {
 }
 
 LibrarySectionCard.propTypes = {
-  /* Object containing the section information */
+  /**
+   * Object containing the section information
+   */
   librarySection: PropTypes.object.isRequired,
-  /* Total number of medias in the section */
+  /**
+   * Total number of medias in the section
+   */
   mediaCount: PropTypes.number.isRequired,
 };
