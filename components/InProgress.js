@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
 import Icon from "../components/Icon";
 import ToolsIcon from "../public/icons/tools.svg";

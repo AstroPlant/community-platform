@@ -22,8 +22,6 @@ export const Default = () => {
         "secondaryDark",
         "error",
       ])}
-    >
-      <Notification />
-    </LoadingAnimation>
+    />
   );
 };

@@ -1,9 +1,9 @@
 import Leaflet from "leaflet";
+import PropTypes from "prop-types";
 import React from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import styled from "styled-components";
 import Logo from "./Logo";
-import PropTypes from "prop-types";
 
 const MarginLogo = styled(Logo)`
   margin-right: 1rem;
@@ -50,7 +50,7 @@ export default function MapBuilder(props) {
                 onpopupclose={() => props.changeKit(null)}
               >
                 <Popup className={"custom-popup"}>
-                  <MarginLogo size={8} color={"dark"} />
+                  <MarginLogo size={18} color={"dark"} />
                   <KitName>{kit.name}</KitName>
                 </Popup>
               </Marker>
