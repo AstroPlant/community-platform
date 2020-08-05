@@ -11,11 +11,11 @@ services:
       - "1337:1337"
     volumes:
       - ./api:/srv/app
-    restart: "no"
+    restart: "on-failure"
 
   next:
     container_name: next
-    image: node:12
+    image: node:12-alpine
     working_dir: /app
     command: sh -c "npm install && npm run dev"
     ports:
@@ -24,3 +24,4 @@ services:
       - .:/app
     depends_on:
       - strapi
+    restart: "on-failure"
