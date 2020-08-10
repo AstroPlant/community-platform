@@ -149,20 +149,18 @@ export default function MediaCreationForm(props) {
                   placeholder="A Plant in Space"
                 />
 
-                <Col>
-                  <FileInput
-                    label={"Article Cover"}
-                    id="articleCover"
-                    name="articleCover"
-                    type="file"
-                    onChange={(event) => {
-                      setFieldValue(
-                        "articleCover",
-                        event.currentTarget.files[0]
-                      );
-                    }}
-                  />
-                </Col>
+                <FileInput
+                  label={"Article Cover"}
+                  id="articleCover"
+                  name="articleCover"
+                  accept="image/*"
+                  multiple={false}
+                  maxSize={8000000}
+                  type="file"
+                  onDrop={(files) => {
+                    setFieldValue("articleCover", files[0]);
+                  }}
+                />
 
                 <MarkdownContainer>
                   <InputLabel
@@ -183,17 +181,18 @@ export default function MediaCreationForm(props) {
             )}
 
             {values.type === "File" && (
-              <Col>
-                <FileInput
-                  label={"File to upload"}
-                  id="file"
-                  name="file"
-                  type="file"
-                  onChange={(event) => {
-                    setFieldValue("file", event.currentTarget.files[0]);
-                  }}
-                />
-              </Col>
+              <FileInput
+                label={"File to upload"}
+                id="file"
+                accept="image/*, audio/*, video/*, .pdf"
+                name="file"
+                type="file"
+                multiple={false}
+                maxSize={20000000}
+                onDrop={(files) => {
+                  setFieldValue("file", files[0]);
+                }}
+              />
             )}
 
             {values.type === "Link" && (

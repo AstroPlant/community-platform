@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
-import * as Yup from "yup";
 import { updateLoggedUser } from "../../providers/Auth";
 import Card from "../cards/Card";
 import ProfileCard from "../cards/ProfileCard";
@@ -64,26 +63,6 @@ const OverlayCard = styled(Card)`
   }
 `;
 
-const validationSchema = Yup.object().shape({
-  files: Yup.mixed()
-    .required("Please select a file before uploading.")
-    .test(
-      "fileSize",
-      "Your file is too big ! The file size must be under 8 mb",
-      (value) => value && value[0].size <= 8000000
-    )
-    .test(
-      "fileFormat",
-      "Wrong format. Must be an image (png, jpeg, jfif ...)",
-      (value) => {
-        return (
-          value &&
-          ["image/png", "image/jpeg", "image/jfif"].includes(value[0].type)
-        );
-      }
-    ),
-});
-
 export default function SettingsGrid(props) {
   const [currentTab, setCurrentTab] = useState("Profile");
   const [showOverlay, setShowOverlay] = useState(false);
@@ -93,8 +72,10 @@ export default function SettingsGrid(props) {
     setShowOverlay(true);
   }
 
-  function closeOverlay() {
+  async function closeOverlay() {
     setShowOverlay(false);
+    await updateLoggedUser(props.user.username);
+    router.replace("/settings");
   }
 
   return (
@@ -104,16 +85,11 @@ export default function SettingsGrid(props) {
           <UploadForm
             title={"Edit avatar"}
             closeForm={closeOverlay}
-            validationSchema={validationSchema}
             uploadParameters={{
               refId: props.user.id,
               ref: "user",
               source: "users-permissions",
               field: "avatar",
-            }}
-            callback={async () => {
-              await updateLoggedUser(props.user.username);
-              router.replace("/settings");
             }}
           />
         </OverlayCard>
