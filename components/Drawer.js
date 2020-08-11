@@ -8,6 +8,7 @@ import LogoutIcon from "../public/icons/exit-app.svg";
 import SettingsIcon from "../public/icons/settings.svg";
 import { API_URL } from "../services/community";
 import Avatar from "./Avatar";
+import Button from "./Button";
 import Icon from "./Icon";
 import WrapInLink from "./WrapInLink";
 
@@ -15,6 +16,7 @@ const Container = styled.nav`
   position: fixed;
   top: 0%;
   right: 0%;
+  z-index: 999;
 
   display: flex;
   flex-flow: column;
@@ -83,6 +85,14 @@ const ExtraLinks = styled.div`
   align-items: center;
 `;
 
+const SignUpButton = styled(Button)`
+  && {
+    margin: auto 0 1.25rem 0;
+
+    width: 100%;
+  }
+`;
+
 export default function Drawer({ open, toggle, links, ...props }) {
   const { user, isLogged } = useAuth();
 
@@ -132,6 +142,12 @@ export default function Drawer({ open, toggle, links, ...props }) {
           </WrapInLink>
         ))}
       </NavLinks>
+
+      {!isLogged && (
+        <Link passHref href={"/login"}>
+          <SignUpButton color={"primary"} label={"Sign Up / Login"} />
+        </Link>
+      )}
     </Container>
   );
 }
