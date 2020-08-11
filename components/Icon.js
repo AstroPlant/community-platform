@@ -14,12 +14,8 @@ const Content = styled.div`
   cursor: pointer;
 `;
 
-export default function Icon(props) {
-  return (
-    <Content className={props.className} color={props.color} size={props.size}>
-      {props.children}
-    </Content>
-  );
+export default function Icon({ children, ...props }) {
+  return <Content {...props}>{children}</Content>;
 }
 
 Icon.propTypes = {
