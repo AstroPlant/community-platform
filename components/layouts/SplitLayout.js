@@ -8,7 +8,7 @@ const Split = styled.div`
 
   height: 100vh;
 
-  @media (screen and max-width: 1024px) {
+  @media screen and (max-width: 1024px) {
     display: block;
   }
 `;

@@ -13,9 +13,17 @@ const LeftColumn = styled.div`
   align-items: center;
   justify-content: center;
 
+  height: 100%;
+
   padding: 2rem;
 
   background-color: ${(props) => props.theme.dark};
+`;
+
+const RightColumn = styled.div`
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const FormHolder = styled.div`
@@ -59,7 +67,9 @@ function Login() {
           />
         </FormHolder>
       </LeftColumn>
-      <img src="./placeholder.jpg" />
+      <RightColumn>
+        <img src="./placeholder.jpg" />
+      </RightColumn>
     </SplitLayout>
   );
 }

@@ -10,13 +10,15 @@ import LongTextInput from "../inputs/LongTextInput";
 import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
 
-const InputWithMargin = styled(TextInput)`
-  margin-right: 1.5rem;
-`;
-
 const Row = styled.div`
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+
+  @media screen and (max-width: 896px) {
+    grid-template-columns: unset;
+    grid-gap: 0;
+  }
 `;
 
 const SubmitButton = styled(Button)`
@@ -79,7 +81,7 @@ export default function AccountForm(props) {
         <>
           <Form>
             <Row>
-              <InputWithMargin
+              <TextInput
                 disabled
                 label="Username"
                 name="username"
@@ -90,16 +92,12 @@ export default function AccountForm(props) {
             </Row>
 
             <Row>
-              <InputWithMargin
-                label="First Name"
-                name="firstName"
-                type="text"
-              />
+              <TextInput label="First Name" name="firstName" type="text" />
               <TextInput label="Last Name" name="lastName" type="text" />
             </Row>
 
             <Row>
-              <InputWithMargin
+              <TextInput
                 addon={"@"}
                 label="Slack username"
                 name="slackUsername"
