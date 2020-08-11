@@ -17,6 +17,14 @@ const Container = styled.div`
 const SectionGrid = styled(Grid)`
   && {
     grid-template-columns: repeat(4, 1fr);
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 864px) {
+      grid-template-columns: unset;
+    }
   }
 
   width: 100%;

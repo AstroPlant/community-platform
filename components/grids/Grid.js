@@ -10,6 +10,11 @@ const GridContainer = styled.div`
   padding: 2rem 0;
 
   height: ${(props) => props.fillHeight && "100%"};
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: unset;
+    grid-auto-flow: dense;
+  }
 `;
 
 export default function Grid(props) {

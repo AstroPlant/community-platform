@@ -16,10 +16,16 @@ const AuthorCard = styled(Card)`
   }
 `;
 
-const Split = styled(Grid)`
+const ToolsHolder = styled.div`
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+const ToolButtonRow = styled(Grid)`
   && {
     grid-template-columns: 1fr 1fr;
-    padding: 0.5rem;
+    padding: 0.5rem 0;
   }
 `;
 
@@ -46,9 +52,9 @@ export default function ArticlePage({ article, related }) {
         <Article article={article} />
         <div>
           {isOwner && (
-            <>
+            <ToolsHolder>
               <h3>Tools</h3>
-              <Split>
+              <ToolButtonRow>
                 <ToolButton
                   disabled
                   inverted
@@ -56,8 +62,8 @@ export default function ArticlePage({ article, related }) {
                   color="secondaryDark"
                 />
                 <ToolButton disabled inverted label="Delete" color="error" />
-              </Split>
-            </>
+              </ToolButtonRow>
+            </ToolsHolder>
           )}
           <h3>Author</h3>
           <AuthorCard>

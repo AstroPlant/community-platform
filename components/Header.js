@@ -81,6 +81,12 @@ const NotificationHolder = styled(Icon)`
   transform: rotate(45deg);
 `;
 
+const SignUpButtonHolder = styled.div`
+  @media screen and (max-width: ${BREAKPOINT}) {
+    display: none;
+  }
+`;
+
 // Mobile Components
 
 const MenuIconHolder = styled(Icon)`
@@ -254,9 +260,11 @@ export default function Header() {
           </ClickableItems>
         </Row>
       ) : (
-        <Link passHref href={"/login"}>
-          <Button color="primary" label={"Become a space farmer"} />
-        </Link>
+        <SignUpButtonHolder>
+          <Link passHref href={"/login"}>
+            <Button color="primary" label={"Become a space farmer"} />
+          </Link>
+        </SignUpButtonHolder>
       )}
     </HeaderContainer>
   );

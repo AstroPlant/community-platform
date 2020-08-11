@@ -9,19 +9,39 @@ const GridContainer = styled(Grid)`
     grid-template-rows: 1fr 0.5fr 1fr;
 
     padding: 1rem 0;
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: unset;
+      grid-template-rows: unset;
+    }
   }
 `;
 
 const Top = styled.div`
   grid-row: 1;
+
+  @media screen and (max-width: 1024px) {
+    grid-row: unset;
+    grid-column: unset;
+  }
 `;
 
 const Mid = styled.div`
   grid-row: 2;
+
+  @media screen and (max-width: 1024px) {
+    grid-row: unset;
+    grid-column: unset;
+  }
 `;
 
 const Bottom = styled.div`
   grid-row: 3;
+
+  @media screen and (max-width: 1024px) {
+    grid-row: unset;
+    grid-column: unset;
+  }
 `;
 
 const TopLeft = styled(Top)`

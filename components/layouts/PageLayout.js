@@ -8,11 +8,15 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: calc(100vh - ${(props) => props.theme.headerHeight});
+  height: 100%;
   min-height: calc(100vh - ${(props) => props.theme.headerHeight});
 
   margin-top: ${(props) => props.theme.headerHeight};
   padding: 2rem;
+
+  @media screen and (max-width: 464px) {
+    padding: 1rem;
+  }
 `;
 
 export default function PageLayout(props) {

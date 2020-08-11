@@ -13,6 +13,10 @@ const HeadRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @media screen and (max-width: 864px) {
+    flex-direction: column;
+  }
 `;
 
 const PageTitle = styled.h2`
@@ -21,11 +25,20 @@ const PageTitle = styled.h2`
 
 const CreateButton = styled(Button)`
   margin: 0;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const SearchbarHolder = styled.div`
   width: 33%;
   margin-left: 2rem;
+
+  @media screen and (max-width: 864px) {
+    width: 100%;
+    margin: 1.5rem 0 0 0;
+  }
 `;
 
 export default function MainLayout(props) {

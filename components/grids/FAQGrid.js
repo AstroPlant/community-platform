@@ -7,6 +7,10 @@ import Grid from "./Grid";
 const GridContainer = styled(Grid)`
   && {
     grid-template-columns: repeat(2, 1fr);
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: unset;
+    }
   }
 `;
 

@@ -5,6 +5,15 @@ import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import styled from "styled-components";
 import Logo from "./Logo";
 
+const MapHolder = styled.div`
+  /* 16rem being the approximate size of the content above */
+  height: calc(100vh - 16rem - ${(props) => props.theme.headerHeight});
+
+  @media screen and (max-width: 1024px) {
+    height: calc(100vh - ${(props) => props.theme.headerHeight});
+  }
+`;
+
 const MarginLogo = styled(Logo)`
   margin-right: 1rem;
 `;
@@ -30,11 +39,11 @@ export default function MapBuilder(props) {
   });
 
   return (
-    <>
+    <MapHolder>
       <Map
         center={Netherlands}
         zoom={3}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", height: "100%", zIndex: 0 }}
       >
         <TileLayer attribution={attribution} url={tilesUrl} />
         {props.kits.map((kit) => {
@@ -58,7 +67,7 @@ export default function MapBuilder(props) {
           }
         })}
       </Map>
-    </>
+    </MapHolder>
   );
 }
 
