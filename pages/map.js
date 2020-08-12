@@ -7,19 +7,20 @@ import KitCountCard from "../components/cards/KitCountCard";
 import Grid from "../components/grids/Grid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getKits } from "../services/data-api";
+import Breaks from "../utils/breakpoints";
 
 const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,
 });
 
 const MapHolder = styled.div`
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     grid-row: 2;
   }
 `;
 
 const InfoHolder = styled.div`
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     grid-row: 1;
   }
 `;

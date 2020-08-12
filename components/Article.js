@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { API_URL } from "../services/community";
 import styles from "../styles/markdown.module.css";
+import Breaks from "../utils/breakpoints";
 import Chip from "./Chip";
 
 const CoverImage = styled.img`
@@ -25,7 +26,7 @@ const Container = styled.div`
   padding: 2rem;
   background-color: ${(props) => props.theme.darkLight};
 
-  @media screen and (max-width: 464px) {
+  @media screen and (max-width: ${Breaks.small}) {
     width: 100%;
     margin: -3rem 0 0 0;
   }

@@ -3,13 +3,14 @@ import Grid from "../../components/grids/Grid";
 import MediasGrid from "../../components/grids/MediasGrid";
 import MainLayout from "../../components/layouts/MainLayout";
 import { getLibrarySection } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 
 const MediaNumber = styled.h3`
   color: ${(props) => props.theme.primary};
 `;
 
 const InfoSection = styled.div`
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     grid-row: 1;
   }
 `;

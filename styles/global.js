@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import Breaks from "../utils/breakpoints";
 
 export const GlobalStyle = createGlobalStyle`
   
@@ -108,14 +109,19 @@ export const GlobalStyle = createGlobalStyle`
     display: none;
   }
 
-  @media screen and (max-width: 1024px){
+  @media screen and (max-width: ${Breaks.large}){
     p,b {
-      font-size: 14px;
-      line-height: 1.45em;
+      font-size: 16px;
     }
   }
 
-  @media screen and (max-width: 484px){
+  @media screen and (max-width: ${Breaks.medium}){
+    p,b {
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (max-width: ${Breaks.small}){
     h1 {
       font-size: 2rem;
     }

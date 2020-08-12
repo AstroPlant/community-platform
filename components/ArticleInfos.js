@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { API_URL } from "../services/community";
+import Breaks from "../utils/breakpoints";
 import Avatar from "./Avatar";
 import Date from "./Date";
-import { API_URL } from "../services/community";
 
 const AuthorInfos = styled.div`
   display: flex;
@@ -13,7 +14,7 @@ const AuthorInfos = styled.div`
 `;
 
 const AvatarHolder = styled(Avatar)`
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     && {
       height: 48px;
       width: 48px;

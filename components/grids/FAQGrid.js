@@ -2,13 +2,14 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import FAQCard from "../../components/cards/FAQCard";
+import Breaks from "../../utils/breakpoints";
 import Grid from "./Grid";
 
 const GridContainer = styled(Grid)`
   && {
     grid-template-columns: repeat(2, 1fr);
 
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: ${Breaks.large}) {
       grid-template-columns: unset;
     }
   }

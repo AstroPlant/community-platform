@@ -2,6 +2,7 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 import Header from "../Header";
 
 const Content = styled.div`
@@ -14,7 +15,7 @@ const Content = styled.div`
   margin-top: ${(props) => props.theme.headerHeight};
   padding: 2rem;
 
-  @media screen and (max-width: 464px) {
+  @media screen and (max-width: ${Breaks.small}) {
     padding: 1rem;
   }
 `;

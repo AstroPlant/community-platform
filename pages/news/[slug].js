@@ -8,6 +8,7 @@ import Grid from "../../components/grids/Grid";
 import PageLayout from "../../components/layouts/PageLayout";
 import { useAuth } from "../../providers/Auth";
 import { getFullArticle } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 
 const AuthorCard = styled(Card)`
   && {
@@ -17,7 +18,7 @@ const AuthorCard = styled(Card)`
 `;
 
 const ToolsHolder = styled.div`
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;

@@ -5,6 +5,7 @@ import ArticleIcon from "../../public/icons/article.svg";
 import LinkIcon from "../../public/icons/external-link.svg";
 import FileIcon from "../../public/icons/file.svg";
 import { API_URL } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 import Date from "../Date";
 import Icon from "../Icon";
 import WrapInLink from "../WrapInLink";
@@ -18,7 +19,7 @@ const Container = styled(Card)`
   display: flex;
   flex-direction: column;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.medium}) {
     flex-direction: unset;
     align-items: center;
 
@@ -36,7 +37,7 @@ const CoverHolder = styled.div`
   overflow: hidden;
   max-height: 160px;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.medium}) {
     max-height: 96px;
     max-width: 160px;
   }
@@ -54,7 +55,7 @@ const InfoHolder = styled.div`
 
   padding: 1rem;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     border-top: 0;
   }
 `;

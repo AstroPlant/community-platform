@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { API_URL } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 import ArticleInfos from "../ArticleInfos";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
@@ -14,7 +14,7 @@ const Container = styled(Card)`
   padding: 0;
   margin: 2rem 0;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: flex;
     flex-direction: column;
 
@@ -25,7 +25,7 @@ const Container = styled(Card)`
 const Cover = styled.img`
   height: 50vh;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     max-height: 224px;
   }
 `;
@@ -39,7 +39,7 @@ const InfosContainer = styled.div`
 const Title = styled.h2`
   color: ${(props) => props.theme.primary};
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     font-size: 18px;
     line-height: 20px;
     max-height: 20px;

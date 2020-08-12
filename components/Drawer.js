@@ -11,6 +11,7 @@ import Avatar from "./Avatar";
 import Button from "./Button";
 import Icon from "./Icon";
 import WrapInLink from "./WrapInLink";
+import Breaks from "../utils/breakpoints";
 
 const Container = styled.nav`
   position: fixed;
@@ -38,7 +39,7 @@ const Container = styled.nav`
     font-weight: 500;
   }
 
-  @media screen and (min-width: 960px) {
+  @media screen and (min-width: ${Breaks.large}) {
     display: none;
   }
 `;

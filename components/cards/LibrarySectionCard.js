@@ -2,6 +2,7 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
 
 const Container = styled.div`
@@ -28,7 +29,7 @@ const ExploreButton = styled(Button)`
     margin: auto 0 0 0;
     width: 100%;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: ${Breaks.medium}) {
       width: 100%;
     }
   }

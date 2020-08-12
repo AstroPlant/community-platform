@@ -6,6 +6,7 @@ import LoginForm from "../components/forms/LoginForm";
 import SignUpForm from "../components/forms/SignUpForm";
 import SplitLayout from "../components/layouts/SplitLayout";
 import withoutAuth from "../hocs/withoutAuth";
+import Breaks from "../utils/breakpoints";
 
 const LeftColumn = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const LeftColumn = styled.div`
 `;
 
 const RightColumn = styled.div`
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;

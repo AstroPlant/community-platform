@@ -5,6 +5,7 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { updateLoggedUser } from "../../providers/Auth";
 import { updateUserInfo } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
 import LongTextInput from "../inputs/LongTextInput";
 import TextInput from "../inputs/TextInput";
@@ -15,7 +16,7 @@ const Row = styled.div`
   grid-gap: 1.5rem;
   grid-template-columns: 1fr 1fr;
 
-  @media screen and (max-width: 896px) {
+  @media screen and (max-width: ${Breaks.large}) {
     grid-template-columns: unset;
     grid-gap: 0;
   }

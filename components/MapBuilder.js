@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import styled from "styled-components";
+import Breaks from "../utils/breakpoints";
 import Logo from "./Logo";
 
 const MapHolder = styled.div`
   /* 16rem being the approximate size of the content above */
   height: calc(100vh - 16rem - ${(props) => props.theme.headerHeight});
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     height: calc(100vh - ${(props) => props.theme.headerHeight});
   }
 `;

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import { API_URL } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
 import Card from "./Card";
 
@@ -63,7 +64,7 @@ const ButtonRow = styled.div`
   width: 100%;
   margin-top: 0.5rem;
 
-  @media screen and (max-width: 464px) {
+  @media screen and (max-width: ${Breaks.small}) {
     grid-template-columns: unset;
   }
 `;

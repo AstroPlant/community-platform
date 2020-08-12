@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 import LibraryMediaCard from "../cards/LibraryMediaCard";
 import LibrarySectionCard from "../cards/LibrarySectionCard";
 import Grid from "./Grid";
@@ -18,7 +19,11 @@ const SectionGrid = styled(Grid)`
   && {
     grid-template-columns: 1fr 3fr;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: ${Breaks.large}) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media screen and (max-width: ${Breaks.medium}) {
       grid-template-columns: unset;
     }
   }
@@ -34,12 +39,11 @@ const FeaturedMediaGrid = styled(Grid)`
 
     padding: 0;
 
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: ${Breaks.large}) {
       grid-template-columns: unset;
-      grid-template-rows: 1fr 1fr 1fr;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: ${Breaks.medium}) {
       display: none;
     }
   }

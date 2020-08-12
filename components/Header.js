@@ -6,6 +6,7 @@ import MenuIcon from "../public/icons/menu.svg";
 import DropdownIcon from "../public/icons/more.svg";
 import Notification from "../public/icons/notification.svg";
 import { API_URL } from "../services/community";
+import Breaks from "../utils/breakpoints";
 import { useOutsideClick } from "../utils/clickListener";
 import Avatar from "./Avatar";
 import Brand from "./Brand";
@@ -15,8 +16,6 @@ import Dropdown from "./Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
-
-const BREAKPOINT = "1024px";
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -47,7 +46,7 @@ const LinksContainer = styled.nav`
   justify-content: space-between;
   text-align: center;
 
-  @media screen and (max-width: ${BREAKPOINT}) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;
@@ -57,7 +56,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  @media screen and (max-width: ${BREAKPOINT}) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;
@@ -82,7 +81,7 @@ const NotificationHolder = styled(Icon)`
 `;
 
 const SignUpButtonHolder = styled.div`
-  @media screen and (max-width: ${BREAKPOINT}) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;
@@ -90,7 +89,7 @@ const SignUpButtonHolder = styled.div`
 // Mobile Components
 
 const MenuIconHolder = styled(Icon)`
-  @media screen and (min-width: ${BREAKPOINT}) {
+  @media screen and (min-width: ${Breaks.large}) {
     display: none;
   }
 `;
