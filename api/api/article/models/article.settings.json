@@ -39,7 +39,7 @@
     "preview": {
       "type": "text",
       "required": false,
-      "maxLength": 420,
+      "maxLength": 140,
       "minLength": 1
     },
     "categories": {
