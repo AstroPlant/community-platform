@@ -23,7 +23,12 @@ export const Default = () => {
       "Preview",
       "I am describing what the news is about and it's actually amazing"
     ),
-    cover: { url: "/uploads/Placeholder_3028505c45.jpg" },
+    cover: {
+      url: text(
+        "Cover URL",
+        "/uploads/ben_karpinski_k0rl_Vcamm_U_unsplash_394c7519e9.jpg"
+      ),
+    },
     published_at: text("Publication Date", "2019-10-18"),
   };
 

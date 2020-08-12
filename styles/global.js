@@ -108,6 +108,13 @@ export const GlobalStyle = createGlobalStyle`
     display: none;
   }
 
+  @media screen and (max-width: 1024px){
+    p,b {
+      font-size: 14px;
+      line-height: 1.45em;
+    }
+  }
+
   @media screen and (max-width: 484px){
     h1 {
       font-size: 2rem;
@@ -125,11 +132,6 @@ export const GlobalStyle = createGlobalStyle`
     h5 {
       text-transform: uppercase;
       letter-spacing: 0.05em;
-    }
-    
-    p,b {
-      font-size: 1em;
-      line-height: 1.45em;
     }
   }
 `;

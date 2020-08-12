@@ -16,18 +16,33 @@ const Container = styled.div`
 
 const SectionGrid = styled(Grid)`
   && {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 3fr;
 
-    @media screen and (max-width: 1024px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media screen and (max-width: 864px) {
+    @media screen and (max-width: 768px) {
       grid-template-columns: unset;
     }
   }
 
   width: 100%;
+`;
+
+const FeaturedMediaGrid = styled(Grid)`
+  && {
+    grid-template-columns: 1fr 1fr 1fr;
+
+    width: 100%;
+
+    padding: 0;
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: unset;
+      grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
 `;
 
 export default function LibraryGrid(props) {
@@ -39,9 +54,11 @@ export default function LibraryGrid(props) {
             librarySection={section}
             mediaCount={section.all_medias.length}
           />
-          {section.featured_medias.map((media) => (
-            <LibraryMediaCard key={media.id} media={media} />
-          ))}
+          <FeaturedMediaGrid>
+            {section.featured_medias.map((media) => (
+              <LibraryMediaCard key={media.id} media={media} />
+            ))}
+          </FeaturedMediaGrid>
         </SectionGrid>
       ))}
     </Container>

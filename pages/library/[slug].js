@@ -8,6 +8,12 @@ const MediaNumber = styled.h3`
   color: ${(props) => props.theme.primary};
 `;
 
+const InfoSection = styled.div`
+  @media screen and (max-width: 1024px) {
+    grid-row: 1;
+  }
+`;
+
 export default function LibrarySectionPage({ data }) {
   const section = data.librarySections[0];
   const mediaCount = data.mediaCount.aggregate.count;
@@ -22,10 +28,10 @@ export default function LibrarySectionPage({ data }) {
     >
       <Grid>
         <MediasGrid medias={section.library_medias} />
-        <div>
+        <InfoSection>
           <MediaNumber>{mediaCount} medias</MediaNumber>
           <p>{section.description}</p>
-        </div>
+        </InfoSection>
       </Grid>
     </MainLayout>
   );

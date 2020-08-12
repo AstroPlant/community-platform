@@ -19,12 +19,18 @@ const Subtitle = styled.h4`
 
 const Description = styled.p`
   width: 100%;
+  max-width: 448px;
   margin: 1rem 0;
 `;
 
-const AlignBottomButton = styled(Button)`
+const ExploreButton = styled(Button)`
   && {
     margin: auto 0 0 0;
+    width: 100%;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
 `;
 
@@ -38,7 +44,7 @@ export default function LibrarySectionCard(props) {
         href={"/library/[slug]"}
         as={`/library/${props.librarySection.slug}`}
       >
-        <AlignBottomButton color={"primary"} label={"Explore"} />
+        <ExploreButton color={"primary"} label={"Explore"} />
       </Link>
     </Container>
   );

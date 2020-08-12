@@ -17,6 +17,13 @@ const Container = styled(Card)`
 
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: unset;
+    align-items: center;
+
+    max-height: 96px;
+  }
 `;
 
 const CoverHolder = styled.div`
@@ -25,10 +32,14 @@ const CoverHolder = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-`;
 
-const Cover = styled.img`
+  overflow: hidden;
   max-height: 160px;
+
+  @media screen and (max-width: 1024px) {
+    max-height: 96px;
+    max-width: 160px;
+  }
 `;
 
 const PaddedIcon = styled(Icon)`
@@ -42,10 +53,23 @@ const InfoHolder = styled.div`
   border-top: 1px solid ${(props) => props.theme.primary};
 
   padding: 1rem;
+
+  @media screen and (max-width: 1024px) {
+    border-top: 0;
+  }
 `;
 
 const MediaTitle = styled.b`
+  max-height: 20px;
+
   margin-bottom: 0.5rem;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-size: 18px;
+  line-height: 20px;
+  white-space: nowrap;
 `;
 
 function PureMediaCard(props) {
@@ -53,7 +77,7 @@ function PureMediaCard(props) {
     <Container animateOnHover className={props.className}>
       <CoverHolder>
         {props.media.media[0].cover != undefined ? (
-          <Cover
+          <img
             src={API_URL + props.media.media[0].cover.url}
             alt={props.media.media[0].cover.caption}
           />

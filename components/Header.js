@@ -16,7 +16,7 @@ import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
 
-const BREAKPOINT = "960px";
+const BREAKPOINT = "1024px";
 
 const HeaderContainer = styled.header`
   position: fixed;

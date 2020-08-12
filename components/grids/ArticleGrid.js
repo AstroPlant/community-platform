@@ -18,17 +18,11 @@ const GridContainer = styled(Grid)`
   }
 `;
 
-const GridItem = styled.div`
-  height: 40vh;
-`;
-
 export default function ArticleGrid(props) {
   return (
     <GridContainer>
       {props.articles.map((article) => (
-        <GridItem key={article.id}>
-          <ArticleCard article={article} />
-        </GridItem>
+        <ArticleCard key={article.id} article={article} />
       ))}
     </GridContainer>
   );

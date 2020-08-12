@@ -3,12 +3,22 @@ import React from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import Date from "./Date";
+import { API_URL } from "../services/community";
 
 const AuthorInfos = styled.div`
   display: flex;
   align-items: center;
 
   width: 100%;
+`;
+
+const AvatarHolder = styled(Avatar)`
+  @media screen and (max-width: 1024px) {
+    && {
+      height: 48px;
+      width: 48px;
+    }
+  }
 `;
 
 const AuthorName = styled.b`
@@ -29,7 +39,11 @@ export default function ArticleInfos(props) {
 
   return (
     <AuthorInfos className={props.className}>
-      <Avatar size={64} username={props.author.username} />
+      <AvatarHolder
+        size={64}
+        username={props.author.username}
+        imgSrc={API_URL + props.author.avatar.url}
+      />
       <Column>
         <AuthorName>
           {hasFullName

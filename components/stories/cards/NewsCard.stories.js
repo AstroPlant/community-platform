@@ -18,7 +18,11 @@ const Holder = styled.div`
 export const Default = () => {
   const articleData = {
     title: text("Title", "An article title!"),
-    cover: { url: "/uploads/Placeholder_3028505c45.jpg" },
+    preview: text(
+      "Preview",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    ),
+    cover: { url: text("Cover URL", "/uploads/Placeholder_3028505c45.jpg") },
   };
 
   return (

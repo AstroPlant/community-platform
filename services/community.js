@@ -104,6 +104,10 @@ export async function getArticles() {
         username
         firstName
         lastName
+        avatar {
+          url
+          alternativeText
+        }
       }
     }
     previews: articles(
@@ -141,6 +145,7 @@ export async function getFeaturedArticle() {
       id
       slug
       title
+      preview
       cover {
         url
         alternativeText
@@ -485,6 +490,10 @@ export async function getLibraryMedia(id) {
         username
         firstName
         lastName
+        avatar {
+          url
+          alternativeText
+        }
       }
       media {
         type: __typename

@@ -21,6 +21,10 @@ const TitleRow = styled.div`
 
 const Title = styled.h3`
   margin: 0 0 0 1rem;
+
+  @media screen and (max-width: 768px) {
+    width: min-content;
+  }
 `;
 
 const Description = styled.p`

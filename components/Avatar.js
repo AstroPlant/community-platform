@@ -30,26 +30,26 @@ const Placeholder = styled.div`
   font-size: ${(props) => props.fontSize + "px"};
 `;
 
-function PureAvatar(props) {
-  const initialLetter = props.username.charAt(0).toUpperCase();
-  const fontSize = props.size / 2;
+function PureAvatar({ size, bordered, imgSrc, username, ...props }) {
+  const initial = username.charAt(0).toUpperCase();
+  const fontSize = size / 2;
 
   return (
-    <Container size={props.size} bordered={props.bordered}>
-      {props.imgSrc ? (
-        <img src={props.imgSrc} alt={`${props.username}'s avatar`} />
+    <Container size={size} bordered={bordered} {...props}>
+      {imgSrc ? (
+        <img src={imgSrc} alt={`${username}'s avatar`} />
       ) : (
-        <Placeholder fontSize={fontSize}>{initialLetter}</Placeholder>
+        <Placeholder fontSize={fontSize}>{initial}</Placeholder>
       )}
     </Container>
   );
 }
 
-export default function Avatar(props) {
+export default function Avatar({ as, href, ...props }) {
   return (
     <>
-      {props.href ? (
-        <WrapInLink href={props.href} as={props.as}>
+      {href ? (
+        <WrapInLink href={href} as={as}>
           <PureAvatar {...props} />
         </WrapInLink>
       ) : (

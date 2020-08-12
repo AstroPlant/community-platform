@@ -16,8 +16,19 @@ const Container = styled(Card)`
   background-size: cover;
 
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+`;
+
+const Cover = styled.img`
+  height: 256px;
+
+  @media screen and (max-width: 1024px) {
+    max-height: 180px;
+  }
+
+  @media screen and (max-width: 860px) {
+    display: none;
+  }
 `;
 
 const Content = styled.div`
@@ -36,18 +47,20 @@ const Title = styled.b`
 
   margin-bottom: 0.5rem;
 
-  color: ${(props) => props.theme.primary};
+  font-size: 18px;
   line-height: 1.5em;
   text-overflow: ellipsis;
 
+  color: ${(props) => props.theme.primary};
   overflow: hidden;
 `;
 
 const Preview = styled.p`
+  max-height: 3em;
+
   margin-bottom: 0.5rem;
 
   line-height: 1.5em;
-  max-height: 3em;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
@@ -64,11 +77,16 @@ export default function ArticleCard(props) {
       href={"/news/[slug]"}
       as={`/news/${props.article.slug}`}
     >
-      <Container
-        animateOnHover
-        imgSrc={API_URL + props.article.cover.url}
-        className={props.className}
-      >
+      <Container animateOnHover className={props.className}>
+        <Cover
+          src={API_URL + props.article.cover.url}
+          alt={
+            props.article.cover.alternativeText
+              ? props.article.cover.alternativeText
+              : "The article cover"
+          }
+        />
+
         <Content>
           <Title>{props.article.title}</Title>
           <Preview>{props.article.preview}</Preview>
