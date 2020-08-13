@@ -27,10 +27,6 @@ const AuthorName = styled.b`
   font-size: 1.2em;
 `;
 
-const ArticleDate = styled(Date)`
-  color: ${(props) => props.theme.grey};
-`;
-
 const Column = styled.div`
   margin-left: 1.25rem;
 `;
@@ -51,7 +47,7 @@ export default function ArticleInfos(props) {
             ? `${props.author.firstName} ${props.author.lastName}`
             : props.author.username}
         </AuthorName>
-        <ArticleDate dateString={props.date} />
+        <Date dateString={props.date} />
       </Column>
     </AuthorInfos>
   );

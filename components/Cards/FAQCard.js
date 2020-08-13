@@ -13,10 +13,11 @@ const Container = styled(Card)`
     height: unset;
   }
 
-  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  margin-bottom: 2rem;
 
   transition: height 0.3s ease;
 `;
@@ -54,8 +55,6 @@ const DateRow = styled.div`
   justify-content: flex-end;
 
   margin-top: 1rem;
-
-  font-style: italic;
 `;
 
 export default function FAQCard(props) {

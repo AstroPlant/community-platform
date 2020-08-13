@@ -16,7 +16,7 @@ const HeadRow = styled.div`
   justify-content: flex-end;
 
   @media screen and (max-width: ${Breaks.medium}) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 `;
 
@@ -38,7 +38,7 @@ const SearchbarHolder = styled.div`
 
   @media screen and (max-width: ${Breaks.medium}) {
     width: 100%;
-    margin: 1.5rem 0 0 0;
+    margin: 0 0 1.5rem 0;
   }
 `;
 

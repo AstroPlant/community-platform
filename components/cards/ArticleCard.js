@@ -68,7 +68,6 @@ const Preview = styled.p`
 
 const ArticleDate = styled(Date)`
   align-self: flex-end;
-  color: ${(props) => props.theme.grey};
 `;
 
 export default function ArticleCard(props) {

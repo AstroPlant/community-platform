@@ -17,7 +17,12 @@ const LinkContainer = styled.div`
 
   font-weight: 550;
   letter-spacing: 0.02em;
+  text-transform: capitalize;
+
   color: ${(props) => (props.active ? props.theme.light : props.theme.grey)};
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const Separator = styled(Icon)`
@@ -27,8 +32,9 @@ const Separator = styled(Icon)`
 /***
  * Returns the word formated to Titlecase
  */
-function toTitleCase(word) {
-  return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+function cleanPath(word) {
+  return word.replace("-", " ");
+  //return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
 }
 
 /***
@@ -48,7 +54,7 @@ function getSteps(path) {
     // creating link of type /step1/step2
     let step = splitPath[i];
     link += "/" + step;
-    let label = toTitleCase(step);
+    let label = cleanPath(step);
     let isActive = i === splitPath.length - 1;
     steps.push({ id: i, active: isActive, link: link, label: label });
   }

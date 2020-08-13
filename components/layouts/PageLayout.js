@@ -15,8 +15,12 @@ const Content = styled.div`
   margin-top: ${(props) => props.theme.headerHeight};
   padding: 2rem;
 
+  @media screen and (max-width: ${Breaks.medium}) {
+    padding: 1rem 2rem;
+  }
+
   @media screen and (max-width: ${Breaks.small}) {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
   }
 `;
 

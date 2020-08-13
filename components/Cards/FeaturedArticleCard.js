@@ -19,6 +19,8 @@ const Container = styled(Card)`
     flex-direction: column;
 
     height: unset;
+
+    margin: 2rem 0 0 0;
   }
 `;
 
