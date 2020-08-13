@@ -39,7 +39,7 @@ export default function ArticleInfos(props) {
       <AvatarHolder
         size={64}
         username={props.author.username}
-        imgSrc={API_URL + props.author.avatar.url}
+        imgSrc={props.author.avatar && API_URL + props.author.avatar.url}
       />
       <Column>
         <AuthorName>
