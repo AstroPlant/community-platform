@@ -1,6 +1,7 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 
 const GridContainer = styled.div`
   display: grid;
@@ -10,6 +11,11 @@ const GridContainer = styled.div`
   padding: 2rem 0;
 
   height: ${(props) => props.fillHeight && "100%"};
+
+  @media screen and (max-width: ${Breaks.large}) {
+    grid-template-columns: unset;
+    grid-auto-flow: dense;
+  }
 `;
 
 export default function Grid(props) {

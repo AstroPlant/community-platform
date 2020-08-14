@@ -3,9 +3,16 @@ import Grid from "../../components/grids/Grid";
 import MediasGrid from "../../components/grids/MediasGrid";
 import MainLayout from "../../components/layouts/MainLayout";
 import { getLibrarySection } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 
 const MediaNumber = styled.h3`
   color: ${(props) => props.theme.primary};
+`;
+
+const InfoSection = styled.div`
+  @media screen and (max-width: ${Breaks.large}) {
+    grid-row: 1;
+  }
 `;
 
 export default function LibrarySectionPage({ data }) {
@@ -22,10 +29,10 @@ export default function LibrarySectionPage({ data }) {
     >
       <Grid>
         <MediasGrid medias={section.library_medias} />
-        <div>
+        <InfoSection>
           <MediaNumber>{mediaCount} medias</MediaNumber>
           <p>{section.description}</p>
-        </div>
+        </InfoSection>
       </Grid>
     </MainLayout>
   );

@@ -7,12 +7,15 @@
 }
 
 .md h1,
-.md h2 {
+.md h2,
+.md blockquote {
   margin: 2rem 0 1rem 0;
 }
 
 .md h3,
-.md h4 {
+.md h4,
+.md h5,
+.md h6 {
   margin: 1rem 0;
 }
 
@@ -57,9 +60,23 @@
   margin-bottom: 2em;
 }
 
+.md blockquote p {
+  margin: 0;
+}
+
 .md a,
 .md u {
   margin-bottom: 0.75rem;
+}
+
+.md blockquote {
+  padding: 1rem;
+
+  font-size: 1em;
+  font-weight: 300;
+  font-style: italic;
+  color: #fff;
+  border-left: 5px solid #56f265;
 }
 
 .md pre {
@@ -70,6 +87,8 @@
   color: #b2d4bc;
   border-radius: 4px;
   overflow: auto;
+  white-space: pre-wrap;
+  text-align: justify;
 }
 
 .md a {
@@ -93,4 +112,43 @@
 .md img:hover {
   opacity: 1;
   transform: scale(1.02);
+}
+
+@media screen and (max-width: 768px) {
+  .md pre {
+    padding: 1rem;
+  }
+
+  .md img {
+    margin: 0.5rem 0;
+  }
+}
+
+@media screen and (max-width: 464px) {
+  .md h1 {
+    font-size: 24px;
+  }
+
+  .md h2 {
+    font-size: 20px;
+  }
+
+  .md h3 {
+    font-size: 18px;
+  }
+
+  .md h4,
+  .md h5 {
+    font-size: 16px;
+  }
+
+  .md h6 {
+    font-size: 14px;
+  }
+
+  .md p,
+  .md u,
+  .md li {
+    font-size: 16px;
+  }
 }

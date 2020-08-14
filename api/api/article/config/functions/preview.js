@@ -10,13 +10,13 @@ module.exports = {
     // Searching for urls in the content.
     const imgUrls = Array.from(
       tempContent.matchAll(/!\[(.*?)\]\((.*?)\)/g),
-      (m) => ({ alt: m[1], url: m[2] })
+      m => ({ alt: m[1], url: m[2] })
     );
 
-    const urls = Array.from(
-      tempContent.matchAll(/\[(.*?)\]\((.*?)\)/g),
-      (m) => ({ alt: m[1], url: m[2] })
-    );
+    const urls = Array.from(tempContent.matchAll(/\[(.*?)\]\((.*?)\)/g), m => ({
+      alt: m[1],
+      url: m[2]
+    }));
 
     const allUrls = urls.concat(imgUrls);
 
@@ -30,7 +30,7 @@ module.exports = {
       tempContent = tempContent.replace(link, obj.alt);
     }
 
-    data.preview = tempContent.substring(0, 416) + "...";
+    data.preview = tempContent.substring(0, 136) + "...";
   },
 
   /***
@@ -38,5 +38,5 @@ module.exports = {
    */
   async updatePreview(params, data) {
     this.addPreview(data);
-  },
+  }
 };

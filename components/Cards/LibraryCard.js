@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import LibraryIcon from "../../public/icons/library.svg";
+import Breaks from "../../utils/breakpoints";
 import Icon from "../Icon";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
@@ -21,6 +22,10 @@ const TitleRow = styled.div`
 
 const Title = styled.h3`
   margin: 0 0 0 1rem;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    width: min-content;
+  }
 `;
 
 const Description = styled.p`

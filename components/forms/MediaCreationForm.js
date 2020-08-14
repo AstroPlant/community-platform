@@ -21,17 +21,14 @@ const PageTitle = styled.h1`
 `;
 
 const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const Col = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const MarginRightInput = styled(Select)`
-  margin-right: 1.5rem;
 `;
 
 const MarkdownContainer = styled(Col)`
@@ -117,11 +114,11 @@ export default function MediaCreationForm(props) {
           <PageTitle>Create Media</PageTitle>
           <Form>
             <Row>
-              <MarginRightInput label="Media Type" name="type">
+              <Select label="Media Type" name="type">
                 <option>Article</option>
                 <option>File</option>
                 <option>Link</option>
-              </MarginRightInput>
+              </Select>
               <Select label="Category" name="librarySection">
                 {props.librarySections.map((section) => (
                   <option key={section.id} value={section.id}>
@@ -149,20 +146,18 @@ export default function MediaCreationForm(props) {
                   placeholder="A Plant in Space"
                 />
 
-                <Col>
-                  <FileInput
-                    label={"Article Cover"}
-                    id="articleCover"
-                    name="articleCover"
-                    type="file"
-                    onChange={(event) => {
-                      setFieldValue(
-                        "articleCover",
-                        event.currentTarget.files[0]
-                      );
-                    }}
-                  />
-                </Col>
+                <FileInput
+                  label={"Article Cover"}
+                  id="articleCover"
+                  name="articleCover"
+                  accept="image/*"
+                  multiple={false}
+                  maxSize={8000000}
+                  type="file"
+                  onDrop={(files) => {
+                    setFieldValue("articleCover", files[0]);
+                  }}
+                />
 
                 <MarkdownContainer>
                   <InputLabel
@@ -183,17 +178,18 @@ export default function MediaCreationForm(props) {
             )}
 
             {values.type === "File" && (
-              <Col>
-                <FileInput
-                  label={"File to upload"}
-                  id="file"
-                  name="file"
-                  type="file"
-                  onChange={(event) => {
-                    setFieldValue("file", event.currentTarget.files[0]);
-                  }}
-                />
-              </Col>
+              <FileInput
+                label={"File to upload"}
+                id="file"
+                accept="image/*, audio/*, video/*, .pdf"
+                name="file"
+                type="file"
+                multiple={false}
+                maxSize={20000000}
+                onDrop={(files) => {
+                  setFieldValue("file", files[0]);
+                }}
+              />
             )}
 
             {values.type === "Link" && (

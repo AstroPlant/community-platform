@@ -7,16 +7,26 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
+  width: auto;
 
-  border-radius: 50px;
+  padding: 0.25rem 0.5rem;
+  margin: 0 1rem 0 0;
 
-  background-color: ${(props) => props.theme.secondaryDark};
+  border-radius: 4px;
+
+  background-color: ${(props) => props.theme[props.color]};
+
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 300;
 `;
 
-export default function Chip({ label, ...props }) {
-  return <Container {...props}>{label}</Container>;
+export default function Chip({ label, color, ...props }) {
+  return (
+    <Container color={color} {...props}>
+      {label}
+    </Container>
+  );
 }
 
 Chip.propTypes = {
@@ -24,4 +34,12 @@ Chip.propTypes = {
    * label of the chip
    */
   label: PropTypes.string.isRequired,
+  /**
+   * color of the chip
+   */
+  color: PropTypes.string,
+};
+
+Chip.defaultProps = {
+  color: "secondaryDark",
 };

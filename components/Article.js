@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import { API_URL } from "../services/community";
 import styles from "../styles/markdown.module.css";
+import Breaks from "../utils/breakpoints";
 import Chip from "./Chip";
 
 const CoverImage = styled.img`
@@ -24,15 +25,16 @@ const Container = styled.div`
   margin: -3rem auto 0 auto;
   padding: 2rem;
   background-color: ${(props) => props.theme.darkLight};
+
+  @media screen and (max-width: ${Breaks.small}) {
+    width: 100%;
+    margin: -3rem 0 0 0;
+  }
 `;
 
 const Title = styled.h1`
   margin: 2rem 0;
   line-height: 1.2;
-`;
-
-const ArticleContainer = styled.div`
-  margin: 2rem 0 0 0;
 `;
 
 const Row = styled.div`
@@ -59,9 +61,7 @@ export default function Article(props) {
         </Row>
 
         <Title>{props.article.title}</Title>
-        <ArticleContainer>
-          <ReactMarkdown source={content} className={styles.md} />
-        </ArticleContainer>
+        <ReactMarkdown source={content} className={styles.md} />
       </Container>
     </div>
   );

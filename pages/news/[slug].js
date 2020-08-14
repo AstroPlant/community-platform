@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import Article from "../../components/Article";
 import ArticleInfos from "../../components/ArticleInfos";
+import Button from "../../components/Button";
 import ArticleCard from "../../components/cards/ArticleCard";
 import Card from "../../components/cards/Card";
 import Grid from "../../components/grids/Grid";
 import PageLayout from "../../components/layouts/PageLayout";
-import { getFullArticle } from "../../services/community";
 import { useAuth } from "../../providers/Auth";
-import Button from "../../components/Button";
+import { getFullArticle } from "../../services/community";
+import Breaks from "../../utils/breakpoints";
 
 const AuthorCard = styled(Card)`
   && {
@@ -16,10 +17,16 @@ const AuthorCard = styled(Card)`
   }
 `;
 
-const Split = styled(Grid)`
+const ToolsHolder = styled.div`
+  @media screen and (max-width: ${Breaks.large}) {
+    display: none;
+  }
+`;
+
+const ToolButtonRow = styled(Grid)`
   && {
     grid-template-columns: 1fr 1fr;
-    padding: 0.5rem;
+    padding: 0.5rem 0;
   }
 `;
 
@@ -31,14 +38,14 @@ const ToolButton = styled(Button)`
 
 const RelatedArticle = styled(ArticleCard)`
   && {
-    height: 420px;
+    height: unset;
     margin: 1rem 0;
   }
 `;
 
 export default function ArticlePage({ article, related }) {
-  const { user } = useAuth();
-  const isOwner = article.author.username === user.username;
+  const { isLogged, user } = useAuth();
+  const isOwner = isLogged && article.author.username === user.username;
 
   return (
     <PageLayout metaTitle={article.title} metaDescription={article.preview}>
@@ -46,9 +53,9 @@ export default function ArticlePage({ article, related }) {
         <Article article={article} />
         <div>
           {isOwner && (
-            <>
+            <ToolsHolder>
               <h3>Tools</h3>
-              <Split>
+              <ToolButtonRow>
                 <ToolButton
                   disabled
                   inverted
@@ -56,8 +63,8 @@ export default function ArticlePage({ article, related }) {
                   color="secondaryDark"
                 />
                 <ToolButton disabled inverted label="Delete" color="error" />
-              </Split>
-            </>
+              </ToolButtonRow>
+            </ToolsHolder>
           )}
           <h3>Author</h3>
           <AuthorCard>

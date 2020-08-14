@@ -2,17 +2,20 @@ import Link from "next/link";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../providers/Auth";
+import MenuIcon from "../public/icons/menu.svg";
+import DropdownIcon from "../public/icons/more.svg";
 import Notification from "../public/icons/notification.svg";
+import { API_URL } from "../services/community";
+import Breaks from "../utils/breakpoints";
 import { useOutsideClick } from "../utils/clickListener";
 import Avatar from "./Avatar";
 import Brand from "./Brand";
 import Button from "./Button";
+import Drawer from "./Drawer";
 import Dropdown from "./Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
-import { API_URL } from "../services/community";
-import DropdownIcon from "../public/icons/more.svg";
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -42,12 +45,20 @@ const LinksContainer = styled.nav`
   align-items: center;
   justify-content: space-between;
   text-align: center;
+
+  @media screen and (max-width: ${Breaks.large}) {
+    display: none;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @media screen and (max-width: ${Breaks.large}) {
+    display: none;
+  }
 `;
 
 const ClickableItems = styled(Row)`
@@ -69,12 +80,27 @@ const NotificationHolder = styled(Icon)`
   transform: rotate(45deg);
 `;
 
+const SignUpButtonHolder = styled.div`
+  @media screen and (max-width: ${Breaks.large}) {
+    display: none;
+  }
+`;
+
+// Mobile Components
+
+const MenuIconHolder = styled(Icon)`
+  @media screen and (min-width: ${Breaks.large}) {
+    display: none;
+  }
+`;
+
 export default function Header() {
   const { user, isLogged } = useAuth();
 
   // Variables to handles opening & closing dropdown menus
   const [hideMenu, setHideMenu] = useState(true);
   const [hideNotif, setHideNotif] = useState(true);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const ddMenuRef = useRef(null);
   const ddMenuTriggerRef = useRef(null);
@@ -104,6 +130,13 @@ export default function Header() {
     } else {
       setHideNotif(!hideNotif);
     }
+  }
+
+  /**
+   * Changes the state of the drawer
+   */
+  function toggleDrawer() {
+    setOpenDrawer(!openDrawer);
   }
 
   /**
@@ -168,63 +201,69 @@ export default function Header() {
         ))}
       </LinksContainer>
 
-      {isLogged ? (
-        <>
-          <Row>
-            <div
-              ref={ddNotifTriggerRef}
-              onClick={() => toggleDropdown("Notification")}
-            >
-              <NotificationHolder color={"light"} size={24}>
-                <Notification />
-              </NotificationHolder>
-              <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
-                <b>Notifications</b>
-                <Separator />
+      <MenuIconHolder size={32} onClick={() => toggleDrawer()}>
+        <MenuIcon />
+      </MenuIconHolder>
 
-                <p>No notifications yet</p>
+      <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
+
+      {isLogged ? (
+        <Row>
+          <div
+            ref={ddNotifTriggerRef}
+            onClick={() => toggleDropdown("Notification")}
+          >
+            <NotificationHolder color={"light"} size={24}>
+              <Notification />
+            </NotificationHolder>
+
+            <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
+              <b>Notifications</b>
+              <Separator />
+              <p>No notifications yet</p>
+            </DropdownMenu>
+          </div>
+
+          <ClickableItems
+            ref={ddMenuTriggerRef}
+            onClick={() => toggleDropdown("Menu")}
+          >
+            <div>
+              <Avatar
+                size={36}
+                imgSrc={API_URL + user.avatar.url}
+                username={user.username}
+              />
+              <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
+                <p>
+                  Signed in as <b>{user.username}</b>
+                </p>
+                <Link
+                  passHref
+                  href={"/users/[username]"}
+                  as={`/users/${user.username}`}
+                >
+                  <a>My profile</a>
+                </Link>
+                <Link passHref href={"/settings"}>
+                  <a>Settings</a>
+                </Link>
+                <Separator />
+                <Link passHref href={"/logout"}>
+                  <a>Log out</a>
+                </Link>
               </DropdownMenu>
             </div>
 
-            <ClickableItems
-              ref={ddMenuTriggerRef}
-              onClick={() => toggleDropdown("Menu")}
-            >
-              <div>
-                <Avatar
-                  size={36}
-                  imgSrc={API_URL + user.avatar.url}
-                  username={user.username}
-                />
-                <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
-                  <p>
-                    Signed in as <b>{user.username}</b>
-                  </p>
-                  <Link
-                    passHref
-                    href={"/users/[username]"}
-                    as={`/users/${user.username}`}
-                  >
-                    <a>My profile</a>
-                  </Link>
-                  <Link passHref href={"/settings"}>
-                    <a>Settings</a>
-                  </Link>
-                  <Separator />
-                  <Link passHref href={"/logout"}>
-                    <a>Log out</a>
-                  </Link>
-                </DropdownMenu>
-              </div>
-
-              <Dropdown reverse={!hideMenu} icon={<DropdownIcon />} />
-            </ClickableItems>
-          </Row>
-        </>
+            <Dropdown reverse={!hideMenu} icon={<DropdownIcon />} />
+          </ClickableItems>
+        </Row>
       ) : (
-        <Link passHref href={"/login"}>
-          <Button color="primary" label={"Become a space farmer"} />
-        </Link>
+        <SignUpButtonHolder>
+          <Link passHref href={"/login"}>
+            <Button color="primary" label={"Become a space farmer"} />
+          </Link>
+        </SignUpButtonHolder>
       )}
     </HeaderContainer>
   );

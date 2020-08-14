@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import { useAuth } from "../../providers/Auth";
+import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
 import SearchBar from "../inputs/SearchBar";
 import Path from "../Path";
@@ -13,6 +14,10 @@ const HeadRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const PageTitle = styled.h2`
@@ -21,11 +26,20 @@ const PageTitle = styled.h2`
 
 const CreateButton = styled(Button)`
   margin: 0;
+
+  @media screen and (max-width: ${Breaks.large}) {
+    display: none;
+  }
 `;
 
 const SearchbarHolder = styled.div`
   width: 33%;
   margin-left: 2rem;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    width: 100%;
+    margin: 0 0 1.5rem 0;
+  }
 `;
 
 export default function MainLayout(props) {

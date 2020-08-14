@@ -6,6 +6,7 @@ import LoginForm from "../components/forms/LoginForm";
 import SignUpForm from "../components/forms/SignUpForm";
 import SplitLayout from "../components/layouts/SplitLayout";
 import withoutAuth from "../hocs/withoutAuth";
+import Breaks from "../utils/breakpoints";
 
 const LeftColumn = styled.div`
   display: flex;
@@ -13,9 +14,17 @@ const LeftColumn = styled.div`
   align-items: center;
   justify-content: center;
 
+  height: 100%;
+
   padding: 2rem;
 
   background-color: ${(props) => props.theme.dark};
+`;
+
+const RightColumn = styled.div`
+  @media screen and (max-width: ${Breaks.large}) {
+    display: none;
+  }
 `;
 
 const FormHolder = styled.div`
@@ -59,7 +68,9 @@ function Login() {
           />
         </FormHolder>
       </LeftColumn>
-      <img src="./placeholder.jpg" />
+      <RightColumn>
+        <img src="./placeholder.jpg" />
+      </RightColumn>
     </SplitLayout>
   );
 }

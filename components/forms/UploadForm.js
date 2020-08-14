@@ -7,11 +7,6 @@ import ErrorMessage from "../inputs/ErrorMessage";
 import FileInput from "../inputs/FileInput";
 import LoadingAnimation from "../LoadingAnimation";
 
-const CustomForm = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
 const FormTitle = styled.h3`
   margin-bottom: 1.5rem;
 `;
@@ -42,30 +37,23 @@ const FilePreview = styled.img`
 export default function UploadForm(props) {
   const [previews, setPreviews] = useState([]);
   const [fileList, setFileList] = useState({});
-  const [error, setError] = useState("");
+  const [status, setStatus] = useState({ success: null, error: null });
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  function handleChange(event) {
-    const list = event.target.files;
+  function handleChange(files) {
+    if (files.length != 0) {
+      let temp = [];
+      for (let i = 0; i < files.length; i++) {
+        temp.push(URL.createObjectURL(files[i]));
+      }
 
-    props.validationSchema
-      .validate({ files: list })
-      .then(async () => {
-        let temp = [];
-        for (let i = 0; i < list.length; i++) {
-          temp.push(URL.createObjectURL(list[i]));
-        }
-
-        setFileList(list);
-        setPreviews(temp);
-        setValid(true);
-        setError("");
-      })
-      .catch((err) => {
-        setValid(false);
-        setError(err.errors[0]);
-      });
+      setFileList(files);
+      setPreviews(temp);
+      setValid(true);
+    } else {
+      setValid(false);
+    }
   }
 
   async function handleSubmit(event) {
@@ -74,12 +62,15 @@ export default function UploadForm(props) {
 
     const res = await upload(fileList, props.uploadParameters);
 
-    if (res.status === 200) {
+    if (!res.error) {
       setLoading(false);
-      props.callback();
-      reset();
+      setStatus({ success: "File successfully uploaded !", error: null });
+      setTimeout(() => {
+        reset();
+      }, 2000);
     } else {
       setLoading(false);
+      setStatus({ success: null, error: res.message[0].messages[0].message });
     }
   }
 
@@ -88,7 +79,7 @@ export default function UploadForm(props) {
     setPreviews([]);
     setValid(false);
     setLoading(false);
-    setError("");
+    setStatus({ success: null, error: null });
     props.closeForm();
   }
 
@@ -115,15 +106,15 @@ export default function UploadForm(props) {
         name={"files"}
         accept="image/*"
         multiple={props.multiple}
-        onChange={handleChange}
+        maxSize={8000000}
+        onDrop={handleChange}
       />
-      <ErrorMessage message={error} />
       <Row justify={"flex-end"}>
         <Button
           inverted
           label={"Cancel"}
           color={"error"}
-          onClick={() => props.closeForm()}
+          onClick={() => reset()}
           type="reset"
         />
 
@@ -138,6 +129,8 @@ export default function UploadForm(props) {
           />
         )}
       </Row>
+      {status.error && <ErrorMessage message={status.error} />}
+      {status.success && <p>{status.success}</p>}
     </form>
   );
 }
@@ -145,12 +138,8 @@ export default function UploadForm(props) {
 UploadForm.propTypes = {
   /* Function use to hide the form if used on an overlay */
   closeForm: PropTypes.func,
-  /* Yup schema to validate the inputs */
-  validationSchema: PropTypes.object.isRequired,
   /* Additional & optional upload parameters */
   uploadParameters: PropTypes.object,
-  /* Function called on submit success */
-  callback: PropTypes.func,
   /* Whether or not the form should accept multiple file input */
   multiple: PropTypes.bool,
   /* The title of the form */

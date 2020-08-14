@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 
 const Split = styled.div`
   display: grid;
@@ -8,7 +9,7 @@ const Split = styled.div`
 
   height: 100vh;
 
-  @media (screen and max-width: 1024px) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: block;
   }
 `;

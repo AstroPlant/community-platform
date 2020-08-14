@@ -2,17 +2,26 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 import Header from "../Header";
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: calc(100vh - ${(props) => props.theme.headerHeight});
+  height: 100%;
   min-height: calc(100vh - ${(props) => props.theme.headerHeight});
 
   margin-top: ${(props) => props.theme.headerHeight};
   padding: 2rem;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    padding: 1rem 2rem;
+  }
+
+  @media screen and (max-width: ${Breaks.small}) {
+    padding: 0.5rem 1rem;
+  }
 `;
 
 export default function PageLayout(props) {

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 import Grid from "./Grid";
 
 const GridContainer = styled(Grid)`
@@ -9,18 +10,30 @@ const GridContainer = styled(Grid)`
     grid-template-rows: 1fr 0.5fr 1fr;
 
     padding: 1rem 0;
+
+    @media screen and (max-width: ${Breaks.large}) {
+      grid-template-columns: unset;
+      grid-template-rows: unset;
+    }
   }
 `;
 
-const Top = styled.div`
+const ResponsiveGridElement = styled.div`
+  @media screen and (max-width: ${Breaks.large}) {
+    grid-row: unset;
+    grid-column: unset;
+  }
+`;
+
+const Top = styled(ResponsiveGridElement)`
   grid-row: 1;
 `;
 
-const Mid = styled.div`
+const Mid = styled(ResponsiveGridElement)`
   grid-row: 2;
 `;
 
-const Bottom = styled.div`
+const Bottom = styled(ResponsiveGridElement)`
   grid-row: 3;
 `;
 

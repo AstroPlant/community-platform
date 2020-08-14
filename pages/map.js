@@ -7,10 +7,23 @@ import KitCountCard from "../components/cards/KitCountCard";
 import Grid from "../components/grids/Grid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getKits } from "../services/data-api";
+import Breaks from "../utils/breakpoints";
 
 const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,
 });
+
+const MapHolder = styled.div`
+  @media screen and (max-width: ${Breaks.large}) {
+    grid-row: 2;
+  }
+`;
+
+const InfoHolder = styled.div`
+  @media screen and (max-width: ${Breaks.large}) {
+    grid-row: 1;
+  }
+`;
 
 const CustomCard = styled(Card)`
   && {
@@ -46,10 +59,10 @@ export default function Map({ kits }) {
       </Head>
       <MainLayout pageTitle={"All AstroPlant kits"}>
         <Grid fillHeight>
-          <div>
+          <MapHolder>
             <NoSSRMapBuilder kits={kits} changeKit={changeSelectedKit} />
-          </div>
-          <div>
+          </MapHolder>
+          <InfoHolder>
             <KitCountCard title={"Active kits"} count={kits.length} />
 
             {selectedKit ? (
@@ -67,7 +80,7 @@ export default function Map({ kits }) {
                 </p>
               </CustomCard>
             )}
-          </div>
+          </InfoHolder>
         </Grid>
       </MainLayout>
     </>

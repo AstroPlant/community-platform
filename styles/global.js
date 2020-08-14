@@ -1,15 +1,16 @@
 import { createGlobalStyle } from "styled-components";
+import Breaks from "../utils/breakpoints";
 
 export const GlobalStyle = createGlobalStyle`
   
-* {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 
   html {
-      scroll-behavior: smooth;
+    scroll-behavior: smooth;
   }
   
   body {
@@ -106,5 +107,37 @@ export const GlobalStyle = createGlobalStyle`
   .custom-popup .leaflet-popup-tip,
   .custom-popup .leaflet-popup-close-button  {
     display: none;
+  }
+
+  @media screen and (max-width: ${Breaks.large}){
+    p,b {
+      font-size: 16px;
+    }
+  }
+
+  @media screen and (max-width: ${Breaks.medium}){
+    p,b {
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (max-width: ${Breaks.small}){
+    h1 {
+      font-size: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.75rem;
+    }
+  
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 550;
+    }
+    
+    h5 {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
   }
 `;

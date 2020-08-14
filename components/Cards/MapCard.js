@@ -38,7 +38,10 @@ export default function MapCard(props) {
           <h3>Kit Map</h3>
         </TitleRow>
         <MapContainer>
-          <MapImage src="/images/world-map.svg" />
+          <MapImage
+            src="/images/world-map.svg"
+            alt="A black and white world map."
+          />
         </MapContainer>
       </Container>
     </WrapInLink>
