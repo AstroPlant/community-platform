@@ -1,4 +1,20 @@
+# node & npm
 node_modules
-.next
-.vscode
 npm-debug.log
+
+# next
+.next
+
+# docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# git files
+.git
+.gitignore
+
+# Generic files
+README.md
+LICENSE
+.vscode

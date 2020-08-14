@@ -1,10 +1,10 @@
-FROM node:12
+FROM node:12-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
 
 # Copy packages to the docker image
-COPY package*.json ./
+COPY package.json ./
 
 # Installing dependencies
 RUN npm install
@@ -13,10 +13,13 @@ RUN npm install
 # RUN npm ci --only=production
 
 # Copy the rest of the content
-COPY . .
+COPY . ./
 
 # Opening port 3000
 EXPOSE 3000:3000
 
-# Starting server
-CMD [ "npm", "run", "dev" ]
+# Live reload
+VOLUME [ "./:/src/app", "/app/node_modules", "/app/.next" ]
+
+# Production
+# VOLUME [ "./:/src/app"]

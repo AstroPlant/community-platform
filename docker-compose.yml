@@ -1,27 +1,33 @@
 version: "3.8"
 
 services:
+  next:
+    container_name: next
+    image: node:12-alpine
+    working_dir: /app
+    #environment:
+    #- NODE_ENV=production
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      # Live reload for modules
+      - /app/node_modules
+      # Live reload for next
+      - /app/.next
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - strapi
+
   strapi:
     build: ./api
     container_name: strapi
     image: strapi/base
     working_dir: /srv/app
-    command: sh -c "npm install && npm run develop"
     ports:
       - "1337:1337"
     volumes:
       - ./api:/srv/app
-    restart: "on-failure"
-
-  next:
-    container_name: next
-    image: node:12-alpine
-    working_dir: /app
-    command: sh -c "npm install && npm run dev"
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-    depends_on:
-      - strapi
-    restart: "on-failure"
+    #environment:
+    #- NODE_ENV=production
+    command: sh -c "npm run develop"
