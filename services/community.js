@@ -2,9 +2,9 @@ import slugify from "slugify";
 import { getToken } from "../providers/Auth";
 import { gqQuery, postJson, postRaw, queryfy } from "../utils/fetchTools";
 
-const GRAPHQL_URL = "http://localhost:1337/graphql";
-
 export const API_URL = "http://localhost:1337";
+const BASE_URL = "http://strapi:1337";
+const GRAPHQL_URL = `${BASE_URL}/graphql`;
 
 function getQuery(query, options = {}) {
   return gqQuery(GRAPHQL_URL, query, options);
