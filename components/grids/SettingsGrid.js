@@ -7,7 +7,7 @@ import Card from "../cards/Card";
 import ProfileCard from "../cards/ProfileCard";
 import AccountForm from "../forms/AccountForm";
 import UploadForm from "../forms/UploadForm";
-import Overlay from "../overlay";
+import Overlay from "../Overlay";
 import Grid from "./Grid";
 
 const Column = styled.div`
