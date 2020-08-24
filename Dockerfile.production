@@ -7,13 +7,17 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Installing dependencies
-RUN npm install
+RUN npm i
+# RUN npm ci --only=production
 
 # Copy the rest of the content
-COPY . ./
+COPY . .
+
+RUN npm run build
 
 # Opening port 3000
 EXPOSE 3000:3000
 
-# Live reload
-VOLUME [ "./:/src/app", "/app/node_modules", "/app/.next" ]
+VOLUME [ "./:/src/app"]
+
+CMD npm start
