@@ -631,6 +631,14 @@ export async function search(search, start = 0, limit = 10, sort = "id:desc") {
         }
       }
     }
+    users: searchUsers(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      username
+      firstName
+      lastName
+      avatar {
+        url
+      }
+    }
   }`;
 
   return getQuery(query);
