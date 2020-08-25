@@ -20,9 +20,6 @@ export default function LibrarySectionPage({ data }) {
   const mediaCount = data.mediaCount.aggregate.count;
   return (
     <MainLayout
-      enableSearch
-      searchFor={"libraryMedias"}
-      toolsFor={"libraryMedias"}
       pageTitle={section.title}
       metaTitle={section.title + " Library"}
       metaDescription={section.description}

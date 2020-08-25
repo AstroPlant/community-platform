@@ -6,8 +6,6 @@ export default function Help({ helpSections }) {
   return (
     <>
       <MainLayout
-        enableSearch
-        searchFor={"faqs"}
         pageTitle={"How can we help you ?"}
         metaTitle={"Help"}
         metaDescription={
