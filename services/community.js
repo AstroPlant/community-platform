@@ -77,6 +77,91 @@ export async function searchFAQs(
   return getQuery(query);
 }
 
+/**
+ * Search through the Articles
+ * @param {string} search words to look for
+ * @param {int} start where to start on the result array
+ * @param {int} limit maximum number of answers
+ * @param {string} sort keywords to sort the results
+ */
+export async function searchArticles(
+  search,
+  start = 0,
+  limit = 10,
+  sort = "id:desc"
+) {
+  const query = `{
+    results: searchArticles(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      slug 
+      published_at
+      title
+      preview
+      cover { 
+        url 
+        alternativeText
+      }
+      author { 
+        username
+        firstName
+        lastName
+      }
+    }
+  }`;
+
+  return getQuery(query);
+}
+
+/**
+ * Search through the libraryMedias
+ * @param {string} search words to look for
+ * @param {int} start where to start on the result array
+ * @param {int} limit maximum number of answers
+ * @param {string} sort keywords to sort the results
+ */
+export async function searchLibraryMedias(
+  search,
+  start = 0,
+  limit = 10,
+  sort = "id:desc"
+) {
+  const query = `{
+    results: searchMedias(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+        id
+        slug
+        title
+        created_at
+        media {
+          type: __typename
+          ... on ComponentMediaTypeLink {
+            id
+            url
+          }
+          ... on ComponentMediaTypeFile {
+            id
+            file {
+              id
+              created_at
+              caption
+              url
+              mime
+            }
+          }
+          ... on ComponentMediaTypeArticle {
+            id
+            title
+            cover {
+              caption
+            }
+            content
+          }
+        }
+      }
+  }`;
+
+  return getQuery(query);
+}
+
 /**********************************************
  *                 ARTICLES                   *
  **********************************************/
@@ -204,41 +289,6 @@ export async function getFullArticle(slug) {
   const res = await getQuery(query);
 
   return res.data;
-}
-
-/**
- * Search through the Articles
- * @param {string} search words to look for
- * @param {int} start where to start on the result array
- * @param {int} limit maximum number of answers
- * @param {string} sort keywords to sort the results
- */
-export async function searchArticles(
-  search,
-  start = 0,
-  limit = 10,
-  sort = "id:desc"
-) {
-  const query = `{
-    results: searchArticles(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
-      id
-      slug 
-      published_at
-      title
-      preview
-      cover { 
-        url 
-        alternativeText
-      }
-      author { 
-        username
-        firstName
-        lastName
-      }
-    }
-  }`;
-
-  return getQuery(query);
 }
 
 /**********************************************
@@ -527,56 +577,6 @@ export async function getLibraryMedia(id) {
   const res = await getQuery(query);
 
   return res.data.libraryMedia;
-}
-
-/**
- * Search through the libraryMedias
- * @param {string} search words to look for
- * @param {int} start where to start on the result array
- * @param {int} limit maximum number of answers
- * @param {string} sort keywords to sort the results
- */
-export async function searchLibraryMedias(
-  search,
-  start = 0,
-  limit = 10,
-  sort = "id:desc"
-) {
-  const query = `{
-    results: searchMedias(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
-        id
-        slug
-        title
-        created_at
-        media {
-          type: __typename
-          ... on ComponentMediaTypeLink {
-            id
-            url
-          }
-          ... on ComponentMediaTypeFile {
-            id
-            file {
-              id
-              created_at
-              caption
-              url
-              mime
-            }
-          }
-          ... on ComponentMediaTypeArticle {
-            id
-            title
-            cover {
-              caption
-            }
-            content
-          }
-        }
-      }
-  }`;
-
-  return getQuery(query);
 }
 
 /***

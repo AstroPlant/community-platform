@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../providers/Auth";
 import MenuIcon from "../public/icons/menu.svg";
-import DropdownIcon from "../public/icons/more.svg";
 import Notification from "../public/icons/notification.svg";
 import { API_URL } from "../services/community";
 import Breaks from "../utils/breakpoints";
@@ -12,10 +11,10 @@ import Avatar from "./Avatar";
 import Brand from "./Brand";
 import Button from "./Button";
 import Drawer from "./Drawer";
-import Dropdown from "./Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
+import SearchBar from "./inputs/SearchBar";
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -46,22 +45,28 @@ const LinksContainer = styled.nav`
   justify-content: space-between;
   text-align: center;
 
-  @media screen and (max-width: ${Breaks.large}) {
+  @media screen and (max-width: ${Breaks.xl}) {
     display: none;
   }
 `;
 
-const Row = styled.div`
+const ButtonsRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const UserHeaderTools = styled(ButtonsRow)`
   display: flex;
   align-items: center;
   justify-content: flex-end;
 
-  @media screen and (max-width: ${Breaks.large}) {
+  @media screen and (max-width: ${Breaks.xl}) {
     display: none;
   }
 `;
 
-const ClickableItems = styled(Row)`
+const ClickableItem = styled.div`
   cursor: pointer;
 `;
 
@@ -76,12 +81,23 @@ const Separator = styled.div`
   background-color: ${(props) => props.theme.light};
 `;
 
-const NotificationHolder = styled(Icon)`
-  transform: rotate(45deg);
+const IconButtonHolder = styled(Icon)`
+  padding: 0.5rem;
+
+  background-color: ${(props) => props.theme.dark};
+`;
+
+const HeaderButton = styled(Button)`
+  max-height: 40px;
+  margin: 0 0.5rem;
+`;
+
+const HeaderAvatar = styled(Avatar)`
+  margin: 0 0.5rem;
 `;
 
 const SignUpButtonHolder = styled.div`
-  @media screen and (max-width: ${Breaks.large}) {
+  @media screen and (max-width: ${Breaks.xl}) {
     display: none;
   }
 `;
@@ -89,7 +105,7 @@ const SignUpButtonHolder = styled.div`
 // Mobile Components
 
 const MenuIconHolder = styled(Icon)`
-  @media screen and (min-width: ${Breaks.large}) {
+  @media screen and (min-width: ${Breaks.xl}) {
     display: none;
   }
 `;
@@ -201,36 +217,42 @@ export default function Header() {
         ))}
       </LinksContainer>
 
-      <MenuIconHolder size={32} onClick={() => toggleDrawer()}>
-        <MenuIcon />
-      </MenuIconHolder>
+      <ButtonsRow>
+        <SearchBar collapsible />
 
-      <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
+        <MenuIconHolder size={32} onClick={() => toggleDrawer()}>
+          <MenuIcon />
+        </MenuIconHolder>
 
-      {isLogged ? (
-        <Row>
-          <div
-            ref={ddNotifTriggerRef}
-            onClick={() => toggleDropdown("Notification")}
-          >
-            <NotificationHolder color={"light"} size={24}>
-              <Notification />
-            </NotificationHolder>
+        <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
 
-            <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
-              <b>Notifications</b>
-              <Separator />
-              <p>No notifications yet</p>
-            </DropdownMenu>
-          </div>
+        {isLogged ? (
+          <UserHeaderTools>
+            <div
+              ref={ddNotifTriggerRef}
+              onClick={() => toggleDropdown("Notification")}
+            >
+              <IconButtonHolder color={"light"} size={24}>
+                <Notification />
+              </IconButtonHolder>
 
-          <ClickableItems
-            ref={ddMenuTriggerRef}
-            onClick={() => toggleDropdown("Menu")}
-          >
-            <div>
-              <Avatar
-                size={36}
+              <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
+                <b>Notifications</b>
+                <Separator />
+                <p>No notifications yet</p>
+              </DropdownMenu>
+            </div>
+
+            <Link passHref href="/library/create-media">
+              <HeaderButton color="primary" label="Share" />
+            </Link>
+
+            <ClickableItem
+              ref={ddMenuTriggerRef}
+              onClick={() => toggleDropdown("Menu")}
+            >
+              <HeaderAvatar
+                size={40}
                 imgSrc={API_URL + user.avatar.url}
                 username={user.username}
               />
@@ -253,18 +275,16 @@ export default function Header() {
                   <a>Log out</a>
                 </Link>
               </DropdownMenu>
-            </div>
-
-            <Dropdown reverse={!hideMenu} icon={<DropdownIcon />} />
-          </ClickableItems>
-        </Row>
-      ) : (
-        <SignUpButtonHolder>
-          <Link passHref href={"/login"}>
-            <Button color="primary" label={"Become a space farmer"} />
-          </Link>
-        </SignUpButtonHolder>
-      )}
+            </ClickableItem>
+          </UserHeaderTools>
+        ) : (
+          <SignUpButtonHolder>
+            <Link passHref href={"/login"}>
+              <HeaderButton color="primary" label={"Log in / Sign Up"} />
+            </Link>
+          </SignUpButtonHolder>
+        )}
+      </ButtonsRow>
     </HeaderContainer>
   );
 }
