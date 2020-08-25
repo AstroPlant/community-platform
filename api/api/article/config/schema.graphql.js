@@ -12,7 +12,7 @@ module.exports = {
 
           const results = await strapi
             .query("article")
-            .search({ _q: _query, ...params });
+            .search({ _q: _query, published_eq: true, ...params });
 
           return results;
         }
