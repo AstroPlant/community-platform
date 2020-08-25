@@ -8,15 +8,15 @@ module.exports = {
         description: "Search through all articles",
         resolverOf: "application::article.article.find",
         resolver: async (obj, options, { context }) => {
+          let { _query, ...params } = context.params;
+
           const results = await strapi
             .query("article")
-            .search({ _q: context.params._query, ...context.params });
+            .search({ _q: _query, ...params });
 
-          return (
-            results || `There is no articles corresponding to your search.`
-          );
-        },
-      },
-    },
-  },
+          return results;
+        }
+      }
+    }
+  }
 };
