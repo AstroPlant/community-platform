@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useSearch } from "../../providers/Search";
 import CloseIcon from "../../public/icons/close.svg";
 import SearchIcon from "../../public/icons/search.svg";
@@ -11,18 +11,27 @@ import {
 } from "../../services/community";
 import Icon from "../Icon";
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: ${(props) => (props.collapsed ? "40px" : "100%")};
+
+  margin: 0 0.5rem;
+  background-color: ${(props) => props.theme.dark};
+
+  overflow: hidden;
+
+  transition: width 0.3s ease;
+`;
+
 const Form = styled.form`
   display: flex;
   align-items: center;
   justify-content: flex-start;
 
   width: 100%;
-
-  background-color: ${(props) => props.theme.darkLight};
-`;
-
-const IconHolder = styled(Icon)`
-  margin: 1rem;
 `;
 
 const Input = styled.input`
@@ -45,12 +54,13 @@ const Hidden = styled.input`
   height: 1px;
 `;
 
-export default function SearchBar(props) {
+export default function SearchBar({ collapsible, searchFor, ...props }) {
   const [query, setQuery] = useState("");
+  const [collapsed, setCollapsed] = useState(true);
   const { setResults, setParams } = useSearch();
   let search = null;
 
-  switch (props.searchFor) {
+  switch (searchFor) {
     case "libraryMedias":
       search = searchLibraryMedias;
       break;
@@ -64,6 +74,7 @@ export default function SearchBar(props) {
       break;
 
     default:
+      search = null;
       break;
   }
 
@@ -91,29 +102,45 @@ export default function SearchBar(props) {
   }
 
   return (
-    <Form onSubmit={handleSubmit} id="searchbar">
-      <IconHolder color={"grey"} size={24}>
-        <SearchIcon />
-      </IconHolder>
-      <Input
-        type="text"
-        name={"query"}
-        placeholder={"Search"}
-        onChange={handleChange}
-      />
-      <Hidden type="submit" />
-      {query && (
-        <div onClick={handleReset}>
-          <IconHolder color={"grey"} size={24}>
-            <CloseIcon />
-          </IconHolder>
-        </div>
-      )}
-    </Form>
+    <Container collapsed={collapsible && collapsed}>
+      <Form
+        onSubmit={handleSubmit}
+        onClick={() => setCollapsed(false)}
+        id="searchbar"
+        {...props}
+      >
+        <Icon color={"grey"} size={24}>
+          <SearchIcon />
+        </Icon>
+        <Input
+          type="text"
+          name={"query"}
+          placeholder={"Search"}
+          onChange={handleChange}
+        />
+        <Hidden type="submit" />
+      </Form>
+      <Icon
+        color={"grey"}
+        size={24}
+        onClick={(event) => {
+          setCollapsed(true);
+          handleReset(event);
+        }}
+      >
+        <CloseIcon />
+      </Icon>
+    </Container>
   );
 }
 
 SearchBar.propTypes = {
-  /* The type of content to search */
-  searchFor: PropTypes.string.isRequired,
+  /**
+   * Whether or not the search bar can collapse
+   */
+  collapsible: PropTypes.bool,
+};
+
+SearchBar.defaultProps = {
+  collapsible: false,
 };
