@@ -571,20 +571,25 @@ export async function createLibraryMedia(body) {
 
 /**
  * Search through the FAQs, Articles & Medias
- * @param {string} search words to look for
+ * @param {string} query words to look for
  * @param {int} start where to start on the result array
  * @param {int} limit maximum number of answers
  * @param {string} sort keywords to sort the results
  */
-export async function search(search, start = 0, limit = 10, sort = "id:desc") {
-  const query = `{
-    faqs: searchFaqs(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+export async function search({
+  query = "",
+  start = 0,
+  limit = 10,
+  sort = "id:desc",
+}) {
+  const graphQLQuery = `{
+    faqs: searchFaqs(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       id
       question 
       answer
       updated_at
     }
-    news: searchArticles(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+    news: searchArticles(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       id
       slug 
       published_at
@@ -600,7 +605,7 @@ export async function search(search, start = 0, limit = 10, sort = "id:desc") {
         lastName
       }
     }
-    medias: searchMedias(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+    medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       id
       slug
       title
@@ -631,7 +636,7 @@ export async function search(search, start = 0, limit = 10, sort = "id:desc") {
         }
       }
     }
-    users: searchUsers(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+    users: searchUsers(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       username
       firstName
       lastName
@@ -641,7 +646,7 @@ export async function search(search, start = 0, limit = 10, sort = "id:desc") {
     }
   }`;
 
-  return getQuery(query);
+  return getQuery(graphQLQuery);
 }
 
 /**********************************************

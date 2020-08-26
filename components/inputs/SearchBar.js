@@ -1,14 +1,9 @@
+import { useRouter } from "next/router";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
-import { useSearch } from "../../providers/Search";
 import CloseIcon from "../../public/icons/close.svg";
 import SearchIcon from "../../public/icons/search.svg";
-import {
-  searchArticles,
-  searchFAQs,
-  searchLibraryMedias,
-} from "../../services/community";
 import Icon from "../Icon";
 
 const Container = styled.div`
@@ -54,29 +49,11 @@ const Hidden = styled.input`
   height: 1px;
 `;
 
-export default function SearchBar({ collapsible, searchFor, ...props }) {
+export default function SearchBar({ collapsible, ...props }) {
   const [query, setQuery] = useState("");
   const [collapsed, setCollapsed] = useState(true);
-  const { setResults, setParams } = useSearch();
-  let search = null;
 
-  switch (searchFor) {
-    case "libraryMedias":
-      search = searchLibraryMedias;
-      break;
-
-    case "faqs":
-      search = searchFAQs;
-      break;
-
-    case "articles":
-      search = searchArticles;
-      break;
-
-    default:
-      search = null;
-      break;
-  }
+  const router = useRouter();
 
   function handleChange(event) {
     setQuery(event.target.value);
@@ -84,10 +61,9 @@ export default function SearchBar({ collapsible, searchFor, ...props }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
     if (query && query !== "") {
-      setParams({ query });
-      const res = await search(query);
-      setResults(res.data.results);
+      router.push({ pathname: "/search", query: { keywords: query } });
     }
   }
 
@@ -97,17 +73,14 @@ export default function SearchBar({ collapsible, searchFor, ...props }) {
     document.getElementById("searchbar").reset();
 
     setQuery(null);
-    setParams({});
-    setResults(null);
   }
 
   return (
-    <Container collapsed={collapsible && collapsed}>
+    <Container collapsed={collapsible && collapsed} {...props}>
       <Form
         onSubmit={handleSubmit}
         onClick={() => setCollapsed(false)}
         id="searchbar"
-        {...props}
       >
         <Icon color={"grey"} size={24}>
           <SearchIcon />

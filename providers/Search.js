@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { search } from "../services/community";
 
 /* Creating a search context
  */
@@ -27,13 +28,32 @@ export const SearchProvider = ({ children }) => {
     init();
   }, [results]);
 
+  /**
+   * Execute the search with the current parameters
+   */
+  async function execute() {
+    setLoading(false);
+    const res = await search(params);
+    setLoading(true);
+    setResults(res.data);
+  }
+
+  /**
+   * Clears the results and parameters
+   */
+  function clear() {
+    setParams({});
+    setResults(null);
+  }
+
   return (
     <SearchContext.Provider
       value={{
+        execute,
+        clear,
         params,
         setParams,
         results,
-        setResults,
         isLoading,
       }}
     >
