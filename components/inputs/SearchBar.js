@@ -1,14 +1,9 @@
-import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useSearch } from "../../providers/Search";
 import CloseIcon from "../../public/icons/close.svg";
 import SearchIcon from "../../public/icons/search.svg";
-import {
-  searchArticles,
-  searchFAQs,
-  searchLibraryMedias,
-} from "../../services/community";
+import Button from "../Button";
 import Icon from "../Icon";
 
 const Form = styled.form`
@@ -18,11 +13,13 @@ const Form = styled.form`
 
   width: 100%;
 
-  background-color: ${(props) => props.theme.darkLight};
-`;
+  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
 
-const IconHolder = styled(Icon)`
-  margin: 1rem;
+  background-color: ${(props) => props.theme.dark};
+
+  overflow: hidden;
+
+  transition: width 0.3s ease;
 `;
 
 const Input = styled.input`
@@ -38,34 +35,15 @@ const Input = styled.input`
   outline: none;
 `;
 
-const Hidden = styled.input`
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
+const SearchButton = styled(Button)`
+  max-height: 36px;
+  margin: 0;
 `;
 
 export default function SearchBar(props) {
   const [query, setQuery] = useState("");
-  const { setResults, setParams } = useSearch();
-  let search = null;
 
-  switch (props.searchFor) {
-    case "libraryMedias":
-      search = searchLibraryMedias;
-      break;
-
-    case "faqs":
-      search = searchFAQs;
-      break;
-
-    case "articles":
-      search = searchArticles;
-      break;
-
-    default:
-      break;
-  }
+  const router = useRouter();
 
   function handleChange(event) {
     setQuery(event.target.value);
@@ -73,10 +51,9 @@ export default function SearchBar(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
     if (query && query !== "") {
-      setParams({ query });
-      const res = await search(query);
-      setResults(res.data.results);
+      router.push({ pathname: "/search", query: { keywords: query } });
     }
   }
 
@@ -86,34 +63,29 @@ export default function SearchBar(props) {
     document.getElementById("searchbar").reset();
 
     setQuery(null);
-    setParams({});
-    setResults(null);
   }
 
   return (
-    <Form onSubmit={handleSubmit} id="searchbar">
-      <IconHolder color={"grey"} size={24}>
+    <Form {...props} onSubmit={handleSubmit} id="searchbar">
+      <Icon color={"grey"} size={24}>
         <SearchIcon />
-      </IconHolder>
+      </Icon>
       <Input
         type="text"
         name={"query"}
         placeholder={"Search"}
         onChange={handleChange}
       />
-      <Hidden type="submit" />
-      {query && (
-        <div onClick={handleReset}>
-          <IconHolder color={"grey"} size={24}>
-            <CloseIcon />
-          </IconHolder>
-        </div>
-      )}
+      <Icon
+        color={"grey"}
+        size={24}
+        onClick={(event) => {
+          handleReset(event);
+        }}
+      >
+        <CloseIcon />
+      </Icon>
+      <SearchButton inverted type="submit" label="Search" color="secondary" />
     </Form>
   );
 }
-
-SearchBar.propTypes = {
-  /* The type of content to search */
-  searchFor: PropTypes.string.isRequired,
-};

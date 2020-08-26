@@ -5,6 +5,10 @@ import Breaks from "../../utils/breakpoints";
 import ArticleCard from "../cards/ArticleCard";
 import Grid from "./Grid";
 
+const EmptyGrid = styled.div`
+  padding: 2rem 0;
+`;
+
 const GridContainer = styled(Grid)`
   && {
     grid-template-columns: repeat(3, 1fr);
@@ -19,13 +23,21 @@ const GridContainer = styled(Grid)`
   }
 `;
 
-export default function ArticleGrid(props) {
+export default function ArticleGrid({ articles }) {
   return (
-    <GridContainer>
-      {props.articles.map((article) => (
-        <ArticleCard key={article.id} article={article} />
-      ))}
-    </GridContainer>
+    <>
+      {articles.length === 0 ? (
+        <EmptyGrid>
+          <p>No articles were found.</p>
+        </EmptyGrid>
+      ) : (
+        <GridContainer>
+          {articles.map((article) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
+        </GridContainer>
+      )}
+    </>
   );
 }
 

@@ -3,8 +3,7 @@ import { getToken } from "../providers/Auth";
 import { gqQuery, postJson, postRaw, queryfy } from "../utils/fetchTools";
 
 export const API_URL = "http://localhost:1337";
-const BASE_URL = "http://strapi:1337";
-const GRAPHQL_URL = `${BASE_URL}/graphql`;
+const GRAPHQL_URL = `${API_URL}/graphql`;
 
 function getQuery(query, options = {}) {
   return gqQuery(GRAPHQL_URL, query, options);
@@ -50,31 +49,6 @@ export async function getHelpSectionBySlug(slug) {
   const res = await getQuery(query);
 
   return res.data.helpSections[0];
-}
-
-/**
- * Search through the FAQs
- * @param {string} search words to look for
- * @param {int} start where to start on the result array
- * @param {int} limit maximum number of answers
- * @param {string} sort keywords to sort the results
- */
-export async function searchFAQs(
-  search,
-  start = 0,
-  limit = 10,
-  sort = "id:desc"
-) {
-  const query = `{
-    results: searchFaqs(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
-      id
-      question 
-      answer
-      updated_at
-    }
-  }`;
-
-  return getQuery(query);
 }
 
 /**********************************************
@@ -204,41 +178,6 @@ export async function getFullArticle(slug) {
   const res = await getQuery(query);
 
   return res.data;
-}
-
-/**
- * Search through the Articles
- * @param {string} search words to look for
- * @param {int} start where to start on the result array
- * @param {int} limit maximum number of answers
- * @param {string} sort keywords to sort the results
- */
-export async function searchArticles(
-  search,
-  start = 0,
-  limit = 10,
-  sort = "id:desc"
-) {
-  const query = `{
-    results: searchArticles(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
-      id
-      slug 
-      published_at
-      title
-      preview
-      cover { 
-        url 
-        alternativeText
-      }
-      author { 
-        username
-        firstName
-        lastName
-      }
-    }
-  }`;
-
-  return getQuery(query);
 }
 
 /**********************************************
@@ -529,56 +468,6 @@ export async function getLibraryMedia(id) {
   return res.data.libraryMedia;
 }
 
-/**
- * Search through the libraryMedias
- * @param {string} search words to look for
- * @param {int} start where to start on the result array
- * @param {int} limit maximum number of answers
- * @param {string} sort keywords to sort the results
- */
-export async function searchLibraryMedias(
-  search,
-  start = 0,
-  limit = 10,
-  sort = "id:desc"
-) {
-  const query = `{
-    results: searchMedias(query:"${search}", start: ${start}, limit: ${limit}, sort: "${sort}"){
-        id
-        slug
-        title
-        created_at
-        media {
-          type: __typename
-          ... on ComponentMediaTypeLink {
-            id
-            url
-          }
-          ... on ComponentMediaTypeFile {
-            id
-            file {
-              id
-              created_at
-              caption
-              url
-              mime
-            }
-          }
-          ... on ComponentMediaTypeArticle {
-            id
-            title
-            cover {
-              caption
-            }
-            content
-          }
-        }
-      }
-  }`;
-
-  return getQuery(query);
-}
-
 /***
  * Creates a library media
  * @param body necessary informations to create the media
@@ -674,6 +563,90 @@ export async function createLibraryMedia(body) {
   options.headers = { Authorization: bearer };
 
   return getQuery(mutation, options);
+}
+
+/**********************************************
+ *                   SEARCH                   *
+ **********************************************/
+
+/**
+ * Search through the FAQs, Articles & Medias
+ * @param {string} query words to look for
+ * @param {int} start where to start on the result array
+ * @param {int} limit maximum number of answers
+ * @param {string} sort keywords to sort the results
+ */
+export async function search({
+  query = "",
+  start = 0,
+  limit = 10,
+  sort = "id:desc",
+}) {
+  const graphQLQuery = `{
+    faqs: searchFaqs(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      question 
+      answer
+      updated_at
+    }
+    news: searchArticles(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      slug 
+      published_at
+      title
+      preview
+      cover { 
+        url 
+        alternativeText
+      }
+      author { 
+        username
+        firstName
+        lastName
+      }
+    }
+    medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      slug
+      title
+      created_at
+      media {
+        type: __typename
+        ... on ComponentMediaTypeLink {
+          id
+          url
+        }
+        ... on ComponentMediaTypeFile {
+          id
+          file {
+            id
+            created_at
+            caption
+            url
+            mime
+          }
+        }
+        ... on ComponentMediaTypeArticle {
+          id
+          title
+          cover {
+            caption
+          }
+          content
+        }
+      }
+    }
+    users: searchUsers(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      username
+      firstName
+      lastName
+      avatar {
+        url
+      }
+    }
+  }`;
+
+  return getQuery(graphQLQuery);
 }
 
 /**********************************************

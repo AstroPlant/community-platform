@@ -3,8 +3,8 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../providers/Auth";
 import MenuIcon from "../public/icons/menu.svg";
-import DropdownIcon from "../public/icons/more.svg";
 import Notification from "../public/icons/notification.svg";
+import SearchIcon from "../public/icons/search.svg";
 import { API_URL } from "../services/community";
 import Breaks from "../utils/breakpoints";
 import { useOutsideClick } from "../utils/clickListener";
@@ -12,10 +12,10 @@ import Avatar from "./Avatar";
 import Brand from "./Brand";
 import Button from "./Button";
 import Drawer from "./Drawer";
-import Dropdown from "./Dropdown";
 import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
 import Icon from "./Icon";
+import SearchBar from "./inputs/SearchBar";
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -54,6 +54,19 @@ const LinksContainer = styled.nav`
 const Row = styled.div`
   display: flex;
   align-items: center;
+
+  width: 100%;
+`;
+
+const ButtonsRow = styled(Row)`
+  justify-content: flex-end;
+
+  width: auto;
+`;
+
+const UserHeaderTools = styled(ButtonsRow)`
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
 
   @media screen and (max-width: ${Breaks.large}) {
@@ -61,7 +74,7 @@ const Row = styled.div`
   }
 `;
 
-const ClickableItems = styled(Row)`
+const ClickableItem = styled.div`
   cursor: pointer;
 `;
 
@@ -76,8 +89,19 @@ const Separator = styled.div`
   background-color: ${(props) => props.theme.light};
 `;
 
-const NotificationHolder = styled(Icon)`
-  transform: rotate(45deg);
+const IconButtonHolder = styled(Icon)`
+  padding: 0.5rem;
+
+  background-color: ${(props) => props.theme.dark};
+`;
+
+const HeaderButton = styled(Button)`
+  max-height: 40px;
+  margin: 0 0.5rem;
+`;
+
+const HeaderAvatar = styled(Avatar)`
+  margin: 0 0.5rem;
 `;
 
 const SignUpButtonHolder = styled.div`
@@ -100,7 +124,9 @@ export default function Header() {
   // Variables to handles opening & closing dropdown menus
   const [hideMenu, setHideMenu] = useState(true);
   const [hideNotif, setHideNotif] = useState(true);
+
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
 
   const ddMenuRef = useRef(null);
   const ddMenuTriggerRef = useRef(null);
@@ -137,6 +163,13 @@ export default function Header() {
    */
   function toggleDrawer() {
     setOpenDrawer(!openDrawer);
+  }
+
+  /**
+   * Changes the state of the search
+   */
+  function toggleSearch() {
+    setOpenSearch(!openSearch);
   }
 
   /**
@@ -193,77 +226,98 @@ export default function Header() {
 
   return (
     <HeaderContainer>
-      <Brand />
-
-      <LinksContainer>
-        {menuLinks.map((link) => (
-          <HeaderLink key={link.id} label={link.label} slug={link.slug} />
-        ))}
-      </LinksContainer>
-
-      <MenuIconHolder size={32} onClick={() => toggleDrawer()}>
-        <MenuIcon />
-      </MenuIconHolder>
-
-      <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
-
-      {isLogged ? (
+      {openSearch ? (
         <Row>
-          <div
-            ref={ddNotifTriggerRef}
-            onClick={() => toggleDropdown("Notification")}
-          >
-            <NotificationHolder color={"light"} size={24}>
-              <Notification />
-            </NotificationHolder>
+          <SearchBar />
 
-            <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
-              <b>Notifications</b>
-              <Separator />
-              <p>No notifications yet</p>
-            </DropdownMenu>
-          </div>
-
-          <ClickableItems
-            ref={ddMenuTriggerRef}
-            onClick={() => toggleDropdown("Menu")}
-          >
-            <div>
-              <Avatar
-                size={36}
-                imgSrc={API_URL + user.avatar.url}
-                username={user.username}
-              />
-              <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
-                <p>
-                  Signed in as <b>{user.username}</b>
-                </p>
-                <Link
-                  passHref
-                  href={"/users/[username]"}
-                  as={`/users/${user.username}`}
-                >
-                  <a>My profile</a>
-                </Link>
-                <Link passHref href={"/settings"}>
-                  <a>Settings</a>
-                </Link>
-                <Separator />
-                <Link passHref href={"/logout"}>
-                  <a>Log out</a>
-                </Link>
-              </DropdownMenu>
-            </div>
-
-            <Dropdown reverse={!hideMenu} icon={<DropdownIcon />} />
-          </ClickableItems>
+          <HeaderButton
+            inverted
+            label="Hide"
+            color="dark"
+            onClick={() => toggleSearch()}
+          ></HeaderButton>
         </Row>
       ) : (
-        <SignUpButtonHolder>
-          <Link passHref href={"/login"}>
-            <Button color="primary" label={"Become a space farmer"} />
-          </Link>
-        </SignUpButtonHolder>
+        <>
+          <Brand />
+
+          <LinksContainer>
+            {menuLinks.map((link) => (
+              <HeaderLink key={link.id} label={link.label} slug={link.slug} />
+            ))}
+          </LinksContainer>
+
+          <ButtonsRow>
+            <IconButtonHolder size={24} onClick={() => toggleSearch()}>
+              <SearchIcon />
+            </IconButtonHolder>
+
+            <MenuIconHolder size={24} onClick={() => toggleDrawer()}>
+              <MenuIcon />
+            </MenuIconHolder>
+
+            <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
+
+            {isLogged ? (
+              <UserHeaderTools>
+                <div
+                  ref={ddNotifTriggerRef}
+                  onClick={() => toggleDropdown("Notification")}
+                >
+                  <IconButtonHolder color={"light"} size={24}>
+                    <Notification />
+                  </IconButtonHolder>
+
+                  <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
+                    <b>Notifications</b>
+                    <Separator />
+                    <p>No notifications yet</p>
+                  </DropdownMenu>
+                </div>
+
+                <Link passHref href="/library/create-media">
+                  <HeaderButton color="primary" label="Share" />
+                </Link>
+
+                <ClickableItem
+                  ref={ddMenuTriggerRef}
+                  onClick={() => toggleDropdown("Menu")}
+                >
+                  <HeaderAvatar
+                    size={40}
+                    imgSrc={API_URL + user.avatar.url}
+                    username={user.username}
+                  />
+                  <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
+                    <p>
+                      Signed in as <b>{user.username}</b>
+                    </p>
+                    <Link
+                      passHref
+                      href={"/users/[username]"}
+                      as={`/users/${user.username}`}
+                    >
+                      <a>My profile</a>
+                    </Link>
+                    <Link passHref href={"/settings"}>
+                      <a>Settings</a>
+                    </Link>
+                    <Separator />
+                    <Link passHref href={"/logout"}>
+                      <a>Log out</a>
+                    </Link>
+                  </DropdownMenu>
+                </ClickableItem>
+              </UserHeaderTools>
+            ) : (
+              <SignUpButtonHolder>
+                <Link passHref href={"/login"}>
+                  <HeaderButton color="primary" label={"Log in / Sign Up"} />
+                </Link>
+              </SignUpButtonHolder>
+            )}
+          </ButtonsRow>
+        </>
       )}
     </HeaderContainer>
   );

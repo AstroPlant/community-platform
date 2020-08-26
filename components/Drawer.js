@@ -39,7 +39,7 @@ const Container = styled.nav`
     font-weight: 500;
   }
 
-  @media screen and (min-width: ${Breaks.large}) {
+  @media screen and (min-width: ${Breaks.xl}) {
     display: none;
   }
 `;

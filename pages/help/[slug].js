@@ -5,8 +5,6 @@ import { getHelpSectionBySlug } from "../../services/community";
 export default function HelpSectionPage({ section }) {
   return (
     <MainLayout
-      enableSearch
-      searchFor={"faqs"}
       pageTitle={section.title}
       metaTitle={section.title + " Help Section"}
       metaDescription={`All the frequently asked questions about ${section.title}.`}

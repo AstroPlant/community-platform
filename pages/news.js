@@ -6,9 +6,6 @@ import { getArticles } from "../services/community";
 export default function News({ featured, articles }) {
   return (
     <MainLayout
-      enableSearch
-      searchFor={"articles"}
-      toolsFor={"articles"}
       pageTitle={"The latest updates!"}
       metaTitle={"News"}
       metaDescription={"All the official news and update about AstroPlant !"}

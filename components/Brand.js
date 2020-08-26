@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Logo from "./Logo";
+import Breaks from "../utils/breakpoints";
 
 const Container = styled.div`
   display: flex;
@@ -18,11 +19,19 @@ const Separator = styled.div`
   width: 1px;
   background-color: ${(props) => props.theme.grey};
   margin: 0 1rem;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    display: none;
+  }
 `;
 
 const BrandName = styled.h3`
   color: white;
   margin-top: ${(props) => (props.vertical ? "1rem" : "0")};
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    display: none;
+  }
 `;
 
 export default function Brand(props) {
