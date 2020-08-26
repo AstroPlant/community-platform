@@ -62,7 +62,7 @@ function SearchTab({ activeTab, name, size, onClick }) {
   return (
     <Tab selected={activeTab === name} onClick={() => onClick(name)}>
       <TabName>{name}</TabName>
-      <NumberChip label={size} color={"light"} />
+      <NumberChip label={`${size}`} color={"light"} />
     </Tab>
   );
 }
@@ -107,6 +107,7 @@ export default function SearchResults({ results, params }) {
           />
           {tabs.map((tab) => (
             <SearchTab
+              key={tab.name}
               activeTab={activeTab}
               name={tab.name}
               size={tab.size}
@@ -129,7 +130,7 @@ export default function SearchResults({ results, params }) {
             <h4>Space Farmers</h4>
             <UserGrid>
               {results.users.map((user) => (
-                <UserCard user={user} />
+                <UserCard key={user.username} user={user} />
               ))}
             </UserGrid>
           </>

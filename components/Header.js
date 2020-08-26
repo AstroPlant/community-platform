@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useAuth } from "../providers/Auth";
 import MenuIcon from "../public/icons/menu.svg";
 import Notification from "../public/icons/notification.svg";
+import SearchIcon from "../public/icons/search.svg";
 import { API_URL } from "../services/community";
 import Breaks from "../utils/breakpoints";
 import { useOutsideClick } from "../utils/clickListener";
@@ -45,15 +46,22 @@ const LinksContainer = styled.nav`
   justify-content: space-between;
   text-align: center;
 
-  @media screen and (max-width: ${Breaks.xl}) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;
 
-const ButtonsRow = styled.div`
+const Row = styled.div`
   display: flex;
   align-items: center;
+
+  width: 100%;
+`;
+
+const ButtonsRow = styled(Row)`
   justify-content: flex-end;
+
+  width: auto;
 `;
 
 const UserHeaderTools = styled(ButtonsRow)`
@@ -61,7 +69,7 @@ const UserHeaderTools = styled(ButtonsRow)`
   align-items: center;
   justify-content: flex-end;
 
-  @media screen and (max-width: ${Breaks.xl}) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;
@@ -97,7 +105,7 @@ const HeaderAvatar = styled(Avatar)`
 `;
 
 const SignUpButtonHolder = styled.div`
-  @media screen and (max-width: ${Breaks.xl}) {
+  @media screen and (max-width: ${Breaks.large}) {
     display: none;
   }
 `;
@@ -105,7 +113,7 @@ const SignUpButtonHolder = styled.div`
 // Mobile Components
 
 const MenuIconHolder = styled(Icon)`
-  @media screen and (min-width: ${Breaks.xl}) {
+  @media screen and (min-width: ${Breaks.large}) {
     display: none;
   }
 `;
@@ -116,7 +124,9 @@ export default function Header() {
   // Variables to handles opening & closing dropdown menus
   const [hideMenu, setHideMenu] = useState(true);
   const [hideNotif, setHideNotif] = useState(true);
+
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
 
   const ddMenuRef = useRef(null);
   const ddMenuTriggerRef = useRef(null);
@@ -153,6 +163,13 @@ export default function Header() {
    */
   function toggleDrawer() {
     setOpenDrawer(!openDrawer);
+  }
+
+  /**
+   * Changes the state of the search
+   */
+  function toggleSearch() {
+    setOpenSearch(!openSearch);
   }
 
   /**
@@ -209,82 +226,99 @@ export default function Header() {
 
   return (
     <HeaderContainer>
-      <Brand />
+      {openSearch ? (
+        <Row>
+          <SearchBar />
 
-      <LinksContainer>
-        {menuLinks.map((link) => (
-          <HeaderLink key={link.id} label={link.label} slug={link.slug} />
-        ))}
-      </LinksContainer>
+          <HeaderButton
+            inverted
+            label="Hide"
+            color="dark"
+            onClick={() => toggleSearch()}
+          ></HeaderButton>
+        </Row>
+      ) : (
+        <>
+          <Brand />
 
-      <ButtonsRow>
-        <SearchBar collapsible />
+          <LinksContainer>
+            {menuLinks.map((link) => (
+              <HeaderLink key={link.id} label={link.label} slug={link.slug} />
+            ))}
+          </LinksContainer>
 
-        <MenuIconHolder size={32} onClick={() => toggleDrawer()}>
-          <MenuIcon />
-        </MenuIconHolder>
+          <ButtonsRow>
+            <IconButtonHolder size={24} onClick={() => toggleSearch()}>
+              <SearchIcon />
+            </IconButtonHolder>
 
-        <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
+            <MenuIconHolder size={24} onClick={() => toggleDrawer()}>
+              <MenuIcon />
+            </MenuIconHolder>
 
-        {isLogged ? (
-          <UserHeaderTools>
-            <div
-              ref={ddNotifTriggerRef}
-              onClick={() => toggleDropdown("Notification")}
-            >
-              <IconButtonHolder color={"light"} size={24}>
-                <Notification />
-              </IconButtonHolder>
+            <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
 
-              <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
-                <b>Notifications</b>
-                <Separator />
-                <p>No notifications yet</p>
-              </DropdownMenu>
-            </div>
-
-            <Link passHref href="/library/create-media">
-              <HeaderButton color="primary" label="Share" />
-            </Link>
-
-            <ClickableItem
-              ref={ddMenuTriggerRef}
-              onClick={() => toggleDropdown("Menu")}
-            >
-              <HeaderAvatar
-                size={40}
-                imgSrc={API_URL + user.avatar.url}
-                username={user.username}
-              />
-              <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
-                <p>
-                  Signed in as <b>{user.username}</b>
-                </p>
-                <Link
-                  passHref
-                  href={"/users/[username]"}
-                  as={`/users/${user.username}`}
+            {isLogged ? (
+              <UserHeaderTools>
+                <div
+                  ref={ddNotifTriggerRef}
+                  onClick={() => toggleDropdown("Notification")}
                 >
-                  <a>My profile</a>
+                  <IconButtonHolder color={"light"} size={24}>
+                    <Notification />
+                  </IconButtonHolder>
+
+                  <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
+                    <b>Notifications</b>
+                    <Separator />
+                    <p>No notifications yet</p>
+                  </DropdownMenu>
+                </div>
+
+                <Link passHref href="/library/create-media">
+                  <HeaderButton color="primary" label="Share" />
                 </Link>
-                <Link passHref href={"/settings"}>
-                  <a>Settings</a>
+
+                <ClickableItem
+                  ref={ddMenuTriggerRef}
+                  onClick={() => toggleDropdown("Menu")}
+                >
+                  <HeaderAvatar
+                    size={40}
+                    imgSrc={API_URL + user.avatar.url}
+                    username={user.username}
+                  />
+                  <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
+                    <p>
+                      Signed in as <b>{user.username}</b>
+                    </p>
+                    <Link
+                      passHref
+                      href={"/users/[username]"}
+                      as={`/users/${user.username}`}
+                    >
+                      <a>My profile</a>
+                    </Link>
+                    <Link passHref href={"/settings"}>
+                      <a>Settings</a>
+                    </Link>
+                    <Separator />
+                    <Link passHref href={"/logout"}>
+                      <a>Log out</a>
+                    </Link>
+                  </DropdownMenu>
+                </ClickableItem>
+              </UserHeaderTools>
+            ) : (
+              <SignUpButtonHolder>
+                <Link passHref href={"/login"}>
+                  <HeaderButton color="primary" label={"Log in / Sign Up"} />
                 </Link>
-                <Separator />
-                <Link passHref href={"/logout"}>
-                  <a>Log out</a>
-                </Link>
-              </DropdownMenu>
-            </ClickableItem>
-          </UserHeaderTools>
-        ) : (
-          <SignUpButtonHolder>
-            <Link passHref href={"/login"}>
-              <HeaderButton color="primary" label={"Log in / Sign Up"} />
-            </Link>
-          </SignUpButtonHolder>
-        )}
-      </ButtonsRow>
+              </SignUpButtonHolder>
+            )}
+          </ButtonsRow>
+        </>
+      )}
     </HeaderContainer>
   );
 }

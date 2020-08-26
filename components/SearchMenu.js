@@ -14,11 +14,10 @@ const Center = styled.div`
 
 const LargeSearchBar = styled(SearchBar)`
   && {
-    padding: 0.5rem;
+    height: 56px;
     margin: 2rem 0 1rem 0;
+    background-color: ${(props) => props.theme.darkLight};
   }
-
-  background-color: ${(props) => props.theme.darkLight};
 `;
 
 export default function SearchMenu(props) {
