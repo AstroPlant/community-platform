@@ -20,7 +20,7 @@ const SettingsColumn = styled.div`
   padding: 2rem;
 
   background-color: ${(props) => props.theme.darkLight};
-  border-radius: 8px;
+  border-radius: ${(props) => props.theme.radiusMax};
 `;
 
 const TabsSection = styled.div`
@@ -43,7 +43,7 @@ const Tab = styled.div`
   background-color: ${(props) => props.selected && props.theme.secondary};
   border: 2px solid
     ${(props) => (!props.selected ? props.theme.secondary : props.theme.light)};
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.radiusMin};
 `;
 
 const TabName = styled.span`

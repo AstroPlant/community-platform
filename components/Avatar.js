@@ -11,8 +11,7 @@ const Container = styled.div`
   width: ${(props) => props.size + "px"};
   height: ${(props) => props.size + "px"};
 
-  border: ${(props) => props.bordered && `4px solid ${props.theme.primary}`};
-  border-radius: 50%;
+  border-radius: ${(props) => props.theme.radiusMax};
 
   background-color: ${(props) => props.theme.secondary};
   color: ${(props) => props.theme.light};
@@ -30,12 +29,12 @@ const Placeholder = styled.div`
   font-size: ${(props) => props.fontSize + "px"};
 `;
 
-function PureAvatar({ size, bordered, imgSrc, username, ...props }) {
+function PureAvatar({ size, imgSrc, username, ...props }) {
   const initial = username.charAt(0).toUpperCase();
   const fontSize = size / 2;
 
   return (
-    <Container size={size} bordered={bordered} {...props}>
+    <Container size={size} {...props}>
       {imgSrc ? (
         <img src={imgSrc} alt={`${username}'s avatar`} />
       ) : (
@@ -80,10 +79,6 @@ Avatar.propTypes = {
    * url "as" path from next link. If the avatar is leading to a dynamic page
    */
   as: PropTypes.string,
-  /**
-   * Whether or not the avatar should be outlined by a green border
-   */
-  bordered: PropTypes.bool,
 };
 
 Avatar.defaultProps = {

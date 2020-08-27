@@ -11,19 +11,19 @@ import Overlay from "../Overlay";
 import Grid from "./Grid";
 
 const Column = styled.div`
-  background-color: ${(props) => props.theme.darkLight};
-  padding: 2rem;
-
   display: flex;
   flex-direction: column;
+
+  padding: 2rem;
+
+  background-color: ${(props) => props.theme.darkLight};
+  border-radius: ${(props) => props.theme.radiusMax};
 `;
 
 const UserColumn = styled(Column)`
   align-items: center;
   justify-content: center;
 `;
-
-const SettingsColumn = styled(Column)``;
 
 const Tabs = styled.div`
   display: flex;
@@ -99,7 +99,7 @@ export default function SettingsGrid(props) {
         <UserColumn>
           <ProfileCard editAvatar={editAvatar} user={props.user} />
         </UserColumn>
-        <SettingsColumn>
+        <Column>
           <Tabs>
             <Tab
               active={currentTab === "Profile"}
@@ -112,7 +112,7 @@ export default function SettingsGrid(props) {
           {currentTab === "Profile" && (
             <AccountForm initialInfos={props.user} />
           )}
-        </SettingsColumn>
+        </Column>
       </Grid>
     </>
   );

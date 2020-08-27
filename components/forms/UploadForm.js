@@ -24,7 +24,7 @@ const ThumbnailHolder = styled.div`
   padding: 0.5rem;
   margin: 1rem;
 
-  border-radius: 8px;
+  border-radius: ${(props) => props.theme.radiusMax};
   background-color: ${(props) => props.theme.dark};
 `;
 

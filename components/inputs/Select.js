@@ -20,7 +20,7 @@ const InputHolder = styled.div`
   color: ${(props) => (props.dark ? props.theme.light : props.theme.dark)};
 
   border: ${(props) => (props.hasError ? "2px solid red" : "none")};
-  border-radius: 2px;
+  border-radius: ${(props) => props.theme.radiusMin};
 
   background-color: ${(props) =>
     props.dark ? props.theme.darkLight : props.theme.light};

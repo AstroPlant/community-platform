@@ -17,6 +17,7 @@ const Form = styled.form`
 
   background-color: ${(props) => props.theme.dark};
 
+  border-radius: ${(props) => props.theme.radiusMax};
   overflow: hidden;
 
   transition: width 0.3s ease;

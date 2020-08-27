@@ -90,9 +90,7 @@ const Separator = styled.div`
 `;
 
 const IconButtonHolder = styled(Icon)`
-  padding: 0.5rem;
-
-  background-color: ${(props) => props.theme.dark};
+  margin: 0;
 `;
 
 const HeaderButton = styled(Button)`
@@ -112,7 +110,7 @@ const SignUpButtonHolder = styled.div`
 
 // Mobile Components
 
-const MenuIconHolder = styled(Icon)`
+const DrawerMenuButton = styled(HeaderButton)`
   @media screen and (min-width: ${Breaks.large}) {
     display: none;
   }
@@ -235,7 +233,7 @@ export default function Header() {
             label="Hide"
             color="dark"
             onClick={() => toggleSearch()}
-          ></HeaderButton>
+          />
         </Row>
       ) : (
         <>
@@ -248,13 +246,19 @@ export default function Header() {
           </LinksContainer>
 
           <ButtonsRow>
-            <IconButtonHolder size={24} onClick={() => toggleSearch()}>
-              <SearchIcon />
-            </IconButtonHolder>
+            <HeaderButton
+              inverted
+              color="dark"
+              icon={<SearchIcon />}
+              onClick={() => toggleSearch()}
+            />
 
-            <MenuIconHolder size={24} onClick={() => toggleDrawer()}>
-              <MenuIcon />
-            </MenuIconHolder>
+            <DrawerMenuButton
+              inverted
+              color="dark"
+              icon={<MenuIcon />}
+              onClick={() => toggleDrawer()}
+            />
 
             <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
 
@@ -264,9 +268,12 @@ export default function Header() {
                   ref={ddNotifTriggerRef}
                   onClick={() => toggleDropdown("Notification")}
                 >
-                  <IconButtonHolder color={"light"} size={24}>
-                    <Notification />
-                  </IconButtonHolder>
+                  <HeaderButton
+                    inverted
+                    color="dark"
+                    icon={<Notification />}
+                    onClick={() => toggleNotification()}
+                  />
 
                   <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
                     <b>Notifications</b>

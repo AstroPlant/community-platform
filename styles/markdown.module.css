@@ -1,7 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
-
 .md {
-  font-family: "Open Sans", sans-serif;
   color: #f3f3f3;
   word-break: break-word;
 }
@@ -76,7 +73,7 @@
   font-weight: 300;
   font-style: italic;
   color: #fff;
-  border-left: 5px solid #56f265;
+  border-left: 5px solid #35ef7f;
 }
 
 .md pre {
@@ -84,7 +81,7 @@
   padding: 2rem;
   margin: 1rem 0;
   background-color: hsla(0, 0%, 100%, 0.1);
-  color: #b2d4bc;
+  color: #35ef7f;
   border-radius: 4px;
   overflow: auto;
   white-space: pre-wrap;
@@ -92,7 +89,7 @@
 }
 
 .md a {
-  color: #56f265;
+  color: #35ef7f;
   font-size: 1em;
   font-weight: 700;
 }

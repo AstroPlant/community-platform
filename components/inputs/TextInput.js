@@ -20,7 +20,7 @@ const InputHolder = styled.div`
   color: ${(props) => (props.dark ? props.theme.light : props.theme.dark)};
 
   border: ${(props) => (props.hasError ? "2px solid red" : "none")};
-  border-radius: 2px;
+  border-radius: ${(props) => props.theme.radiusMin};
 
   background-color: ${(props) =>
     props.dark ? props.theme.darkLight : props.theme.light};
@@ -35,7 +35,7 @@ const Addon = styled.div`
 
   padding: 0 0.75rem;
 
-  border-radius: 2px 0 0 2px;
+  border-radius: 4px 0 0 4px;
 
   color: ${(props) => props.theme.light};
 
@@ -46,7 +46,7 @@ const Addon = styled.div`
 const Input = styled.input`
   width: 100%;
 
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem;
 
   font: 400 1em ${(props) => props.theme.fontFamily};
 
