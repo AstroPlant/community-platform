@@ -53,7 +53,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   b {
-    font-weight: 550;
+    font-weight: 600;
     text-transform: none;
   }
   
@@ -69,7 +69,7 @@ export const GlobalStyle = createGlobalStyle`
     object-fit: cover;
   }
 
-  input {
+  input, button {
     outline: none;
     border: none;
   }

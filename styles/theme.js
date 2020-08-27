@@ -11,6 +11,8 @@ const Theme = {
 
   error: "#EA0707",
 
+  transparent: "transparent",
+
   fontFamily: "'Inter', sans-serif",
 
   gridGap: "2rem",

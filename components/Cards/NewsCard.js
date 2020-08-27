@@ -89,7 +89,7 @@ export default function NewsCard(props) {
             href={"/news/[slug]"}
             as={`/news/${props.featuredArticle.slug}`}
           >
-            <ActionButton inverted label={"Read Article"} color={"dark"} />
+            <ActionButton inverted label={"Read Article"} color={"secondary"} />
           </Link>
 
           <Link passHref href={"/news"}>

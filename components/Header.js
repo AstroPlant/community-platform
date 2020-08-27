@@ -5,7 +5,6 @@ import { useAuth } from "../providers/Auth";
 import MenuIcon from "../public/icons/menu.svg";
 import Notification from "../public/icons/notification.svg";
 import SearchIcon from "../public/icons/search.svg";
-import { API_URL } from "../services/community";
 import Breaks from "../utils/breakpoints";
 import { useOutsideClick } from "../utils/clickListener";
 import Avatar from "./Avatar";
