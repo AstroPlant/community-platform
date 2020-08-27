@@ -290,11 +290,7 @@ export default function Header() {
                   ref={ddMenuTriggerRef}
                   onClick={() => toggleDropdown("Menu")}
                 >
-                  <HeaderAvatar
-                    size={40}
-                    imgSrc={API_URL + user.avatar.url}
-                    username={user.username}
-                  />
+                  <HeaderAvatar size={40} avatar={user.avatar} />
                   <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
                     <p>
                       Signed in as <b>{user.username}</b>

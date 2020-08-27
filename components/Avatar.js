@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import PersonIcon from "../public/icons/person.svg";
+import { API_URL } from "../services/community";
+import Icon from "./Icon";
 import WrapInLink from "./WrapInLink";
 
 const Container = styled.div`
@@ -19,26 +22,19 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const Placeholder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  font-weight: bold;
-  font-size: ${(props) => props.fontSize + "px"};
+const Placeholder = styled(Icon)`
+  margin: 0;
 `;
 
-function PureAvatar({ size, imgSrc, username, ...props }) {
-  const initial = username.charAt(0).toUpperCase();
-  const fontSize = size / 2;
-
+function PureAvatar({ size, avatar, ...props }) {
   return (
     <Container size={size} {...props}>
-      {imgSrc ? (
-        <img src={imgSrc} alt={`${username}'s avatar`} />
+      {avatar ? (
+        <img src={API_URL + avatar.url} alt={`user's avatar`} />
       ) : (
-        <Placeholder fontSize={fontSize}>{initial}</Placeholder>
+        <Placeholder size={size / 1.25}>
+          <PersonIcon />
+        </Placeholder>
       )}
     </Container>
   );
@@ -60,13 +56,9 @@ export default function Avatar({ as, href, ...props }) {
 
 Avatar.propTypes = {
   /**
-   * Path to the image
+   * Avatar object containing the link to the avatar
    */
-  imgSrc: PropTypes.string,
-  /**
-   * Username of the avatar owner
-   */
-  username: PropTypes.string.isRequired,
+  avatar: PropTypes.object,
   /**
    * The size of the avatar in pixel
    */
@@ -82,8 +74,7 @@ Avatar.propTypes = {
 };
 
 Avatar.defaultProps = {
-  imgSrc: null,
+  avatar: null,
   href: "/",
   as: "/",
-  bordered: false,
 };

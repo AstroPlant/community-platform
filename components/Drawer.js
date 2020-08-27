@@ -6,12 +6,11 @@ import { useAuth } from "../providers/Auth";
 import CloseIcon from "../public/icons/close.svg";
 import LogoutIcon from "../public/icons/exit-app.svg";
 import SettingsIcon from "../public/icons/settings.svg";
-import { API_URL } from "../services/community";
+import Breaks from "../utils/breakpoints";
 import Avatar from "./Avatar";
 import Button from "./Button";
 import Icon from "./Icon";
 import WrapInLink from "./WrapInLink";
-import Breaks from "../utils/breakpoints";
 
 const Container = styled.nav`
   position: fixed;
@@ -105,11 +104,7 @@ export default function Drawer({ open, toggle, links, ...props }) {
 
       {isLogged && (
         <UserRow>
-          <Avatar
-            username={user.username}
-            size={64}
-            imgSrc={API_URL + user.avatar.url}
-          />
+          <Avatar size={64} avatar={user.avatar} />
           <UserInfo>
             <h3>{user.username}</h3>
             <WrapInLink
