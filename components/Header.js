@@ -48,14 +48,28 @@ const LinksContainer = styled.nav`
   }
 `;
 
-const Row = styled.div`
-  display: flex;
-  align-items: center;
+const SearchBarHolder = styled.div`
+  position: absolute;
+  z-index: 0;
 
+  left: 0;
+  top: ${(props) => (props.show ? props.theme.headerHeight : "0%")};
+
+  padding: 0 2rem;
   width: 100%;
+
+  transition: top ease-out 0.2s;
 `;
 
-const ButtonsRow = styled(Row)`
+const HeaderSearchBar = styled(SearchBar)`
+  && {
+    background-color: ${(props) => props.theme.darkLight};
+  }
+`;
+
+const ButtonsRow = styled.div`
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
 
   width: auto;
@@ -164,100 +178,90 @@ export default function Header() {
   ];
 
   return (
-    <HeaderContainer>
-      {openSearch ? (
-        <Row>
-          <SearchBar />
+    <>
+      <HeaderContainer>
+        <Brand />
 
+        <LinksContainer>
+          {menuLinks.map((link) => (
+            <HeaderLink key={link.id} label={link.label} slug={link.slug} />
+          ))}
+        </LinksContainer>
+
+        <ButtonsRow>
           <HeaderButton
             inverted
-            label="Hide"
             color="dark"
+            icon={<SearchIcon />}
             onClick={() => toggleSearch()}
           />
-        </Row>
-      ) : (
-        <>
-          <Brand />
 
-          <LinksContainer>
-            {menuLinks.map((link) => (
-              <HeaderLink key={link.id} label={link.label} slug={link.slug} />
-            ))}
-          </LinksContainer>
+          <DrawerMenuButton
+            inverted
+            color="dark"
+            icon={<MenuIcon />}
+            onClick={() => toggleDrawer()}
+          />
 
-          <ButtonsRow>
-            <HeaderButton
-              inverted
-              color="dark"
-              icon={<SearchIcon />}
-              onClick={() => toggleSearch()}
-            />
+          <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
 
-            <DrawerMenuButton
-              inverted
-              color="dark"
-              icon={<MenuIcon />}
-              onClick={() => toggleDrawer()}
-            />
-
-            <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
-
-            {isLogged ? (
-              <UserHeaderTools>
-                <div>
-                  <DropdownMenu
-                    trigger={
-                      <HeaderButton
-                        inverted
-                        color="dark"
-                        icon={<Notification />}
-                      />
-                    }
-                  >
-                    <b>Notifications</b>
-                    <Separator />
-                    <p>No notifications yet</p>
-                  </DropdownMenu>
-                </div>
-
-                <Link passHref href="/library/create-media">
-                  <HeaderButton color="primary" label="Share" />
-                </Link>
-
+          {isLogged ? (
+            <UserHeaderTools>
+              <div>
                 <DropdownMenu
-                  trigger={<HeaderAvatar size={40} avatar={user.avatar} />}
+                  trigger={
+                    <HeaderButton
+                      inverted
+                      color="dark"
+                      icon={<Notification />}
+                    />
+                  }
                 >
-                  <b>{user.username}</b>
-
+                  <b>Notifications</b>
                   <Separator />
-
-                  <Link
-                    passHref
-                    href={"/users/[username]"}
-                    as={`/users/${user.username}`}
-                  >
-                    <a>My profile</a>
-                  </Link>
-                  <Link passHref href={"/settings"}>
-                    <a>Settings</a>
-                  </Link>
-                  <Separator />
-                  <Link passHref href={"/logout"}>
-                    <a>Log out</a>
-                  </Link>
+                  <p>No notifications yet</p>
                 </DropdownMenu>
-              </UserHeaderTools>
-            ) : (
-              <SignUpButtonHolder>
-                <Link passHref href={"/login"}>
-                  <HeaderButton color="primary" label={"Log in / Sign Up"} />
+              </div>
+
+              <Link passHref href="/library/create-media">
+                <HeaderButton color="primary" label="Share" />
+              </Link>
+
+              <DropdownMenu
+                trigger={<HeaderAvatar size={40} avatar={user.avatar} />}
+              >
+                <b>{user.username}</b>
+
+                <Separator />
+
+                <Link
+                  passHref
+                  href={"/users/[username]"}
+                  as={`/users/${user.username}`}
+                >
+                  <a>My profile</a>
                 </Link>
-              </SignUpButtonHolder>
-            )}
-          </ButtonsRow>
-        </>
-      )}
-    </HeaderContainer>
+                <Link passHref href={"/settings"}>
+                  <a>Settings</a>
+                </Link>
+                <Separator />
+                <Link passHref href={"/logout"}>
+                  <a>Log out</a>
+                </Link>
+              </DropdownMenu>
+            </UserHeaderTools>
+          ) : (
+            <SignUpButtonHolder>
+              <Link passHref href={"/login"}>
+                <HeaderButton color="primary" label={"Log in / Sign Up"} />
+              </Link>
+            </SignUpButtonHolder>
+          )}
+        </ButtonsRow>
+      </HeaderContainer>
+      <SearchBarHolder show={openSearch}>
+        <HeaderSearchBar />
+      </SearchBarHolder>
+    </>
   );
 }
