@@ -39,7 +39,7 @@ const Addon = styled.div`
 
   color: ${(props) => props.theme.light};
 
-  background-color: ${(props) => props.theme.secondaryDark};
+  background-color: ${(props) => props.theme.secondary};
   opacity: ${(props) => (props.disabled ? 0.75 : 1)};
 `;
 

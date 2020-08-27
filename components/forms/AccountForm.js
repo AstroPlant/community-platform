@@ -118,7 +118,7 @@ export default function AccountForm(props) {
             ) : (
               <SubmitButton
                 inverted
-                color={"secondaryDark"}
+                color={"secondary"}
                 label={"Confirm Change"}
                 type="submit"
                 disabled={isSubmitting || isValidating || !isValid}

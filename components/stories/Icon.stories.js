@@ -25,7 +25,6 @@ export const Default = () => {
         "darkLight",
         "primary",
         "secondary",
-        "secondaryDark",
         "error",
       ])}
       {...actionsData}

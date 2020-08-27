@@ -21,7 +21,7 @@ export const Default = () => {
         "darkLight",
         "primary",
         "secondary",
-        "secondaryDark",
+        "secondary",
         "error",
       ])}
       reverse={reverse}

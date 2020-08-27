@@ -45,7 +45,7 @@ const IconHolder = styled.div`
   align-items: center;
   justify-content center;
 
-  background-color: ${(props) => props.theme.secondaryDark};
+  background-color: ${(props) => props.theme.secondary};
   border: 4px solid ${(props) => props.theme.darkLight};
   border-radius: 50%;
 

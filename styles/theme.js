@@ -1,22 +1,24 @@
 const Theme = {
-  primary: "#56F265",
+  primary: "#35EF7F",
 
-  secondary: "#61dafb",
-  secondaryDark: "#0072ff",
+  secondary: "#177FFF",
 
-  light: "#fff",
+  light: "#FFF",
+  grey: "#DEDEDE",
 
   dark: "#000",
-  darkLight: "#1d1d1d",
+  darkLight: "#1D1D1D",
 
-  grey: "#bcbcbc",
-  error: "#FF3A3A",
+  error: "#EA0707",
 
-  fontFamily: "'Poppins', sans-serif",
+  fontFamily: "'Inter', sans-serif",
 
   gridGap: "2rem",
 
   headerHeight: "4.5rem",
+
+  radiusMax: "8px",
+  radiusMin: "4px",
 };
 
 export default Theme;

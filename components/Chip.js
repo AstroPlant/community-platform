@@ -41,5 +41,5 @@ Chip.propTypes = {
 };
 
 Chip.defaultProps = {
-  color: "secondaryDark",
+  color: "secondary",
 };
