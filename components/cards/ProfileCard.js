@@ -67,7 +67,7 @@ export default function ProfileCard({ editAvatar, user }) {
         <Avatar size={256} avatar={user.avatar} />
         {editAvatar && (
           <ButtonRow>
-            <EditButton inverted label="Clear" color="error" />
+            <EditButton inverted label="Clear" color="secondary" />
             <EditButton
               label="Edit"
               color="primary"
