@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Breaks from "../utils/breakpoints";
 import Avatar from "./Avatar";
+import WrapInLink from "./WrapInLink";
 import Date from "./Date";
 
 const AuthorInfos = styled.div`
@@ -30,21 +31,23 @@ const Column = styled.div`
   margin-left: 1.25rem;
 `;
 
-export default function ArticleInfos(props) {
-  const hasFullName = props.author.firstName && props.author.lastName;
+export default function ArticleInfos({ author, date, ...props }) {
+  const hasFullName = author.firstName && author.lastName;
 
   return (
-    <AuthorInfos className={props.className}>
-      <AvatarHolder size={64} avatar={props.author.avatar} />
-      <Column>
-        <AuthorName>
-          {hasFullName
-            ? `${props.author.firstName} ${props.author.lastName}`
-            : props.author.username}
-        </AuthorName>
-        <Date dateString={props.date} />
-      </Column>
-    </AuthorInfos>
+    <WrapInLink href="/users/[username]" as={`/users/${author.username}`}>
+      <AuthorInfos {...props}>
+        <AvatarHolder size={64} avatar={author.avatar} />
+        <Column>
+          <AuthorName>
+            {hasFullName
+              ? `${author.firstName} ${author.lastName}`
+              : author.username}
+          </AuthorName>
+          <Date dateString={date} />
+        </Column>
+      </AuthorInfos>
+    </WrapInLink>
   );
 }
 

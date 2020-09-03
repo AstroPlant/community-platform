@@ -4,7 +4,6 @@ import styled from "styled-components";
 import PersonIcon from "../public/icons/person.svg";
 import { API_URL } from "../services/community";
 import Icon from "./Icon";
-import WrapInLink from "./WrapInLink";
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +25,7 @@ const Placeholder = styled(Icon)`
   margin: 0;
 `;
 
-function PureAvatar({ size, avatar, ...props }) {
+export default function Avatar({ size, avatar, ...props }) {
   return (
     <Container size={size} {...props}>
       {avatar ? (
@@ -40,20 +39,6 @@ function PureAvatar({ size, avatar, ...props }) {
   );
 }
 
-export default function Avatar({ as, href, ...props }) {
-  return (
-    <>
-      {href ? (
-        <WrapInLink href={href} as={as}>
-          <PureAvatar {...props} />
-        </WrapInLink>
-      ) : (
-        <PureAvatar {...props} />
-      )}
-    </>
-  );
-}
-
 Avatar.propTypes = {
   /**
    * Avatar object containing the link to the avatar
@@ -63,18 +48,8 @@ Avatar.propTypes = {
    * The size of the avatar in pixel
    */
   size: PropTypes.number.isRequired,
-  /**
-   * If the avatar is interactive where it should lead
-   */
-  href: PropTypes.string,
-  /**
-   * url "as" path from next link. If the avatar is leading to a dynamic page
-   */
-  as: PropTypes.string,
 };
 
 Avatar.defaultProps = {
   avatar: null,
-  href: "/",
-  as: "/",
 };
