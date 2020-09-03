@@ -5,6 +5,7 @@ import ArticleCard from "../../components/cards/ArticleCard";
 import Card from "../../components/cards/Card";
 import Grid from "../../components/grids/Grid";
 import PageLayout from "../../components/layouts/PageLayout";
+import WrapInLink from "../../components/WrapInLink";
 import { useAuth } from "../../providers/Auth";
 import { getFullArticle } from "../../services/community";
 
@@ -24,7 +25,6 @@ const RelatedArticle = styled(ArticleCard)`
 
 export default function ArticlePage({ article, related }) {
   const { isLogged, user } = useAuth();
-  const isOwner = isLogged && article.author.username === user.username;
 
   return (
     <PageLayout metaTitle={article.title} metaDescription={article.preview}>
@@ -32,9 +32,17 @@ export default function ArticlePage({ article, related }) {
         <Article article={article} />
         <div>
           <h3>Author</h3>
-          <AuthorCard>
-            <ArticleInfos author={article.author} date={article.published_at} />
-          </AuthorCard>
+          <WrapInLink
+            href="/users/[username]"
+            as={`/users/${article.author.username}`}
+          >
+            <AuthorCard>
+              <ArticleInfos
+                author={article.author}
+                date={article.published_at}
+              />
+            </AuthorCard>
+          </WrapInLink>
           <h3>Related Article</h3>
           {related.map((a) => (
             <RelatedArticle animateOnHover key={a.id} article={a} />

@@ -4,6 +4,7 @@ import ArticleInfos from "../../../components/ArticleInfos";
 import Card from "../../../components/cards/Card";
 import Grid from "../../../components/grids/Grid";
 import PageLayout from "../../../components/layouts/PageLayout";
+import WrapInLink from "../../../components/WrapInLink";
 import { getLibraryMedia } from "../../../services/community";
 
 const AuthorCard = styled(Card)`
@@ -22,9 +23,14 @@ export default function CommunityArticlePage({ media }) {
         <Article article={article} />
         <div>
           <h3>Author</h3>
-          <AuthorCard>
-            <ArticleInfos author={media.author} date={media.created_at} />
-          </AuthorCard>
+          <WrapInLink
+            href="/users/[username]"
+            as={`/users/${media.author.username}`}
+          >
+            <AuthorCard>
+              <ArticleInfos author={media.author} date={media.created_at} />
+            </AuthorCard>
+          </WrapInLink>
         </div>
       </Grid>
     </PageLayout>
