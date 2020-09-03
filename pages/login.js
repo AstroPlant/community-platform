@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState } from "react";
 import styled from "styled-components";
 import Brand from "../components/Brand";
@@ -53,25 +54,35 @@ function Login() {
   }
 
   return (
-    <SplitLayout>
-      <LeftColumn>
-        <Brand vertical />
-        <FormHolder>
-          {currentForm === "Log In" && <LoginForm />}
-          {currentForm === "Sign Up" && <SignUpForm />}
+    <>
+      <Head>
+        <title>Login or Sign Up | AstroPlant Platform</title>
+        <meta
+          name="description"
+          content="Login page of the AstroPlant Community Platform"
+        />
+      </Head>
 
-          <SwitchButton
-            inverted
-            label={label}
-            color={"darkLight"}
-            onClick={() => toggleForm()}
-          />
-        </FormHolder>
-      </LeftColumn>
-      <RightColumn>
-        <img src="./placeholder.jpg" />
-      </RightColumn>
-    </SplitLayout>
+      <SplitLayout>
+        <LeftColumn>
+          <Brand vertical />
+          <FormHolder>
+            {currentForm === "Log In" && <LoginForm />}
+            {currentForm === "Sign Up" && <SignUpForm />}
+
+            <SwitchButton
+              inverted
+              label={label}
+              color={"darkLight"}
+              onClick={() => toggleForm()}
+            />
+          </FormHolder>
+        </LeftColumn>
+        <RightColumn>
+          <img src="./placeholder.jpg" />
+        </RightColumn>
+      </SplitLayout>
+    </>
   );
 }
 

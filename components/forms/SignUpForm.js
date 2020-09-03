@@ -14,6 +14,16 @@ const SubmitButton = styled(Button)`
   width: 100%;
 `;
 
+const Disclaimer = styled.p`
+  font-size: 14px;
+  margin-bottom: 1rem;
+
+  a {
+    font-weight: bold;
+    color: ${(props) => props.theme.primary};
+  }
+`;
+
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email")
@@ -72,6 +82,16 @@ export default function SignUpForm() {
         {({ status, isValidating, isSubmitting, isValid }) => (
           <>
             <Form>
+              <Disclaimer>
+                If you already have an account on{" "}
+                <a href="http://astroplant-alpha.surge.sh/">
+                  http://astroplant-alpha.surge.sh/
+                </a>{" "}
+                please use{" "}
+                <b>the exact same credentials (email and password)</b> below to
+                create your community account. Otherwise you might not be able
+                to access your kits data here in the future.
+              </Disclaimer>
               <TextInput
                 label="email"
                 name="email"
