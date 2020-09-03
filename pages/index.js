@@ -41,7 +41,7 @@ function Home({ featuredArticle, mainKit }) {
           iconSVG={<SlackIcon />}
           iconSize={96}
           title={"Ask the community!"}
-          href={"http://www.astroplant.slack.com/#/"}
+          href="http://astroplant.slack.com/"
         />
         <MapCard />
         <LibraryCard />

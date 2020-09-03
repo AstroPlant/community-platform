@@ -32,7 +32,7 @@ export default function HelpGrid(props) {
         iconSVG={<SlackIcon />}
         iconSize={96}
         title={"Ask the community!"}
-        href={"http://www.astroplant.slack.com/#/"}
+        href="http://astroplant.slack.com/"
       />
     </GridContainer>
   );
