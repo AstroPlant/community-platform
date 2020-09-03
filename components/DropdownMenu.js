@@ -58,7 +58,7 @@ const Content = styled.div`
   }
 `;
 
-const DropdownMenu = ({ trigger, children, ...props }) => {
+const DropdownMenu = ({ name, trigger, children, ...props }) => {
   const [show, setShow] = useState(false);
 
   const ref = useRef(null);
@@ -82,11 +82,22 @@ const DropdownMenu = ({ trigger, children, ...props }) => {
 
   return (
     <div>
-      <TriggerHolder ref={triggerRef} onClick={() => toggle()}>
+      <TriggerHolder
+        id={`${name}button`}
+        aria-haspopup="true"
+        aria-controls={`${name}menu`}
+        ref={triggerRef}
+        onClick={() => toggle()}
+      >
         {trigger}
       </TriggerHolder>
       {show && (
-        <MenuHolder tabIndex="-1">
+        <MenuHolder
+          id={`${name}menu`}
+          role="menu"
+          aria-labelledby={`${name}button`}
+          tabIndex="-1"
+        >
           <Container ref={ref} hidden={!show} {...props}>
             <Content>{children}</Content>
           </Container>
@@ -101,6 +112,10 @@ DropdownMenu.propTypes = {
    * Content to be displayed inside the menu
    */
   children: PropTypes.node.isRequired,
+  /**
+   * Name of the menu (used for accessibility)
+   */
+  name: PropTypes.string.isRequired,
   /**
    * Component that triggers the opening of the menu
    */

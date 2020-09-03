@@ -209,6 +209,7 @@ export default function Header() {
             <UserHeaderTools>
               <div>
                 <DropdownMenu
+                  name="notif"
                   trigger={
                     <HeaderButton
                       inverted
@@ -228,6 +229,7 @@ export default function Header() {
               </Link>
 
               <DropdownMenu
+                name="user"
                 trigger={<HeaderAvatar size={40} avatar={user.avatar} />}
               >
                 <b>{user.username}</b>
