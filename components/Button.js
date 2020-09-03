@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Icon from "./Icon";
 
 const HoverBar = styled.div`
   position: absolute;
@@ -12,7 +13,7 @@ const HoverBar = styled.div`
   transform: scale(0);
 
   background-color: transparent;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 `;
 
 const ButtonContainer = styled.button`
@@ -27,19 +28,20 @@ const ButtonContainer = styled.button`
   margin: 0.25rem 0.5rem;
 
   width: ${(props) => (props.large ? "20rem" : "")};
+
   background-color: ${(props) =>
     props.disabled ? props.theme.grey : props.theme[props.color]};
+  border-radius: ${(props) => props.theme.radiusMin};
+
+  overflow: hidden;
 
   color: ${(props) => (props.inverted ? props.theme.light : props.theme.dark)};
   font-family: ${(props) => props.theme.fontFamily};
   font-size: 1em;
-  font-weight: 550;
+  font-weight: 600;
 
   cursor: pointer;
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
-
-  border: none;
-  outline: none;
 
   &:hover ${HoverBar} {
     background-color: ${(props) =>
@@ -48,12 +50,16 @@ const ButtonContainer = styled.button`
   }
 `;
 
+const IconHolder = styled(Icon)`
+  margin: 0;
+`;
+
 /***
  * Button component
  * Using forwaredref here to be able to pass the href to the component when using a Next.js link
  */
 const Button = React.forwardRef(
-  ({ large, inverted, color, label, ...props }, ref) => {
+  ({ color, icon, inverted, label, large, ...props }, ref) => {
     return (
       <ButtonContainer
         large={large}
@@ -63,6 +69,7 @@ const Button = React.forwardRef(
         {...props}
       >
         <HoverBar />
+        {icon && <IconHolder size={24}>{icon}</IconHolder>}
         {label}
       </ButtonContainer>
     );
@@ -73,7 +80,11 @@ Button.propTypes = {
   /**
    * Label of the button
    */
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  /**
+   * Icon of the button
+   */
+  icon: PropTypes.node,
   /**
    * Background color of the button
    */

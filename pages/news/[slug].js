@@ -56,12 +56,7 @@ export default function ArticlePage({ article, related }) {
             <ToolsHolder>
               <h3>Tools</h3>
               <ToolButtonRow>
-                <ToolButton
-                  disabled
-                  inverted
-                  label="Edit"
-                  color="secondaryDark"
-                />
+                <ToolButton disabled inverted label="Edit" color="secondary" />
                 <ToolButton disabled inverted label="Delete" color="error" />
               </ToolButtonRow>
             </ToolsHolder>

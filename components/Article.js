@@ -11,6 +11,8 @@ const CoverImage = styled.img`
   position: relative;
   z-index: -1;
 
+  border-radius: ${(props) => props.theme.radiusMin};
+
   height: 50vh;
 `;
 
@@ -24,7 +26,9 @@ const Container = styled.div`
 
   margin: -3rem auto 0 auto;
   padding: 2rem;
+
   background-color: ${(props) => props.theme.darkLight};
+  border-radius: ${(props) => props.theme.radiusMax};
 
   @media screen and (max-width: ${Breaks.small}) {
     width: 100%;

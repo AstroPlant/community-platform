@@ -1,42 +1,30 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { useOutsideClick } from "../utils/clickListener";
 
 const MenuHolder = styled.div`
   position: relative;
 `;
 
-const Container = styled.div`
-  position: absolute;
-  right: 0;
-
-  display: ${(props) => (props.hidden ? "none" : "block")};
-
-  padding: 0.5rem 0;
-  margin: 1rem 0;
-
-  background-color: ${(props) => props.theme.darkLight};
-  border: 1px solid ${(props) => props.theme.light};
-
-  transition: opacity 0.2s ease-out, transform 0.4s ease;
+const TriggerHolder = styled.div`
+  cursor: pointer;
 `;
 
-const Arrow = styled.div`
+const Container = styled.ul`
+  position: absolute;
+  right: 0.5rem;
+
   display: block;
 
-  position: absolute;
-  top: -7px;
-  right: 12px;
-
-  width: 12px;
-  height: 12px;
-
-  transform: rotate(45deg);
-  transform-origin: center;
+  padding: 0.5rem 0;
+  margin: 1.5rem 0;
 
   background-color: ${(props) => props.theme.darkLight};
-  border-left: 1px solid ${(props) => props.theme.light};
-  border-top: 1px solid ${(props) => props.theme.light};
+  border-radius: ${(props) => props.theme.radiusMax};
+  border: 2px solid rgba(256, 256, 256, 0.5);
+
+  transition: opacity 0.2s ease-out, transform 0.4s ease;
 `;
 
 const Content = styled.div`
@@ -70,26 +58,53 @@ const Content = styled.div`
   }
 `;
 
-const DropdownMenu = React.forwardRef((props, ref) => {
+const DropdownMenu = ({ trigger, children, ...props }) => {
+  const [show, setShow] = useState(false);
+
+  const ref = useRef(null);
+  const triggerRef = useRef(null);
+
+  useOutsideClick(ref, triggerRef, close.bind(this));
+
+  /**
+   * toggle the menu
+   */
+  function toggle() {
+    setShow(!show);
+  }
+
+  /**
+   * Closes the menu
+   */
+  function close() {
+    setShow(false);
+  }
+
   return (
-    <MenuHolder tabIndex="-1">
-      <Container ref={ref} hidden={props.hidden}>
-        <Arrow />
-        <Content>{props.children}</Content>
-      </Container>
-    </MenuHolder>
+    <div>
+      <TriggerHolder ref={triggerRef} onClick={() => toggle()}>
+        {trigger}
+      </TriggerHolder>
+      {show && (
+        <MenuHolder tabIndex="-1">
+          <Container ref={ref} hidden={!show} {...props}>
+            <Content>{children}</Content>
+          </Container>
+        </MenuHolder>
+      )}
+    </div>
   );
-});
+};
 
 DropdownMenu.propTypes = {
   /**
    * Content to be displayed inside the menu
    */
-  children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  children: PropTypes.node.isRequired,
   /**
-   * Whether or not the menu is visible
+   * Component that triggers the opening of the menu
    */
-  hidden: PropTypes.bool.isRequired,
+  trigger: PropTypes.node.isRequired,
 };
 
 export default DropdownMenu;

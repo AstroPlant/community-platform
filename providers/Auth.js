@@ -100,18 +100,36 @@ export function loggedIn() {
  */
 function setLoggedUser(user, options) {
   const currentUser = cookies.get("user");
+  let loggedUser = {};
 
-  const loggedUser = {
-    id: user.id || currentUser.id,
-    username: user.username || currentUser.username,
-    email: user.email || currentUser.email,
-    avatar: user.avatar || currentUser.avatar,
-    description: user.description || currentUser.description,
-    firstName: user.firstName || currentUser.firstName,
-    lastName: user.lastName || currentUser.lastName,
-    slackUsername: user.slackUsername || currentUser.slackUsername,
-    role: user.role || currentUser.role,
-  };
+  console.log(user);
+  console.log(currentUser);
+
+  if (typeof currentUser !== "undefined") {
+    loggedUser = {
+      id: user.id || currentUser.id,
+      username: user.username || currentUser.username,
+      email: user.email || currentUser.email,
+      avatar: user.avatar || currentUser.avatar,
+      description: user.description || currentUser.description,
+      firstName: user.firstName || currentUser.firstName,
+      lastName: user.lastName || currentUser.lastName,
+      slackUsername: user.slackUsername || currentUser.slackUsername,
+      role: user.role || currentUser.role,
+    };
+  } else {
+    loggedUser = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      avatar: user.avatar,
+      description: user.description,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      slackUsername: user.slackUsername,
+      role: user.role,
+    };
+  }
 
   cookies.set("user", loggedUser, options);
 }

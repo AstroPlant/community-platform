@@ -21,7 +21,7 @@ const DropZone = styled.div`
   margin: 0 0 2rem 0;
 
   border: 2px dashed ${(props) => props.theme.light};
-  border-radius: 8px;
+  border-radius: ${(props) => props.theme.radiusMax};
 
   text-align: center;
 
@@ -43,7 +43,7 @@ const ListItem = styled.li`
   padding: 1rem;
   margin-top: 1rem;
 
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.radiusMin};
 
   background-color: ${(props) => props.theme.darkLight};
 `;

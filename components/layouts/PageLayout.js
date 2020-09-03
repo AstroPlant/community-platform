@@ -13,7 +13,7 @@ const Content = styled.div`
   min-height: calc(100vh - ${(props) => props.theme.headerHeight});
 
   margin-top: ${(props) => props.theme.headerHeight};
-  padding: 2rem;
+  padding: 3.75rem 2rem 2rem 2rem;
 
   @media screen and (max-width: ${Breaks.medium}) {
     padding: 1rem 2rem;

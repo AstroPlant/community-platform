@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { API_URL } from "../../services/community";
 import Avatar from "../Avatar";
-import Card from "./Card";
 import WrapInLink from "../WrapInLink";
+import Card from "./Card";
 
 const Container = styled(Card)`
   display: flex;
@@ -27,11 +26,7 @@ export default function UserCard({ user, ...props }) {
   return (
     <WrapInLink href={"/users/[username]"} as={`/users/${user.username}`}>
       <Container animateOnHover {...props}>
-        <Avatar
-          size={64}
-          imgSrc={user.avatar && API_URL + user.avatar.url}
-          username={user.username}
-        />
+        <Avatar size={64} avatar={user.avatar} />
         <UserInfo>
           <b>{user.username}</b>
 

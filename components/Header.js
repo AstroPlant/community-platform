@@ -1,20 +1,17 @@
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../providers/Auth";
 import MenuIcon from "../public/icons/menu.svg";
 import Notification from "../public/icons/notification.svg";
 import SearchIcon from "../public/icons/search.svg";
-import { API_URL } from "../services/community";
 import Breaks from "../utils/breakpoints";
-import { useOutsideClick } from "../utils/clickListener";
 import Avatar from "./Avatar";
 import Brand from "./Brand";
 import Button from "./Button";
 import Drawer from "./Drawer";
 import DropdownMenu from "./DropdownMenu";
 import HeaderLink from "./HeaderLink";
-import Icon from "./Icon";
 import SearchBar from "./inputs/SearchBar";
 
 const HeaderContainer = styled.header`
@@ -51,14 +48,28 @@ const LinksContainer = styled.nav`
   }
 `;
 
-const Row = styled.div`
-  display: flex;
-  align-items: center;
+const SearchBarHolder = styled.div`
+  position: absolute;
+  z-index: 0;
 
+  left: 0;
+  top: ${(props) => (props.show ? props.theme.headerHeight : "0%")};
+
+  padding: 0 2rem;
   width: 100%;
+
+  transition: top ease-out 0.15s;
 `;
 
-const ButtonsRow = styled(Row)`
+const HeaderSearchBar = styled(SearchBar)`
+  && {
+    background-color: ${(props) => props.theme.darkLight};
+  }
+`;
+
+const ButtonsRow = styled.div`
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
 
   width: auto;
@@ -74,25 +85,15 @@ const UserHeaderTools = styled(ButtonsRow)`
   }
 `;
 
-const ClickableItem = styled.div`
-  cursor: pointer;
-`;
-
 const Separator = styled.div`
   display: block;
 
   height: 1px;
-  width: 100%;
+  width: 90%;
 
-  margin: 0.5rem 0;
+  margin: 0.5rem auto;
 
-  background-color: ${(props) => props.theme.light};
-`;
-
-const IconButtonHolder = styled(Icon)`
-  padding: 0.5rem;
-
-  background-color: ${(props) => props.theme.dark};
+  background-color: rgba(256, 256, 256, 0.5);
 `;
 
 const HeaderButton = styled(Button)`
@@ -112,7 +113,7 @@ const SignUpButtonHolder = styled.div`
 
 // Mobile Components
 
-const MenuIconHolder = styled(Icon)`
+const DrawerMenuButton = styled(HeaderButton)`
   @media screen and (min-width: ${Breaks.large}) {
     display: none;
   }
@@ -121,42 +122,8 @@ const MenuIconHolder = styled(Icon)`
 export default function Header() {
   const { user, isLogged } = useAuth();
 
-  // Variables to handles opening & closing dropdown menus
-  const [hideMenu, setHideMenu] = useState(true);
-  const [hideNotif, setHideNotif] = useState(true);
-
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-
-  const ddMenuRef = useRef(null);
-  const ddMenuTriggerRef = useRef(null);
-
-  const ddNotifRef = useRef(null);
-  const ddNotifTriggerRef = useRef(null);
-
-  const ddMenuClick = useOutsideClick(
-    ddMenuRef,
-    ddMenuTriggerRef,
-    closeMenu.bind(this)
-  );
-
-  const ddNotificationsClick = useOutsideClick(
-    ddNotifRef,
-    ddNotifTriggerRef,
-    closeNotif.bind(this)
-  );
-
-  /**
-   * Changes the state of the selected menu
-   * @param {string} selected menus
-   */
-  function toggleDropdown(selected) {
-    if (selected === "Menu") {
-      setHideMenu(!hideMenu);
-    } else {
-      setHideNotif(!hideNotif);
-    }
-  }
 
   /**
    * Changes the state of the drawer
@@ -170,20 +137,6 @@ export default function Header() {
    */
   function toggleSearch() {
     setOpenSearch(!openSearch);
-  }
-
-  /**
-   * Closes the dropdown menu
-   */
-  function closeMenu() {
-    setHideMenu(true);
-  }
-
-  /**
-   * Closes the notification menu
-   */
-  function closeNotif() {
-    setHideNotif(true);
   }
 
   const menuLinks = [
@@ -225,100 +178,90 @@ export default function Header() {
   ];
 
   return (
-    <HeaderContainer>
-      {openSearch ? (
-        <Row>
-          <SearchBar />
+    <>
+      <HeaderContainer>
+        <Brand />
 
+        <LinksContainer>
+          {menuLinks.map((link) => (
+            <HeaderLink key={link.id} label={link.label} slug={link.slug} />
+          ))}
+        </LinksContainer>
+
+        <ButtonsRow>
           <HeaderButton
             inverted
-            label="Hide"
             color="dark"
+            icon={<SearchIcon />}
             onClick={() => toggleSearch()}
-          ></HeaderButton>
-        </Row>
-      ) : (
-        <>
-          <Brand />
+          />
 
-          <LinksContainer>
-            {menuLinks.map((link) => (
-              <HeaderLink key={link.id} label={link.label} slug={link.slug} />
-            ))}
-          </LinksContainer>
+          <DrawerMenuButton
+            inverted
+            color="dark"
+            icon={<MenuIcon />}
+            onClick={() => toggleDrawer()}
+          />
 
-          <ButtonsRow>
-            <IconButtonHolder size={24} onClick={() => toggleSearch()}>
-              <SearchIcon />
-            </IconButtonHolder>
+          <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
 
-            <MenuIconHolder size={24} onClick={() => toggleDrawer()}>
-              <MenuIcon />
-            </MenuIconHolder>
-
-            <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
-
-            {isLogged ? (
-              <UserHeaderTools>
-                <div
-                  ref={ddNotifTriggerRef}
-                  onClick={() => toggleDropdown("Notification")}
+          {isLogged ? (
+            <UserHeaderTools>
+              <div>
+                <DropdownMenu
+                  trigger={
+                    <HeaderButton
+                      inverted
+                      color="dark"
+                      icon={<Notification />}
+                    />
+                  }
                 >
-                  <IconButtonHolder color={"light"} size={24}>
-                    <Notification />
-                  </IconButtonHolder>
+                  <b>Notifications</b>
+                  <Separator />
+                  <p>No notifications yet</p>
+                </DropdownMenu>
+              </div>
 
-                  <DropdownMenu ref={ddNotifRef} hidden={hideNotif}>
-                    <b>Notifications</b>
-                    <Separator />
-                    <p>No notifications yet</p>
-                  </DropdownMenu>
-                </div>
+              <Link passHref href="/library/create-media">
+                <HeaderButton color="primary" label="Share" />
+              </Link>
 
-                <Link passHref href="/library/create-media">
-                  <HeaderButton color="primary" label="Share" />
-                </Link>
+              <DropdownMenu
+                trigger={<HeaderAvatar size={40} avatar={user.avatar} />}
+              >
+                <b>{user.username}</b>
 
-                <ClickableItem
-                  ref={ddMenuTriggerRef}
-                  onClick={() => toggleDropdown("Menu")}
+                <Separator />
+
+                <Link
+                  passHref
+                  href={"/users/[username]"}
+                  as={`/users/${user.username}`}
                 >
-                  <HeaderAvatar
-                    size={40}
-                    imgSrc={API_URL + user.avatar.url}
-                    username={user.username}
-                  />
-                  <DropdownMenu ref={ddMenuRef} hidden={hideMenu}>
-                    <p>
-                      Signed in as <b>{user.username}</b>
-                    </p>
-                    <Link
-                      passHref
-                      href={"/users/[username]"}
-                      as={`/users/${user.username}`}
-                    >
-                      <a>My profile</a>
-                    </Link>
-                    <Link passHref href={"/settings"}>
-                      <a>Settings</a>
-                    </Link>
-                    <Separator />
-                    <Link passHref href={"/logout"}>
-                      <a>Log out</a>
-                    </Link>
-                  </DropdownMenu>
-                </ClickableItem>
-              </UserHeaderTools>
-            ) : (
-              <SignUpButtonHolder>
-                <Link passHref href={"/login"}>
-                  <HeaderButton color="primary" label={"Log in / Sign Up"} />
+                  <a>My profile</a>
                 </Link>
-              </SignUpButtonHolder>
-            )}
-          </ButtonsRow>
-        </>
-      )}
-    </HeaderContainer>
+                <Link passHref href={"/settings"}>
+                  <a>Settings</a>
+                </Link>
+                <Separator />
+                <Link passHref href={"/logout"}>
+                  <a>Log out</a>
+                </Link>
+              </DropdownMenu>
+            </UserHeaderTools>
+          ) : (
+            <SignUpButtonHolder>
+              <Link passHref href={"/login"}>
+                <HeaderButton color="primary" label={"Log in / Sign Up"} />
+              </Link>
+            </SignUpButtonHolder>
+          )}
+        </ButtonsRow>
+      </HeaderContainer>
+      <SearchBarHolder show={openSearch}>
+        <HeaderSearchBar />
+      </SearchBarHolder>
+    </>
   );
 }

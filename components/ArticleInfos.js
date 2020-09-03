@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { API_URL } from "../services/community";
 import Breaks from "../utils/breakpoints";
 import Avatar from "./Avatar";
 import Date from "./Date";
@@ -36,11 +35,7 @@ export default function ArticleInfos(props) {
 
   return (
     <AuthorInfos className={props.className}>
-      <AvatarHolder
-        size={64}
-        username={props.author.username}
-        imgSrc={props.author.avatar && API_URL + props.author.avatar.url}
-      />
+      <AvatarHolder size={64} avatar={props.author.avatar} />
       <Column>
         <AuthorName>
           {hasFullName

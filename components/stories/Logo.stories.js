@@ -18,7 +18,6 @@ export const Default = () => {
         "darkLight",
         "primary",
         "secondary",
-        "secondaryDark",
         "error",
       ])}
       size={number("Size", 32)}

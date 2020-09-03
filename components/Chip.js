@@ -12,7 +12,7 @@ const Container = styled.div`
   padding: 0.25rem 0.5rem;
   margin: 0 1rem 0 0;
 
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.radiusMin};
 
   background-color: ${(props) => props.theme[props.color]};
 
@@ -41,5 +41,5 @@ Chip.propTypes = {
 };
 
 Chip.defaultProps = {
-  color: "secondaryDark",
+  color: "secondary",
 };

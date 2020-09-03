@@ -22,14 +22,7 @@ export const Default = () => {
       label={text("Label", "Hello Space Farmers!")}
       color={select(
         "Color",
-        [
-          "light",
-          "darkLight",
-          "primary",
-          "secondary",
-          "secondaryDark",
-          "error",
-        ],
+        ["light", "darkLight", "primary", "secondary", "secondary", "error"],
         "primary"
       )}
       {...actionsData}
@@ -44,14 +37,7 @@ export const inverted = () => {
       label={text("Label", "Inverted")}
       color={select(
         "Color",
-        [
-          "light",
-          "darkLight",
-          "primary",
-          "secondary",
-          "secondaryDark",
-          "error",
-        ],
+        ["light", "darkLight", "primary", "secondary", "secondary", "error"],
         "darkLight"
       )}
       {...actionsData}
@@ -66,14 +52,7 @@ export const Large = () => {
       label={text("Label", "Large")}
       color={select(
         "Color",
-        [
-          "light",
-          "darkLight",
-          "primary",
-          "secondary",
-          "secondaryDark",
-          "error",
-        ],
+        ["light", "darkLight", "primary", "secondary", "secondary", "error"],
         "primary"
       )}
       {...actionsData}

@@ -7,12 +7,12 @@ const HoverBar = styled.div`
   top: 0%;
   left: 0%;
 
-  height: 2px;
+  height: 4px;
   width: 100%;
   transform: scale(0);
 
   background-color: transparent;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 `;
 
 const Container = styled.div`
@@ -22,9 +22,13 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 
+  padding: 1.5rem;
+
   background-color: ${(props) => props.theme.darkLight};
 
-  padding: 1.5rem;
+  border-radius: ${(props) => props.theme.radiusMin};
+
+  overflow: hidden;
 
   &:hover {
     cursor: ${(props) => props.clickable && "pointer"};
@@ -36,20 +40,16 @@ const Container = styled.div`
   }
 `;
 
-export default function Card(props) {
+export default function Card({ animateOnHover, children, ...props }) {
   return (
-    <Container clickable={props.animateOnHover} className={props.className}>
-      {props.animateOnHover && <HoverBar />}
-      {props.children}
+    <Container clickable={animateOnHover} {...props}>
+      {animateOnHover && <HoverBar />}
+      {children}
     </Container>
   );
 }
 
 Card.propTypes = {
-  /**
-   * Styling class of the container. Used by styled-components.
-   */
-  className: PropTypes.string,
   /**
    * Card content
    */
