@@ -30,11 +30,11 @@ const Separator = styled(Icon)`
 `;
 
 /***
- * Returns the word formated to Titlecase
+ * Returns the path without url encoding
  */
 function cleanPath(word) {
-  return word.replace("-", " ");
-  //return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+  const split = word.split("?");
+  return split[0].replace("-", " ");
 }
 
 /***
