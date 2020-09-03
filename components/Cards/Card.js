@@ -12,7 +12,7 @@ const HoverBar = styled.div`
   transform: scale(0);
 
   background-color: transparent;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 `;
 
 const Container = styled.div`

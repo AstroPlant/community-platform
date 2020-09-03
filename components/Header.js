@@ -58,7 +58,7 @@ const SearchBarHolder = styled.div`
   padding: 0 2rem;
   width: 100%;
 
-  transition: top ease-out 0.2s;
+  transition: top ease-out 0.15s;
 `;
 
 const HeaderSearchBar = styled(SearchBar)`
