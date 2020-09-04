@@ -146,11 +146,6 @@ export default function Header() {
       id: 1,
     },
     {
-      label: "My Kits",
-      slug: "kits",
-      id: 2,
-    },
-    {
       label: "Kit Map",
       slug: "map",
       id: 3,
