@@ -28,6 +28,22 @@ services:
       - "1337:1337"
     volumes:
       - ./api:/srv/app
-    #environment:
-    #- NODE_ENV=production
-    command: sh -c "npm run develop"
+    environment:
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=strapi
+      - DATABASE_USERNAME=strapi
+      - DATABASE_PASSWORD=strapi
+    command: sh -c "npm install && npm run develop"
+
+  db:
+    container_name: postgres
+    image: postgres
+    restart: always
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: strapi

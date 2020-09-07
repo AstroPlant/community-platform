@@ -12,7 +12,13 @@ RUN npm ci --only=production
 # Copy the rest of the content
 COPY . ./
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
+ENV DATABASE_CLIENT=postgres
+ENV DATABASE_HOST=db
+ENV DATABASE_PORT=5432
+ENV DATABASE_NAME=strapi
+ENV DATABASE_USERNAME=
+ENV DATABASE_PASSWORD=
 
 RUN npm run build
 
