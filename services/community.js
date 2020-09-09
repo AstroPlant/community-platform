@@ -1,5 +1,5 @@
 import slugify from "slugify";
-import { getToken } from "../providers/Auth";
+import { getToken, updateLocalUser } from "../providers/Auth";
 import { gqQuery, postJson, postRaw, queryfy } from "../utils/fetchTools";
 
 export const API_URL = "http://localhost:1337";
@@ -7,6 +7,19 @@ const GRAPHQL_URL = `${API_URL}/graphql`;
 
 function getQuery(query, options = {}) {
   return gqQuery(GRAPHQL_URL, query, options);
+}
+
+function createBearer() {
+  const token = getToken("communityToken");
+  return "Bearer " + token;
+}
+
+function createOptionsWithBearer() {
+  return {
+    headers: {
+      Authorization: createBearer(),
+    },
+  };
 }
 
 /**********************************************
@@ -220,12 +233,21 @@ export async function getUserDetails(username) {
         url
         alternativeText
       }
+      role {
+        id
+        name
+      }
     }
   }`;
 
   const res = await getQuery(query);
 
-  return res.data.users[0];
+  if (!res.error && !res.errors) {
+    updateLocalUser(res.data.users[0]);
+    return res.data.users[0];
+  } else {
+    return res.data.users[0];
+  }
 }
 
 /***
@@ -233,12 +255,6 @@ export async function getUserDetails(username) {
  * @param updatedInfos the updated user info
  */
 export async function updateUserInfo(id, updatedInfos) {
-  const token = getToken("communityToken");
-  const bearer = "Bearer " + token;
-
-  const options = {};
-  options.headers = { Authorization: bearer };
-
   const mutation = `mutation {
     updateUser(
       input: { 
@@ -248,18 +264,36 @@ export async function updateUserInfo(id, updatedInfos) {
         data: ${queryfy(updatedInfos)}
       }) 
       {
-      user {
-        username
-        email
-        slackUsername
-        firstName
-        lastName
-        description
+        user {
+          id
+          username
+          email
+          slackUsername
+          firstName
+          lastName
+          description
+          avatar {
+            url
+            alternativeText
+          }
+          role {
+            id
+            name
+          }
+        }
       }
-    }
   }`;
 
-  return getQuery(mutation, options);
+  const options = createOptionsWithBearer();
+
+  const res = await getQuery(mutation, options);
+
+  if (!res.error && !res.errors) {
+    updateLocalUser(res.data.updateUser.user);
+    return res;
+  } else {
+    return res;
+  }
 }
 
 /***
@@ -267,13 +301,9 @@ export async function updateUserInfo(id, updatedInfos) {
  * @param userInfos the updated user info
  */
 export async function changePassword(oldPassword, newPassword) {
-  const token = getToken("communityToken");
-  const bearer = "Bearer " + token;
-
-  const options = {};
-  options.headers = { Authorization: bearer };
-
   const body = { oldPassword, newPassword };
+
+  const options = createOptionsWithBearer();
 
   return postJson(API_URL + "/users/changePassword", body, options);
 }
@@ -473,9 +503,6 @@ export async function getLibraryMedia(id) {
  * @param body necessary informations to create the media
  */
 export async function createLibraryMedia(body) {
-  const token = getToken("communityToken");
-  const bearer = "Bearer " + token;
-
   // Escaping quote carracters
   body.title = body.title.split('"').join('\\"');
 
@@ -559,8 +586,7 @@ export async function createLibraryMedia(body) {
   }
   `;
 
-  const options = {};
-  options.headers = { Authorization: bearer };
+  const options = createOptionsWithBearer();
 
   return getQuery(mutation, options);
 }
@@ -749,9 +775,6 @@ export async function upload(
   files,
   optionalParameters = ({ refId, ref, field, source } = {})
 ) {
-  const token = getToken("communityToken");
-  const bearer = "Bearer " + token;
-
   const formData = new FormData();
 
   for (let i = 0; i < files.length; i++) {
@@ -764,9 +787,7 @@ export async function upload(
     }
   });
 
-  return postRaw(API_URL + "/upload", formData, {
-    headers: {
-      Authorization: bearer,
-    },
-  });
+  const options = createOptionsWithBearer();
+
+  return postRaw(API_URL + "/upload", formData, options);
 }

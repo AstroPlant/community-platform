@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { updateLoggedUser } from "../../providers/Auth";
 import Card from "../cards/Card";
 import ProfileCard from "../cards/ProfileCard";
 import AccountForm from "../forms/AccountForm";
@@ -74,7 +73,6 @@ export default function SettingsGrid(props) {
 
   async function closeOverlay() {
     setShowOverlay(false);
-    await updateLoggedUser(props.user.username);
     router.replace("/settings");
   }
 

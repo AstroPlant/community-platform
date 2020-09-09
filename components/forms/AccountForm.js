@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { updateLoggedUser } from "../../providers/Auth";
 import { updateUserInfo } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
@@ -58,20 +57,8 @@ export default function AccountForm(props) {
         const res = await updateUserInfo(id, values);
 
         if (!res.error && !res.errors) {
-          // Updating local user
-          const update = await updateLoggedUser(values.username);
-
-          if (!update.error && !update.errors) {
-            // Show feedback
-            actions.setStatus({ success: "Information successfly updated!" });
-          } else {
-            // Show Error
-            actions.setStatus({
-              error: `Whoops! Something went wrong! ${update.message[0].messages[0].message}`,
-            });
-          }
+          actions.setStatus({ success: "Information successfly updated!" });
         } else {
-          // Show Error
           actions.setStatus({
             error: `Whoops! Something went wrong! ${res.message[0].messages[0].message}`,
           });

@@ -2,7 +2,6 @@ import cookie from "cookie";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
 import { Cookies } from "react-cookie";
-import { getUserDetails } from "../services/community";
 
 const cookies = new Cookies();
 const defaultOptions = { path: "/", sameSite: true, maxAge: 3600 };
@@ -42,6 +41,7 @@ export const AuthProvider = ({ children }) => {
         isLogged,
         isLoading,
         setLogged,
+        setUser,
       }}
     >
       {children}
@@ -99,39 +99,7 @@ export function loggedIn() {
  * @param options parameters for the cookies
  */
 function setLoggedUser(user, options) {
-  const currentUser = cookies.get("user");
-  let loggedUser = {};
-
-  console.log(user);
-  console.log(currentUser);
-
-  if (typeof currentUser !== "undefined") {
-    loggedUser = {
-      id: user.id || currentUser.id,
-      username: user.username || currentUser.username,
-      email: user.email || currentUser.email,
-      avatar: user.avatar || currentUser.avatar,
-      description: user.description || currentUser.description,
-      firstName: user.firstName || currentUser.firstName,
-      lastName: user.lastName || currentUser.lastName,
-      slackUsername: user.slackUsername || currentUser.slackUsername,
-      role: user.role || currentUser.role,
-    };
-  } else {
-    loggedUser = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      avatar: user.avatar,
-      description: user.description,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      slackUsername: user.slackUsername,
-      role: user.role,
-    };
-  }
-
-  cookies.set("user", loggedUser, options);
+  cookies.set("user", user, options);
 }
 
 /***
@@ -156,17 +124,11 @@ export function getLoggedUser(httpCookies) {
 
 /***
  * Update the current users local information with information from the api
- * @param username of the user to update
+ * @param user object to override the local user with
  */
-export async function updateLoggedUser(username) {
-  const res = await getUserDetails(username);
-
-  if (!res.error && !res.errors) {
-    setLoggedUser(res, { path: "/", sameSite: true });
-    return cookies.get("user");
-  } else {
-    return res;
-  }
+export async function updateLocalUser(user) {
+  setLoggedUser(user, { path: "/", sameSite: true });
+  getLoggedUser();
 }
 
 /***

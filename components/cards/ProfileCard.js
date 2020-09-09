@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { updateUserInfo } from "../../services/community";
 import Avatar from "../Avatar";
 import Button from "../Button";
 import Grid from "../grids/Grid";
@@ -59,15 +60,23 @@ const EditButton = styled(Button)`
 export default function ProfileCard({ editAvatar, user }) {
   const hasFullName = user.firstName && user.lastName;
 
+  async function clearProfilePicture() {
+    await updateUserInfo(user.id, { avatar: null });
+  }
+
   return (
     <Container showEdit={editAvatar}>
-      <h3>{user.username}</h3>
-
       <AvatarHolder>
         <Avatar size={256} avatar={user.avatar} />
         {editAvatar && (
           <ButtonRow>
-            <EditButton inverted label="Clear" color="secondary" />
+            <EditButton
+              inverted
+              disabled={user.avatar === null}
+              label="Clear"
+              color="secondary"
+              onClick={() => clearProfilePicture()}
+            />
             <EditButton
               label="Edit"
               color="primary"

@@ -227,7 +227,6 @@ module.exports = {
     ].services.user.validatePassword(oldPassword, user.password);
 
     if (_.has(ctx.request.body, "oldPassword") && !validPassword) {
-      console.log("OLD");
       return ctx.badRequest(null, [
         { messages: [{ id: "Old password didn't match" }] }
       ]);
@@ -237,8 +236,6 @@ module.exports = {
       _.has(ctx.request.body, "newPassword") &&
       newPassword === user.password
     ) {
-      console.log("NEW");
-
       return ctx.badRequest(null, [
         { messages: [{ id: "New password must be diffrent" }] }
       ]);
