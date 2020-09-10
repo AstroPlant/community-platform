@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import { updateUserInfo } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
@@ -41,6 +42,8 @@ export default function AccountForm(props) {
     description,
   } = props.initialInfos;
 
+  const { addAlert } = useSnackBars();
+
   return (
     <Formik
       initialValues={{
@@ -51,21 +54,21 @@ export default function AccountForm(props) {
         lastName: lastName || "",
         description: description || "",
       }}
-      initialStatus={{ success: null, error: null }}
       validationSchema={UserInfoSchema}
-      onSubmit={async (values, actions) => {
+      onSubmit={async (values) => {
         const res = await updateUserInfo(id, values);
 
         if (!res.error && !res.errors) {
-          actions.setStatus({ success: "Information successfly updated!" });
+          addAlert("success", "Your account information has been updated.");
         } else {
-          actions.setStatus({
-            error: `Whoops! Something went wrong! ${res.message[0].messages[0].message}`,
-          });
+          addAlert(
+            "error",
+            `Whoops! Something went wrong! ${res.message[0].messages[0].message}`
+          );
         }
       }}
     >
-      {({ status, isValidating, isSubmitting, isValid }) => (
+      {({ isValidating, isSubmitting, isValid }) => (
         <>
           <Form>
             <Row>
@@ -111,9 +114,6 @@ export default function AccountForm(props) {
                 disabled={isSubmitting || isValidating || !isValid}
               />
             )}
-
-            {status.error && <ErrorMessage message={status.error} />}
-            {status.success && <p>{status.success}</p>}
           </Form>
         </>
       )}

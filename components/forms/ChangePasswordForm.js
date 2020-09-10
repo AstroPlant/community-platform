@@ -2,6 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import { changePassword } from "../../services/community";
 import Button from "../Button";
 import TextInput from "../inputs/TextInput";
@@ -23,6 +24,8 @@ const ChangePasswordSchema = Yup.object().shape({
 });
 
 export default function ChangePasswordForm() {
+  const { addAlert } = useSnackBars();
+
   return (
     <Formik
       initialValues={{
@@ -30,7 +33,6 @@ export default function ChangePasswordForm() {
         newPassword: "",
         validatePassword: "",
       }}
-      initialStatus={{ success: null, error: null }}
       validationSchema={ChangePasswordSchema}
       onSubmit={async (values, actions) => {
         const res = await changePassword(
@@ -40,15 +42,17 @@ export default function ChangePasswordForm() {
 
         if (!res.error) {
           // Show feedback
-          actions.setStatus({ success: "Password Changed !" });
+          addAlert("success", "Password Changed !");
+          actions.resetForm();
         } else {
-          actions.setStatus({
-            error: `Whoops! Could not update your password, ${res.message[0].messages[0].message}`,
-          });
+          addAlert(
+            "error",
+            `Whoops! Could not update your password, ${res.message[0].messages[0].message}`
+          );
         }
       }}
     >
-      {({ status, isSubmitting, isValid, isValidating }) => (
+      {({ isSubmitting, isValid, isValidating }) => (
         <>
           <Form>
             <TextInput
@@ -82,9 +86,6 @@ export default function ChangePasswordForm() {
                 disabled={isSubmitting || isValidating || !isValid}
               />
             )}
-
-            {status.error && <ErrorMessage message={status.error} />}
-            {status.success && <p>{status.success}</p>}
           </Form>
         </>
       )}

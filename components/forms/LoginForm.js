@@ -4,10 +4,10 @@ import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { authenticate, useAuth } from "../../providers/Auth";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import { forgotPassword, login } from "../../services/community";
 import Button from "../Button";
 import Checkbox from "../inputs/CheckBox";
-import ErrorMessage from "../inputs/ErrorMessage";
 import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
 
@@ -33,6 +33,8 @@ export default function LoginForm() {
   const router = useRouter();
   const { isLogged, setLogged } = useAuth();
 
+  const { addAlert } = useSnackBars();
+
   return (
     <Formik
       initialValues={{
@@ -40,14 +42,13 @@ export default function LoginForm() {
         password: "",
         rememberMe: false,
       }}
-      initialStatus={{ success: null, error: null }}
       validationSchema={LoginSchema}
       onSubmit={async (values, actions) => {
         const res = await login(values.username, values.password);
 
         if (!res.error) {
           // Show feedback
-          actions.setStatus({ success: "Logged In !" });
+          addAlert("success", "Logged In ! Redirecting...");
 
           // Updates local infos
           authenticate(res, values.rememberMe);
@@ -61,13 +62,14 @@ export default function LoginForm() {
             }, 2000);
           }
         } else {
-          actions.setStatus({
-            error: `Whoops! Could not log in, ${res.message[0].messages[0].message}`,
-          });
+          addAlert(
+            "error",
+            `Whoops! Could not log in, ${res.message[0].messages[0].message}`
+          );
         }
       }}
     >
-      {({ status, isSubmitting, isValid, isValidating }) => (
+      {({ isSubmitting, isValid, isValidating }) => (
         <>
           <Form>
             <TextInput
@@ -104,9 +106,6 @@ export default function LoginForm() {
                 disabled={isSubmitting || isValidating || !isValid}
               />
             )}
-
-            {status.error && <ErrorMessage message={status.error} />}
-            {status.success && <p>{status.success}</p>}
           </Form>
         </>
       )}

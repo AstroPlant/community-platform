@@ -1,10 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import { updateUserInfo } from "../../services/community";
+import useModal from "../../utils/useModal";
 import Avatar from "../Avatar";
 import Button from "../Button";
+import UploadForm from "../forms/UploadForm";
 import Grid from "../grids/Grid";
+import Modal from "../Modal";
 import Card from "./Card";
 
 const Container = styled(Card)`
@@ -14,7 +18,7 @@ const Container = styled(Card)`
   justify-content: center;
 
   && {
-    padding: ${(props) => props.showEdit && `0`};
+    padding: ${(props) => props.editAvatar && `0`};
   }
 `;
 
@@ -59,41 +63,69 @@ const EditButton = styled(Button)`
 
 export default function ProfileCard({ editAvatar, user }) {
   const hasFullName = user.firstName && user.lastName;
+  const { show, toggle } = useModal();
+  const { addAlert } = useSnackBars();
 
   async function clearProfilePicture() {
-    await updateUserInfo(user.id, { avatar: null });
+    const res = await updateUserInfo(user.id, { avatar: null });
+
+    if (!res.error) {
+      addAlert(
+        "success",
+        "Your profile picture has benn cleared successfully !"
+      );
+    } else {
+      addAlert("error", res.message[0].messages[0].message);
+    }
   }
 
   return (
-    <Container showEdit={editAvatar}>
-      <AvatarHolder>
-        <Avatar size={256} avatar={user.avatar} />
-        {editAvatar && (
-          <ButtonRow>
-            <EditButton
-              inverted
-              disabled={user.avatar === null}
-              label="Clear"
-              color="secondary"
-              onClick={() => clearProfilePicture()}
-            />
-            <EditButton
-              label="Edit"
-              color="primary"
-              onClick={() => editAvatar()}
-            />
-          </ButtonRow>
+    <>
+      <Container editAvatar={editAvatar}>
+        <AvatarHolder>
+          <Avatar size={256} avatar={user.avatar} />
+          {editAvatar && (
+            <ButtonRow>
+              <EditButton
+                inverted
+                disabled={user.avatar === null}
+                label="Clear"
+                color="secondary"
+                onClick={() => clearProfilePicture()}
+              />
+              <EditButton
+                label="Edit"
+                color="primary"
+                onClick={() => toggle()}
+              />
+            </ButtonRow>
+          )}
+        </AvatarHolder>
+
+        {hasFullName && <h3>{`${user.firstName} ${user.lastName}`} </h3>}
+
+        {user.slackUsername && (
+          <SlackUsername>@{user.slackUsername}</SlackUsername>
         )}
-      </AvatarHolder>
 
-      {hasFullName && <h3>{`${user.firstName} ${user.lastName}`} </h3>}
+        <Description>{user.description}</Description>
+      </Container>
 
-      {user.slackUsername && (
-        <SlackUsername>@{user.slackUsername}</SlackUsername>
-      )}
-
-      <Description>{user.description}</Description>
-    </Container>
+      <Modal
+        title="Change your avatar"
+        show={show}
+        handleClose={() => toggle()}
+      >
+        <UploadForm
+          uploadParameters={{
+            refId: user.id,
+            ref: "user",
+            source: "users-permissions",
+            field: "avatar",
+          }}
+        />
+      </Modal>
+    </>
   );
 }
 
@@ -104,11 +136,11 @@ ProfileCard.propTypes = {
   user: PropTypes.object.isRequired,
 
   /**
-   * Function to open the avatar edition form
+   * Whether or not to show the avatr edition tools
    */
-  editAvatar: PropTypes.func,
+  editAvatar: PropTypes.bool,
 };
 
 ProfileCard.defaultProps = {
-  editAvatar: null,
+  editAvatar: false,
 };

@@ -2,6 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import { createUser } from "../../services/community";
 import Button from "../Button";
 import Checkbox from "../inputs/CheckBox";
@@ -42,11 +43,13 @@ const SignupSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), ""], "Passwords don't match!"),
   acceptTerms: Yup.boolean().oneOf(
     [true],
-    "You must accept the terms and conditon in order to create an account."
+    "You must accept the terms and conditions in order to create an account."
   ),
 });
 
 export default function SignUpForm() {
+  const { addAlert } = useSnackBars();
+
   return (
     <>
       <Formik
@@ -57,7 +60,6 @@ export default function SignUpForm() {
           validatePassword: "",
           acceptTerms: false,
         }}
-        initialStatus={{ success: null, error: null }}
         validationSchema={SignupSchema}
         onSubmit={async (values, actions) => {
           const res = await createUser(
@@ -67,19 +69,20 @@ export default function SignUpForm() {
           );
 
           if (!res.error) {
-            actions.setStatus({
-              success:
-                "You're all signed up ! Check your emails to confirm your account !",
-            });
+            addAlert(
+              "success",
+              "You're all signed up! Check your emails to confirm your account !"
+            );
             actions.resetForm();
           } else {
-            actions.setStatus({
-              error: `Whoops! Could not sign you up, ${res.message[0].messages[0].message}`,
-            });
+            addAlert(
+              "error",
+              `Whoops! Could not sign you up, ${res.message[0].messages[0].message}`
+            );
           }
         }}
       >
-        {({ status, isValidating, isSubmitting, isValid }) => (
+        {({ isValidating, isSubmitting, isValid }) => (
           <>
             <Form>
               <Disclaimer>
@@ -118,7 +121,7 @@ export default function SignUpForm() {
               />
 
               <Checkbox name="acceptTerms">
-                I agree to the terms and condtions
+                I agree to the <a>terms and conditions</a>
               </Checkbox>
 
               {isSubmitting ? (
@@ -131,9 +134,6 @@ export default function SignUpForm() {
                   disabled={isSubmitting || isValidating || !isValid}
                 />
               )}
-
-              {status.error && <ErrorMessage message={status.error} />}
-              {status.success && <p>{status.success}</p>}
             </Form>
           </>
         )}

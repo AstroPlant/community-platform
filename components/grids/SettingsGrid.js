@@ -1,12 +1,8 @@
-import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
-import Card from "../cards/Card";
 import ProfileCard from "../cards/ProfileCard";
 import AccountForm from "../forms/AccountForm";
-import UploadForm from "../forms/UploadForm";
-import Overlay from "../Overlay";
 import Grid from "./Grid";
 
 const Column = styled.div`
@@ -55,47 +51,14 @@ const Tab = styled.p`
   }
 `;
 
-const OverlayCard = styled(Card)`
-  && {
-    width: unset;
-    height: unset;
-  }
-`;
-
 export default function SettingsGrid(props) {
   const [currentTab, setCurrentTab] = useState("Profile");
-  const [showOverlay, setShowOverlay] = useState(false);
-  const router = useRouter();
-
-  function editAvatar() {
-    setShowOverlay(true);
-  }
-
-  async function closeOverlay() {
-    setShowOverlay(false);
-    router.replace("/settings");
-  }
 
   return (
     <>
-      <Overlay show={showOverlay}>
-        <OverlayCard>
-          <UploadForm
-            title={"Edit avatar"}
-            closeForm={closeOverlay}
-            uploadParameters={{
-              refId: props.user.id,
-              ref: "user",
-              source: "users-permissions",
-              field: "avatar",
-            }}
-          />
-        </OverlayCard>
-      </Overlay>
-
       <Grid inverted>
         <UserColumn>
-          <ProfileCard editAvatar={editAvatar} user={props.user} />
+          <ProfileCard editAvatar user={props.user} />
         </UserColumn>
         <Column>
           <Tabs>

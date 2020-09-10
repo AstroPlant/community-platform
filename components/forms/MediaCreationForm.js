@@ -5,15 +5,22 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { useAuth } from "../../providers/Auth";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import { createLibraryMedia } from "../../services/community";
 import Button from "../Button";
-import ErrorMessage from "../inputs/ErrorMessage";
 import FileInput from "../inputs/FileInput";
 import InputLabel from "../inputs/InputLabel";
 import MarkdownEditor from "../inputs/MarkdownEditor";
 import Select from "../inputs/Select";
 import TextInput from "../inputs/TextInput";
 import LoadingAnimation from "../LoadingAnimation";
+
+const Container = styled.div`
+  max-width: 1440px;
+
+  width: 100%;
+  margin: 0 auto;
+`;
 
 const PageTitle = styled.h1`
   font-size: 2rem;
@@ -50,6 +57,13 @@ const ButtonRow = styled(Row)`
   justify-content: flex-end;
 `;
 
+const WideButton = styled(Button)`
+  && {
+    margin: 0;
+    padding: 0.75rem 1rem;
+  }
+`;
+
 const urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
 const MediaSchema = Yup.object().shape({
@@ -68,6 +82,8 @@ export default function MediaCreationForm(props) {
   const { user } = useAuth();
   const [value, setValue] = useState("");
 
+  const { addAlert } = useSnackBars();
+
   return (
     <Formik
       initialValues={{
@@ -80,7 +96,6 @@ export default function MediaCreationForm(props) {
         file: null,
         url: "",
       }}
-      initialStatus={{ success: null, error: null }}
       validationSchema={MediaSchema}
       onSubmit={async (values, actions) => {
         values.user = user.id;
@@ -89,28 +104,24 @@ export default function MediaCreationForm(props) {
 
         if (!res.error) {
           // Show feedback
-          actions.setStatus({ success: "Media created !" });
+          addAlert(
+            "success",
+            "Media created ! You'll soon be redirected to the page."
+          );
 
           setTimeout(function() {
-            actions.resetForm();
             router.push("/library");
           }, 1000);
         } else {
-          actions.setStatus({
-            error: `Whoops! Could not create media, ${res.message[0].messages[0].message}`,
-          });
+          addAlert(
+            "error",
+            `Whoops! Could not create media, ${res.message[0].messages[0].message}`
+          );
         }
       }}
     >
-      {({
-        values,
-        status,
-        isSubmitting,
-        isValid,
-        isValidating,
-        setFieldValue,
-      }) => (
-        <div>
+      {({ values, isSubmitting, isValid, isValidating, setFieldValue }) => (
+        <Container>
           <PageTitle>Create Media</PageTitle>
           <Form>
             <Row>
@@ -203,11 +214,16 @@ export default function MediaCreationForm(props) {
             )}
 
             <ButtonRow>
-              <Button inverted type="reset" label={"Cancel"} color={"error"} />
+              <WideButton
+                inverted
+                type="reset"
+                label={"Cancel"}
+                color={"error"}
+              />
               {isSubmitting ? (
                 <LoadingAnimation />
               ) : (
-                <Button
+                <WideButton
                   type="submit"
                   color={"primary"}
                   label={"Create"}
@@ -215,11 +231,8 @@ export default function MediaCreationForm(props) {
                 />
               )}
             </ButtonRow>
-
-            {status.error && <ErrorMessage message={status.error} />}
-            {status.success && <p>{status.success}</p>}
           </Form>
-        </div>
+        </Container>
       )}
     </Formik>
   );

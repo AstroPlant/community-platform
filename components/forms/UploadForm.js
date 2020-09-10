@@ -1,15 +1,11 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import { upload } from "../../services/community";
 import Button from "../Button";
-import ErrorMessage from "../inputs/ErrorMessage";
 import FileInput from "../inputs/FileInput";
 import LoadingAnimation from "../LoadingAnimation";
-
-const FormTitle = styled.h3`
-  margin-bottom: 1.5rem;
-`;
 
 const Row = styled.div`
   display: flex;
@@ -37,9 +33,10 @@ const FilePreview = styled.img`
 export default function UploadForm(props) {
   const [previews, setPreviews] = useState([]);
   const [fileList, setFileList] = useState({});
-  const [status, setStatus] = useState({ success: null, error: null });
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { addAlert } = useSnackBars();
 
   function handleChange(files) {
     if (files.length != 0) {
@@ -64,13 +61,11 @@ export default function UploadForm(props) {
 
     if (!res.error) {
       setLoading(false);
-      setStatus({ success: "File successfully uploaded !", error: null });
-      setTimeout(() => {
-        reset();
-      }, 2000);
+      addAlert("success", "File successfully uploaded !");
+      reset();
     } else {
       setLoading(false);
-      setStatus({ success: null, error: res.message[0].messages[0].message });
+      addAlert("error", res.message[0].messages[0].message);
     }
   }
 
@@ -79,13 +74,10 @@ export default function UploadForm(props) {
     setPreviews([]);
     setValid(false);
     setLoading(false);
-    setStatus({ success: null, error: null });
-    props.closeForm();
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormTitle>{props.title}</FormTitle>
       {previews.length != 0 && (
         <>
           <Row justify={"center"}>
@@ -129,25 +121,18 @@ export default function UploadForm(props) {
           />
         )}
       </Row>
-      {status.error && <ErrorMessage message={status.error} />}
-      {status.success && <p>{status.success}</p>}
     </form>
   );
 }
 
 UploadForm.propTypes = {
-  /* Function use to hide the form if used on an overlay */
-  closeForm: PropTypes.func,
   /* Additional & optional upload parameters */
   uploadParameters: PropTypes.object,
   /* Whether or not the form should accept multiple file input */
   multiple: PropTypes.bool,
-  /* The title of the form */
-  title: PropTypes.string.isRequired,
 };
 
 UploadForm.defaultProps = {
-  closeForm: null,
   multiple: false,
   uploadParameters: {},
 };
