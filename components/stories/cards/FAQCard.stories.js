@@ -5,7 +5,7 @@ import FAQCard from "../../cards/FAQCard";
 
 export default {
   component: FAQCard,
-  title: "Cards/FAQCard",
+  title: "cards/FAQCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

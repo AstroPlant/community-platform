@@ -6,7 +6,7 @@ import GraphCard from "../../cards/GraphCard";
 
 export default {
   component: GraphCard,
-  title: "Cards/GraphCard",
+  title: "cards/GraphCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

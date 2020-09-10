@@ -4,7 +4,7 @@ import FeaturedArticleCard from "../../cards/FeaturedArticleCard";
 
 export default {
   component: FeaturedArticleCard,
-  title: "Cards/FeaturedArticleCard",
+  title: "cards/FeaturedArticleCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

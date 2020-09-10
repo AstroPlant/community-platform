@@ -7,7 +7,7 @@ import { number } from "@storybook/addon-knobs";
 
 export default {
   component: HelpCard,
-  title: "Cards/HelpCard",
+  title: "cards/HelpCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

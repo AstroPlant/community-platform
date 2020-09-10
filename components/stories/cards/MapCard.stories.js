@@ -5,7 +5,7 @@ import MapCard from "../../cards/MapCard";
 
 export default {
   component: MapCard,
-  title: "Cards/MapCard",
+  title: "cards/MapCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

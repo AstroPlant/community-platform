@@ -4,7 +4,7 @@ import LibraryCard from "../../cards/LibraryCard";
 
 export default {
   component: LibraryCard,
-  title: "Cards/LibraryCard",
+  title: "cards/LibraryCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

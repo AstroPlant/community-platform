@@ -5,7 +5,7 @@ import LibrarySectionCard from "../../cards/LibrarySectionCard";
 
 export default {
   component: LibrarySectionCard,
-  title: "Cards/LibrarySectionCard",
+  title: "cards/LibrarySectionCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
