@@ -6,7 +6,7 @@ import ProfileCard from "../../cards/ProfileCard";
 
 export default {
   component: ProfileCard,
-  title: "Cards/ProfileCard",
+  title: "cards/ProfileCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

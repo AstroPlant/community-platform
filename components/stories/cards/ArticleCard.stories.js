@@ -7,7 +7,7 @@ import ArticleCard from "../../cards/ArticleCard";
 
 export default {
   component: ArticleCard,
-  title: "Cards/ArticleCard",
+  title: "cards/ArticleCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

@@ -5,7 +5,7 @@ import LibraryMediaCard from "../../cards/LibraryMediaCard";
 
 export default {
   component: LibraryMediaCard,
-  title: "Cards/LibraryMediaCard",
+  title: "cards/LibraryMediaCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

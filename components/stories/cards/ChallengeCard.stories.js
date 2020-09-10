@@ -4,7 +4,7 @@ import ChallengeCard from "../../cards/ChallengeCard";
 
 export default {
   component: ChallengeCard,
-  title: "Cards/ChallengeCard",
+  title: "cards/ChallengeCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

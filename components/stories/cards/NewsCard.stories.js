@@ -6,7 +6,7 @@ import NewsCard from "../../cards/NewsCard";
 
 export default {
   component: NewsCard,
-  title: "Cards/NewsCard",
+  title: "cards/NewsCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

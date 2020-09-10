@@ -5,7 +5,7 @@ import HelpSectionCard from "../../cards/HelpSectionCard";
 
 export default {
   component: HelpSectionCard,
-  title: "Cards/HelpSectionCard",
+  title: "cards/HelpSectionCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

@@ -4,7 +4,7 @@ import KitCountCard from "../../cards/KitCountCard";
 
 export default {
   component: KitCountCard,
-  title: "Cards/KitCountCard",
+  title: "cards/KitCountCard",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

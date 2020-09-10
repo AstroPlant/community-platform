@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import Close from "../public/icons/close.svg";
-import Card from "./Cards/Card";
+import Card from "./cards/Card";
 import Icon from "./Icon";
 
 const Overlay = styled.div`

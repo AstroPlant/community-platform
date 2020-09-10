@@ -5,7 +5,7 @@ import { useSnackBars } from "../providers/SnackBarProvider";
 import CloseIcon from "../public/icons/close.svg";
 import ErrorIcon from "../public/icons/error.svg";
 import SuccessIcon from "../public/icons/success.svg";
-import Card from "./Cards/Card";
+import Card from "./cards/Card";
 import Icon from "./Icon";
 
 const Container = styled(Card)`
