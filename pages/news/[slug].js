@@ -6,7 +6,6 @@ import Card from "../../components/cards/Card";
 import Grid from "../../components/grids/Grid";
 import PageLayout from "../../components/layouts/PageLayout";
 import WrapInLink from "../../components/WrapInLink";
-import { useAuth } from "../../providers/Auth";
 import { getFullArticle } from "../../services/community";
 
 const AuthorCard = styled(Card)`
@@ -24,8 +23,6 @@ const RelatedArticle = styled(ArticleCard)`
 `;
 
 export default function ArticlePage({ article, related }) {
-  const { isLogged, user } = useAuth();
-
   return (
     <PageLayout metaTitle={article.title} metaDescription={article.preview}>
       <Grid>
@@ -36,7 +33,7 @@ export default function ArticlePage({ article, related }) {
             href="/users/[username]"
             as={`/users/${article.author.username}`}
           >
-            <AuthorCard>
+            <AuthorCard animateOnHover>
               <ArticleInfos
                 author={article.author}
                 date={article.published_at}

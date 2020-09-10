@@ -12,8 +12,10 @@ const Content = styled.div`
   height: 100%;
   min-height: calc(100vh - ${(props) => props.theme.headerHeight});
 
-  margin-top: ${(props) => props.theme.headerHeight};
+  margin: ${(props) => props.theme.headerHeight} auto 0 auto;
   padding: 3.75rem 2rem 2rem 2rem;
+
+  max-width: ${(props) => (props.limitWidth ? "1920px" : "unset")};
 
   @media screen and (max-width: ${Breaks.medium}) {
     padding: 1rem 2rem;
@@ -34,7 +36,7 @@ export default function PageLayout(props) {
         <meta name="description" content={props.metaDescription || ""} />
       </Head>
       <Header />
-      <Content>{props.children}</Content>
+      <Content limitWidth={props.limitWidth}>{props.children}</Content>
     </>
   );
 }
@@ -46,9 +48,12 @@ PageLayout.propTypes = {
   metaTitle: PropTypes.string,
   /* Meta description of the page */
   metaDescription: PropTypes.string,
+  /* Wether or not to prevent the content from filling the whole screen */
+  limitWidth: PropTypes.bool,
 };
 
 PageLayout.defaultProps = {
   metaTitle: null,
   metaDescription: null,
+  limitWidth: true,
 };
