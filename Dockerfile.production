@@ -7,19 +7,17 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Installing dependencies
-RUN npm ci --only=production
+RUN npm ci
 
 # Copy the rest of the content
 COPY . .
 
+ENV NODE_ENV=production
 ENV NEXT_PUBLIC_STRAPI_PUBLIC_URL=
 ENV NEXT_PUBLIC_STRAPI_CLUSTER_URL=
 
 RUN npm run build
 
-# Opening port 3000
 EXPOSE 3000:3000
 
-VOLUME [ "./:/src/app"]
-
-CMD npm start
+CMD npm run start

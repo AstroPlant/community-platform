@@ -30,9 +30,6 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "babel-plugin-styled-components": "^1.11.1",
-    "babel-loader": "^8.1.0",
     "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-docs": "^5.3.19",
     "@storybook/addon-knobs": "^5.3.18",
@@ -41,6 +38,7 @@
     "@storybook/addons": "^5.3.18",
     "@storybook/react": "^5.3.18",
     "@svgr/webpack": "^5.4.0",
+    "babel-plugin-styled-components": "^1.11.1",
     "prop-types": "^15.7.2"
   }
 }
