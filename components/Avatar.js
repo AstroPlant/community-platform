@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import PersonIcon from "../public/icons/person.svg";
-import { API_URL } from "../services/community";
 import Icon from "./Icon";
 
 const Container = styled.div`
@@ -29,7 +28,10 @@ export default function Avatar({ size, avatar, ...props }) {
   return (
     <Container size={size} {...props}>
       {avatar ? (
-        <img src={API_URL + avatar.url} alt={`user's avatar`} />
+        <img
+          src={process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + avatar.url}
+          alt={`user's avatar`}
+        />
       ) : (
         <Placeholder size={size / 1.25}>
           <PersonIcon />

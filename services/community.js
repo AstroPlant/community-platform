@@ -2,7 +2,12 @@ import slugify from "slugify";
 import { getToken, updateLocalUser } from "../providers/Auth";
 import { gqQuery, postJson, postRaw, queryfy } from "../utils/fetchTools";
 
-export const API_URL = "http://localhost:1337";
+const onClientSide = typeof window !== "undefined";
+
+export const API_URL = onClientSide
+  ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL
+  : process.env.NEXT_PUBLIC_STRAPI_CLUSTER_URL;
+
 const GRAPHQL_URL = `${API_URL}/graphql`;
 
 function getQuery(query, options = {}) {

@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
-import { API_URL } from "../services/community";
 import styles from "../styles/markdown.module.css";
 import Breaks from "../utils/breakpoints";
 import Chip from "./Chip";
@@ -46,11 +45,14 @@ const Row = styled.div`
 `;
 
 export default function Article(props) {
-  // Temporary dev env fixes
+  const API_URL = process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL;
+
+  // Completing the address of the images
   const content = props.article.content.replace(
     /\/uploads/g,
     API_URL + "/uploads"
   );
+
   const coverURL = API_URL + props.article.cover.url;
 
   return (

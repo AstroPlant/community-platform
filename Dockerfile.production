@@ -7,11 +7,13 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Installing dependencies
-RUN npm i
-# RUN npm ci --only=production
+RUN npm ci --only=production
 
 # Copy the rest of the content
 COPY . .
+
+ENV NEXT_PUBLIC_STRAPI_PUBLIC_URL=
+ENV NEXT_PUBLIC_STRAPI_CLUSTER_URL=
 
 RUN npm run build
 

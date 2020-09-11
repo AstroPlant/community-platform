@@ -4,7 +4,6 @@ import styled from "styled-components";
 import ArticleIcon from "../../public/icons/article.svg";
 import LinkIcon from "../../public/icons/external-link.svg";
 import FileIcon from "../../public/icons/file.svg";
-import { API_URL } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
 import Date from "../Date";
 import Icon from "../Icon";
@@ -79,7 +78,10 @@ function PureMediaCard(props) {
       <CoverHolder>
         {props.media.media[0].cover != undefined ? (
           <img
-            src={API_URL + props.media.media[0].cover.url}
+            src={
+              process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL +
+              props.media.media[0].cover.url
+            }
             alt={props.media.media[0].cover.caption}
           />
         ) : (
@@ -110,7 +112,10 @@ export default function LibraryMediaCard(props) {
         </a>
       )}
       {type === "File" && (
-        <a target="_parent" href={API_URL + media.file.url}>
+        <a
+          target="_parent"
+          href={process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + media.file.url}
+        >
           <PureMediaCard type={type} {...props} />
         </a>
       )}

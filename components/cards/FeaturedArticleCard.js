@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { API_URL } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
 import ArticleInfos from "../ArticleInfos";
 import WrapInLink from "../WrapInLink";
@@ -67,7 +66,10 @@ export default function FeaturedArticleCard(props) {
     >
       <Container>
         <Cover
-          src={API_URL + props.featuredArticle.cover.url}
+          src={
+            process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL +
+            props.featuredArticle.cover.url
+          }
           alt={
             props.featuredArticle.cover.alternativeText
               ? props.featuredArticle.cover.alternativeText

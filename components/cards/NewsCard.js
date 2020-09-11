@@ -2,7 +2,6 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { API_URL } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
 import Card from "./Card";
@@ -79,7 +78,12 @@ const ActionButton = styled(Button)`
 export default function NewsCard(props) {
   return (
     <Container className={props.className}>
-      <Cover src={API_URL + props.featuredArticle.cover.url} />
+      <Cover
+        src={
+          process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL +
+          props.featuredArticle.cover.url
+        }
+      />
       <Content>
         <Title>{props.featuredArticle.title}</Title>
         <Preview>{props.featuredArticle.preview}</Preview>

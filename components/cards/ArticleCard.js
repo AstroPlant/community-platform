@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { API_URL } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
 import Date from "../Date";
 import WrapInLink from "../WrapInLink";
@@ -79,7 +78,9 @@ export default function ArticleCard(props) {
     >
       <Container animateOnHover className={props.className}>
         <Cover
-          src={API_URL + props.article.cover.url}
+          src={
+            process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + props.article.cover.url
+          }
           alt={
             props.article.cover.alternativeText
               ? props.article.cover.alternativeText
