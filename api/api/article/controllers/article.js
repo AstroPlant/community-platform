@@ -34,7 +34,7 @@ module.exports = {
               .findOne({ slug });
 
             if (existingArticle) {
-              console.log("already exists");
+              strapi.log.info("This article already exists");
               resolve({});
             } else {
               // Setting default values

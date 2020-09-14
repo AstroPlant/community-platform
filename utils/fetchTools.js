@@ -104,7 +104,6 @@ export function getErrorMessage(response) {
   }
 
   if (typeof response.error !== "undefined") {
-    console.log(response);
     return response.message[0].messages[0].message;
   }
 }

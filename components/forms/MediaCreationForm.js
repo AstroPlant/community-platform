@@ -103,8 +103,6 @@ export default function MediaCreationForm(props) {
 
         const res = await createLibraryMedia(values);
 
-        console.log(res);
-
         if (!hasError(res)) {
           // Show feedback
           addAlert(

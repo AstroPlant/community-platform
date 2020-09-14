@@ -35,8 +35,6 @@ module.exports = {
 
     const { email, username, password, role } = ctx.request.body;
 
-    console.log(ctx.request.body);
-
     if (!email) return ctx.badRequest("missing.email");
     if (!username) return ctx.badRequest("missing.username");
     if (!password) return ctx.badRequest("missing.password");
@@ -78,8 +76,6 @@ module.exports = {
       ...ctx.request.body,
       provider: "local"
     };
-
-    console.log(user);
 
     if (!role) {
       const defaultRole = await strapi
