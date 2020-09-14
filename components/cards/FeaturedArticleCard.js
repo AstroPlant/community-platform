@@ -24,7 +24,7 @@ const Container = styled(Card)`
 `;
 
 const Cover = styled.img`
-  height: 512px;
+  height: 50vh;
 
   @media screen and (max-width: ${Breaks.large}) {
     max-height: 224px;
