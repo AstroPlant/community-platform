@@ -79,7 +79,7 @@ function Login() {
           </FormHolder>
         </LeftColumn>
         <RightColumn>
-          <img src="./placeholder.jpg" />
+          <img src="./images/login.jpg" />
         </RightColumn>
       </SplitLayout>
     </>
