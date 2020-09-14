@@ -36,9 +36,13 @@ The platform uses [Next.js](https://nextjs.org/) as a front-end framework, for m
 
 For content management the platform is powered by [Strapi](https://strapi.io), not the best headless CMS for blogs/publication edition and creation, but probably the best overall when your content isn't limited blogs or text. And as a very popular open-source project it's improving at the speed of light every single day.
 
+### PostreSQL (Data Storage)
+
+The data is stored on a [PostreSQL](https://www.postgresql.org/) database. All the database management is handled by Strapi and its own ORM mapping tools, for more information read [Strapi Database Configuration](https://strapi.io/documentation/v3.x/concepts/configurations.html#database).
+
 ### Astroplant API & Back-End
 
-It uses data & control endpoints from [astroplant's API](https://github.com/AstroPlant/astroplant-api) to control kits and display their data.
+The front-end uses data & control endpoints from [AstroPlants Core API](https://github.com/AstroPlant/astroplant-api) to control kits and display their data.
 
 ## Tools and Libraries
 
@@ -53,6 +57,8 @@ It uses data & control endpoints from [astroplant's API](https://github.com/Astr
 ## Repo structure
 
 > 📑 We decided to keep the whole platform in a single repository as many of the change to the front-end also affects the back-end. It makes it easier to follow versioning and progression, and to rollback if necessary.
+
+Here is the curent repository structure :
 
 ```bash
 
@@ -79,31 +85,50 @@ It uses data & control endpoints from [astroplant's API](https://github.com/Astr
 
 # Development Setup
 
-## Using Docker
+## Using Docker Compose
 
 Make sure you have the [git command line tool](https://git-scm.com/) and [Docker](https://www.docker.com/) installed first, then run the following commands :
 
 ```bash
 # Clone the repo
-git clone https://github.com/Meet-Miles/astroplant-platform
+git clone https://github.com/AstroPlant/community-platform
 
-cd astroplant-platform
+cd community-platform
 
 # Start up both strapi and next
 docker-compose up -d
 ```
 
-Once it's finished you should be asked to create a strapi admin account on your [localhost:1337](localhost:1337), then you should be able to access the front end on your [localhost:3000](localhost:3000).
+Once it's finished you should be asked to create a strapi admin account on [localhost:1337](localhost:1337). Please create at least an article, a user and add the correct permissions by following the steps [here](https://astroplant.gitbook.io/community-platform/). Then you should be able to access the front end on your [localhost:3000](localhost:3000).
 
 ## Without Docker
+
+### Back-End
+
+Please read the instructions indide the [api folder](api/README.md).
+
+### Front-End
+
+#### Create env files
+
+Create an `env.local` file at the root of the project with the following content :
+
+```bash
+
+NEXT_PUBLIC_STRAPI_PUBLIC_URL="http://localhost:1337"
+NEXT_PUBLIC_STRAPI_CLUSTER_URL="http://localhost:1337"
+
+```
+
+#### Install the package
 
 Run the following commands :
 
 ```bash
 # Clone the repo
-git clone https://github.com/Meet-Miles/astroplant-platform
+git clone https://github.com/AstroPlant/community-platform
 
-cd astroplant-platform/api
+cd community-platform/api
 
 # install strapi dependencies
 npm install
@@ -128,65 +153,13 @@ npm run dev
 
 # Deployment
 
-The deployment is made through [AstroPlant's kubernetes cluster](https://github.com/AstroPlant/astroplant-k8s) hosted at [SURFSara](https://www.surf.nl/).
-
-## Update the images on Docker-Hub
-
-### Next
-
-To push a new docker image to the docker hub registry, run:
-
-```bash
-# Log into Docker hub
-export DOCKER_ID_USER="yourusername"
-docker login https://index.docker.io/v1/
-
-# Clone the repo
-git clone https://github.com/AstroPlant/community-platform.git
-cd community-platform
-
-# Build a docker image with the astroplant-community-platform tag
-docker build -t astroplant-community-platform -f Dockerfile.production .
-docker tag astroplant-community-platform $DOCKER_ID_USER/astroplant-community-platform:0.0.1
-
-$DOCKER_ID_USER/astroplant-community-platform:0.0.1
-
-# Publish image to docker hub
-docker push $DOCKER_ID_USER/astroplant-community-platform:0.0.1
-```
-
-### Strapi
-
-To push a new docker image to the docker hub registry, run:
-
-```bash
-# Log into Docker hub if not done
-export DOCKER_ID_USER="yourusername"
-docker login https://index.docker.io/v1/
-
-# Clone the repo if not already done
-git clone https://github.com/AstroPlant/community-platform.git
-
-# Navigate to the api folder
-cd community-platform/api
-
-# Build a docker image with the astroplant-community-platform tag
-docker build -t astroplant-community-api -f Dockerfile.production .
-$DOCKER_ID_USER/astroplant-community-api:0.0.1
-
-# Publish image to docker hub
-docker push $DOCKER_ID_USER/astroplant-community-api:0.0.1
-```
-
-## Update the Kubernetes Cluster
-
-See [AstroPlant's kubernetes cluster](https://github.com/AstroPlant/astroplant-k8s).
+The deployment is made through [AstroPlant's kubernetes cluster](https://github.com/AstroPlant/astroplant-k8s) hosted at [SURFSara](https://www.surf.nl/). Please refer to the readme's inside the deployment folder: [Community API Folder](https://github.com/AstroPlant/astroplant-k8s/deployment/community-api) & [Community Platform Folder](https://github.com/AstroPlant/astroplant-k8s/deployment/community-platform).
 
 # Roadmap
 
-[x] Build a static website for news, FAQs & document sharing
-[] Build a tool to create graphs using kits data.
-[] Build a kit dashboard to access, edit & manage a kit. Currently done through [Astroplant Front-End](https://github.com/AstroPlant/astroplant-frontend-web)
+- [x] Build a static website for news, FAQs & document sharing.
+- [ ] Build a tool to create graphs using kits data.
+- [ ] Build a kit dashboard to access, edit & manage a kit. Currently done through [Astroplant Front-End](https://github.com/AstroPlant/astroplant-frontend-web)
 
 # Contributors
 
