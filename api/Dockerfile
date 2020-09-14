@@ -1,3 +1,6 @@
+# Dockerfile used in the main docker compose to create the image of the API
+# Environment variables and start commands are handled inside the docker compose
+
 FROM strapi/base
 
 # Create app directory

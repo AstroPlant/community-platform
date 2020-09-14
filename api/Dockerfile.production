@@ -1,3 +1,6 @@
+# Dockerfile used to create the production image
+# Environment variables are set inside the Kubernetes cofiguration files
+
 FROM strapi/base
 
 # Create app directory
@@ -19,6 +22,7 @@ ENV DATABASE_PORT=5432
 ENV DATABASE_NAME=strapi
 ENV DATABASE_USERNAME=
 ENV DATABASE_PASSWORD=
+ENV PRODUCTION_URL=
 ENV ADMIN_JWT_SECRET=
 
 RUN npm run build

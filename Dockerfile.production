@@ -1,3 +1,6 @@
+# Dockerfile used to create the production image
+# Environment variables are set inside the Kubernetes cofiguration files
+
 FROM node:12-alpine
 
 # Create app directory
