@@ -79,6 +79,21 @@ export async function getHelpSectionBySlug(slug) {
  **********************************************/
 
 /***
+ * Fetches articles slugs for Static Generation
+ */
+export async function getArticlesPaths() {
+  const query = `{
+    articles(where: { published: true }) {
+      slug
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.articles;
+}
+
+/***
  * Fetches articles previews
  */
 export async function getArticles() {
@@ -535,13 +550,19 @@ export async function createLibraryMedia(body) {
         } else {
           return res;
         }
-      }
 
-      mediaQL = `
+        mediaQL = `
         title: "${body.articleTitle}"
         content: "${body.articleContent}"
         cover: "${fileID}"
       `;
+      } else {
+        mediaQL = `
+        title: "${body.articleTitle}"
+        content: "${body.articleContent}"
+        cover: null
+      `;
+      }
       break;
 
     case "File":
