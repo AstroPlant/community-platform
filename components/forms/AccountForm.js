@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { useSnackBars } from "../../providers/SnackBarProvider";
 import { updateUserInfo } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
+import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import LongTextInput from "../inputs/LongTextInput";
 import TextInput from "../inputs/TextInput";
@@ -58,12 +59,12 @@ export default function AccountForm(props) {
       onSubmit={async (values) => {
         const res = await updateUserInfo(id, values);
 
-        if (!res.error && !res.errors) {
+        if (!hasError(res)) {
           addAlert("success", "Your account information has been updated.");
         } else {
           addAlert(
             "error",
-            `Whoops! Something went wrong! ${res.message[0].messages[0].message}`
+            `Whoops! Something went wrong! ${getErrorMessage(res)}`
           );
         }
       }}

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { useSnackBars } from "../../providers/SnackBarProvider";
 import { changePassword } from "../../services/community";
+import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import TextInput from "../inputs/TextInput";
 
@@ -40,14 +41,14 @@ export default function ChangePasswordForm() {
           values.newPassword
         );
 
-        if (!res.error) {
+        if (!hasError(res)) {
           // Show feedback
           addAlert("success", "Password Changed !");
           actions.resetForm();
         } else {
           addAlert(
             "error",
-            `Whoops! Could not update your password, ${res.message[0].messages[0].message}`
+            `Whoops! Could not update your password, ${getErrorMessage(res)}`
           );
         }
       }}

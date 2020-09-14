@@ -86,6 +86,29 @@ export async function gqQuery(url, query, options = {}) {
   return postJson(url, body, options);
 }
 
+/***
+ * Check if a response contains an eror
+ * @param response to a fetch request
+ */
+export function hasError(response) {
+  return typeof response.error !== "undefined" || response.errors;
+}
+
+/***
+ * Get the error message from a fetch request
+ * @param response to a fetch request
+ */
+export function getErrorMessage(response) {
+  if (response.errors) {
+    return response.errors[0].message;
+  }
+
+  if (typeof response.error !== "undefined") {
+    console.log(response);
+    return response.message[0].messages[0].message;
+  }
+}
+
 /**
  * Queryfy.
  *

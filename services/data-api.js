@@ -1,4 +1,4 @@
-import { postJson, fetchJson } from "../utils/fetchTools";
+import { fetchJson, hasError, postJson } from "../utils/fetchTools";
 
 export const API_URL = "https://api.astroplant.sda-projects.nl";
 
@@ -92,7 +92,7 @@ export async function getActiveConfigBySerial(serial) {
 
   const res = await getRequest(path);
 
-  if (!res.error) {
+  if (!hasError(res)) {
     for (let config of res) {
       if (config.active) {
         activeConfig = config;

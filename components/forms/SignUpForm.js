@@ -4,6 +4,7 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { useSnackBars } from "../../providers/SnackBarProvider";
 import { createUser } from "../../services/community";
+import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import Checkbox from "../inputs/CheckBox";
 import TextInput from "../inputs/TextInput";
@@ -68,7 +69,7 @@ export default function SignUpForm() {
             values.password
           );
 
-          if (!res.error) {
+          if (!hasError(res)) {
             addAlert(
               "success",
               "You're all signed up! Check your emails to confirm your account !"
@@ -77,7 +78,7 @@ export default function SignUpForm() {
           } else {
             addAlert(
               "error",
-              `Whoops! Could not sign you up, ${res.message[0].messages[0].message}`
+              `Whoops! Could not sign you up, ${getErrorMessage(res)}`
             );
           }
         }}

@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { useAuth } from "../../providers/Auth";
 import { useSnackBars } from "../../providers/SnackBarProvider";
 import { createLibraryMedia } from "../../services/community";
+import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import FileInput from "../inputs/FileInput";
 import InputLabel from "../inputs/InputLabel";
@@ -97,12 +98,14 @@ export default function MediaCreationForm(props) {
         url: "",
       }}
       validationSchema={MediaSchema}
-      onSubmit={async (values, actions) => {
+      onSubmit={async (values) => {
         values.user = user.id;
 
         const res = await createLibraryMedia(values);
 
-        if (!res.error) {
+        console.log(res);
+
+        if (!hasError(res)) {
           // Show feedback
           addAlert(
             "success",
@@ -115,7 +118,7 @@ export default function MediaCreationForm(props) {
         } else {
           addAlert(
             "error",
-            `Whoops! Could not create media, ${res.message[0].messages[0].message}`
+            `Whoops! Could not create media, ${getErrorMessage(res)}`
           );
         }
       }}

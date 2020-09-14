@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { useSnackBars } from "../../providers/SnackBarProvider";
 import { updateUserInfo } from "../../services/community";
+import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import useModal from "../../utils/useModal";
 import Avatar from "../Avatar";
 import Button from "../Button";
@@ -69,13 +70,16 @@ export default function ProfileCard({ editAvatar, user }) {
   async function clearProfilePicture() {
     const res = await updateUserInfo(user.id, { avatar: null });
 
-    if (!res.error) {
+    if (hasError(res)) {
       addAlert(
         "success",
         "Your profile picture has benn cleared successfully !"
       );
     } else {
-      addAlert("error", res.message[0].messages[0].message);
+      addAlert(
+        "error",
+        `Could not clear your profile picture: ${getErrorMessage(res)}`
+      );
     }
   }
 

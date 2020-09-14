@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useSnackBars } from "../../providers/SnackBarProvider";
 import { upload } from "../../services/community";
+import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import FileInput from "../inputs/FileInput";
 import LoadingAnimation from "../LoadingAnimation";
@@ -59,13 +60,13 @@ export default function UploadForm(props) {
 
     const res = await upload(fileList, props.uploadParameters);
 
-    if (!res.error) {
+    if (!hasError(res)) {
       setLoading(false);
       addAlert("success", "File successfully uploaded !");
       reset();
     } else {
       setLoading(false);
-      addAlert("error", res.message[0].messages[0].message);
+      addAlert("error", `Could not upload the file : ${getErrorMessage(res)}`);
     }
   }
 

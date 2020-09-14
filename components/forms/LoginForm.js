@@ -1,11 +1,11 @@
 import { Form, Formik } from "formik";
-import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { authenticate, useAuth } from "../../providers/Auth";
 import { useSnackBars } from "../../providers/SnackBarProvider";
 import { forgotPassword, login } from "../../services/community";
+import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import Checkbox from "../inputs/CheckBox";
 import TextInput from "../inputs/TextInput";
@@ -30,7 +30,6 @@ const LoginSchema = Yup.object().shape({
 });
 
 export default function LoginForm() {
-  const router = useRouter();
   const { isLogged, setLogged } = useAuth();
 
   const { addAlert } = useSnackBars();
@@ -46,7 +45,7 @@ export default function LoginForm() {
       onSubmit={async (values, actions) => {
         const res = await login(values.username, values.password);
 
-        if (!res.error) {
+        if (!hasError(res)) {
           // Show feedback
           addAlert("success", "Logged In ! Redirecting...");
 
@@ -58,13 +57,12 @@ export default function LoginForm() {
           if (isLogged) {
             setTimeout(function() {
               actions.resetForm();
-              router.replace("/");
             }, 2000);
           }
         } else {
           addAlert(
             "error",
-            `Whoops! Could not log in, ${res.message[0].messages[0].message}`
+            `Whoops! Could not log in, ${getErrorMessage(res)}`
           );
         }
       }}
