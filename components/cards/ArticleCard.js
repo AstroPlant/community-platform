@@ -11,10 +11,6 @@ const Container = styled(Card)`
     padding: 0;
   }
 
-  background-image: url(${(props) => props.imgSrc});
-  background-position: top;
-  background-size: cover;
-
   display: flex;
   flex-direction: column;
 `;
@@ -69,29 +65,26 @@ const ArticleDate = styled(Date)`
   align-self: flex-end;
 `;
 
-export default function ArticleCard(props) {
+export default function ArticleCard({ article, className }) {
+  // Checking for cover and replacing placeholders
+  let cover = {
+    url: article.cover
+      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + article.cover.url
+      : "/images/placeholder.jpg",
+    alternativeText: article.cover
+      ? article.cover.alternativeText
+      : "A plant sprout growing out of the ground.",
+  };
+
   return (
-    <WrapInLink
-      passHref
-      href={"/news/[slug]"}
-      as={`/news/${props.article.slug}`}
-    >
-      <Container animateOnHover className={props.className}>
-        <Cover
-          src={
-            process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + props.article.cover.url
-          }
-          alt={
-            props.article.cover.alternativeText
-              ? props.article.cover.alternativeText
-              : "The article cover"
-          }
-        />
+    <WrapInLink passHref href={"/news/[slug]"} as={`/news/${article.slug}`}>
+      <Container animateOnHover className={className}>
+        <Cover src={cover.url} alt={cover.alternativeText} />
 
         <Content>
-          <Title>{props.article.title}</Title>
-          <Preview>{props.article.preview}</Preview>
-          <ArticleDate dateString={props.article.published_at} />
+          <Title>{article.title}</Title>
+          <Preview>{article.preview}</Preview>
+          <ArticleDate dateString={article.published_at} />
         </Content>
       </Container>
     </WrapInLink>

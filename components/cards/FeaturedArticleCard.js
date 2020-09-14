@@ -58,31 +58,28 @@ const InfosBottom = styled(ArticleInfos)`
   margin-top: auto;
 `;
 
-export default function FeaturedArticleCard(props) {
-  return (
-    <WrapInLink
-      href={"/news/[slug]"}
-      as={`/news/${props.featuredArticle.slug}`}
-    >
-      <Container>
-        <Cover
-          src={
-            process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL +
-            props.featuredArticle.cover.url
-          }
-          alt={
-            props.featuredArticle.cover.alternativeText
-              ? props.featuredArticle.cover.alternativeText
-              : "The article cover"
-          }
-        />
-        <InfosContainer>
-          <Title>{props.featuredArticle.title}</Title>
+export default function FeaturedArticleCard({ featuredArticle }) {
+  // Checking for cover and replacing placeholders
+  let cover = {
+    url: featuredArticle.cover
+      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + featuredArticle.cover.url
+      : "/images/placeholder.jpg",
+    alternativeText: featuredArticle.cover
+      ? featuredArticle.cover.alternativeText
+      : "A plant sprout growing out of the ground.",
+  };
 
-          <Preview>{props.featuredArticle.preview}</Preview>
+  return (
+    <WrapInLink href={"/news/[slug]"} as={`/news/${featuredArticle.slug}`}>
+      <Container>
+        <Cover src={cover.url} alt={cover.alternativeText} />
+        <InfosContainer>
+          <Title>{featuredArticle.title}</Title>
+
+          <Preview>{featuredArticle.preview}</Preview>
           <InfosBottom
-            author={props.featuredArticle.author}
-            date={props.featuredArticle.published_at}
+            author={featuredArticle.author}
+            date={featuredArticle.published_at}
           />
         </InfosContainer>
       </Container>

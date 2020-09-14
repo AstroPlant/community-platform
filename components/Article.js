@@ -12,7 +12,11 @@ const CoverImage = styled.img`
 
   border-radius: ${(props) => props.theme.radiusMin};
 
-  height: 50vh;
+  height: 512px;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    height: 256px;
+  }
 `;
 
 const Container = styled.div`
@@ -44,29 +48,33 @@ const Row = styled.div`
   display: flex;
 `;
 
-export default function Article(props) {
+export default function Article({ article }) {
   const API_URL = process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL;
+  // Checking for cover and replacing placeholders
+  let cover = {
+    url: article.cover
+      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + article.cover.url
+      : "/images/placeholder.jpg",
+    alternativeText: article.cover
+      ? article.cover.alternativeText
+      : "A plant sprout growing out of the ground.",
+  };
 
   // Completing the address of the images
-  const content = props.article.content.replace(
-    /\/uploads/g,
-    API_URL + "/uploads"
-  );
-
-  const coverURL = API_URL + props.article.cover.url;
+  const content = article.content.replace(/\/uploads/g, API_URL + "/uploads");
 
   return (
     <div>
-      <CoverImage src={coverURL} alt={props.article.cover.caption} />
+      <CoverImage src={cover.url} alt={cover.caption} />
       <Container>
         <Row>
-          {props.article.categories &&
-            props.article.categories.map((category) => (
+          {article.categories &&
+            article.categories.map((category) => (
               <Chip key={category.id} label={category.title} />
             ))}
         </Row>
 
-        <Title>{props.article.title}</Title>
+        <Title>{article.title}</Title>
         <ReactMarkdown source={content} className={styles.md} />
       </Container>
     </div>

@@ -75,23 +75,28 @@ const ActionButton = styled(Button)`
   }
 `;
 
-export default function NewsCard(props) {
+export default function NewsCard({ className, featuredArticle }) {
+  // Checking for cover and replacing placeholders
+  let cover = {
+    url: featuredArticle.cover
+      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + featuredArticle.cover.url
+      : "/images/placeholder.jpg",
+    alternativeText: featuredArticle.cover
+      ? featuredArticle.cover.alternativeText
+      : "A plant sprout growing out of the ground.",
+  };
+
   return (
-    <Container className={props.className}>
-      <Cover
-        src={
-          process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL +
-          props.featuredArticle.cover.url
-        }
-      />
+    <Container className={className}>
+      <Cover src={cover.url} alt={cover.alternativeText} />
       <Content>
-        <Title>{props.featuredArticle.title}</Title>
-        <Preview>{props.featuredArticle.preview}</Preview>
+        <Title>{featuredArticle.title}</Title>
+        <Preview>{featuredArticle.preview}</Preview>
         <ButtonRow>
           <Link
             passHref
             href={"/news/[slug]"}
-            as={`/news/${props.featuredArticle.slug}`}
+            as={`/news/${featuredArticle.slug}`}
           >
             <ActionButton inverted label={"Read Article"} color={"secondary"} />
           </Link>
