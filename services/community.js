@@ -1,6 +1,11 @@
-import slugify from "slugify";
 import { getToken, updateLocalUser } from "../providers/Auth";
-import { gqQuery, postJson, postRaw, queryfy } from "../utils/fetchTools";
+import {
+  gqQuery,
+  hasError,
+  postJson,
+  postRaw,
+  queryfy,
+} from "../utils/fetchTools";
 
 const onClientSide = typeof window !== "undefined";
 
@@ -247,7 +252,7 @@ export async function getUserDetails(username) {
 
   const res = await getQuery(query);
 
-  if (!res.error && !res.errors) {
+  if (!hasError(res)) {
     updateLocalUser(res.data.users[0]);
     return res.data.users[0];
   } else {
@@ -293,7 +298,7 @@ export async function updateUserInfo(id, updatedInfos) {
 
   const res = await getQuery(mutation, options);
 
-  if (!res.error && !res.errors) {
+  if (!hasError(res)) {
     updateLocalUser(res.data.updateUser.user);
     return res;
   } else {
@@ -330,7 +335,6 @@ export async function getAllLibrarySections() {
       featured_medias: library_medias(limit: 3, sort: "created_at:desc") {
         id
         title
-        slug
         created_at
         media {
           type: __typename
@@ -457,7 +461,6 @@ export async function getLibraryMedia(id) {
   const query = `{
     libraryMedia(id: ${id}) {
       id
-      slug
       title
       created_at
       author {
@@ -511,14 +514,6 @@ export async function createLibraryMedia(body) {
   // Escaping quote carracters
   body.title = body.title.split('"').join('\\"');
 
-  // Creating a slug
-  const slug = slugify(body.title, {
-    lower: true, // convert to lower case
-    strict: true, // strip special characters except replacement
-    locale: "en", // language code of the locale to use
-    remove: /[*+~.()'"!:@]/g,
-  });
-
   // Building typeName
   const typeName = `ComponentMediaType${body.type}`;
 
@@ -535,7 +530,7 @@ export async function createLibraryMedia(body) {
       if (body.articleCover) {
         const res = await upload([body.articleCover], {});
 
-        if (!res.error) {
+        if (!hasError(res)) {
           fileID = res[0].id;
         } else {
           return res;
@@ -553,7 +548,7 @@ export async function createLibraryMedia(body) {
       if (body.file) {
         const res = await upload([body.file], {});
 
-        if (!res.error) {
+        if (!hasError(res)) {
           fileID = res[0].id;
         } else {
           return res;
@@ -572,7 +567,6 @@ export async function createLibraryMedia(body) {
       input: {
         data: {
           title: "${body.title}"
-          slug: "${slug}"
           library_section: ${body.librarySection}
           author: ${body.user}
           media: {
@@ -638,7 +632,6 @@ export async function search({
     }
     medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       id
-      slug
       title
       created_at
       media {

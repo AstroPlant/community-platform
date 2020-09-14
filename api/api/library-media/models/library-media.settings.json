@@ -13,11 +13,6 @@
       "type": "string",
       "required": true
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "title",
-      "required": true
-    },
     "media": {
       "type": "dynamiczone",
       "components": [
