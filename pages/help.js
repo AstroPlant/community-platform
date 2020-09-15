@@ -18,10 +18,11 @@ export default function Help({ helpSections }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   return {
     props: {
       helpSections: await getHelpSections(),
     },
+    revalidate: 30,
   };
 }

@@ -37,6 +37,22 @@ function createOptionsWithBearer() {
  **********************************************/
 
 /***
+ * Fetches all help sections slugs
+ */
+export async function getHelpSectionsPaths() {
+  const query = `{
+    helpSections {
+      slug
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.helpSections;
+}
+
+/***
  * Fetches all the FAQs categories
  */
 export async function getHelpSections() {
@@ -398,6 +414,22 @@ export async function getAllLibrarySectionNames() {
     librarySections {
       id
       title
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches all library sections slugs
+ */
+export async function getLibrarySectionsPaths() {
+  const query = `{
+    librarySections {
+      slug
     }
   }
   `;

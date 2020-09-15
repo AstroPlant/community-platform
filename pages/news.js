@@ -16,7 +16,7 @@ export default function News({ featured, articles }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const data = await getArticles();
 
   return {
@@ -24,5 +24,6 @@ export async function getServerSideProps() {
       articles: data.previews,
       featured: data.featured[0],
     },
+    revalidate: 30,
   };
 }

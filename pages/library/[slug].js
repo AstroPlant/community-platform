@@ -2,7 +2,11 @@ import styled from "styled-components";
 import Grid from "../../components/grids/Grid";
 import MediasGrid from "../../components/grids/MediasGrid";
 import MainLayout from "../../components/layouts/MainLayout";
-import { getLibrarySection } from "../../services/community";
+import withFallback from "../../hocs/withFallback";
+import {
+  getLibrarySectionsPaths,
+  getLibrarySection,
+} from "../../services/community";
 import Breaks from "../../utils/breakpoints";
 
 const MediaNumber = styled.h3`
@@ -15,9 +19,7 @@ const InfoSection = styled.div`
   }
 `;
 
-export default function LibrarySectionPage({ data }) {
-  const section = data.librarySections[0];
-  const mediaCount = data.mediaCount.aggregate.count;
+function LibrarySectionPage({ section, mediaCount }) {
   return (
     <MainLayout
       pageTitle={section.title}
@@ -35,10 +37,31 @@ export default function LibrarySectionPage({ data }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticPaths() {
+  const libraries = await getLibrarySectionsPaths();
+
   return {
-    props: {
-      data: await getLibrarySection(context.params.slug),
-    },
+    paths: libraries.map((lib) => {
+      return {
+        params: {
+          slug: lib.slug,
+        },
+      };
+    }),
+    fallback: true,
   };
 }
+
+export async function getStaticProps({ params }) {
+  const data = await getLibrarySection(params.slug);
+
+  return {
+    props: {
+      section: data.librarySections[0] || null,
+      mediaCount: data.mediaCount.aggregate.count || null,
+    },
+    revalidate: 30,
+  };
+}
+
+export default withFallback(LibrarySectionPage, "section");

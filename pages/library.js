@@ -15,10 +15,11 @@ export default function Library({ librarySections }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   return {
     props: {
       librarySections: await getAllLibrarySections(),
     },
+    revalidate: 30,
   };
 }
