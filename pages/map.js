@@ -8,6 +8,7 @@ import Grid from "../components/grids/Grid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getKits } from "../services/data-api";
 import Breaks from "../utils/breakpoints";
+import { REVALIDATION_DELAY } from "../utils/settings";
 
 const NoSSRMapBuilder = dynamic(() => import("../components/MapBuilder"), {
   ssr: false,
@@ -87,10 +88,13 @@ export default function Map({ kits }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
+  const kits = await getKits();
+
   return {
     props: {
-      kits: await getKits(),
+      kits: kits || [],
     },
+    revalidate: REVALIDATION_DELAY,
   };
 }
