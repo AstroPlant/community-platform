@@ -2,6 +2,7 @@ import FeaturedArticleCard from "../components/cards/FeaturedArticleCard";
 import ArticleGrid from "../components/grids/ArticleGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getArticles } from "../services/community";
+import { REVALIDATION_DELAY } from "../utils/settings";
 
 export default function News({ featured, articles }) {
   return (
@@ -24,6 +25,6 @@ export async function getStaticProps() {
       articles: data.previews,
       featured: data.featured[0],
     },
-    revalidate: 30,
+    revalidate: REVALIDATION_DELAY,
   };
 }

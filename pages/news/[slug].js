@@ -8,6 +8,7 @@ import PageLayout from "../../components/layouts/PageLayout";
 import WrapInLink from "../../components/WrapInLink";
 import withFallback from "../../hocs/withFallback";
 import { getArticlesPaths, getFullArticle } from "../../services/community";
+import { REVALIDATION_DELAY } from "../../utils/settings";
 
 const AuthorCard = styled(Card)`
   && {
@@ -76,7 +77,7 @@ export async function getStaticProps({ params }) {
       article: data.main_article[0] || null,
       related: data.related_articles || null,
     },
-    revalidate: 30,
+    revalidate: REVALIDATION_DELAY,
   };
 }
 

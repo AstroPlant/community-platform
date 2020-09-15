@@ -4,10 +4,11 @@ import MediasGrid from "../../components/grids/MediasGrid";
 import MainLayout from "../../components/layouts/MainLayout";
 import withFallback from "../../hocs/withFallback";
 import {
-  getLibrarySectionsPaths,
   getLibrarySection,
+  getLibrarySectionsPaths,
 } from "../../services/community";
 import Breaks from "../../utils/breakpoints";
+import { REVALIDATION_DELAY } from "../../utils/settings";
 
 const MediaNumber = styled.h3`
   color: ${(props) => props.theme.primary};
@@ -60,7 +61,7 @@ export async function getStaticProps({ params }) {
       section: data.librarySections[0] || null,
       mediaCount: data.mediaCount.aggregate.count || null,
     },
-    revalidate: 30,
+    revalidate: REVALIDATION_DELAY,
   };
 }
 

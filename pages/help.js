@@ -1,6 +1,7 @@
 import HelpGrid from "../components/grids/HelpGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getHelpSections } from "../services/community";
+import { REVALIDATION_DELAY } from "../utils/settings";
 
 export default function Help({ helpSections }) {
   return (
@@ -23,6 +24,6 @@ export async function getStaticProps() {
     props: {
       helpSections: await getHelpSections(),
     },
-    revalidate: 30,
+    revalidate: REVALIDATION_DELAY,
   };
 }

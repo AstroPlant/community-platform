@@ -2,6 +2,7 @@ import React from "react";
 import LibraryGrid from "../components/grids/LibraryGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getAllLibrarySections } from "../services/community";
+import { REVALIDATION_DELAY } from "../utils/settings";
 
 export default function Library({ librarySections }) {
   return (
@@ -20,6 +21,6 @@ export async function getStaticProps() {
     props: {
       librarySections: await getAllLibrarySections(),
     },
-    revalidate: 30,
+    revalidate: REVALIDATION_DELAY,
   };
 }

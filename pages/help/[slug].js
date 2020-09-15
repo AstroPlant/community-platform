@@ -5,6 +5,7 @@ import {
   getHelpSectionsPaths,
   getHelpSectionBySlug,
 } from "../../services/community";
+import { REVALIDATION_DELAY } from "../../utils/settings";
 
 function HelpSectionPage({ section }) {
   return (
@@ -40,7 +41,7 @@ export async function getStaticProps({ params }) {
     props: {
       section: (await getHelpSectionBySlug(params.slug)) || null,
     },
-    revalidate: 30,
+    revalidate: REVALIDATION_DELAY,
   };
 }
 
