@@ -2,6 +2,7 @@ import FeaturedArticleCard from "../components/cards/FeaturedArticleCard";
 import ArticleGrid from "../components/grids/ArticleGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getArticles } from "../services/community";
+import { REVALIDATION_DELAY } from "../utils/settings";
 
 export default function News({ featured, articles }) {
   return (
@@ -16,13 +17,14 @@ export default function News({ featured, articles }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const data = await getArticles();
 
   return {
     props: {
-      articles: data.previews,
-      featured: data.featured[0],
+      articles: data.previews || [],
+      featured: data.featured[0] || [],
     },
+    revalidate: REVALIDATION_DELAY,
   };
 }

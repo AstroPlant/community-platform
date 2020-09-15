@@ -6,7 +6,9 @@ import Card from "../../components/cards/Card";
 import Grid from "../../components/grids/Grid";
 import PageLayout from "../../components/layouts/PageLayout";
 import WrapInLink from "../../components/WrapInLink";
-import { getFullArticle } from "../../services/community";
+import withFallback from "../../hocs/withFallback";
+import { getArticlesPaths, getFullArticle } from "../../services/community";
+import { REVALIDATION_DELAY } from "../../utils/settings";
 
 const AuthorCard = styled(Card)`
   && {
@@ -22,7 +24,7 @@ const RelatedArticle = styled(ArticleCard)`
   }
 `;
 
-export default function ArticlePage({ article, related }) {
+function ArticlePage({ article, related }) {
   return (
     <PageLayout metaTitle={article.title} metaDescription={article.preview}>
       <Grid>
@@ -50,13 +52,33 @@ export default function ArticlePage({ article, related }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const data = await getFullArticle(context.params.slug);
+export async function getStaticPaths() {
+  const articles = await getArticlesPaths();
+
+  return {
+    // Generated at build time
+    paths: articles.map((article) => {
+      return {
+        params: {
+          slug: article.slug,
+        },
+      };
+    }),
+    // Enabling statically generating additional pages after build
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const data = await getFullArticle(params.slug);
 
   return {
     props: {
-      article: data.main_article[0],
-      related: data.related_articles,
+      article: data.main_article[0] || null,
+      related: data.related_articles || null,
     },
+    revalidate: REVALIDATION_DELAY,
   };
 }
+
+export default withFallback(ArticlePage, "article");
