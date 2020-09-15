@@ -22,8 +22,8 @@ export async function getStaticProps() {
 
   return {
     props: {
-      articles: data.previews,
-      featured: data.featured[0],
+      articles: data.previews || [],
+      featured: data.featured[0] || [],
     },
     revalidate: REVALIDATION_DELAY,
   };

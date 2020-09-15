@@ -20,9 +20,10 @@ export default function Help({ helpSections }) {
 }
 
 export async function getStaticProps() {
+  const helpSections = await getHelpSections();
   return {
     props: {
-      helpSections: await getHelpSections(),
+      helpSections: helpSections || [],
     },
     revalidate: REVALIDATION_DELAY,
   };

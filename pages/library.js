@@ -17,9 +17,11 @@ export default function Library({ librarySections }) {
 }
 
 export async function getStaticProps() {
+  const librarySections = await getAllLibrarySections();
+
   return {
     props: {
-      librarySections: await getAllLibrarySections(),
+      librarySections: librarySections || [],
     },
     revalidate: REVALIDATION_DELAY,
   };
