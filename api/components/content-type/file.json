@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_content_type_files",
+  "info": {
+    "name": "file",
+    "description": "Object containing a single file (not an image or a video) and its description.",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 140
+    },
+    "file": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": ["files"],
+      "plugin": "upload",
+      "required": true
+    }
+  }
+}
