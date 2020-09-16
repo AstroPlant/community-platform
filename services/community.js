@@ -94,6 +94,17 @@ export async function getHelpSectionBySlug(slug) {
  *                 ARTICLES                   *
  **********************************************/
 
+const authorModel = `{
+  username
+  firstName
+  lastName
+  avatar {
+    url
+    alternativeText
+  }
+ }
+`;
+
 /***
  * Fetches articles slugs for Static Generation
  */
@@ -128,15 +139,7 @@ export async function getArticles() {
         url
         alternativeText
       }
-      author {
-        username
-        firstName
-        lastName
-        avatar {
-          url
-          alternativeText
-        }
-      }
+      author ${authorModel}
     }
     previews: articles(
       where: { published: true }
@@ -199,15 +202,7 @@ export async function getFullArticle(slug) {
         url
         alternativeText
       }
-      author{ 
-        username
-        firstName
-        lastName
-        avatar { 
-          url
-          alternativeText
-        }
-      }
+      author ${authorModel}
       categories {
         id
         title
@@ -350,219 +345,110 @@ export async function changePassword(oldPassword, newPassword) {
 }
 
 /**********************************************
- *             LIBRARY SECTIONS               *
+ *             LIBRARY MEDIAS                 *
  **********************************************/
 
-/***
- * Fetches all library sections
- */
-export async function getAllLibrarySections() {
-  const query = `{
-    librarySections {
-      id
-      slug
-      title
-      description
-      featured_medias: library_medias(limit: 3, sort: "created_at:desc") {
+const completeLibraryMedia = `
+  {
+    id
+    title
+    slug
+    type
+    created_at
+    cover {
+      url
+      caption
+    }
+    author ${authorModel}
+    content {
+      type: __typename
+      ... on ComponentContentTypeFile {
         id
         title
-        created_at
-        media {
-          type: __typename
-          ... on ComponentMediaTypeLink {
-            id
-            url
-          }
-          ... on ComponentMediaTypeFile {
-            id
-            file {
-              id
-              created_at
-              caption
-              url
-              mime
-            }
-          }
-          ... on ComponentMediaTypeArticle {
-            id
-            title
-            cover {
-              url
-              caption
-            }
-            content
-          }
+        description
+        file {
+          id
+          url
+          mime
         }
       }
-      all_medias: library_medias {
+      ... on ComponentContentTypeLink {
         id
+        url
+        url_caption: caption
+        meta_title
+        meta_description
+        meta_image_url
+        meta_publisher
       }
-    }
-  }
-  `;
-
-  const res = await getQuery(query);
-
-  return res.data.librarySections;
-}
-
-/***
- * Fetches all library sections titles
- */
-export async function getAllLibrarySectionNames() {
-  const query = `{
-    librarySections {
-      id
-      title
-    }
-  }
-  `;
-
-  const res = await getQuery(query);
-
-  return res.data.librarySections;
-}
-
-/***
- * Fetches all library sections slugs
- */
-export async function getLibrarySectionsPaths() {
-  const query = `{
-    librarySections {
-      slug
-    }
-  }
-  `;
-
-  const res = await getQuery(query);
-
-  return res.data.librarySections;
-}
-
-/***
- * Fetches a library section
- * @param slug of the section
- */
-export async function getLibrarySection(slug) {
-  const query = `{
-    librarySections(where: { slug: "${slug}" }) {
-      id
-      slug
-      title
-      description
-      library_medias {
+      ... on ComponentContentTypeImage {
         id
-        title
-        created_at
-        media {
-          type: __typename
-          ... on ComponentMediaTypeLink {
-            id
-            url
-          }
-          ... on ComponentMediaTypeFile {
-            id
-            file {
-              id
-              created_at
-              caption
-              url
-              mime
-            }
-          }
-          ... on ComponentMediaTypeArticle {
-            id
-            title
-            cover {
-              url
-              caption
-            }
-            content
-          }
+        caption
+        image {
+          url
         }
       }
-    }
-    mediaCount: libraryMediasConnection(
-      where: { library_section: { slug: "${slug}" } }
-    ) {
-      aggregate {
-        count
+      ... on ComponentContentTypeRichText {
+        id
+        text
       }
+    }
+  }
+ `;
+
+const simpleLibraryMedia = `
+  {
+    id
+    title
+    slug
+    type
+    created_at
+    cover {
+      url
+      caption
+    }
+  }
+ `;
+
+/***
+ * Fetches all library media slugs
+ */
+export async function getLibraryMediasPaths() {
+  const query = `{
+    libraryMedias {
+      slug
     }
   }`;
 
   const res = await getQuery(query);
 
-  return res.data;
+  return res.data.libraryMedias;
 }
-
-/**********************************************
- *             LIBRARY MEDIAS                 *
- **********************************************/
 
 /***
  * Fetches a library media
  * @param slug of the media
  */
-export async function getLibraryMedia(id) {
+export async function getLibraryMedia(slug) {
   const query = `{
-    libraryMedia(id: ${id}) {
-      id
-      title
-      created_at
-      author {
-        username
-        firstName
-        lastName
-        avatar {
-          url
-          alternativeText
-        }
-      }
-      media {
-        type: __typename
-        ... on ComponentMediaTypeLink {
-          id
-          url
-        }
-        ... on ComponentMediaTypeFile {
-          id
-          file {
-            id
-            created_at
-            caption
-            url
-            mime
-          }
-        }
-        ... on ComponentMediaTypeArticle {
-          id
-          title
-          content
-          cover {
-            url
-            caption
-          }
-        }
-      }
-    }
+    libraryMedias(where: {slug: "${slug}"}, limit: 1) ${completeLibraryMedia}
   }`;
 
   const res = await getQuery(query);
 
-  return res.data.libraryMedia;
+  return res.data.libraryMedias[0];
 }
 
 /***
  * Creates a library media
- * @param body necessary informations to create the media
+ * @param body necessary information to create the media
  */
 export async function createLibraryMedia(body) {
-  // Escaping quote carracters
+  // Escaping quote characters
   body.title = body.title.split('"').join('\\"');
 
   // Building typeName
-  const typeName = `ComponentMediaType${body.type}`;
+  const typeName = `ComponentContentType${body.type}`;
 
   // Building queries
   let fileID = null;
@@ -644,6 +530,93 @@ export async function createLibraryMedia(body) {
 }
 
 /**********************************************
+ *             LIBRARY SECTIONS               *
+ **********************************************/
+
+/***
+ * Fetches all library sections
+ */
+export async function getAllLibrarySections() {
+  const query = `{
+    librarySections {
+      id
+      slug
+      title
+      description
+      featured_medias: library_medias(limit: 3, sort: "created_at:desc") ${simpleLibraryMedia}
+      all_medias: library_medias {
+        id
+      }
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches all library sections titles
+ */
+export async function getAllLibrarySectionNames() {
+  const query = `{
+    librarySections {
+      id
+      title
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches all library sections slugs
+ */
+export async function getLibrarySectionsPaths() {
+  const query = `{
+    librarySections {
+      slug
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches a library section
+ * @param slug of the section
+ */
+export async function getLibrarySection(slug) {
+  const query = `{
+    librarySections(where: { slug: "${slug}" }) {
+      id
+      slug
+      title
+      description
+      library_medias ${simpleLibraryMedia}
+    }
+    mediaCount: libraryMediasConnection(
+      where: { library_section: { slug: "${slug}" } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data;
+}
+
+/**********************************************
  *                   SEARCH                   *
  **********************************************/
 
@@ -677,42 +650,8 @@ export async function search({
         url 
         alternativeText
       }
-      author { 
-        username
-        firstName
-        lastName
-      }
     }
-    medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
-      id
-      title
-      created_at
-      media {
-        type: __typename
-        ... on ComponentMediaTypeLink {
-          id
-          url
-        }
-        ... on ComponentMediaTypeFile {
-          id
-          file {
-            id
-            created_at
-            caption
-            url
-            mime
-          }
-        }
-        ... on ComponentMediaTypeArticle {
-          id
-          title
-          cover {
-            caption
-          }
-          content
-        }
-      }
-    }
+    medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}") ${simpleLibraryMedia}
     users: searchUsers(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       username
       firstName

@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import AlbumIcon from "../../public/icons/Album.svg";
 import ArticleIcon from "../../public/icons/article.svg";
 import LinkIcon from "../../public/icons/external-link.svg";
 import FileIcon from "../../public/icons/file.svg";
+import TutorialIcon from "../../public/icons/tutorial.svg";
 import Breaks from "../../utils/breakpoints";
 import Date from "../Date";
 import Icon from "../Icon";
@@ -19,7 +21,6 @@ const Container = styled(Card)`
   flex-direction: column;
 
   @media screen and (max-width: ${Breaks.medium}) {
-    flex-direction: unset;
     align-items: center;
 
     max-height: 96px;
@@ -27,23 +28,31 @@ const Container = styled(Card)`
 `;
 
 const CoverHolder = styled.div`
+  position: relative;
+  z-index: 0;
+
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 
   overflow: hidden;
-  max-height: 160px;
+  height: 256px;
 
   @media screen and (max-width: ${Breaks.medium}) {
-    max-height: 96px;
-    max-width: 160px;
+    display: none;
   }
 `;
 
-const PaddedIcon = styled(Icon)`
-  padding: 3rem;
+const FloatingIcon = styled(Icon)`
+  position: absolute;
+  z-index: 1;
+
+  top: 1rem;
+  right: 1rem;
+
+  padding: 0.5rem;
+  margin: 0;
+
+  background-color: ${(props) => props.theme.dark};
+  border-radius: ${(props) => props.theme.radiusMax};
 `;
 
 const InfoHolder = styled.div`
@@ -53,10 +62,6 @@ const InfoHolder = styled.div`
   border-top: 1px solid ${(props) => props.theme.primary};
 
   padding: 1rem;
-
-  @media screen and (max-width: ${Breaks.large}) {
-    border-top: 0;
-  }
 `;
 
 const MediaTitle = styled.b`
@@ -72,62 +77,39 @@ const MediaTitle = styled.b`
   white-space: nowrap;
 `;
 
-function PureMediaCard(props) {
-  return (
-    <Container animateOnHover className={props.className}>
-      <CoverHolder>
-        {props.media.media[0].cover != undefined ? (
-          <img
-            src={
-              process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL +
-              props.media.media[0].cover.url
-            }
-            alt={props.media.media[0].cover.caption}
-          />
-        ) : (
-          <PaddedIcon color="primary" size={48}>
-            {props.type === "Link" && <LinkIcon />}
-            {props.type === "File" && <FileIcon />}
-            {props.type === "Article" && <ArticleIcon />}
-          </PaddedIcon>
-        )}
-      </CoverHolder>
-      <InfoHolder>
-        <MediaTitle>{props.media.title}</MediaTitle>
-        <Date dateString={props.media.created_at} />
-      </InfoHolder>
-    </Container>
-  );
-}
-
-export default function LibraryMediaCard(props) {
-  const media = props.media.media[0];
-  const type = media.type.replace("ComponentMediaType", "");
+export default function LibraryMediaCard({ className, media }) {
+  // Checking for cover and replacing placeholders
+  let cover = {
+    url: media.cover
+      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + media.cover.url
+      : "/images/placeholder.jpg",
+    caption: media.cover
+      ? media.cover.caption
+      : "A plant sprout growing out of the ground.",
+  };
 
   return (
-    <>
-      {type === "Link" && (
-        <a target="_blank" href={media.url}>
-          <PureMediaCard type={type} {...props} />
-        </a>
-      )}
-      {type === "File" && (
-        <a
-          target="_parent"
-          href={process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + media.file.url}
-        >
-          <PureMediaCard type={type} {...props} />
-        </a>
-      )}
-      {type === "Article" && (
-        <WrapInLink
-          href={"/library/medias/[id]"}
-          as={`/library/medias/${props.media.id}`}
-        >
-          <PureMediaCard type={type} {...props} />
-        </WrapInLink>
-      )}
-    </>
+    <WrapInLink
+      href={"/library/medias/[slug]"}
+      as={`/library/medias/${media.slug}`}
+    >
+      <Container animateOnHover className={className}>
+        <CoverHolder>
+          <img src={cover.url} alt={cover.caption} />
+          <FloatingIcon color="primary" size={26}>
+            {media.type === "album" && <AlbumIcon />}
+            {media.type === "article" && <ArticleIcon />}
+            {media.type === "links" && <LinkIcon />}
+            {media.type === "files" && <FileIcon />}
+            {media.type === "tutorial" && <TutorialIcon />}
+          </FloatingIcon>
+        </CoverHolder>
+        <InfoHolder>
+          <MediaTitle>{media.title}</MediaTitle>
+          <Date dateString={media.created_at} />
+        </InfoHolder>
+      </Container>
+    </WrapInLink>
   );
 }
 

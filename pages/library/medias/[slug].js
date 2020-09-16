@@ -1,11 +1,15 @@
 import styled from "styled-components";
-import Article from "../../../components/Article";
 import ArticleInfos from "../../../components/ArticleInfos";
 import Card from "../../../components/cards/Card";
 import Grid from "../../../components/grids/Grid";
 import PageLayout from "../../../components/layouts/PageLayout";
+import LibraryMedia from "../../../components/LibraryMedia";
 import WrapInLink from "../../../components/WrapInLink";
-import { getLibraryMedia } from "../../../services/community";
+import withFallback from "../../../hocs/withFallback";
+import {
+  getLibraryMedia,
+  getLibraryMediasPaths,
+} from "../../../services/community";
 
 const AuthorCard = styled(Card)`
   && {
@@ -14,13 +18,11 @@ const AuthorCard = styled(Card)`
   }
 `;
 
-export default function CommunityArticlePage({ media }) {
-  const article = media.media[0];
-
+function LibraryMediaPage({ media }) {
   return (
-    <PageLayout metaTitle={article.title}>
+    <PageLayout metaTitle={media.title}>
       <Grid>
-        <Article article={article} />
+        <LibraryMedia media={media} />
         <div>
           <h3>Author</h3>
           <WrapInLink
@@ -37,10 +39,28 @@ export default function CommunityArticlePage({ media }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getStaticPaths() {
+  const medias = await getLibraryMediasPaths();
+
+  return {
+    paths: medias.map((media) => {
+      return {
+        params: {
+          slug: media.slug,
+        },
+      };
+    }),
+    fallback: true,
+  };
+}
+
+export async function getStaticProps(context) {
+  const media = await getLibraryMedia(context.params.slug);
   return {
     props: {
-      media: await getLibraryMedia(context.params.id),
+      media: media || null,
     },
   };
 }
+
+export default withFallback(LibraryMediaPage, "media");
