@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import ArticleCaption from "./ArticleCaption";
+import PostCaption from "./PostCaption";
 
 const Container = styled.div`
   display: flex;
@@ -14,19 +14,19 @@ const ImageHolder = styled.img`
   border-radius: ${(props) => props.theme.radiusMax};
 `;
 
-export default function ArticleImage({ image }) {
+export default function PostImage({ image }) {
   return (
     <Container>
       <ImageHolder
         src={process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + image.image.url}
         alt={image.caption}
       />
-      <ArticleCaption caption={image.caption} />
+      <PostCaption caption={image.caption} />
     </Container>
   );
 }
 
-ArticleImage.propTypes = {
+PostImage.propTypes = {
   /**
    * Image component containing a caption and a url
    */

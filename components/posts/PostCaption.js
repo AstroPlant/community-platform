@@ -11,8 +11,8 @@ const Caption = styled.i`
   font-size: 14px;
 `;
 
-export default function ArticleCaption({ caption, className }) {
+export default function PostCaption({ caption, className }) {
   return <Caption className={className}>{caption}</Caption>;
 }
 
-ArticleCaption.propTypes = { caption: PropTypes.string.isRequired };
+PostCaption.propTypes = { caption: PropTypes.string.isRequired };

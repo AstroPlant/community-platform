@@ -14,7 +14,7 @@ const Container = styled(Card)`
 
   margin: 2rem 0;
 
-  border: 2px solid #5a5a5a;
+  border: 2px solid ${(props) => props.theme.greyDark};
   border-radius: ${(props) => props.theme.radiusMax};
 
   background-color: ${(props) => props.theme.dark};
@@ -63,7 +63,7 @@ const Description = styled.p`
   }
 `;
 
-export default function ArticleFile({ file }) {
+export default function PostFile({ file }) {
   return (
     <a
       target="_blank"
@@ -83,7 +83,7 @@ export default function ArticleFile({ file }) {
   );
 }
 
-ArticleFile.propTypes = {
+PostFile.propTypes = {
   /**
    * Link component containing a caption and a url
    */

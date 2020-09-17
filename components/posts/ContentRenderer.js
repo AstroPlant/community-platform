@@ -3,9 +3,9 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import styles from "../../styles/markdown.module.css";
-import ArticleFile from "./ArticleFile";
-import ArticleImage from "./ArticleImage";
-import ArticleLink from "./ArticleLink";
+import PostFile from "./PostFile";
+import PostImage from "./PostImage";
+import PostLink from "./PostLink";
 
 const Container = styled.div`
   display: flex;
@@ -21,22 +21,28 @@ export default function ContentRenderer({ content }) {
         const key = component.type + component.id;
         switch (component.type) {
           case "ComponentContentTypeRichText":
+            // Completing the address of the images
+            const richText = component.text.replace(
+              /\/uploads/g,
+              process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + "/uploads"
+            );
+
             return (
               <ReactMarkdown
                 key={key}
-                source={component.text}
+                source={richText}
                 className={styles.md}
               />
             );
 
           case "ComponentContentTypeImage":
-            return <ArticleImage key={key} image={component} />;
+            return <PostImage key={key} image={component} />;
 
           case "ComponentContentTypeLink":
-            return <ArticleLink key={key} link={component} />;
+            return <PostLink key={key} link={component} />;
 
           case "ComponentContentTypeFile":
-            return <ArticleFile key={key} file={component} />;
+            return <PostFile key={key} file={component} />;
 
           default:
             return null;

@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Breaks from "../../utils/breakpoints";
 import Card from "../cards/Card";
-import ArticleCaption from "./ArticleCaption";
+import PostCaption from "./PostCaption";
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const RichLinkContainer = styled(Card)`
     align-items: center;
   }
 
-  border: 2px solid #5a5a5a;
+  border: 2px solid ${(props) => props.theme.greyDark};
   border-radius: ${(props) => props.theme.radiusMax};
 
   background-color: ${(props) => props.theme.dark};
@@ -78,7 +78,7 @@ const Publisher = styled.p`
   font-size: 14px;
 `;
 
-export default function ArticleLink({ link }) {
+export default function PostLink({ link }) {
   return (
     <Container>
       <a href={link.url} target="_blank">
@@ -96,12 +96,12 @@ export default function ArticleLink({ link }) {
         </RichLinkContainer>
       </a>
 
-      {link.url_caption && <ArticleCaption caption={link.url_caption} />}
+      {link.url_caption && <PostCaption caption={link.url_caption} />}
     </Container>
   );
 }
 
-ArticleLink.propTypes = {
+PostLink.propTypes = {
   /**
    * Link component containing a caption and a url
    */

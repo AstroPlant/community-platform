@@ -93,17 +93,53 @@ export async function getHelpSectionBySlug(slug) {
 /**********************************************
  *                 ARTICLES                   *
  **********************************************/
+const imageModel = `{
+  url
+  alternativeText
+}`;
 
 const authorModel = `{
   username
   firstName
   lastName
-  avatar {
-    url
-    alternativeText
-  }
+  description
+  avatar ${imageModel}
  }
 `;
+
+const contentModel = `{
+  type: __typename
+  ... on ComponentContentTypeFile {
+    id
+    title
+    description
+    file {
+      id
+      url
+      mime
+    }
+  }
+  ... on ComponentContentTypeLink {
+    id
+    url
+    url_caption: caption
+    meta_title
+    meta_description
+    meta_image_url
+    meta_publisher
+  }
+  ... on ComponentContentTypeImage {
+    id
+    caption
+    image {
+      url
+    }
+  }
+  ... on ComponentContentTypeRichText {
+    id
+    text
+  }
+}`;
 
 /***
  * Fetches articles slugs for Static Generation
@@ -135,10 +171,7 @@ export async function getArticles() {
       published_at
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
+      cover ${imageModel}
       author ${authorModel}
     }
     previews: articles(
@@ -151,10 +184,7 @@ export async function getArticles() {
       published_at
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
+      cover ${imageModel}
     }
   }`;
 
@@ -177,10 +207,7 @@ export async function getFeaturedArticle() {
       slug
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
+      cover ${imageModel}
     }
   }`;
 
@@ -197,11 +224,8 @@ export async function getFullArticle(slug) {
     main_article: articles(where: { slug: "${slug}" }) {
       title
       published_at
-      content
-      cover {
-        url
-        alternativeText
-      }
+      content ${contentModel}
+      cover ${imageModel}
       author ${authorModel}
       categories {
         id
@@ -217,10 +241,6 @@ export async function getFullArticle(slug) {
       published_at
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
     }
 }`;
 
@@ -265,10 +285,7 @@ export async function getUserDetails(username) {
       firstName
       lastName
       description
-      avatar {
-        url
-        alternativeText
-      }
+      avatar ${imageModel}
       role {
         id
         name
@@ -308,10 +325,7 @@ export async function updateUserInfo(id, updatedInfos) {
           firstName
           lastName
           description
-          avatar {
-            url
-            alternativeText
-          }
+          avatar ${imageModel}
           role {
             id
             name
@@ -360,39 +374,7 @@ const completeLibraryMedia = `
       caption
     }
     author ${authorModel}
-    content {
-      type: __typename
-      ... on ComponentContentTypeFile {
-        id
-        title
-        description
-        file {
-          id
-          url
-          mime
-        }
-      }
-      ... on ComponentContentTypeLink {
-        id
-        url
-        url_caption: caption
-        meta_title
-        meta_description
-        meta_image_url
-        meta_publisher
-      }
-      ... on ComponentContentTypeImage {
-        id
-        caption
-        image {
-          url
-        }
-      }
-      ... on ComponentContentTypeRichText {
-        id
-        text
-      }
-    }
+    content ${contentModel}
   }
  `;
 
@@ -646,10 +628,7 @@ export async function search({
       published_at
       title
       preview
-      cover { 
-        url 
-        alternativeText
-      }
+      cover ${imageModel}
     }
     medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}") ${simpleLibraryMedia}
     users: searchUsers(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
@@ -753,7 +732,7 @@ export async function getChallenges() {
  **********************************************/
 
 /**
- * Upload a file related to an instance to the communtiy API
+ * Upload a file related to an instance to the community API
  * @param {FileList} files The file(s) to upload. The value(s) can be a Buffer or Stream.
  * @param {object} optionalParameters
  * refId:  The ID of the entry which the file(s) will be linked to.

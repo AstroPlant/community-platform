@@ -59,13 +59,15 @@ const Preview = styled.p`
   line-height: 1.5em;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  word-break: break-word;
 `;
 
 const ArticleDate = styled(Date)`
   align-self: flex-end;
 `;
 
-export default function ArticleCard({ article, className }) {
+export default function ArticleCard({ article, showCover, className }) {
   // Checking for cover and replacing placeholders
   let cover = {
     url: article.cover
@@ -79,7 +81,7 @@ export default function ArticleCard({ article, className }) {
   return (
     <WrapInLink passHref href={"/news/[slug]"} as={`/news/${article.slug}`}>
       <Container animateOnHover className={className}>
-        <Cover src={cover.url} alt={cover.alternativeText} />
+        {showCover && <Cover src={cover.url} alt={cover.alternativeText} />}
 
         <Content>
           <Title>{article.title}</Title>
@@ -100,4 +102,12 @@ ArticleCard.propTypes = {
    * object containing the article information
    */
   article: PropTypes.object.isRequired,
+  /**
+   * Whether or not to display the article cover
+   */
+  showCover: PropTypes.bool,
+};
+
+ArticleCard.defaultProps = {
+  showCover: true,
 };

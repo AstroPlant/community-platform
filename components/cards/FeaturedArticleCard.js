@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Breaks from "../../utils/breakpoints";
-import ArticleInfos from "../ArticleInfos";
+import Date from "../Date";
+import UserPreview from "../UserPreview";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
@@ -38,6 +39,7 @@ const InfosContainer = styled.div`
 `;
 
 const Title = styled.h2`
+  margin: 0.5rem 0 0 0;
   color: ${(props) => props.theme.primary};
 
   @media screen and (max-width: ${Breaks.large}) {
@@ -50,11 +52,11 @@ const Title = styled.h2`
 
 const Preview = styled.p`
   max-height: 100%;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   overflow: hidden;
 `;
 
-const InfosBottom = styled(ArticleInfos)`
+const UserDetails = styled(UserPreview)`
   margin-top: auto;
 `;
 
@@ -74,13 +76,11 @@ export default function FeaturedArticleCard({ featuredArticle }) {
       <Container>
         <Cover src={cover.url} alt={cover.alternativeText} />
         <InfosContainer>
+          <Date dateString={featuredArticle.published_at} />
           <Title>{featuredArticle.title}</Title>
 
           <Preview>{featuredArticle.preview}</Preview>
-          <InfosBottom
-            author={featuredArticle.author}
-            date={featuredArticle.published_at}
-          />
+          <UserDetails user={featuredArticle.author} />
         </InfosContainer>
       </Container>
     </WrapInLink>

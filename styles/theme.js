@@ -4,7 +4,9 @@ const Theme = {
   secondary: "#177FFF",
 
   light: "#FFF",
+
   grey: "#DEDEDE",
+  greyDark: "#5A5A5A",
 
   dark: "#000",
   darkLight: "#1D1D1D",
