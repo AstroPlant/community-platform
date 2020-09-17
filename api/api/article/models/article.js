@@ -12,7 +12,9 @@ module.exports = {
     async beforeCreate(data) {
       // Auto creating the slug
       if (data.title) {
-        data.slug = slugify(data.title, { lower: true });
+        data.slug = slugify(data.title, {
+          lower: true
+        });
       }
 
       // If the article is marked as published
@@ -24,23 +26,21 @@ module.exports = {
         }
       }
 
-      // Creating a preview if there is none
-      if (!data.preview) {
-        strapi.api["article"].config.functions.preview.addPreview(data);
+      // Fetching meta data for links
+      for (let component of data.content) {
+        if (component.__component === "content-type.link") {
+          await strapi.api["library-media"].config.functions.metadata.addTo(
+            component
+          );
+        }
       }
     },
     async beforeUpdate(params, data) {
-      // Generating a preview if it was emptied
-      if (data.preview === null) {
-        await strapi.api["article"].config.functions.preview.updatePreview(
-          params,
-          data
-        );
-      }
-
       // Auto updating the slug
       if (data.title) {
-        data.slug = slugify(data.title, { lower: true });
+        data.slug = slugify(data.title, {
+          lower: true
+        });
       }
 
       // If the article is marked as published
@@ -49,6 +49,15 @@ module.exports = {
         // If a value is given we use it otherwise we make the publication date the current one
         if (!data.published_at) {
           data.published_at = new Date();
+        }
+      }
+
+      // Fetching meta data for links
+      for (let component of data.content) {
+        if (component.__component === "content-type.link") {
+          await strapi.api["library-media"].config.functions.metadata.addTo(
+            component
+          );
         }
       }
     }
