@@ -93,6 +93,53 @@ export async function getHelpSectionBySlug(slug) {
 /**********************************************
  *                 ARTICLES                   *
  **********************************************/
+const imageModel = `{
+  url
+  alternativeText
+}`;
+
+const authorModel = `{
+  username
+  firstName
+  lastName
+  description
+  avatar ${imageModel}
+ }
+`;
+
+const contentModel = `{
+  type: __typename
+  ... on ComponentContentTypeFile {
+    id
+    title
+    description
+    file {
+      id
+      url
+      mime
+    }
+  }
+  ... on ComponentContentTypeLink {
+    id
+    url
+    url_caption: caption
+    meta_title
+    meta_description
+    meta_image_url
+    meta_publisher
+  }
+  ... on ComponentContentTypeImage {
+    id
+    caption
+    image {
+      url
+    }
+  }
+  ... on ComponentContentTypeRichText {
+    id
+    text
+  }
+}`;
 
 /***
  * Fetches articles slugs for Static Generation
@@ -124,19 +171,8 @@ export async function getArticles() {
       published_at
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
-      author {
-        username
-        firstName
-        lastName
-        avatar {
-          url
-          alternativeText
-        }
-      }
+      cover ${imageModel}
+      author ${authorModel}
     }
     previews: articles(
       where: { published: true }
@@ -148,10 +184,7 @@ export async function getArticles() {
       published_at
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
+      cover ${imageModel}
     }
   }`;
 
@@ -174,10 +207,7 @@ export async function getFeaturedArticle() {
       slug
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
+      cover ${imageModel}
     }
   }`;
 
@@ -194,20 +224,9 @@ export async function getFullArticle(slug) {
     main_article: articles(where: { slug: "${slug}" }) {
       title
       published_at
-      content
-      cover {
-        url
-        alternativeText
-      }
-      author{ 
-        username
-        firstName
-        lastName
-        avatar { 
-          url
-          alternativeText
-        }
-      }
+      content ${contentModel}
+      cover ${imageModel}
+      author ${authorModel}
       categories {
         id
         title
@@ -222,10 +241,6 @@ export async function getFullArticle(slug) {
       published_at
       title
       preview
-      cover {
-        url
-        alternativeText
-      }
     }
 }`;
 
@@ -270,10 +285,7 @@ export async function getUserDetails(username) {
       firstName
       lastName
       description
-      avatar {
-        url
-        alternativeText
-      }
+      avatar ${imageModel}
       role {
         id
         name
@@ -313,10 +325,7 @@ export async function updateUserInfo(id, updatedInfos) {
           firstName
           lastName
           description
-          avatar {
-            url
-            alternativeText
-          }
+          avatar ${imageModel}
           role {
             id
             name
@@ -350,6 +359,167 @@ export async function changePassword(oldPassword, newPassword) {
 }
 
 /**********************************************
+ *             LIBRARY MEDIAS                 *
+ **********************************************/
+
+const completeLibraryMedia = `
+  {
+    id
+    title
+    slug
+    type
+    created_at
+    cover {
+      url
+      caption
+    }
+    author ${authorModel}
+    content ${contentModel}
+  }
+ `;
+
+const simpleLibraryMedia = `
+  {
+    id
+    title
+    slug
+    type
+    created_at
+    cover {
+      url
+      caption
+    }
+  }
+ `;
+
+/***
+ * Fetches all library media slugs
+ */
+export async function getLibraryMediasPaths() {
+  const query = `{
+    libraryMedias {
+      slug
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias;
+}
+
+/***
+ * Fetches a library media
+ * @param slug of the media
+ */
+export async function getLibraryMedia(slug) {
+  const query = `{
+    libraryMedias(where: {slug: "${slug}"}, limit: 1) ${completeLibraryMedia}
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias[0];
+}
+
+/***
+ * Creates a library media
+ * @param body necessary information to create the media
+ */
+export async function createLibraryMedia(body) {
+  // Upload process
+  const uploadFile = async (file) => {
+    const res = await upload([file], {});
+
+    if (!hasError(res)) {
+      return res[0].id;
+    } else {
+      return res;
+    }
+  };
+
+  // Generic Media infos
+
+  // Escaping quote characters
+  body.title = body.title.split('"').join('\\"');
+
+  // Cover File
+  let coverID = null;
+
+  if (body.cover) {
+    coverID = await uploadFile(body.cover);
+  }
+
+  // Building content bloc queries
+
+  const content = await Promise.all(
+    body.content.map(async (bloc) => {
+      // Building typeName
+      const typeName = `ComponentContentType${bloc.type}`;
+      switch (bloc.type) {
+        case "RichText":
+          return `{
+          __typename: "${typeName}"
+          text: "${bloc.text}"
+        }`;
+
+        case "Link":
+          return `{
+          __typename: "${typeName}"
+          url: "${bloc.url}"
+          caption: "${bloc.caption}"
+        }`;
+
+        case "Image":
+          const imageID = await uploadFile(bloc.image);
+          return `{
+          __typename: "${typeName}"
+          image: "${imageID}"
+          caption: "${bloc.caption}"
+        }`;
+
+        case "File":
+          const fileID = await uploadFile(bloc.file);
+          return `{
+          __typename: "${typeName}"
+          file: "${fileID}"
+          title: "${bloc.title}"
+          description: "${bloc.description}"
+        }`;
+
+        default:
+          return null;
+      }
+    })
+  );
+
+  const mutation = `mutation {
+    createLibraryMedia(
+      input: {
+        data: {
+          title: "${body.title}"
+          type: ${body.type}
+          library_section: ${body.librarySection}
+          author: ${body.user}
+          cover: ${coverID}
+          content: [${content.join(" ")}]
+        }
+      }
+    ) {
+      libraryMedia {
+        id
+        created_at
+        title
+      }
+    }
+  }
+  `;
+
+  const options = createOptionsWithBearer();
+
+  return getQuery(mutation, options);
+}
+
+/**********************************************
  *             LIBRARY SECTIONS               *
  **********************************************/
 
@@ -363,37 +533,7 @@ export async function getAllLibrarySections() {
       slug
       title
       description
-      featured_medias: library_medias(limit: 3, sort: "created_at:desc") {
-        id
-        title
-        created_at
-        media {
-          type: __typename
-          ... on ComponentMediaTypeLink {
-            id
-            url
-          }
-          ... on ComponentMediaTypeFile {
-            id
-            file {
-              id
-              created_at
-              caption
-              url
-              mime
-            }
-          }
-          ... on ComponentMediaTypeArticle {
-            id
-            title
-            cover {
-              url
-              caption
-            }
-            content
-          }
-        }
-      }
+      featured_medias: library_medias(limit: 3, sort: "created_at:desc") ${simpleLibraryMedia}
       all_medias: library_medias {
         id
       }
@@ -450,37 +590,7 @@ export async function getLibrarySection(slug) {
       slug
       title
       description
-      library_medias {
-        id
-        title
-        created_at
-        media {
-          type: __typename
-          ... on ComponentMediaTypeLink {
-            id
-            url
-          }
-          ... on ComponentMediaTypeFile {
-            id
-            file {
-              id
-              created_at
-              caption
-              url
-              mime
-            }
-          }
-          ... on ComponentMediaTypeArticle {
-            id
-            title
-            cover {
-              url
-              caption
-            }
-            content
-          }
-        }
-      }
+      library_medias ${simpleLibraryMedia}
     }
     mediaCount: libraryMediasConnection(
       where: { library_section: { slug: "${slug}" } }
@@ -494,153 +604,6 @@ export async function getLibrarySection(slug) {
   const res = await getQuery(query);
 
   return res.data;
-}
-
-/**********************************************
- *             LIBRARY MEDIAS                 *
- **********************************************/
-
-/***
- * Fetches a library media
- * @param slug of the media
- */
-export async function getLibraryMedia(id) {
-  const query = `{
-    libraryMedia(id: ${id}) {
-      id
-      title
-      created_at
-      author {
-        username
-        firstName
-        lastName
-        avatar {
-          url
-          alternativeText
-        }
-      }
-      media {
-        type: __typename
-        ... on ComponentMediaTypeLink {
-          id
-          url
-        }
-        ... on ComponentMediaTypeFile {
-          id
-          file {
-            id
-            created_at
-            caption
-            url
-            mime
-          }
-        }
-        ... on ComponentMediaTypeArticle {
-          id
-          title
-          content
-          cover {
-            url
-            caption
-          }
-        }
-      }
-    }
-  }`;
-
-  const res = await getQuery(query);
-
-  return res.data.libraryMedia;
-}
-
-/***
- * Creates a library media
- * @param body necessary informations to create the media
- */
-export async function createLibraryMedia(body) {
-  // Escaping quote carracters
-  body.title = body.title.split('"').join('\\"');
-
-  // Building typeName
-  const typeName = `ComponentMediaType${body.type}`;
-
-  // Building queries
-  let fileID = null;
-  let mediaQL = ``;
-
-  switch (body.type) {
-    case "Link":
-      mediaQL = `url: "${body.url}"`;
-      break;
-
-    case "Article":
-      if (body.articleCover) {
-        const res = await upload([body.articleCover], {});
-
-        if (!hasError(res)) {
-          fileID = res[0].id;
-        } else {
-          return res;
-        }
-
-        mediaQL = `
-        title: "${body.articleTitle}"
-        content: "${body.articleContent}"
-        cover: "${fileID}"
-      `;
-      } else {
-        mediaQL = `
-        title: "${body.articleTitle}"
-        content: "${body.articleContent}"
-        cover: null
-      `;
-      }
-      break;
-
-    case "File":
-      if (body.file) {
-        const res = await upload([body.file], {});
-
-        if (!hasError(res)) {
-          fileID = res[0].id;
-        } else {
-          return res;
-        }
-      }
-
-      mediaQL = `file: "${fileID}"`;
-      break;
-
-    default:
-      break;
-  }
-
-  const mutation = `mutation {
-    createLibraryMedia(
-      input: {
-        data: {
-          title: "${body.title}"
-          library_section: ${body.librarySection}
-          author: ${body.user}
-          media: {
-            __typename: "${typeName}"
-            ${mediaQL}
-          }
-        }
-      }
-    ) {
-      libraryMedia {
-        id
-        created_at
-        title
-      }
-    }
-  }
-  `;
-
-  const options = createOptionsWithBearer();
-
-  return getQuery(mutation, options);
 }
 
 /**********************************************
@@ -673,46 +636,9 @@ export async function search({
       published_at
       title
       preview
-      cover { 
-        url 
-        alternativeText
-      }
-      author { 
-        username
-        firstName
-        lastName
-      }
+      cover ${imageModel}
     }
-    medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
-      id
-      title
-      created_at
-      media {
-        type: __typename
-        ... on ComponentMediaTypeLink {
-          id
-          url
-        }
-        ... on ComponentMediaTypeFile {
-          id
-          file {
-            id
-            created_at
-            caption
-            url
-            mime
-          }
-        }
-        ... on ComponentMediaTypeArticle {
-          id
-          title
-          cover {
-            caption
-          }
-          content
-        }
-      }
-    }
+    medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}") ${simpleLibraryMedia}
     users: searchUsers(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
       username
       firstName
@@ -814,7 +740,7 @@ export async function getChallenges() {
  **********************************************/
 
 /**
- * Upload a file related to an instance to the communtiy API
+ * Upload a file related to an instance to the community API
  * @param {FileList} files The file(s) to upload. The value(s) can be a Buffer or Stream.
  * @param {object} optionalParameters
  * refId:  The ID of the entry which the file(s) will be linked to.

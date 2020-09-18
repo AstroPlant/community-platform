@@ -6,13 +6,17 @@ import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
 import Card from "./Card";
 
+const EmptyContainer = styled(Card)`
+  align-items: center;
+  justify-content: center;
+`;
+
 const Container = styled(Card)`
   && {
     padding: 0;
     height: unset;
   }
 
-  display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
@@ -76,6 +80,14 @@ const ActionButton = styled(Button)`
 `;
 
 export default function NewsCard({ className, featuredArticle }) {
+  if (!featuredArticle) {
+    return (
+      <EmptyContainer>
+        <p>Whoops! Something went wrong...</p>
+      </EmptyContainer>
+    );
+  }
+
   // Checking for cover and replacing placeholders
   let cover = {
     url: featuredArticle.cover

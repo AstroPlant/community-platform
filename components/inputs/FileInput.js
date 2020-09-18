@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
+import RemoveIcon from "../../public/icons/delete.svg";
+import Button from "../Button";
 import Chip from "../Chip";
 import ErrorMessage from "./ErrorMessage";
 import InputLabel from "./InputLabel";
@@ -39,13 +41,27 @@ const FileList = styled.ul`
 const ListItem = styled.li`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   padding: 1rem;
   margin-top: 1rem;
 
+  border: 2px solid ${(props) => props.theme.greyDark};
   border-radius: ${(props) => props.theme.radiusMin};
 
   background-color: ${(props) => props.theme.darkLight};
+`;
+
+const ItemContent = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const RemoveButton = styled(Button)`
+  && {
+    margin: 0;
+    padding: 8px;
+  }
 `;
 
 const FileName = styled.p`
@@ -54,13 +70,9 @@ const FileName = styled.p`
 
 export default function FileInput({ className, id, name, label, ...props }) {
   const [error, setError] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDropRejected,
     onDropAccepted,
     onDrop: props.onDrop,
@@ -71,11 +83,17 @@ export default function FileInput({ className, id, name, label, ...props }) {
   });
 
   function onDropAccepted(files) {
+    setSelectedFiles(files);
     setError(null);
   }
 
   function onDropRejected(fileRejections) {
     setError(fileRejections[0].errors[0].message);
+  }
+
+  function removeFile(name) {
+    const newFiles = [...selectedFiles];
+    setSelectedFiles(newFiles.filter((file) => file.name !== name));
   }
 
   return (
@@ -90,20 +108,28 @@ export default function FileInput({ className, id, name, label, ...props }) {
         )}
       </DropZone>
       {error && <ErrorMessage message={error} />}
-      {acceptedFiles.length != 0 && (
+      {selectedFiles.length != 0 && (
         <>
           <h4>Files</h4>
           <FileList>
-            {acceptedFiles.map((file) => {
+            {selectedFiles.map((file) => {
               const splitName = file.name.split(".");
               const name = splitName[0];
               const extension = splitName[1];
               const size = (file.size / 1000000).toFixed(2);
               return (
                 <ListItem key={name}>
-                  <FileName>{name}</FileName>
-                  <Chip label={extension} />
-                  <Chip label={`${size} mb`} />
+                  <ItemContent>
+                    <FileName>{name}</FileName>
+                    <Chip label={extension} />
+                    <Chip label={`${size} mb`} />
+                  </ItemContent>
+                  <RemoveButton
+                    inverted
+                    color="greyDark"
+                    icon={<RemoveIcon />}
+                    onClick={() => removeFile(file.name)}
+                  />
                 </ListItem>
               );
             })}

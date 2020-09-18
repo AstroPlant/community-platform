@@ -2,56 +2,68 @@
   "kind": "collectionType",
   "collectionName": "articles",
   "info": {
-    "name": "Article"
+    "name": "Article",
+    "description": "An official piece of news from AstroPlant"
   },
   "options": {
     "increments": true
   },
   "attributes": {
-    "cover": {
-      "model": "file",
-      "via": "related",
-      "allowedTypes": [
-        "images",
-        "videos"
-      ],
-      "plugin": "upload",
-      "required": false
+    "title": {
+      "type": "string",
+      "description": "Title of the article.",
+      "required": true,
+      "unique": true
     },
     "slug": {
       "type": "uid",
       "targetField": "title"
     },
-    "title": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
-    "content": {
-      "type": "richtext",
-      "required": true,
-      "minLength": 520
-    },
-    "author": {
-      "plugin": "users-permissions",
-      "model": "user"
+    "cover": {
+      "description": "Image Illustrating the article",
+      "model": "file",
+      "via": "related",
+      "allowedTypes": ["images", "videos"],
+      "plugin": "upload",
+      "required": false
     },
     "preview": {
       "type": "text",
-      "required": false,
+      "description": "A short description of what the article is about.",
+      "required": true,
       "maxLength": 140,
       "minLength": 1
     },
     "categories": {
+      "description": "The categories/topics of the article",
       "collection": "category",
       "via": "article"
     },
+    "content": {
+      "type": "dynamiczone",
+      "description": "Content of the article.",
+      "components": [
+        "content-type.file",
+        "content-type.image",
+        "content-type.link",
+        "content-type.rich-text"
+      ],
+      "min": 1,
+      "required": true
+    },
+    "author": {
+      "description": "User who wrote the article.",
+      "plugin": "users-permissions",
+      "model": "user"
+    },
     "published": {
       "type": "boolean",
+      "description": "Whether or not the article is published.",
       "default": false
     },
     "published_at": {
-      "type": "date"
+      "type": "date",
+      "description": "Date at which the article was published."
     }
   }
 }

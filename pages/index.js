@@ -66,8 +66,8 @@ export async function getServerSideProps(ctx) {
 
   return {
     props: {
-      featuredArticle,
-      mainKit,
+      featuredArticle: featuredArticle || null,
+      mainKit: mainKit || null,
     },
   };
 }

@@ -3,16 +3,22 @@ import React from "react";
 import styled from "styled-components";
 
 const Label = styled.label`
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-  color: white;
+  margin-bottom: 0.75rem;
+
+  font-size: 14px;
+  text-transform: capitalize;
   letter-spacing: 0.025em;
+
+  color: ${(props) => props.theme.light};
 `;
 
-export default function InputLabel(props) {
-  return <Label {...props}>{props.label}</Label>;
+export default function InputLabel({ label, ...props }) {
+  return <Label {...props}>{label}</Label>;
 }
 
 InputLabel.propTypes = {
+  /**
+   * Label to display
+   */
   label: PropTypes.string.isRequired,
 };

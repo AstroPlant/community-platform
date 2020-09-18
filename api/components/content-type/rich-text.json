@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_content_type_rich_texts",
+  "info": {
+    "name": "Rich Text",
+    "description": "Markdown text field. Used for paragraphs, long descriptions ...",
+    "icon": "align-left"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}

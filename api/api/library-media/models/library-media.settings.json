@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "library_medias",
   "info": {
-    "name": "LibraryMedia"
+    "name": "LibraryMedia",
+    "description": "An item of the AstroPlant library"
   },
   "options": {
     "increments": true,
@@ -13,15 +14,32 @@
       "type": "string",
       "required": true
     },
-    "media": {
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "private": false,
+      "required": false
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["links", "tutorial", "article", "album", "files"]
+    },
+    "cover": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": ["images"],
+      "plugin": "upload",
+      "required": false
+    },
+    "content": {
       "type": "dynamiczone",
       "components": [
-        "media-type.link",
-        "media-type.file",
-        "media-type.article"
+        "content-type.file",
+        "content-type.link",
+        "content-type.image",
+        "content-type.rich-text"
       ],
-      "required": true,
-      "max": 1
+      "required": true
     },
     "library_section": {
       "model": "library-section",

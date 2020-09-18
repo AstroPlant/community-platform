@@ -55,7 +55,7 @@ const WordCount = styled.p`
   font-weight: 450;
 `;
 
-export default function LongTextInput({ label, dark, ...props }) {
+export default function LongTextInput({ label, dark, maxLength, ...props }) {
   const [field, meta] = useField(props);
   const hasError = meta.touched && meta.error;
   const disabled = props.disabled;
@@ -69,8 +69,8 @@ export default function LongTextInput({ label, dark, ...props }) {
         hasError={hasError}
       >
         <Input {...field} {...props} />
-        {props.maxLength && (
-          <WordCount>{props.maxLength - meta.value.length}</WordCount>
+        {maxLength && meta.value && (
+          <WordCount>{maxLength - meta.value.length}</WordCount>
         )}
       </InputHolder>
       {hasError ? <ErrorMessage message={meta.error} /> : null}
@@ -79,13 +79,22 @@ export default function LongTextInput({ label, dark, ...props }) {
 }
 
 LongTextInput.propTypes = {
-  /* The label of the input */
+  /**
+   * The label of the input
+   */
   label: PropTypes.string,
-  /* Use the input in darkmode */
+  /**
+   * Use the input in dark mode
+   */
   dark: PropTypes.bool,
+  /**
+   * Maximum number of character allowed by the input
+   */
+  maxLength: PropTypes.number,
 };
 
 LongTextInput.defaultProps = {
   label: null,
   dark: false,
+  maxLength: null,
 };
