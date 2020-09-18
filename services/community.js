@@ -426,74 +426,82 @@ export async function getLibraryMedia(slug) {
  * @param body necessary information to create the media
  */
 export async function createLibraryMedia(body) {
+  // Upload process
+  const uploadFile = async (file) => {
+    const res = await upload([file], {});
+
+    if (!hasError(res)) {
+      return res[0].id;
+    } else {
+      return res;
+    }
+  };
+
+  // Generic Media infos
+
   // Escaping quote characters
   body.title = body.title.split('"').join('\\"');
 
-  // Building typeName
-  const typeName = `ComponentContentType${body.type}`;
+  // Cover File
+  let coverID = null;
 
-  // Building queries
-  let fileID = null;
-  let mediaQL = ``;
-
-  switch (body.type) {
-    case "Link":
-      mediaQL = `url: "${body.url}"`;
-      break;
-
-    case "Article":
-      if (body.articleCover) {
-        const res = await upload([body.articleCover], {});
-
-        if (!hasError(res)) {
-          fileID = res[0].id;
-        } else {
-          return res;
-        }
-
-        mediaQL = `
-        title: "${body.articleTitle}"
-        content: "${body.articleContent}"
-        cover: "${fileID}"
-      `;
-      } else {
-        mediaQL = `
-        title: "${body.articleTitle}"
-        content: "${body.articleContent}"
-        cover: null
-      `;
-      }
-      break;
-
-    case "File":
-      if (body.file) {
-        const res = await upload([body.file], {});
-
-        if (!hasError(res)) {
-          fileID = res[0].id;
-        } else {
-          return res;
-        }
-      }
-
-      mediaQL = `file: "${fileID}"`;
-      break;
-
-    default:
-      break;
+  if (body.cover) {
+    coverID = await uploadFile(body.cover);
   }
+
+  // Building content bloc queries
+
+  const content = await Promise.all(
+    body.content.map(async (bloc) => {
+      // Building typeName
+      const typeName = `ComponentContentType${bloc.type}`;
+      switch (bloc.type) {
+        case "RichText":
+          return `{
+          __typename: "${typeName}"
+          text: "${bloc.text}"
+        }`;
+
+        case "Link":
+          return `{
+          __typename: "${typeName}"
+          url: "${bloc.url}"
+          caption: "${bloc.caption}"
+        }`;
+
+        case "Image":
+          const imageID = await uploadFile(bloc.image);
+          return `{
+          __typename: "${typeName}"
+          image: "${imageID}"
+          caption: "${bloc.caption}"
+        }`;
+
+        case "File":
+          const fileID = await uploadFile(bloc.file);
+          return `{
+          __typename: "${typeName}"
+          file: "${fileID}"
+          title: "${bloc.title}"
+          description: "${bloc.description}"
+        }`;
+
+        default:
+          return null;
+      }
+    })
+  );
 
   const mutation = `mutation {
     createLibraryMedia(
       input: {
         data: {
           title: "${body.title}"
+          type: ${body.type}
           library_section: ${body.librarySection}
           author: ${body.user}
-          media: {
-            __typename: "${typeName}"
-            ${mediaQL}
-          }
+          cover: ${coverID}
+          content: [${content.join(" ")}]
         }
       }
     ) {

@@ -66,6 +66,7 @@ const Button = React.forwardRef(
         inverted={inverted}
         color={color}
         ref={ref}
+        type={props.type || "button"}
         {...props}
       >
         <HoverBar />
