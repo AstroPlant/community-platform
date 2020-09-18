@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Breaks from "../../utils/breakpoints";
+import Cover from "../Cover";
 import Date from "../Date";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
@@ -15,7 +16,7 @@ const Container = styled(Card)`
   flex-direction: column;
 `;
 
-const Cover = styled.img`
+const CoverHolder = styled(Cover)`
   height: 256px;
 
   @media screen and (max-width: ${Breaks.large}) {
@@ -68,20 +69,10 @@ const ArticleDate = styled(Date)`
 `;
 
 export default function ArticleCard({ article, showCover, className }) {
-  // Checking for cover and replacing placeholders
-  let cover = {
-    url: article.cover
-      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + article.cover.url
-      : "/images/placeholder.jpg",
-    alternativeText: article.cover
-      ? article.cover.alternativeText
-      : "A plant sprout growing out of the ground.",
-  };
-
   return (
     <WrapInLink passHref href={"/news/[slug]"} as={`/news/${article.slug}`}>
       <Container animateOnHover className={className}>
-        {showCover && <Cover src={cover.url} alt={cover.alternativeText} />}
+        {showCover && <CoverHolder cover={article.cover} />}
 
         <Content>
           <Title>{article.title}</Title>

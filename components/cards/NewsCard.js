@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import Breaks from "../../utils/breakpoints";
 import Button from "../Button";
+import Cover from "../Cover";
 import Card from "./Card";
 
 const EmptyContainer = styled(Card)`
@@ -22,7 +23,7 @@ const Container = styled(Card)`
   justify-content: center;
 `;
 
-const Cover = styled.img`
+const CoverHolder = styled(Cover)`
   max-height: 188px;
 `;
 
@@ -88,19 +89,9 @@ export default function NewsCard({ className, featuredArticle }) {
     );
   }
 
-  // Checking for cover and replacing placeholders
-  let cover = {
-    url: featuredArticle.cover
-      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + featuredArticle.cover.url
-      : "/images/placeholder.jpg",
-    alternativeText: featuredArticle.cover
-      ? featuredArticle.cover.alternativeText
-      : "A plant sprout growing out of the ground.",
-  };
-
   return (
     <Container className={className}>
-      <Cover src={cover.url} alt={cover.alternativeText} />
+      <CoverHolder cover={featuredArticle.cover} />
       <Content>
         <Title>{featuredArticle.title}</Title>
         <Preview>{featuredArticle.preview}</Preview>

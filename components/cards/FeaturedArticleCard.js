@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import Breaks from "../../utils/breakpoints";
+import Cover from "../Cover";
 import Date from "../Date";
 import UserPreview from "../UserPreview";
 import WrapInLink from "../WrapInLink";
@@ -24,7 +25,12 @@ const Container = styled(Card)`
   }
 `;
 
-const Cover = styled.img`
+const CoverHolder = styled(Cover)`
+  && {
+    border-bottom: 0;
+    border-right: 1px solid ${(props) => props.theme.primary};
+  }
+
   height: 512px;
 
   @media screen and (max-width: ${Breaks.large}) {
@@ -61,20 +67,10 @@ const UserDetails = styled(UserPreview)`
 `;
 
 export default function FeaturedArticleCard({ featuredArticle }) {
-  // Checking for cover and replacing placeholders
-  let cover = {
-    url: featuredArticle.cover
-      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + featuredArticle.cover.url
-      : "/images/placeholder.jpg",
-    alternativeText: featuredArticle.cover
-      ? featuredArticle.cover.alternativeText
-      : "A plant sprout growing out of the ground.",
-  };
-
   return (
     <WrapInLink href={"/news/[slug]"} as={`/news/${featuredArticle.slug}`}>
       <Container>
-        <Cover src={cover.url} alt={cover.alternativeText} />
+        <CoverHolder cover={featuredArticle.cover} />
         <InfosContainer>
           <Date dateString={featuredArticle.published_at} />
           <Title>{featuredArticle.title}</Title>

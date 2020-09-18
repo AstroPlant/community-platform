@@ -7,6 +7,7 @@ import LinkIcon from "../../public/icons/external-link.svg";
 import FileIcon from "../../public/icons/file.svg";
 import TutorialIcon from "../../public/icons/tutorial.svg";
 import Breaks from "../../utils/breakpoints";
+import Cover from "../Cover";
 import Date from "../Date";
 import Icon from "../Icon";
 import WrapInLink from "../WrapInLink";
@@ -27,13 +28,10 @@ const Container = styled(Card)`
   }
 `;
 
-const CoverHolder = styled.div`
+const CoverHolder = styled(Cover)`
   position: relative;
   z-index: 0;
 
-  display: flex;
-
-  overflow: hidden;
   height: 256px;
 
   @media screen and (max-width: ${Breaks.medium}) {
@@ -59,8 +57,6 @@ const InfoHolder = styled.div`
   display: flex;
   flex-direction: column;
 
-  border-top: 1px solid ${(props) => props.theme.primary};
-
   padding: 1rem;
 `;
 
@@ -78,24 +74,13 @@ const MediaTitle = styled.b`
 `;
 
 export default function LibraryMediaCard({ className, media }) {
-  // Checking for cover and replacing placeholders
-  let cover = {
-    url: media.cover
-      ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + media.cover.url
-      : "/images/placeholder.jpg",
-    caption: media.cover
-      ? media.cover.caption
-      : "A plant sprout growing out of the ground.",
-  };
-
   return (
     <WrapInLink
       href={"/library/medias/[slug]"}
       as={`/library/medias/${media.slug}`}
     >
       <Container animateOnHover className={className}>
-        <CoverHolder>
-          <img src={cover.url} alt={cover.caption} />
+        <CoverHolder cover={media.cover}>
           <FloatingIcon color="primary" size={26}>
             {media.type === "album" && <AlbumIcon />}
             {media.type === "article" && <ArticleIcon />}
