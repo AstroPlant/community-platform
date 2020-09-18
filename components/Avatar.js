@@ -22,6 +22,7 @@ const Container = styled.div`
 
 const Placeholder = styled(Icon)`
   margin: 0;
+  cursor: unset;
 `;
 
 export default function Avatar({ size, avatar, ...props }) {

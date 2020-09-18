@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import Breaks from "../../utils/breakpoints";
 import Chip from "../Chip";
+import Cover from "../Cover";
 import ContentRenderer from "./ContentRenderer";
-import PostCover from "./PostCover";
 import PostDetails from "./PostDetails";
 
 const Container = styled.div`
@@ -12,14 +12,29 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  width: 100%;
-  max-width: 744px;
+  width: 744px;
 
   margin: 0 2rem 0 auto;
   padding: 0;
 
   background-color: ${(props) => props.theme.darkLight};
   border-radius: ${(props) => props.theme.radiusMax};
+
+  @media screen and (max-width: ${Breaks.large}) {
+    width: 100%;
+    max-width: 744px;
+  }
+`;
+
+const CoverHolder = styled(Cover)`
+  border-radius: ${(props) => props.theme.radiusMax}
+    ${(props) => props.theme.radiusMax} 0 0;
+
+  height: 512px;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    height: 256px;
+  }
 `;
 
 const ContentHolder = styled.div`
@@ -40,7 +55,7 @@ export default function Post({ article, media }) {
   if (article) {
     return (
       <Container>
-        <PostCover cover={article.cover} />
+        <CoverHolder cover={article.cover} />
 
         <ContentHolder>
           <Topics>
@@ -62,7 +77,7 @@ export default function Post({ article, media }) {
   if (media) {
     return (
       <Container>
-        <PostCover cover={media.cover} />
+        <CoverHolder cover={media.cover} />
         <ContentHolder>
           <Title>{media.title}</Title>
           <PostDetails author={media.author} date={media.created_at} />

@@ -18,9 +18,12 @@ const Container = styled(Card)`
     align-items: center;
 
     width: calc(100% - 4rem);
+    max-width: 1024px;
+
     height: unset;
 
     padding: 1rem;
+    margin: 1rem 0;
 
     background-color: ${(props) =>
       props.type === "success" ? props.theme.primary : props.theme.error};

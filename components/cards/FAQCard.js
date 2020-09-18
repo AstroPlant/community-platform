@@ -10,16 +10,13 @@ import Card from "./Card";
 
 const Container = styled(Card)`
   && {
-    height: unset;
+    height: min-content;
   }
 
-  display: flex;
   flex-direction: column;
   justify-content: center;
 
   margin-bottom: 2rem;
-
-  transition: height 0.3s ease;
 `;
 
 const QuestionRow = styled.div`
@@ -30,23 +27,21 @@ const QuestionRow = styled.div`
   color: ${(props) => (props.open ? props.theme.primary : props.theme.light)};
 
   &:hover {
+    cursor: pointer;
     color: ${(props) => props.theme.primary};
-    fill: ${(props) => props.theme.primary};
+    svg {
+      fill: ${(props) => props.theme.primary};
+    }
   }
 `;
 
 const AnswerRow = styled.div`
-  display: flex;
-
-  height: ${(props) => (props.open ? "auto" : "0")};
-
+  display: ${(props) => (props.open ? "flex" : "none")};
   flex-direction: column;
 
-  margin-top: ${(props) => (props.open ? "1rem" : "0")};
+  margin-top: ${(props) => (props.open ? "2rem" : "0")};
 
   overflow: hidden;
-
-  transition: margin-top 0.1s linear;
 `;
 
 const DateRow = styled.div`
@@ -57,15 +52,14 @@ const DateRow = styled.div`
   margin-top: 1rem;
 `;
 
-export default function FAQCard(props) {
+export default function FAQCard({ faq }) {
   const [open, setOpen] = useState(false);
-  const faq = props.faq;
+
   return (
     <Container>
-      <QuestionRow open={open}>
+      <QuestionRow open={open} onClick={() => setOpen(!open)}>
         <ReactMarkdown source={faq.question} />
         <Dropdown
-          onClick={() => setOpen(!open)}
           reverse={open}
           color={open ? "primary" : "light"}
           icon={<ArrowIcon />}

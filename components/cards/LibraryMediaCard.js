@@ -63,7 +63,7 @@ const InfoHolder = styled.div`
 const MediaTitle = styled.b`
   max-height: 20px;
 
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -90,8 +90,8 @@ export default function LibraryMediaCard({ className, media }) {
           </FloatingIcon>
         </CoverHolder>
         <InfoHolder>
-          <MediaTitle>{media.title}</MediaTitle>
           <Date dateString={media.created_at} />
+          <MediaTitle>{media.title}</MediaTitle>
         </InfoHolder>
       </Container>
     </WrapInLink>

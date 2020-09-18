@@ -109,12 +109,6 @@ export const GlobalStyle = createGlobalStyle`
     display: none;
   }
 
-  @media screen and (max-width: ${Breaks.large}){
-    p,b {
-      font-size: 16px;
-    }
-  }
-
   @media screen and (max-width: ${Breaks.medium}){
     p,b {
       font-size: 14px;

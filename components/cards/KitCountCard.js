@@ -4,9 +4,9 @@ import styled from "styled-components";
 import ActivityIndicator from "../ActivityIndicator";
 import Card from "./Card";
 
-const MarginCard = styled(Card)`
+const Container = styled(Card)`
   && {
-    margin-bottom: 1rem;
+    margin: 0 0 1rem 0;
     height: unset;
   }
 
@@ -20,7 +20,7 @@ const CountRow = styled.div`
 `;
 
 const Title = styled.i`
-  font-size: 1.25rem;
+  font-size: 1em;
   font-weight: 300;
 `;
 
@@ -29,15 +29,15 @@ const Count = styled.p`
   font-weight: 600;
 `;
 
-export default function KitCountCard(props) {
+export default function KitCountCard({ title, count }) {
   return (
-    <MarginCard>
-      <Title>{props.title}</Title>
+    <Container>
+      <Title>{title}</Title>
       <CountRow>
         <ActivityIndicator active />
-        <Count>{props.count}</Count>
+        <Count>{count}</Count>
       </CountRow>
-    </MarginCard>
+    </Container>
   );
 }
 

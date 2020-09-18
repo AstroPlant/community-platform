@@ -84,6 +84,7 @@ export default function LoginForm() {
             />
             <Row>
               <Checkbox name="rememberMe">Remember Me</Checkbox>
+              {/* 
               <a
                 onClick={async () => {
                   const res = await forgotPassword("test@example.com");
@@ -91,7 +92,8 @@ export default function LoginForm() {
                 }}
               >
                 Password Forgotten ?
-              </a>
+              </a> 
+              */}
             </Row>
 
             {isSubmitting ? (

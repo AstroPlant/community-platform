@@ -3,7 +3,7 @@ import SnackBar from "../components/SnackBar";
 
 const SnackBarContext = createContext();
 
-const SCREEN_TIME = 5000;
+const SCREEN_TIME = 3000;
 
 export default function SnackBarProvider({ children }) {
   const [alerts, setAlerts] = useState([]);

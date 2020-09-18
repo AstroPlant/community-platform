@@ -11,7 +11,7 @@ const StyledDate = styled.p`
 export default function Date({ dateString, ...props }) {
   const date = parseISO(dateString);
 
-  return <StyledDate {...props}>{format(date, "MMMM d, yyyy")}</StyledDate>;
+  return <StyledDate {...props}>{format(date, "MMM d, yyyy")}</StyledDate>;
 }
 
 Date.propTypes = {
