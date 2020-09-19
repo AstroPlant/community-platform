@@ -56,7 +56,7 @@ export default function LibraryGrid(props) {
         <SectionGrid key={section.id}>
           <LibrarySectionCard
             librarySection={section}
-            mediaCount={section.all_medias.length}
+            mediaCount={section.library_medias_count}
           />
           <FeaturedMediaGrid>
             {section.featured_medias.map((media) => (

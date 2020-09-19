@@ -524,19 +524,12 @@ export async function createLibraryMedia(body) {
  **********************************************/
 
 /***
- * Fetches all library sections
+ * Fetches all library sections slugs
  */
-export async function getAllLibrarySections() {
+export async function getLibrarySectionsPaths() {
   const query = `{
     librarySections {
-      id
       slug
-      title
-      description
-      featured_medias: library_medias(limit: 3, sort: "created_at:desc") ${simpleLibraryMedia}
-      all_medias: library_medias {
-        id
-      }
     }
   }
   `;
@@ -564,12 +557,17 @@ export async function getAllLibrarySectionNames() {
 }
 
 /***
- * Fetches all library sections slugs
+ * Fetches all library sections
  */
-export async function getLibrarySectionsPaths() {
+export async function getAllLibrarySections() {
   const query = `{
     librarySections {
+      id
       slug
+      title
+      description
+      featured_medias: library_medias(limit: 3, sort: "created_at:desc") ${simpleLibraryMedia}
+      library_medias_count
     }
   }
   `;
@@ -591,13 +589,7 @@ export async function getLibrarySection(slug) {
       title
       description
       library_medias ${simpleLibraryMedia}
-    }
-    mediaCount: libraryMediasConnection(
-      where: { library_section: { slug: "${slug}" } }
-    ) {
-      aggregate {
-        count
-      }
+      library_medias_count
     }
   }`;
 

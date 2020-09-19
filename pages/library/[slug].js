@@ -20,7 +20,7 @@ const InfoSection = styled.div`
   }
 `;
 
-function LibrarySectionPage({ section, mediaCount }) {
+function LibrarySectionPage({ section }) {
   return (
     <MainLayout
       pageTitle={section.title}
@@ -30,7 +30,7 @@ function LibrarySectionPage({ section, mediaCount }) {
       <Grid>
         <MediasGrid medias={section.library_medias} />
         <InfoSection>
-          <MediaNumber>{mediaCount} medias</MediaNumber>
+          <MediaNumber>{section.library_medias_count} medias</MediaNumber>
           <p>{section.description}</p>
         </InfoSection>
       </Grid>
@@ -59,7 +59,6 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       section: data.librarySections[0] || null,
-      mediaCount: data.mediaCount.aggregate.count || null,
     },
     revalidate: REVALIDATION_DELAY,
   };

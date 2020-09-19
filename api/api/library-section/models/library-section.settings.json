@@ -26,8 +26,12 @@
       "maxLength": 180
     },
     "library_medias": {
-      "via": "library_section",
-      "collection": "library-media"
+      "collection": "library-media",
+      "via": "library_section"
+    },
+    "library_medias_count": {
+      "type": "biginteger",
+      "default": "0"
     }
   }
 }

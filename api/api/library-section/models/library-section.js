@@ -1,8 +1,21 @@
-'use strict';
+"use strict";
 
-/**
- * Read the documentation (https://strapi.io/documentation/v3.x/concepts/models.html#life-cycle-callbacks)
- * to customize this model
- */
+async function updateMediaCount(sectionID, mediaArray) {
+  await strapi.query("library-section").update(
+    { id: sectionID },
+    {
+      library_medias_count: mediaArray ? mediaArray.length : 0
+    }
+  );
+}
 
-module.exports = {};
+module.exports = {
+  lifecycles: {
+    async afterCreate(result, data) {
+      updateMediaCount(result.id, result.library_medias);
+    },
+    async afterUpdate(result, params, data) {
+      updateMediaCount(result.id, result.library_medias);
+    }
+  }
+};
