@@ -87,7 +87,7 @@ module.exports = {
 
     try {
       // Try to create the user on the data api if it doesn't already exist
-      const success = await strapi.config.functions.astroplant.signup(ctx, {
+      await strapi.config.functions.astroplant.signup(ctx, {
         username: username,
         email: email,
         password: password
