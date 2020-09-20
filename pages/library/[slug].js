@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import LibraryMediaCard from "../../components/cards/LibraryMediaCard";
 import Grid from "../../components/grids/Grid";
-import MediasGrid from "../../components/grids/MediasGrid";
+import ItemsGrid from "../../components/grids/ItemsGrid";
 import MainLayout from "../../components/layouts/MainLayout";
 import withFallback from "../../hocs/withFallback";
 import {
@@ -12,6 +13,7 @@ import { REVALIDATION_DELAY } from "../../utils/settings";
 
 const MediaNumber = styled.h3`
   color: ${(props) => props.theme.primary};
+  margin-bottom: 1rem;
 `;
 
 const InfoSection = styled.div`
@@ -27,12 +29,16 @@ function LibrarySectionPage({ section }) {
       metaTitle={section.title + " Library"}
       metaDescription={section.description}
     >
-      <Grid>
-        <MediasGrid medias={section.library_medias} />
+      <Grid inverted>
         <InfoSection>
           <MediaNumber>{section.library_medias_count} medias</MediaNumber>
           <p>{section.description}</p>
         </InfoSection>
+        <ItemsGrid>
+          {section.library_medias.map((media) => (
+            <LibraryMediaCard key={media.id} media={media} />
+          ))}
+        </ItemsGrid>
       </Grid>
     </MainLayout>
   );

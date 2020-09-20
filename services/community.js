@@ -566,7 +566,6 @@ export async function getAllLibrarySections() {
       slug
       title
       description
-      featured_medias: library_medias(limit: 3, sort: "created_at:desc") ${simpleLibraryMedia}
       library_medias_count
     }
   }

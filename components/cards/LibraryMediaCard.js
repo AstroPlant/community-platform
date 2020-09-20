@@ -6,7 +6,6 @@ import ArticleIcon from "../../public/icons/article.svg";
 import LinkIcon from "../../public/icons/external-link.svg";
 import FileIcon from "../../public/icons/file.svg";
 import TutorialIcon from "../../public/icons/tutorial.svg";
-import Breaks from "../../utils/breakpoints";
 import Cover from "../Cover";
 import Date from "../Date";
 import Icon from "../Icon";
@@ -20,12 +19,6 @@ const Container = styled(Card)`
 
   display: flex;
   flex-direction: column;
-
-  @media screen and (max-width: ${Breaks.medium}) {
-    align-items: center;
-
-    max-height: 96px;
-  }
 `;
 
 const CoverHolder = styled(Cover)`
@@ -33,10 +26,6 @@ const CoverHolder = styled(Cover)`
   z-index: 0;
 
   height: 256px;
-
-  @media screen and (max-width: ${Breaks.medium}) {
-    display: none;
-  }
 `;
 
 const FloatingIcon = styled(Icon)`
@@ -63,14 +52,17 @@ const InfoHolder = styled.div`
 const MediaTitle = styled.b`
   max-height: 20px;
 
-  margin-top: 0.5rem;
-
   overflow: hidden;
   text-overflow: ellipsis;
 
   font-size: 18px;
   line-height: 20px;
   white-space: nowrap;
+`;
+
+const MediaDate = styled(Date)`
+  font-size: 14px;
+  margin-bottom: 0.5rem;
 `;
 
 export default function LibraryMediaCard({ className, media }) {
@@ -90,7 +82,7 @@ export default function LibraryMediaCard({ className, media }) {
           </FloatingIcon>
         </CoverHolder>
         <InfoHolder>
-          <Date dateString={media.created_at} />
+          <MediaDate dateString={media.created_at} />
           <MediaTitle>{media.title}</MediaTitle>
         </InfoHolder>
       </Container>

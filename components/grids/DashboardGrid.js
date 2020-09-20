@@ -20,8 +20,8 @@ const GridContainer = styled(Grid)`
 
 const ResponsiveGridElement = styled.div`
   @media screen and (max-width: ${Breaks.large}) {
-    grid-row: unset;
-    grid-column: unset;
+    grid-row: unset !important;
+    grid-column: unset !important;
   }
 `;
 

@@ -28,13 +28,15 @@ const Container = styled(Card)`
 const CoverHolder = styled(Cover)`
   && {
     border-bottom: 0;
-    border-right: 1px solid ${(props) => props.theme.primary};
-  }
+    border-right: 1px solid ${(props) => props.theme.greyDark};
 
-  height: 512px;
+    height: 512px;
 
-  @media screen and (max-width: ${Breaks.large}) {
-    max-height: 224px;
+    @media screen and (max-width: ${Breaks.large}) {
+      max-height: 224px;
+      border-right: 0;
+      border-bottom: 1px solid ${(props) => props.theme.greyDark};
+    }
   }
 `;
 

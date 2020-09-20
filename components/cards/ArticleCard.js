@@ -36,7 +36,7 @@ const Content = styled.div`
   justify-content: flex-start;
 
   background-color: ${(props) => props.theme.darkLight};
-  padding: 1.5rem;
+  padding: 1rem 1.25rem;
 `;
 
 const Title = styled.b`
@@ -45,7 +45,6 @@ const Title = styled.b`
   margin-bottom: 0.5rem;
 
   font-size: 18px;
-  line-height: 1.5em;
   text-overflow: ellipsis;
 
   color: ${(props) => props.theme.primary};
@@ -57,15 +56,14 @@ const Preview = styled.p`
 
   margin-bottom: 0.5rem;
 
-  line-height: 1.5em;
   overflow: hidden;
   text-overflow: ellipsis;
-
   word-break: break-word;
 `;
 
 const ArticleDate = styled(Date)`
-  align-self: flex-end;
+  font-size: 14px;
+  margin-bottom: 0.5rem;
 `;
 
 export default function ArticleCard({ article, showCover, className }) {
@@ -75,9 +73,10 @@ export default function ArticleCard({ article, showCover, className }) {
         {showCover && <CoverHolder cover={article.cover} />}
 
         <Content>
+          <ArticleDate dateString={article.published_at} />
+
           <Title>{article.title}</Title>
           <Preview>{article.preview}</Preview>
-          <ArticleDate dateString={article.published_at} />
         </Content>
       </Container>
     </WrapInLink>

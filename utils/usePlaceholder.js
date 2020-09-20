@@ -22,11 +22,6 @@ export default function usePlaceholder(cover) {
       />
     );
   } else {
-    return (
-      <img
-        style={{ width: "unset" }}
-        src={`/images/placeholders/placeholder-${number + 1}.svg`}
-      />
-    );
+    return <img src={`/images/placeholders/placeholder-${number + 1}.svg`} />;
   }
 }

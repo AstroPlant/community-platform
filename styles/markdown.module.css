@@ -102,10 +102,14 @@
 
 .md img {
   opacity: 0.7;
-  margin: 0.5rem;
 
   border-radius: 8px;
   transition: opacity 0.2s ease;
+
+  max-height: 320px;
+  object-fit: contain;
+
+  align-self: center;
 }
 
 .md img:hover {

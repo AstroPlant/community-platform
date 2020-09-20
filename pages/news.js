@@ -1,5 +1,6 @@
+import ArticleCard from "../components/cards/ArticleCard";
 import FeaturedArticleCard from "../components/cards/FeaturedArticleCard";
-import ArticleGrid from "../components/grids/ArticleGrid";
+import ItemsGrid from "../components/grids/ItemsGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getArticles } from "../services/community";
 import { REVALIDATION_DELAY } from "../utils/settings";
@@ -12,7 +13,11 @@ export default function News({ featured, articles }) {
       metaDescription={"All the official news and update about AstroPlant !"}
     >
       <FeaturedArticleCard featuredArticle={featured} />
-      <ArticleGrid articles={articles} />
+      <ItemsGrid columns={4}>
+        {articles.map((article) => (
+          <ArticleCard key={article.id} article={article} />
+        ))}
+      </ItemsGrid>
     </MainLayout>
   );
 }

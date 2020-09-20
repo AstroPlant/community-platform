@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 const HoverBar = styled.div`
   position: absolute;
+  z-index: 2;
+
   top: 0%;
   left: 0%;
 

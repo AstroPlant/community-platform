@@ -1,5 +1,8 @@
-import HelpGrid from "../components/grids/HelpGrid";
+import HelpCard from "../components/cards/HelpCard";
+import HelpSectionCard from "../components/cards/HelpSectionCard";
+import ItemsGrid from "../components/grids/ItemsGrid";
 import MainLayout from "../components/layouts/MainLayout";
+import SlackIcon from "../public/icons/slack.svg";
 import { getHelpSections } from "../services/community";
 import { REVALIDATION_DELAY } from "../utils/settings";
 
@@ -13,7 +16,17 @@ export default function Help({ helpSections }) {
           "Help section of AstroPlant, frequently asked questions, community support."
         }
       >
-        <HelpGrid helpSections={helpSections} />
+        <ItemsGrid>
+          {helpSections.map((section) => (
+            <HelpSectionCard helpSection={section} key={section.id} />
+          ))}
+          <HelpCard
+            iconSVG={<SlackIcon />}
+            iconSize={96}
+            title={"Ask the community!"}
+            href="http://astroplant.slack.com/"
+          />
+        </ItemsGrid>
       </MainLayout>
     </>
   );

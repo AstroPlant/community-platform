@@ -24,7 +24,7 @@ const ButtonContainer = styled.button`
   justify-content: center;
   text-align: center;
 
-  padding: 0.5rem 1rem;
+  padding: ${(props) => (props.isIcon ? "0.5rem" : "0.5rem 1rem")};
   margin: 0.25rem 0.5rem;
 
   width: ${(props) => (props.large ? "20rem" : "")};
@@ -45,7 +45,7 @@ const ButtonContainer = styled.button`
 
   &:hover ${HoverBar} {
     background-color: ${(props) =>
-      props.inverted && !props.disbaled ? props.theme.light : props.theme.dark};
+      props.inverted && !props.disabled ? props.theme.light : props.theme.dark};
     transform: scale(1);
   }
 `;
@@ -60,6 +60,8 @@ const IconHolder = styled(Icon)`
  */
 const Button = React.forwardRef(
   ({ color, icon, inverted, label, large, ...props }, ref) => {
+    const isIcon = icon != null;
+
     return (
       <ButtonContainer
         large={large}
@@ -67,6 +69,7 @@ const Button = React.forwardRef(
         color={color}
         ref={ref}
         type={props.type || "button"}
+        isIcon={isIcon}
         {...props}
       >
         <HoverBar />

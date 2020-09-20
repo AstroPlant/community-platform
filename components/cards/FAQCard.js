@@ -11,18 +11,20 @@ import Card from "./Card";
 const Container = styled(Card)`
   && {
     height: min-content;
+
+    flex-direction: column;
+    justify-content: center;
+
+    margin-bottom: 2rem;
+    padding: 0;
   }
-
-  flex-direction: column;
-  justify-content: center;
-
-  margin-bottom: 2rem;
 `;
 
 const QuestionRow = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+
+  padding: 2rem;
 
   color: ${(props) => (props.open ? props.theme.primary : props.theme.light)};
 
@@ -39,17 +41,21 @@ const AnswerRow = styled.div`
   display: ${(props) => (props.open ? "flex" : "none")};
   flex-direction: column;
 
-  margin-top: ${(props) => (props.open ? "2rem" : "0")};
+  padding: 1.25rem 2rem;
+
+  background-color: #292929;
+  border-top: 2px solid ${(props) => props.theme.greyDark};
 
   overflow: hidden;
 `;
 
-const DateRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+const FAQDropdown = styled(Dropdown)`
+  margin-left: 0.5rem;
+`;
 
-  margin-top: 1rem;
+const AnswerDate = styled(Date)`
+  font-size: 14px;
+  margin-bottom: 1rem;
 `;
 
 export default function FAQCard({ faq }) {
@@ -59,17 +65,16 @@ export default function FAQCard({ faq }) {
     <Container>
       <QuestionRow open={open} onClick={() => setOpen(!open)}>
         <ReactMarkdown source={faq.question} />
-        <Dropdown
+        <FAQDropdown
           reverse={open}
           color={open ? "primary" : "light"}
           icon={<ArrowIcon />}
         />
       </QuestionRow>
       <AnswerRow open={open}>
+        <AnswerDate dateString={faq.updated_at} />
+
         <ReactMarkdown source={faq.answer} className={styles.md} />
-        <DateRow>
-          <Date dateString={faq.updated_at} />
-        </DateRow>
       </AnswerRow>
     </Container>
   );

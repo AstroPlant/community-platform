@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../providers/Auth";
+import CloseIcon from "../public/icons/close.svg";
 import MenuIcon from "../public/icons/menu.svg";
 import Notification from "../public/icons/notification.svg";
 import SearchIcon from "../public/icons/search.svg";
@@ -97,8 +98,10 @@ const Separator = styled.div`
 `;
 
 const HeaderButton = styled(Button)`
-  max-height: 40px;
-  margin: 0 0.5rem;
+  && {
+    max-height: 40px;
+    margin: 0 0.5rem;
+  }
 `;
 
 const HeaderAvatar = styled(Avatar)`
@@ -114,8 +117,10 @@ const SignUpButtonHolder = styled.div`
 // Mobile Components
 
 const DrawerMenuButton = styled(HeaderButton)`
-  @media screen and (min-width: ${Breaks.large}) {
-    display: none;
+  && {
+    @media screen and (min-width: ${Breaks.large}) {
+      display: none;
+    }
   }
 `;
 
@@ -187,7 +192,7 @@ export default function Header() {
           <HeaderButton
             inverted
             color="dark"
-            icon={<SearchIcon />}
+            icon={openSearch ? <CloseIcon /> : <SearchIcon />}
             onClick={() => toggleSearch()}
           />
 

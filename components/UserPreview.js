@@ -34,7 +34,7 @@ export default function UserPreview({ user, className }) {
 
   return (
     <Container className={className}>
-      <AvatarHolder size={64} avatar={user.avatar} />
+      <AvatarHolder size={52} avatar={user.avatar} />
 
       <DetailColumn>
         {hasFullName ? (

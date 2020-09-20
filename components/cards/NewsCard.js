@@ -54,7 +54,6 @@ const Title = styled.b`
 const Preview = styled.p`
   margin-bottom: 0.5rem;
 
-  line-height: 1.5em;
   max-height: 3em;
   overflow: hidden;
   text-overflow: ellipsis;

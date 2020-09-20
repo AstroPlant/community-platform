@@ -54,7 +54,6 @@ const Separator = styled.div`
 `;
 
 const Indication = styled.p`
-  line-height: 1.5em;
   a {
     font-weight: 450;
     color: ${(props) => props.theme.primary};

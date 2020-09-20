@@ -1,5 +1,6 @@
 import React from "react";
-import LibraryGrid from "../components/grids/LibraryGrid";
+import LibrarySectionCard from "../components/cards/LibrarySectionCard";
+import ItemsGrid from "../components/grids/ItemsGrid";
 import MainLayout from "../components/layouts/MainLayout";
 import { getAllLibrarySections } from "../services/community";
 import { REVALIDATION_DELAY } from "../utils/settings";
@@ -11,7 +12,15 @@ export default function Library({ librarySections }) {
       metaTitle={"Library"}
       metaDescription={"Everything you need to get started and contribute."}
     >
-      <LibraryGrid librarySections={librarySections} />
+      <ItemsGrid>
+        {librarySections.map((section) => (
+          <LibrarySectionCard
+            key={section.id}
+            librarySection={section}
+            mediaCount={section.library_medias_count}
+          />
+        ))}
+      </ItemsGrid>
     </MainLayout>
   );
 }

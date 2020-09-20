@@ -21,6 +21,7 @@ function Home({ featuredArticle, mainKit }) {
       metaDescription={
         "AstroPlant platform. Grow with the community, manage your kits. Growing a new generation of urban and space farmers."
       }
+      limitWidth={false}
     >
       <h1>
         Welcome

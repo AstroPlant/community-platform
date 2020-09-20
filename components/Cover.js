@@ -12,14 +12,17 @@ const Container = styled.div`
 
   overflow: hidden;
 
-  border-bottom: 1px solid ${(props) => props.theme.primary};
+  border-bottom: ${(props) =>
+    !props.theme.hasCover && `1px solid ${props.theme.greyDark}`};
 `;
 
 export default function Cover({ className, cover, children }) {
   const image = usePlaceholder(cover);
 
+  const hasCover = cover != null;
+
   return (
-    <Container className={className}>
+    <Container hasCover={hasCover} className={className}>
       {image}
       {children}
     </Container>

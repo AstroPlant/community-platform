@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import ArticleCard from "./cards/ArticleCard";
+import LibraryMediaCard from "./cards/LibraryMediaCard";
 import UserCard from "./cards/UserCard";
 import Chip from "./Chip";
-import ArticleGrid from "./grids/ArticleGrid";
 import FAQGrid from "./grids/FAQGrid";
 import Grid from "./grids/Grid";
-import MediasGrid from "./grids/MediasGrid";
+import ItemsGrid from "./grids/ItemsGrid";
 
 const ResultColumn = styled.div`
   padding: 0.5rem 0 2rem 0;
@@ -74,6 +75,12 @@ const ResultDescription = styled.h3`
   margin-bottom: 1rem;
 `;
 
+const ResultsGrid = styled(ItemsGrid)`
+  && {
+    grid-template-rows: unset;
+  }
+`;
+
 const UserGrid = styled(Grid)`
   && {
     grid-template-columns: 1fr;
@@ -122,11 +129,19 @@ export default function SearchResults({ results, params }) {
         {activeTab === "All" && (
           <>
             <h4>News</h4>
-            <ArticleGrid articles={results.news} />
+            <ResultsGrid>
+              {results.news.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </ResultsGrid>
             <h4>Frequently Asked Questions (FAQs)</h4>
             <FAQGrid faqs={results.faqs} />
             <h4>Library Medias</h4>
-            <MediasGrid medias={results.medias} />
+            <ResultsGrid>
+              {results.medias.map((media) => (
+                <LibraryMediaCard key={media.id} media={media} />
+              ))}
+            </ResultsGrid>
             <h4>Space Farmers</h4>
             <UserGrid>
               {results.users.map((user) => (
@@ -138,13 +153,21 @@ export default function SearchResults({ results, params }) {
         {activeTab === "news" && (
           <>
             <h4>News</h4>
-            <ArticleGrid articles={results.news} />
+            <ResultsGrid>
+              {results.news.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </ResultsGrid>
           </>
         )}
         {activeTab === "medias" && (
           <>
             <h4>Library Medias</h4>
-            <MediasGrid medias={results.medias} />
+            <ResultsGrid>
+              {results.medias.map((media) => (
+                <LibraryMediaCard key={media.id} media={media} />
+              ))}
+            </ResultsGrid>
           </>
         )}
         {activeTab === "faqs" && (

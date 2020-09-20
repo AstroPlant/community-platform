@@ -12,7 +12,7 @@ const Container = styled.div`
   width: ${(props) => props.size + "px"};
   height: ${(props) => props.size + "px"};
 
-  border-radius: ${(props) => props.theme.radiusMax};
+  border-radius: 50%;
 
   background-color: ${(props) => props.theme.secondary};
   color: ${(props) => props.theme.light};
@@ -34,7 +34,7 @@ export default function Avatar({ size, avatar, ...props }) {
           alt={`user's avatar`}
         />
       ) : (
-        <Placeholder size={size / 1.25}>
+        <Placeholder size={size / 1.5}>
           <PersonIcon />
         </Placeholder>
       )}

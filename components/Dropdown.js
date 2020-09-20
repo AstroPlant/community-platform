@@ -13,15 +13,22 @@ const Container = styled.div`
   transform: ${(props) => (props.reverse ? "rotate(180deg)" : "")};
 `;
 
-const Dropdown = React.forwardRef((props, ref) => (
-  <Container ref={ref} reverse={props.reverse} onClick={props.onClick}>
-    {props.icon && (
-      <Icon size={24} color={props.color}>
-        {props.icon}
-      </Icon>
-    )}
-  </Container>
-));
+const Dropdown = React.forwardRef(
+  ({ className, color, icon, reverse, onClick }, ref) => (
+    <Container
+      ref={ref}
+      className={className}
+      reverse={reverse}
+      onClick={onClick}
+    >
+      {icon && (
+        <Icon size={24} color={color}>
+          {icon}
+        </Icon>
+      )}
+    </Container>
+  )
+);
 
 Dropdown.propTypes = {
   /**
