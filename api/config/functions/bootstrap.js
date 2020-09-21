@@ -19,11 +19,11 @@ function generatePassword(length) {
  * updates the given permission object to enabled: true
  * @param {array} perms to enable
  */
-const enablePerms = async perms => {
+const enablePerms = async (perms) => {
   for (let perm of perms) {
     await strapi.query("permission", "users-permissions").update(
       {
-        id: perm.id
+        id: perm.id,
       },
       { enabled: true }
     );
@@ -51,8 +51,8 @@ module.exports = async () => {
     .query("role", "users-permissions")
     .findOne({ type: "authenticated" }, ["id"]);
 
-  const botUser = await strapi.query("user", "users-permissions").findOne({
-    username: "astrobot"
+  let botUser = await strapi.query("user", "users-permissions").findOne({
+    username: "astrobot",
   });
 
   if (!botUser) {
@@ -65,7 +65,7 @@ module.exports = async () => {
       password: generatePassword(12),
       role: authenticatedRole.id || null,
       description: "I am a bot used by the AstroPlant team.",
-      confirmed: true
+      confirmed: true,
     });
   }
 
@@ -89,9 +89,9 @@ module.exports = async () => {
         "help-section",
         "library-section",
         "user",
-        "userspermissions"
+        "userspermissions",
       ],
-      action: ["find", "findone", "searchusers"]
+      action: ["find", "findone", "searchusers"],
     });
 
   await enablePerms(publicPerms);
@@ -104,7 +104,7 @@ module.exports = async () => {
     .query("permission", "users-permissions")
     .find({
       role: [authenticatedRole.id],
-      controller: ["library-media"]
+      controller: ["library-media"],
     });
 
   const usersPerms = await strapi
@@ -112,7 +112,7 @@ module.exports = async () => {
     .find({
       role: [authenticatedRole.id],
       controller: ["user"],
-      action: ["update"]
+      action: ["update"],
     });
 
   const uploadPerms = await strapi
@@ -120,7 +120,7 @@ module.exports = async () => {
     .find({
       role: [authenticatedRole.id],
       type: "upload",
-      action: ["upload"]
+      action: ["upload"],
     });
 
   const authenticatedPerms = [...mediaPerms, ...uploadPerms, ...usersPerms];
@@ -144,9 +144,9 @@ module.exports = async () => {
       content: [
         {
           __component: "content-type.rich-text",
-          text: "I am the first article can you believe it ?!"
-        }
-      ]
+          text: "I am the first article can you believe it ?!",
+        },
+      ],
     });
   }
 
