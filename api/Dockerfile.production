@@ -7,7 +7,7 @@ FROM strapi/base
 WORKDIR /usr/srv/app
 
 # Copy packages to the docker image
-COPY package.json ./
+COPY package*.json ./
 
 # Installing dependencies
 RUN npm ci --only=production
