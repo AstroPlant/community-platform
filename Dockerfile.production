@@ -1,0 +1,26 @@
+# Dockerfile used to create the production image
+# Environment variables are set inside the Kubernetes cofiguration files
+
+FROM node:12-alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy packages to the docker image
+COPY package*.json ./
+
+# Installing dependencies
+RUN npm ci
+
+# Copy the rest of the content
+COPY . .
+
+ENV NODE_ENV=production
+ENV NEXT_PUBLIC_STRAPI_PUBLIC_URL=
+ENV NEXT_PUBLIC_STRAPI_CLUSTER_URL=
+
+RUN npm run build
+
+EXPOSE 3000:3000
+
+CMD npm run start

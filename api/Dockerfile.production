@@ -1,0 +1,36 @@
+# Dockerfile used to create the production image
+# Environment variables are set inside the Kubernetes cofiguration files
+
+FROM strapi/base
+
+# Create app directory
+WORKDIR /usr/srv/app
+
+# Copy packages to the docker image
+COPY package.json ./
+
+# Installing dependencies
+RUN npm ci --only=production
+
+# Copy the rest of the content
+COPY . ./
+
+ENV NODE_ENV=production
+ENV DATABASE_CLIENT=postgres
+ENV DATABASE_HOST=db
+ENV DATABASE_PORT=5432
+ENV DATABASE_NAME=strapi
+ENV DATABASE_USERNAME=
+ENV DATABASE_PASSWORD=
+ENV PRODUCTION_URL=
+ENV ADMIN_JWT_SECRET=
+
+RUN npm run build
+
+# Opening port 1337
+EXPOSE 1337:1337
+
+# Mounting volume to current directory
+VOLUME [ "./:/usr/srv/app" ]
+
+CMD npm run start

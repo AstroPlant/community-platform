@@ -1,0 +1,9 @@
+{
+  "jwt": {
+    "expiresIn": "30d"
+  },
+  "cors": {
+    "enabled": true,
+    "origin": "*"
+  }
+}

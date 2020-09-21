@@ -1,17 +1,18 @@
-import React, {useEffect} from "react";
+import { useEffect } from "react";
 
 /**
  * Hook that execute a task when a click is detected
- * outside of the passed ref
+ * outside of both reference.
  */
-export function useOutsideClick(ref, task) {
+export function useOutsideClick(ref, triggerRef, onOutsideClick) {
   useEffect(() => {
-    /**
-     * Calls the task function if clicked on outside of element
-     */
     function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        task();
+      const clickOutsideOfElement =
+        ref.current && !ref.current.contains(event.target);
+      const clickOutsideTrigger =
+        triggerRef.current && !triggerRef.current.contains(event.target);
+      if (clickOutsideOfElement && clickOutsideTrigger) {
+        onOutsideClick();
       }
     }
 

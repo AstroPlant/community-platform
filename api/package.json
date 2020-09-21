@@ -1,0 +1,49 @@
+{
+  "name": "astroplant-community-api",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "axios": "^0.19.2",
+    "jwt-decode": "^2.2.0",
+    "knex": "<0.20.0",
+    "metascraper": "^5.14.8",
+    "metascraper-description": "^5.14.7",
+    "metascraper-image": "^5.14.7",
+    "metascraper-publisher": "^5.14.7",
+    "metascraper-title": "^5.14.7",
+    "pg": "^8.3.3",
+    "remove-markdown": "^0.3.0",
+    "slugify": "^1.4.5",
+    "sqlite3": "latest",
+    "strapi": "3.1.3",
+    "strapi-admin": "3.1.3",
+    "strapi-connector-bookshelf": "3.1.3",
+    "strapi-plugin-content-manager": "3.1.3",
+    "strapi-plugin-content-type-builder": "3.1.3",
+    "strapi-plugin-email": "3.1.3",
+    "strapi-plugin-graphql": "3.1.3",
+    "strapi-plugin-upload": "3.1.3",
+    "strapi-plugin-users-permissions": "3.1.3",
+    "strapi-utils": "3.1.3",
+    "turndown": "^6.0.0"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "cd4499bb-f5e2-491d-9597-995bff4fa69d"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

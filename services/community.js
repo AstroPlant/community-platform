@@ -1,0 +1,761 @@
+import { getToken, updateLocalUser } from "../providers/Auth";
+import {
+  gqQuery,
+  hasError,
+  postJson,
+  postRaw,
+  queryfy,
+} from "../utils/fetchTools";
+
+const onClientSide = typeof window !== "undefined";
+
+export const API_URL = onClientSide
+  ? process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL
+  : process.env.NEXT_PUBLIC_STRAPI_CLUSTER_URL;
+
+const GRAPHQL_URL = `${API_URL}/graphql`;
+
+function getQuery(query, options = {}) {
+  return gqQuery(GRAPHQL_URL, query, options);
+}
+
+function createBearer() {
+  const token = getToken("communityToken");
+  return "Bearer " + token;
+}
+
+function createOptionsWithBearer() {
+  return {
+    headers: {
+      Authorization: createBearer(),
+    },
+  };
+}
+
+/**********************************************
+ *             HELP SECTIONS                  *
+ **********************************************/
+
+/***
+ * Fetches all help sections slugs
+ */
+export async function getHelpSectionsPaths() {
+  const query = `{
+    helpSections {
+      slug
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.helpSections;
+}
+
+/***
+ * Fetches all the FAQs categories
+ */
+export async function getHelpSections() {
+  const query = `{ 
+    helpSections {
+      id
+      slug
+      title
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.helpSections;
+}
+
+/***
+ * Fetches all the FAQs from a specific category
+ */
+export async function getHelpSectionBySlug(slug) {
+  const query = `{ 
+    helpSections(where: { slug: "${slug}" }) {
+      title
+      faqs {
+        id
+        question 
+        answer
+        updated_at
+      }
+    } 
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.helpSections[0];
+}
+
+/**********************************************
+ *                 ARTICLES                   *
+ **********************************************/
+const imageModel = `{
+  url
+  alternativeText
+}`;
+
+const authorModel = `{
+  username
+  firstName
+  lastName
+  description
+  avatar ${imageModel}
+ }
+`;
+
+const contentModel = `{
+  type: __typename
+  ... on ComponentContentTypeFile {
+    id
+    title
+    description
+    file {
+      id
+      url
+      mime
+    }
+  }
+  ... on ComponentContentTypeLink {
+    id
+    url
+    url_caption: caption
+    meta_title
+    meta_description
+    meta_image_url
+    meta_publisher
+  }
+  ... on ComponentContentTypeImage {
+    id
+    caption
+    image {
+      url
+    }
+  }
+  ... on ComponentContentTypeRichText {
+    id
+    text
+  }
+}`;
+
+/***
+ * Fetches articles slugs for Static Generation
+ */
+export async function getArticlesPaths() {
+  const query = `{
+    articles(where: { published: true }) {
+      slug
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.articles;
+}
+
+/***
+ * Fetches articles previews
+ */
+export async function getArticles() {
+  const query = `{
+    featured: articles(
+      where: { published: true }
+      sort: "published_at:desc"
+      limit: 1
+    ) {
+      id
+      slug
+      published_at
+      title
+      preview
+      cover ${imageModel}
+      author ${authorModel}
+    }
+    previews: articles(
+      where: { published: true }
+      sort: "published_at:desc"
+      start: 1
+    ) {
+      id
+      slug
+      published_at
+      title
+      preview
+      cover ${imageModel}
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data;
+}
+
+/***
+ * Fetches the latest article to be displayed on the home page
+ */
+export async function getFeaturedArticle() {
+  const query = `{
+    articles(
+      where: { published: true }
+      sort: "published_at:desc"
+      limit: 1
+    ) {
+      id
+      slug
+      title
+      preview
+      cover ${imageModel}
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.articles[0];
+}
+
+/***
+ * Fetches the first articles previews
+ */
+export async function getFullArticle(slug) {
+  const query = `{
+    main_article: articles(where: { slug: "${slug}" }) {
+      title
+      published_at
+      content ${contentModel}
+      cover ${imageModel}
+      author ${authorModel}
+      categories {
+        id
+        title
+      }
+    }
+    related_articles: articles(
+      where: { published: true, slug_ne: "${slug}" },
+      limit: 3
+    ) {
+      id
+      slug
+      published_at
+      title
+      preview
+    }
+}`;
+
+  const res = await getQuery(query);
+
+  return res.data;
+}
+
+/**********************************************
+ *                 USERS                      *
+ **********************************************/
+
+/***
+ * Creates a new user
+ * @param username the username from the user
+ * @param password the user's password
+ * @param email the user's email
+ */
+export async function createUser(email, username, password) {
+  const path = "/auth/local/register";
+
+  const body = {
+    email: email,
+    username: username,
+    password: password,
+  };
+
+  return postJson(API_URL + path, body);
+}
+
+/***
+ * Fetches the details of a user
+ * @param username the username to fetch
+ */
+export async function getUserDetails(username) {
+  const query = `{
+    users(where: { username: "${username}" }) {
+      id
+      username
+      email
+      slackUsername
+      firstName
+      lastName
+      description
+      avatar ${imageModel}
+      role {
+        id
+        name
+      }
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  if (!hasError(res)) {
+    updateLocalUser(res.data.users[0]);
+    return res.data.users[0];
+  } else {
+    return res.data.users[0];
+  }
+}
+
+/***
+ * Updates a user info on the API
+ * @param updatedInfos the updated user info
+ */
+export async function updateUserInfo(id, updatedInfos) {
+  const mutation = `mutation {
+    updateUser(
+      input: { 
+        where: { 
+          id: "${id}" 
+        }, 
+        data: ${queryfy(updatedInfos)}
+      }) 
+      {
+        user {
+          id
+          username
+          email
+          slackUsername
+          firstName
+          lastName
+          description
+          avatar ${imageModel}
+          role {
+            id
+            name
+          }
+        }
+      }
+  }`;
+
+  const options = createOptionsWithBearer();
+
+  const res = await getQuery(mutation, options);
+
+  if (!hasError(res)) {
+    updateLocalUser(res.data.updateUser.user);
+    return res;
+  } else {
+    return res;
+  }
+}
+
+/***
+ * Updates a user info on the API
+ * @param userInfos the updated user info
+ */
+export async function changePassword(oldPassword, newPassword) {
+  const body = { oldPassword, newPassword };
+
+  const options = createOptionsWithBearer();
+
+  return postJson(API_URL + "/users/changePassword", body, options);
+}
+
+/**********************************************
+ *             LIBRARY MEDIAS                 *
+ **********************************************/
+
+const completeLibraryMedia = `
+  {
+    id
+    title
+    slug
+    type
+    created_at
+    cover {
+      url
+      caption
+    }
+    author ${authorModel}
+    content ${contentModel}
+  }
+ `;
+
+const simpleLibraryMedia = `
+  {
+    id
+    title
+    slug
+    type
+    created_at
+    cover {
+      url
+      caption
+    }
+  }
+ `;
+
+/***
+ * Fetches all library media slugs
+ */
+export async function getLibraryMediasPaths() {
+  const query = `{
+    libraryMedias {
+      slug
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias;
+}
+
+/***
+ * Fetches a library media
+ * @param slug of the media
+ */
+export async function getLibraryMedia(slug) {
+  const query = `{
+    libraryMedias(where: {slug: "${slug}"}, limit: 1) ${completeLibraryMedia}
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias[0];
+}
+
+/***
+ * Creates a library media
+ * @param body necessary information to create the media
+ */
+export async function createLibraryMedia(body) {
+  // Upload process
+  const uploadFile = async (file) => {
+    const res = await upload([file], {});
+
+    if (!hasError(res)) {
+      return res[0].id;
+    } else {
+      return res;
+    }
+  };
+
+  // Generic Media infos
+
+  // Escaping quote characters
+  body.title = body.title.split('"').join('\\"');
+
+  // Cover File
+  let coverID = null;
+
+  if (body.cover) {
+    coverID = await uploadFile(body.cover);
+  }
+
+  // Building content bloc queries
+
+  const content = await Promise.all(
+    body.content.map(async (bloc) => {
+      // Building typeName
+      const typeName = `ComponentContentType${bloc.type}`;
+      switch (bloc.type) {
+        case "RichText":
+          return `{
+          __typename: "${typeName}"
+          text: "${bloc.text}"
+        }`;
+
+        case "Link":
+          return `{
+          __typename: "${typeName}"
+          url: "${bloc.url}"
+          caption: "${bloc.caption}"
+        }`;
+
+        case "Image":
+          const imageID = await uploadFile(bloc.image);
+          return `{
+          __typename: "${typeName}"
+          image: "${imageID}"
+          caption: "${bloc.caption}"
+        }`;
+
+        case "File":
+          const fileID = await uploadFile(bloc.file);
+          return `{
+          __typename: "${typeName}"
+          file: "${fileID}"
+          title: "${bloc.title}"
+          description: "${bloc.description}"
+        }`;
+
+        default:
+          return null;
+      }
+    })
+  );
+
+  const mutation = `mutation {
+    createLibraryMedia(
+      input: {
+        data: {
+          title: "${body.title}"
+          type: ${body.type}
+          library_section: ${body.librarySection}
+          author: ${body.user}
+          cover: ${coverID}
+          content: [${content.join(" ")}]
+        }
+      }
+    ) {
+      libraryMedia {
+        id
+        created_at
+        title
+      }
+    }
+  }
+  `;
+
+  const options = createOptionsWithBearer();
+
+  return getQuery(mutation, options);
+}
+
+/**********************************************
+ *             LIBRARY SECTIONS               *
+ **********************************************/
+
+/***
+ * Fetches all library sections slugs
+ */
+export async function getLibrarySectionsPaths() {
+  const query = `{
+    librarySections {
+      slug
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches all library sections titles
+ */
+export async function getAllLibrarySectionNames() {
+  const query = `{
+    librarySections {
+      id
+      title
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches all library sections
+ */
+export async function getAllLibrarySections() {
+  const query = `{
+    librarySections {
+      id
+      slug
+      title
+      description
+      library_medias_count
+    }
+  }
+  `;
+
+  const res = await getQuery(query);
+
+  return res.data.librarySections;
+}
+
+/***
+ * Fetches a library section
+ * @param slug of the section
+ */
+export async function getLibrarySection(slug) {
+  const query = `{
+    librarySections(where: { slug: "${slug}" }) {
+      id
+      slug
+      title
+      description
+      library_medias ${simpleLibraryMedia}
+      library_medias_count
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data;
+}
+
+/**********************************************
+ *                   SEARCH                   *
+ **********************************************/
+
+/**
+ * Search through the FAQs, Articles & Medias
+ * @param {string} query words to look for
+ * @param {int} start where to start on the result array
+ * @param {int} limit maximum number of answers
+ * @param {string} sort keywords to sort the results
+ */
+export async function search({
+  query = "",
+  start = 0,
+  limit = 10,
+  sort = "id:desc",
+}) {
+  const graphQLQuery = `{
+    faqs: searchFaqs(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      question 
+      answer
+      updated_at
+    }
+    news: searchArticles(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
+      slug 
+      published_at
+      title
+      preview
+      cover ${imageModel}
+    }
+    medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}") ${simpleLibraryMedia}
+    users: searchUsers(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      username
+      firstName
+      lastName
+      avatar {
+        url
+      }
+    }
+  }`;
+
+  return getQuery(graphQLQuery);
+}
+
+/**********************************************
+ *                USERS GRAPHS                *
+ **********************************************/
+
+/**
+ *
+ * @param {*} username
+ * @param {*} kitSerial
+ */
+export async function getUsersGraphs(username, kitSerial) {
+  // TODO Implement with a real API Call
+  const graphs = [
+    {
+      id: 24,
+      title: "Humidity Over Time",
+      type: "bar",
+      owner: "rmnrss",
+      kitSerial: "k-krmw-vp3y-v4g9",
+      configId: 4,
+      peripherals: [{ id: 12, peripheralDefinitionId: 3, quantityTypeId: 3 }],
+    },
+    {
+      id: 25,
+      owner: "rmnrss",
+      title: "Temperature Over Time",
+      type: "line",
+      kitSerial: "k-mqym-kdc8-b3t9",
+      configId: 14,
+      peripherals: [{ id: 44, peripheralDefinitionId: 6, quantityTypeId: 1 }],
+    },
+  ];
+
+  let matchingGraphs = [];
+
+  for (let graph of graphs) {
+    if (username === graph.owner && kitSerial === graph.kitSerial) {
+      matchingGraphs.push(graph);
+    }
+  }
+
+  return matchingGraphs;
+}
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function login(username, password) {
+  const path = "/auth/local";
+
+  const body = {
+    identifier: username,
+    password: password,
+  };
+
+  return postJson(API_URL + path, body);
+}
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function forgotPassword(email) {
+  const path = "/auth/forgot-password";
+
+  const body = { email };
+
+  const res = await postJson(API_URL + path, body);
+
+  return res;
+}
+
+/**********************************************
+ *                CHALLENGES                  *
+ **********************************************/
+
+export async function getChallenges() {
+  //TODO Implement
+  return [];
+}
+
+/**********************************************
+ *                UPLOAD                      *
+ **********************************************/
+
+/**
+ * Upload a file related to an instance to the community API
+ * @param {FileList} files The file(s) to upload. The value(s) can be a Buffer or Stream.
+ * @param {object} optionalParameters
+ * refId:  The ID of the entry which the file(s) will be linked to.
+ * ref:  The name of the model which the file(s) will be linked to (see more below).
+ * field: The field of the entry which the file(s) will be precisely linked to.
+ * source: The name of the plugin where the model is located.
+ */
+export async function upload(
+  files,
+  optionalParameters = ({ refId, ref, field, source } = {})
+) {
+  const formData = new FormData();
+
+  for (let i = 0; i < files.length; i++) {
+    formData.append("files", files[i]);
+  }
+
+  Object.keys(optionalParameters).map((key) => {
+    if (typeof optionalParameters[key] !== "undefined") {
+      formData.append(key, optionalParameters[key]);
+    }
+  });
+
+  const options = createOptionsWithBearer();
+
+  return postRaw(API_URL + "/upload", formData, options);
+}

@@ -1,0 +1,23 @@
+# node & npm
+node_modules
+npm-debug.log
+
+# next
+.next
+
+# docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# git files
+.git
+.gitignore
+
+# Generic files
+README.md
+LICENSE
+.vscode
+
+# strapi
+api

@@ -25,10 +25,12 @@ module.exports = {
 
     return config;
   },
-  stories: ["../components/stories/*.stories.js"],
+  stories: ["../components/stories/**/*.stories.js"],
   addons: [
     "@storybook/addon-actions",
     "@storybook/addon-knobs",
     "@storybook/addon-links",
+    "@storybook/addon-docs",
+    "@storybook/addon-viewport",
   ],
 };

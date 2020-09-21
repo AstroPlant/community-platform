@@ -1,0 +1,34 @@
+{
+  "routes": [
+    {
+      "method": "PUT",
+      "path": "/users/me",
+      "handler": "User.updateMe",
+      "config": {
+        "policies": [],
+        "prefix": "",
+        "description": "Update the user information",
+        "tag": {
+          "plugin": "users-permissions",
+          "name": "User",
+          "actionType": "update"
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/users/changePassword",
+      "handler": "User.changePassword",
+      "config": {
+        "policies": [],
+        "prefix": "",
+        "description": "Update the users password",
+        "tag": {
+          "plugin": "users-permissions",
+          "name": "User",
+          "actionType": "update"
+        }
+      }
+    }
+  ]
+}

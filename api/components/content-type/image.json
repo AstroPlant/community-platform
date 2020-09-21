@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_content_type_images",
+  "info": {
+    "name": "Image",
+    "description": "Object containing a single image and its caption.",
+    "icon": "image"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": ["images", "files", "videos"],
+      "plugin": "upload",
+      "required": true
+    },
+    "caption": {
+      "type": "string",
+      "required": true,
+      "maxLength": 140
+    }
+  }
+}
