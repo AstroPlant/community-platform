@@ -80,7 +80,7 @@ export function authenticate(authInfos, rememberMe) {
 
   setLoggedUser(authInfos.user, cookieOptions);
   setToken("accessToken", authInfos.accessToken, cookieOptions);
-  setToken("refauthInfoshToken", authInfos.refreshToken, cookieOptions);
+  setToken("refreshToken", authInfos.refreshToken, cookieOptions);
   setToken("communityToken", authInfos.communityToken, cookieOptions);
 }
 
