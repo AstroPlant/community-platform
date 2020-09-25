@@ -37,7 +37,7 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 550;
   }
   
-  h5 {
+  h6 {
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -72,6 +72,12 @@ export const GlobalStyle = createGlobalStyle`
   input, button {
     outline: none;
     border: none;
+  }
+
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-radius: ${(props) => props.theme.radiusMin};
   }
 
   .custom-popup {
