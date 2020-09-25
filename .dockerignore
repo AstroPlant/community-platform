@@ -21,3 +21,7 @@ LICENSE
 
 # strapi
 api
+
+#storybook
+.storybook
+components/stories
