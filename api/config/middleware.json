@@ -1,0 +1,11 @@
+{
+  "parser": {
+    "enabled": true,
+    "multipart": true,
+    "formLimit": "25mb",
+    "jsonLimit": "25mb",
+    "formidable": {
+      "maxFileSize": 26214400
+    }
+  }
+}
