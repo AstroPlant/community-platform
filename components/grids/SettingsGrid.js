@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import useTabs from "../../utils/useTabs";
+import KitMembershipCard from "../cards/KitMembershipCard";
 import ProfileCard from "../cards/ProfileCard";
+import SimpleMediaCard from "../cards/SimpleMediaCard";
 import AccountForm from "../forms/AccountForm";
 import Grid from "./Grid";
 
@@ -20,58 +23,47 @@ const UserColumn = styled(Column)`
   justify-content: center;
 `;
 
-const Tabs = styled.div`
-  display: flex;
-  align-items: center;
-
-  margin: 0 0 1.5rem 0;
-`;
-
-const Tab = styled.p`
-  position: relative;
-  width: min-content;
-
-  font-weight: 450;
-  line-height: 1.75;
-
-  margin: 0 1.5rem 0 0;
-
-  cursor: pointer;
-
-  &:after {
-    content: " ";
-
-    position: absolute;
-    display: ${(props) => (props.active ? "block" : "none")};
-    bottom: 0;
-
-    width: 100%;
-    height: 2px;
-    background-color: ${(props) => props.theme.primary};
-  }
-`;
-
-export default function SettingsGrid(props) {
-  const [currentTab, setCurrentTab] = useState("Profile");
+export default function SettingsGrid({ user, memberships, medias }) {
+  const { currentTab, Tabs } = useTabs(["My Profile", "My Kits", "My Medias"]);
 
   return (
     <>
       <Grid inverted>
         <UserColumn>
-          <ProfileCard editAvatar user={props.user} />
+          <ProfileCard editAvatar user={user} />
         </UserColumn>
         <Column>
-          <Tabs>
-            <Tab
-              active={currentTab === "Profile"}
-              onClick={() => setCurrentTab("Profile")}
-            >
-              Profile
-            </Tab>
-          </Tabs>
+          <Tabs />
 
-          {currentTab === "Profile" && (
-            <AccountForm initialInfos={props.user} />
+          {currentTab === "My Profile" && <AccountForm initialInfos={user} />}
+          {currentTab === "My Kits" && (
+            <>
+              {memberships.length === 0 || memberships.status === 404 ? (
+                <p>No kits were found.</p>
+              ) : (
+                <>
+                  {memberships.map((membership) => (
+                    <KitMembershipCard
+                      key={membership.id}
+                      membership={membership}
+                    />
+                  ))}
+                </>
+              )}
+            </>
+          )}
+          {currentTab === "My Medias" && (
+            <>
+              {medias.length === 0 ? (
+                <p>No medias were found.</p>
+              ) : (
+                <>
+                  {medias.map((media) => (
+                    <SimpleMediaCard key={media.id} showTools media={media} />
+                  ))}
+                </>
+              )}
+            </>
           )}
         </Column>
       </Grid>
@@ -80,6 +72,16 @@ export default function SettingsGrid(props) {
 }
 
 SettingsGrid.propTypes = {
-  /* Object containing user information */
+  /**
+   * Object containing user information
+   */
   user: PropTypes.object.isRequired,
+  /**
+   * Array of kit membership objects
+   */
+  memberships: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /**
+   * Array of media objects
+   */
+  medias: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

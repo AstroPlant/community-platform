@@ -35,6 +35,11 @@ const ModalContainer = styled(Card)`
     align-items: center;
     justify-content: center;
   }
+
+  & p {
+    max-width: 512px;
+    margin-bottom: 1rem;
+  }
 `;
 
 const ModalHead = styled.div`
@@ -82,6 +87,10 @@ Modal.propTypes = {
    * Whether or not to show the overlay
    */
   show: PropTypes.bool,
+  /**
+   * Method to handle the modal closing
+   */
+  handleClose: PropTypes.func.isRequired,
   /**
    * Content of the overlay
    */
