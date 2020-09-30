@@ -422,10 +422,46 @@ export async function getLibraryMedia(slug) {
 }
 
 /***
- * Creates a library media
- * @param body necessary information to create the media
+ * Fetches a library media
+ * @param id of the media
  */
-export async function createLibraryMedia(body) {
+export async function getLibraryMediaById(id) {
+  const query = `{
+    libraryMedia(id: ${id}) ${completeLibraryMedia}
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedia;
+}
+
+/***
+ * Fetches all library from a specific author
+ * @param authorId the is of the author
+ */
+export async function getLibraryMediasByAuthor(authorId) {
+  const query = `{
+    libraryMedias(where: {author: ${authorId}}){
+    id
+    title
+    slug
+    type
+    created_at
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias;
+}
+
+/***
+ * Prepares the data from the media form to be send to the api
+ * @param formData
+ */
+export async function prepareMedia(formData) {
+  const { content, ...preparedData } = formData;
+
   // Upload process
   const uploadFile = async (file) => {
     const res = await upload([file], {});
@@ -440,19 +476,18 @@ export async function createLibraryMedia(body) {
   // Generic Media infos
 
   // Escaping quote characters
-  body.title = body.title.split('"').join('\\"');
+  preparedData.title = formData.title.split('"').join('\\"');
 
   // Cover File
-  let coverID = null;
-
-  if (body.cover) {
-    coverID = await uploadFile(body.cover);
+  if (formData.cover) {
+    preparedData.coverID = await uploadFile(formData.cover);
+  } else {
+    preparedData.coverID = null;
   }
 
   // Building content bloc queries
-
-  const content = await Promise.all(
-    body.content.map(async (bloc) => {
+  let preparedContent = await Promise.all(
+    content.map(async (bloc) => {
       // Building typeName
       const typeName = `ComponentContentType${bloc.type}`;
       switch (bloc.type) {
@@ -492,23 +527,86 @@ export async function createLibraryMedia(body) {
     })
   );
 
+  preparedData.content = preparedContent.join(" ");
+
+  return preparedData;
+}
+
+/***
+ * Creates a library media
+ * @param body necessary information to create the media
+ */
+export async function createLibraryMedia(body) {
+  const preparedMedia = await prepareMedia(body);
+
   const mutation = `mutation {
     createLibraryMedia(
       input: {
         data: {
-          title: "${body.title}"
-          type: ${body.type}
-          library_section: ${body.librarySection}
-          author: ${body.user}
-          cover: ${coverID}
-          content: [${content.join(" ")}]
+          title: "${preparedMedia.title}"
+          type: ${preparedMedia.type}
+          library_section: ${preparedMedia.librarySection}
+          author: ${preparedMedia.user}
+          cover: ${preparedMedia.coverID}
+          content: [${preparedMedia.content}]
         }
       }
     ) {
       libraryMedia {
         id
-        created_at
-        title
+      }
+    }
+  }
+  `;
+
+  const options = createOptionsWithBearer();
+
+  return getQuery(mutation, options);
+}
+
+/**
+ * Update a library media based on it's id
+ * @param {number} id of the media to update
+ * @param {object} body containing the updated information
+ */
+export async function updateLibraryMedia(id, body) {
+  const preparedMedia = await prepareMedia(body);
+
+  const mutation = `mutation {
+    updateLibraryMedia(
+      input: {
+        where: { id: ${id} },
+        data: {
+          title: "${preparedMedia.title}"
+          type: ${preparedMedia.type}
+          library_section: ${preparedMedia.librarySection}
+          author: ${preparedMedia.user}
+          cover: ${preparedMedia.coverID}
+          content: [${preparedMedia.content}]
+        }
+      }
+    ) {
+      libraryMedia {
+        id
+      }
+    }
+  }
+  `;
+
+  const options = createOptionsWithBearer();
+
+  return getQuery(mutation, options);
+}
+
+/***
+ * Deletes a library media
+ * @param mediaID to delete
+ */
+export async function deleteLibraryMedia(mediaID) {
+  const mutation = `mutation {
+    deleteLibraryMedia(input: { where: { id: ${mediaID} } }) {
+      libraryMedia {
+        id
       }
     }
   }
