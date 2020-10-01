@@ -98,6 +98,16 @@ const imageModel = `{
   alternativeText
 }`;
 
+const completeFileModel = `{
+  id
+  url
+  caption
+  name
+  ext
+  type: mime
+  size
+}`;
+
 const authorModel = `{
   username
   firstName
@@ -113,11 +123,7 @@ const contentModel = `{
     id
     title
     description
-    file {
-      id
-      url
-      mime
-    }
+    file ${completeFileModel}
   }
   ... on ComponentContentTypeLink {
     id
@@ -131,9 +137,7 @@ const contentModel = `{
   ... on ComponentContentTypeImage {
     id
     caption
-    image {
-      url
-    }
+    image ${completeFileModel}
   }
   ... on ComponentContentTypeRichText {
     id
@@ -369,10 +373,7 @@ const completeLibraryMedia = `
     slug
     type
     created_at
-    cover {
-      url
-      caption
-    }
+    cover ${completeFileModel}
     author ${authorModel}
     content ${contentModel}
   }
@@ -473,14 +474,19 @@ export async function prepareMedia(formData) {
     }
   };
 
-  // Generic Media infos
-
   // Escaping quote characters
   preparedData.title = formData.title.split('"').join('\\"');
 
-  // Cover File
+  /**
+   * Cover File
+   * File object from the api should contain an id so we don't update them
+   */
   if (formData.cover) {
-    preparedData.coverID = await uploadFile(formData.cover);
+    if (formData.cover.id != null) {
+      preparedData.coverID = formData.cover.id;
+    } else {
+      preparedData.coverID = await uploadFile(formData.cover);
+    }
   } else {
     preparedData.coverID = null;
   }
@@ -505,7 +511,7 @@ export async function prepareMedia(formData) {
         }`;
 
         case "Image":
-          const imageID = await uploadFile(bloc.image);
+          const imageID = bloc.image.id || (await uploadFile(bloc.image));
           return `{
           __typename: "${typeName}"
           image: "${imageID}"
@@ -513,7 +519,7 @@ export async function prepareMedia(formData) {
         }`;
 
         case "File":
-          const fileID = await uploadFile(bloc.file);
+          const fileID = bloc.file.id || (await uploadFile(bloc.file));
           return `{
           __typename: "${typeName}"
           file: "${fileID}"

@@ -6,7 +6,10 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { useAuth } from "../../providers/Auth";
 import { useSnackBars } from "../../providers/SnackBarProvider";
-import { createLibraryMedia } from "../../services/community";
+import {
+  createLibraryMedia,
+  updateLibraryMedia,
+} from "../../services/community";
 import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import Card from "../cards/Card";
@@ -90,41 +93,59 @@ const MediaSchema = Yup.object().shape({
     .required(),
 });
 
-export default function MediaCreationForm(props) {
+export default function MediaCreationForm({ librarySections, mediaToEdit }) {
   const router = useRouter();
   const { user } = useAuth();
   const { addAlert } = useSnackBars();
 
+  const editionMode = mediaToEdit != null;
+
   return (
     <Container>
       <Formik
-        initialValues={{
-          title: "",
-          type: "article",
-          librarySection: 1,
-          cover: null,
-          content: [],
-        }}
+        initialValues={
+          editionMode
+            ? {
+                title: mediaToEdit.title || "",
+                type: mediaToEdit.type || "article",
+                librarySection: mediaToEdit.librarySection || 1,
+                cover: mediaToEdit.cover || null,
+                content: mediaToEdit.content || [],
+              }
+            : {
+                title: "",
+                type: "article",
+                librarySection: 1,
+                cover: null,
+                content: [],
+              }
+        }
         validationSchema={MediaSchema}
         onSubmit={async (values) => {
           values.user = user.id;
 
-          const res = await createLibraryMedia(values);
+          const res = editionMode
+            ? await updateLibraryMedia(mediaToEdit.id, values)
+            : await createLibraryMedia(values);
 
           if (!hasError(res)) {
             // Show feedback
             addAlert(
               "success",
-              "Media created ! You'll soon be redirected to the page."
+              `Media successfully ${
+                editionMode ? "updated" : "created"
+              } ! You'll soon be redirected to the library page.`
             );
 
-            setTimeout(function() {
+            setTimeout(function () {
               router.push("/library");
             }, 1000);
           } else {
             addAlert(
               "error",
-              `Whoops! Could not create media, ${getErrorMessage(res)}`
+              `Whoops! Could not ${
+                editionMode ? "update" : "create"
+              } media, ${getErrorMessage(res)}`
             );
           }
         }}
@@ -145,7 +166,9 @@ export default function MediaCreationForm(props) {
           return (
             <Form>
               <Header>
-                <PageTitle>Create Media</PageTitle>
+                <PageTitle>
+                  {editionMode ? "Edit Media" : "Create Media"}
+                </PageTitle>
                 <ButtonRow>
                   <ActionButton
                     inverted
@@ -158,8 +181,9 @@ export default function MediaCreationForm(props) {
                   ) : (
                     <ActionButton
                       type="submit"
-                      color={"primary"}
-                      label={"Create"}
+                      inverted={editionMode}
+                      color={editionMode ? "secondary" : "primary"}
+                      label={editionMode ? "Update" : "Create"}
                       disabled={isSubmitting || isValidating || !isValid}
                     />
                   )}
@@ -183,7 +207,7 @@ export default function MediaCreationForm(props) {
                     <option value="tutorial">Tutorial</option>
                   </Select>
                   <Select label="Category" name="librarySection">
-                    {props.librarySections.map((section) => (
+                    {librarySections.map((section) => (
                       <option key={section.id} value={section.id}>
                         {section.title}
                       </option>
@@ -199,115 +223,126 @@ export default function MediaCreationForm(props) {
                   multiple={false}
                   maxSize={8000000}
                   type="file"
+                  initialValues={editionMode ? [values.cover] : []}
                   onDrop={(files) => {
                     setFieldValue("cover", files[0]);
                   }}
                 />
               </Bloc>
 
-              {values.content.map((bloc, index) => (
-                <ContentBloc
-                  key={bloc.id}
-                  bloc={bloc}
-                  removeBloc={removeBloc}
-                  position={index}
-                >
-                  {bloc.type === "Link" && (
-                    <>
-                      <TextInput
-                        label="URL"
-                        name={`content[${index}].url`}
-                        type="text"
-                        addon="https://"
-                        placeholder="example.com"
-                        validate={(value) => {
-                          if (!urlRegex.test(value)) {
-                            return "Invalid URL";
+              {values.content.map((bloc, index) => {
+                bloc.type = bloc.type.replace("ComponentContentType", "");
+
+                return (
+                  <ContentBloc
+                    key={bloc.id}
+                    bloc={bloc}
+                    removeBloc={removeBloc}
+                    position={index}
+                  >
+                    {bloc.type === "Link" && (
+                      <>
+                        <TextInput
+                          label="URL"
+                          name={`content[${index}].url`}
+                          type="text"
+                          placeholder="https://example.com"
+                          validate={(value) => {
+                            if (!urlRegex.test(value)) {
+                              return "Invalid URL";
+                            }
+                          }}
+                        />
+                        <TextInput
+                          label="Caption"
+                          name={`content[${index}].caption`}
+                          type="text"
+                          placeholder="A nice url."
+                        />
+                      </>
+                    )}
+                    {bloc.type === "Image" && (
+                      <>
+                        <FileInput
+                          label={"Image"}
+                          id={`content[${index}].image`}
+                          name={`content[${index}].image`}
+                          accept="image/*"
+                          multiple={false}
+                          maxSize={8000000}
+                          type="file"
+                          initialValues={
+                            editionMode ? [values.content[index].image] : []
                           }
-                        }}
-                      />
-                      <TextInput
-                        label="Caption"
-                        name={`content[${index}].caption`}
-                        type="text"
-                        placeholder="A nice url."
-                      />
-                    </>
-                  )}
-                  {bloc.type === "Image" && (
-                    <>
-                      <FileInput
-                        label={"Image"}
-                        id={`content[${index}].image`}
-                        name={`content[${index}].image`}
-                        accept="image/*"
-                        multiple={false}
-                        maxSize={8000000}
-                        type="file"
-                        onDrop={(files) => {
-                          setFieldValue(`content[${index}].image`, files[0]);
-                        }}
-                      />
+                          onDrop={(files) => {
+                            setFieldValue(`content[${index}].image`, files[0]);
+                          }}
+                        />
 
-                      <TextInput
-                        label="Caption"
-                        name={`content[${index}].caption`}
-                        type="text"
-                        placeholder="A description of the image."
-                        validate={required}
-                      />
-                    </>
-                  )}
-                  {bloc.type === "File" && (
-                    <>
-                      <TextInput
-                        label="Title"
-                        name={`content[${index}].title`}
-                        type="text"
-                        placeholder="My file title."
-                        validate={required}
-                      />
+                        <TextInput
+                          label="Caption"
+                          name={`content[${index}].caption`}
+                          type="text"
+                          placeholder="A description of the image."
+                          validate={required}
+                        />
+                      </>
+                    )}
+                    {bloc.type === "File" && (
+                      <>
+                        <TextInput
+                          label="Title"
+                          name={`content[${index}].title`}
+                          type="text"
+                          placeholder="My file title."
+                          validate={required}
+                        />
 
-                      <LongTextInput
-                        label="Description"
-                        name={`content[${index}].description`}
-                        type="text"
-                        placeholder="A description of the file."
-                        validate={required}
-                        maxLength={140}
-                      />
+                        <LongTextInput
+                          label="Description"
+                          name={`content[${index}].description`}
+                          type="text"
+                          placeholder="A description of the file."
+                          validate={required}
+                          maxLength={140}
+                        />
 
-                      <FileInput
-                        label={"File"}
-                        id={`content[${index}].file`}
-                        name={`content[${index}].file`}
-                        accept="image/*, audio/*, video/*, .pdf"
-                        multiple={false}
-                        maxSize={8000000}
-                        type="file"
-                        onDrop={(files) => {
-                          setFieldValue(`content[${index}].file`, files[0]);
-                        }}
-                      />
-                    </>
-                  )}
-                  {bloc.type === "RichText" && (
-                    <>
-                      <InputLabel
-                        htmlFor={`content[${index}].text`}
-                        label={"Rich Text Bloc"}
-                      />
+                        <FileInput
+                          label={"File"}
+                          id={`content[${index}].file`}
+                          name={`content[${index}].file`}
+                          accept="image/*, audio/*, video/*, .pdf"
+                          multiple={false}
+                          maxSize={8000000}
+                          type="file"
+                          initialValues={
+                            editionMode ? [values.content[index].file] : []
+                          }
+                          onDrop={(files) => {
+                            setFieldValue(`content[${index}].file`, files[0]);
+                          }}
+                        />
+                      </>
+                    )}
+                    {bloc.type === "RichText" && (
+                      <>
+                        <InputLabel
+                          htmlFor={`content[${index}].text`}
+                          label={"Rich Text Bloc"}
+                        />
 
-                      <MarkdownEditor
-                        id={`content[${index}].text`}
-                        onChange={(value) => {
-                          setFieldValue(`content[${index}].text`, value);
-                        }}
-                      />
-                    </>
-                  )}
-                </ContentBloc>
-              ))}
+                        <MarkdownEditor
+                          id={`content[${index}].text`}
+                          value={editionMode ? values.content[index].text : []}
+                          onChange={(value) => {
+                            setFieldValue(`content[${index}].text`, value);
+                          }}
+                        />
+                      </>
+                    )}
+                  </ContentBloc>
+                );
+              })}
 
               <ContentSelector
                 blocs={[
@@ -329,6 +364,16 @@ export default function MediaCreationForm(props) {
 function ContentTypeSelector() {}
 
 MediaCreationForm.propTypes = {
-  /* List of all the library sections (names & ids) */
+  /**
+   * List of all the library sections (names & ids)
+   */
   librarySections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /**
+   * The media passed in parameter
+   */
+  mediaToEdit: PropTypes.object,
+};
+
+MediaCreationForm.defaultProps = {
+  mediaToEdit: null,
 };

@@ -1,24 +1,24 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { useSnackBars } from "../../providers/SnackBarProvider";
 import AlbumIcon from "../../public/icons/album.svg";
 import ArticleIcon from "../../public/icons/article.svg";
+import DeleteIcon from "../../public/icons/delete.svg";
+import EditIcon from "../../public/icons/edit.svg";
 import LinkIcon from "../../public/icons/external-link.svg";
 import FileIcon from "../../public/icons/file.svg";
 import TutorialIcon from "../../public/icons/tutorial.svg";
-import EditIcon from "../../public/icons/edit.svg";
-import DeleteIcon from "../../public/icons/delete.svg";
+import { deleteLibraryMedia } from "../../services/community";
+import { hasError } from "../../utils/fetchTools";
+import useModal from "../../utils/useModal";
 import Button from "../Button";
 import Date from "../Date";
 import Icon from "../Icon";
-import Card from "./Card";
-import { deleteLibraryMedia } from "../../services/community";
-import useModal from "../../utils/useModal";
 import Modal from "../Modal";
-import { hasError } from "../../utils/fetchTools";
-import { useSnackBars } from "../../providers/SnackBarProvider";
-import { useRouter } from "next/router";
+import Card from "./Card";
 
 const Container = styled(Card)`
   && {
@@ -80,7 +80,6 @@ export default function SimpleMediaCard({ media, showTools }) {
 
   async function deleteMedia() {
     const res = await deleteLibraryMedia(media.id);
-    console.log(res);
 
     if (!hasError(res)) {
       addAlert("success", "The media was deleted successfully.");
