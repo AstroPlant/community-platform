@@ -71,9 +71,9 @@ PostLayout.propTypes = {
   /**
    * Post related to the one displayed
    */
-  relatedPosts: PropTypes.array,
+  relatedPosts: PropTypes.arrayOf(PropTypes.object),
 };
 
-PostLayout.propTypes = {
+PostLayout.defaultProps = {
   relatedPosts: null,
 };
