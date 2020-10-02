@@ -175,6 +175,11 @@ export default function Header() {
       slug: "library",
       id: 7,
     },
+    {
+      label: "Roadmap",
+      slug: "roadmap",
+      id: 8,
+    },
   ];
 
   return (

@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import Close from "../public/icons/close.svg";
+import Breaks from "../utils/breakpoints";
 import Card from "./cards/Card";
 import Icon from "./Icon";
 
@@ -28,24 +29,31 @@ const ModalContainer = styled(Card)`
   && {
     padding: 0;
     height: unset;
-    width: unset;
+    width: 740px;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+    @media screen and (max-width: ${Breaks.large}) {
+      width: 680px;
+      min-height: 470px;
+    }
+
+    @media screen and (max-width: ${Breaks.medium}) {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   & p {
-    max-width: 512px;
     margin-bottom: 1rem;
   }
 `;
 
 const ModalHead = styled.div`
   display: flex;
-  align-items: center;
 
+  background-color: #252525;
   border-bottom: 1px solid ${(props) => props.theme.grey};
 
   width: 100%;

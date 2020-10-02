@@ -748,6 +748,32 @@ export async function search({
 }
 
 /**********************************************
+ *                   FEATURES                 *
+ **********************************************/
+
+const featureModel = `{
+    id
+    created_at
+    stage
+    name
+    description
+  }`;
+
+/**
+ * Get all the features from the API
+ */
+export async function getAllFeatures() {
+  const graphQLQuery = `{
+    under_consideration: features(where: { stage: "under_consideration" }) ${featureModel}
+    planned: features(where: { stage: "planned" }) ${featureModel}
+    in_development: features(where: { stage: "in_development" }) ${featureModel}
+    launched: features(where: { stage: "launched" }) ${featureModel}
+  }`;
+
+  return getQuery(graphQLQuery);
+}
+
+/**********************************************
  *                USERS GRAPHS                *
  **********************************************/
 

@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "features",
+  "info": {
+    "name": "Feature",
+    "description": "A feature to be added to the roadmap"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "description": "The name/title of the feature",
+      "required": true
+    },
+    "stage": {
+      "type": "enumeration",
+      "enum": ["under_consideration", "planned", "in_development", "launched"],
+      "default": "under_consideration"
+    },
+    "description": {
+      "type": "text",
+      "description": "Complete description of the wanted feature",
+      "required": true
+    }
+  }
+}
