@@ -28,6 +28,7 @@ const Overlay = styled.div`
 const ModalContainer = styled(Card)`
   && {
     padding: 0;
+
     height: unset;
     width: 740px;
 
@@ -69,7 +70,15 @@ const IconHolder = styled(Icon)`
 
 const ModalContent = styled.div`
   width: 100%;
+  max-height: 80vh;
+
   padding: 2rem;
+
+  overflow: auto;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    max-height: 100%;
+  }
 `;
 
 const Modal = ({ show, handleClose, title, children }) =>

@@ -5,6 +5,8 @@ import styled from "styled-components";
 import useModal from "../../utils/useModal";
 import Modal from "../Modal";
 import Card from "./Card";
+import ReactMarkdown from "react-markdown";
+import styles from "../../styles/markdown.module.css";
 
 const Container = styled(Card)`
   flex-flow: column;
@@ -25,7 +27,7 @@ const Name = styled.b`
   white-space: nowrap;
 `;
 
-const Description = styled.p`
+const Description = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
@@ -61,12 +63,14 @@ export default function FeatureCard({ className, feature }) {
           </p>
         </FeatureMetaData>
 
-        <p>{feature.description}</p>
+        <ReactMarkdown source={feature.description} className={styles.md} />
       </Modal>
 
       <Container animateOnHover onClick={() => toggle()} className={className}>
         <Name>{feature.name}</Name>
-        <Description>{feature.description}</Description>
+        <Description>
+          <ReactMarkdown source={feature.description} className={styles.md} />
+        </Description>
       </Container>
     </>
   );
