@@ -2,8 +2,8 @@ import Link from "next/link";
 import { withRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import Icon from "./Icon";
 import ArrowIcon from "../public/icons/arrow-down.svg";
+import Icon from "./Icon";
 
 const PathContainer = styled.nav`
   display: flex;
@@ -27,6 +27,7 @@ const LinkContainer = styled.div`
 
 const Separator = styled(Icon)`
   transform: rotate(-90deg);
+  cursor: default;
 `;
 
 /***

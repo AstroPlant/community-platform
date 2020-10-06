@@ -198,29 +198,6 @@ export async function getArticles() {
 }
 
 /***
- * Fetches the latest article to be displayed on the home page
- */
-export async function getFeaturedArticle() {
-  const query = `{
-    articles(
-      where: { published: true }
-      sort: "published_at:desc"
-      limit: 1
-    ) {
-      id
-      slug
-      title
-      preview
-      cover ${imageModel}
-    }
-  }`;
-
-  const res = await getQuery(query);
-
-  return res.data.articles[0];
-}
-
-/***
  * Fetches the first articles previews
  */
 export async function getFullArticle(slug) {

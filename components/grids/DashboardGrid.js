@@ -7,7 +7,7 @@ import Grid from "./Grid";
 const GridContainer = styled(Grid)`
   && {
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 1fr 0.5fr 1fr;
+    grid-template-rows: 2fr 1fr 2fr;
 
     padding: 1rem 0;
 

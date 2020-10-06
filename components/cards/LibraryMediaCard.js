@@ -5,6 +5,7 @@ import AlbumIcon from "../../public/icons/album.svg";
 import ArticleIcon from "../../public/icons/article.svg";
 import LinkIcon from "../../public/icons/external-link.svg";
 import FileIcon from "../../public/icons/file.svg";
+import Arrow from "../../public/icons/long-arrow.svg";
 import TutorialIcon from "../../public/icons/tutorial.svg";
 import Cover from "../Cover";
 import Date from "../Date";
@@ -17,7 +18,6 @@ const Container = styled(Card)`
     padding: 0;
   }
 
-  display: flex;
   flex-direction: column;
 `;
 
@@ -42,27 +42,58 @@ const FloatingIcon = styled(Icon)`
   border-radius: ${(props) => props.theme.radiusMax};
 `;
 
-const InfoHolder = styled.div`
+const DetailsHolder = styled.div`
   display: flex;
   flex-direction: column;
 
   padding: 1rem;
+
+  background-color: ${(props) => props.theme.textBackground};
 `;
 
 const MediaTitle = styled.b`
-  max-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 
   overflow: hidden;
   text-overflow: ellipsis;
-
-  font-size: 18px;
-  line-height: 20px;
-  white-space: nowrap;
+  word-break: break-word;
 `;
 
 const MediaDate = styled(Date)`
   font-size: 14px;
   margin-bottom: 0.5rem;
+`;
+
+const ReadRow = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  margin-top: 0.25rem;
+`;
+
+const ReadLabel = styled.label`
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+
+  margin-right: auto;
+
+  letter-spacing: 0.1em;
+  color: ${(props) => props.theme.secondary};
+`;
+
+const AnimatedArrow = styled(Icon)`
+  && {
+    margin: 0;
+  }
+
+  ${Container}:hover & {
+    animation: cta-arrow 1s ease-in-out infinite;
+  }
 `;
 
 export default function LibraryMediaCard({ className, media }) {
@@ -81,10 +112,23 @@ export default function LibraryMediaCard({ className, media }) {
             {media.type === "tutorial" && <TutorialIcon />}
           </FloatingIcon>
         </CoverHolder>
-        <InfoHolder>
+        <DetailsHolder>
           <MediaDate dateString={media.created_at} />
           <MediaTitle>{media.title}</MediaTitle>
-        </InfoHolder>
+          <ReadRow>
+            <ReadLabel>
+              {(media.type === "article" || media.type === "tutorial") &&
+                "Read"}
+              {(media.type === "album" ||
+                media.type === "files" ||
+                media.type === "links") &&
+                "View"}
+            </ReadLabel>
+            <AnimatedArrow size={32} color={"secondary"}>
+              <Arrow />
+            </AnimatedArrow>
+          </ReadRow>
+        </DetailsHolder>
       </Container>
     </WrapInLink>
   );

@@ -24,18 +24,27 @@ const HeaderContainer = styled.header`
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   width: 100%;
   max-height: ${(props) => props.theme.headerHeight};
-
-  padding: 0.75rem 2rem;
 
   background-color: ${(props) => props.theme.darkLight};
 
   font-size: 1em;
   font-weight: bold;
   color: ${(props) => props.theme.light};
+`;
+
+const HeaderContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  max-width: 1920px;
+
+  padding: 0.75rem 2rem;
 `;
 
 const LinksContainer = styled.nav`
@@ -51,19 +60,25 @@ const LinksContainer = styled.nav`
 
 const SearchBarHolder = styled.div`
   position: absolute;
-  z-index: 0;
+  z-index: 1;
 
-  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   top: ${(props) => (props.show ? props.theme.headerHeight : "0%")};
 
-  padding: 0 2rem;
   width: 100%;
+
+  padding: 0 2rem;
 
   transition: top ease-out 0.15s;
 `;
 
 const HeaderSearchBar = styled(SearchBar)`
   && {
+    max-width: 1856px;
+    margin: 0;
     background-color: ${(props) => props.theme.darkLight};
   }
 `;
@@ -124,6 +139,44 @@ const DrawerMenuButton = styled(HeaderButton)`
   }
 `;
 
+const menuLinks = [
+  {
+    label: "Home",
+    slug: "",
+    id: 1,
+  },
+  {
+    label: "Kit Map",
+    slug: "map",
+    id: 3,
+  },
+  {
+    label: "Challenges",
+    slug: "challenges",
+    id: 4,
+  },
+  {
+    label: "News",
+    slug: "news",
+    id: 5,
+  },
+  {
+    label: "Help",
+    slug: "help",
+    id: 6,
+  },
+  {
+    label: "Library",
+    slug: "library",
+    id: 7,
+  },
+  {
+    label: "Roadmap",
+    slug: "roadmap",
+    id: 8,
+  },
+];
+
 export default function Header() {
   const { user, isLogged } = useAuth();
 
@@ -144,127 +197,95 @@ export default function Header() {
     setOpenSearch(!openSearch);
   }
 
-  const menuLinks = [
-    {
-      label: "Home",
-      slug: "",
-      id: 1,
-    },
-    {
-      label: "Kit Map",
-      slug: "map",
-      id: 3,
-    },
-    {
-      label: "Challenges",
-      slug: "challenges",
-      id: 4,
-    },
-    {
-      label: "News",
-      slug: "news",
-      id: 5,
-    },
-    {
-      label: "Help",
-      slug: "help",
-      id: 6,
-    },
-    {
-      label: "Library",
-      slug: "library",
-      id: 7,
-    },
-    {
-      label: "Roadmap",
-      slug: "roadmap",
-      id: 8,
-    },
-  ];
-
   return (
     <>
       <HeaderContainer>
-        <Brand />
+        <HeaderContent>
+          <Brand />
 
-        <LinksContainer>
-          {menuLinks.map((link) => (
-            <HeaderLink key={link.id} label={link.label} slug={link.slug} />
-          ))}
-        </LinksContainer>
+          <LinksContainer>
+            {menuLinks.map((link) => (
+              <HeaderLink key={link.id} label={link.label} slug={link.slug} />
+            ))}
+          </LinksContainer>
 
-        <ButtonsRow>
-          <HeaderButton
-            inverted
-            color="dark"
-            icon={openSearch ? <CloseIcon /> : <SearchIcon />}
-            onClick={() => toggleSearch()}
-          />
+          <ButtonsRow>
+            <HeaderButton
+              inverted
+              color="dark"
+              icon={openSearch ? <CloseIcon /> : <SearchIcon />}
+              onClick={() => toggleSearch()}
+            />
 
-          <DrawerMenuButton
-            inverted
-            color="dark"
-            icon={<MenuIcon />}
-            onClick={() => toggleDrawer()}
-          />
+            <DrawerMenuButton
+              inverted
+              color="dark"
+              icon={<MenuIcon />}
+              onClick={() => toggleDrawer()}
+            />
 
-          <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
+            <Drawer open={openDrawer} toggle={toggleDrawer} links={menuLinks} />
 
-          {isLogged ? (
-            <UserHeaderTools>
-              <div>
+            {isLogged ? (
+              <UserHeaderTools>
+                <div>
+                  <DropdownMenu
+                    name="notif"
+                    trigger={
+                      <HeaderButton
+                        inverted
+                        color="dark"
+                        icon={<Notification />}
+                      />
+                    }
+                  >
+                    <b>Notifications</b>
+                    <Separator />
+                    <p>No notifications yet</p>
+                  </DropdownMenu>
+                </div>
+
+                <Link passHref href="/library/create-media">
+                  <HeaderButton inverted color="secondary" label="Share" />
+                </Link>
+
                 <DropdownMenu
-                  name="notif"
-                  trigger={
-                    <HeaderButton
-                      inverted
-                      color="dark"
-                      icon={<Notification />}
-                    />
-                  }
+                  name="user"
+                  trigger={<HeaderAvatar size={40} avatar={user.avatar} />}
                 >
-                  <b>Notifications</b>
+                  <b>{user.username}</b>
+
                   <Separator />
-                  <p>No notifications yet</p>
+
+                  <Link
+                    passHref
+                    href={"/users/[username]"}
+                    as={`/users/${user.username}`}
+                  >
+                    <a>My profile</a>
+                  </Link>
+                  <Link passHref href={"/settings"}>
+                    <a>Settings</a>
+                  </Link>
+                  <Separator />
+                  <Link passHref href={"/logout"}>
+                    <a>Log out</a>
+                  </Link>
                 </DropdownMenu>
-              </div>
-
-              <Link passHref href="/library/create-media">
-                <HeaderButton color="primary" label="Share" />
-              </Link>
-
-              <DropdownMenu
-                name="user"
-                trigger={<HeaderAvatar size={40} avatar={user.avatar} />}
-              >
-                <b>{user.username}</b>
-
-                <Separator />
-
-                <Link
-                  passHref
-                  href={"/users/[username]"}
-                  as={`/users/${user.username}`}
-                >
-                  <a>My profile</a>
+              </UserHeaderTools>
+            ) : (
+              <SignUpButtonHolder>
+                <Link passHref href={"/login"}>
+                  <HeaderButton
+                    inverted
+                    color="secondary"
+                    label={"Log in / Sign Up"}
+                  />
                 </Link>
-                <Link passHref href={"/settings"}>
-                  <a>Settings</a>
-                </Link>
-                <Separator />
-                <Link passHref href={"/logout"}>
-                  <a>Log out</a>
-                </Link>
-              </DropdownMenu>
-            </UserHeaderTools>
-          ) : (
-            <SignUpButtonHolder>
-              <Link passHref href={"/login"}>
-                <HeaderButton color="primary" label={"Log in / Sign Up"} />
-              </Link>
-            </SignUpButtonHolder>
-          )}
-        </ButtonsRow>
+              </SignUpButtonHolder>
+            )}
+          </ButtonsRow>
+        </HeaderContent>
       </HeaderContainer>
       <SearchBarHolder show={openSearch}>
         <HeaderSearchBar />

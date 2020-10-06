@@ -13,7 +13,7 @@ const Content = styled.div`
   min-height: calc(100vh - ${(props) => props.theme.headerHeight});
 
   margin: ${(props) => props.theme.headerHeight} auto 0 auto;
-  padding: 3.75rem 2rem 2rem 2rem;
+  padding: 0rem 2rem 2rem 2rem;
 
   max-width: ${(props) => (props.limitWidth ? "1920px" : "unset")};
 

@@ -8,7 +8,7 @@ import ArticleCard from "../cards/ArticleCard";
 
 const Layout = styled.div`
   display: flex;
-  margin: 0 auto;
+  margin: 2rem auto 0 auto;
 
   @media screen and (max-width: ${Breaks.large}) {
     flex-direction: column;

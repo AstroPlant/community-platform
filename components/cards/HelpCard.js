@@ -6,7 +6,6 @@ import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
 const Container = styled(Card)`
-  display: flex;
   align-items: center;
   justify-content: center;
 `;
@@ -17,6 +16,14 @@ const ContentRow = styled.div`
   justify-content: center;
 `;
 
+const IconHolder = styled(Icon)`
+  transition: fill 0.2s ease-out;
+
+  ${Container}:hover & {
+    fill: ${(props) => props.theme.primary} !important;
+  }
+`;
+
 const CardTitle = styled.h3`
   width: min-content;
 `;
@@ -25,9 +32,9 @@ export function PureCard(props) {
   return (
     <Container animateOnHover className={props.className}>
       <ContentRow>
-        <Icon color={"light"} size={props.iconSize}>
+        <IconHolder color={"light"} size={props.iconSize}>
           {props.iconSVG}
-        </Icon>
+        </IconHolder>
         <CardTitle>{props.title}</CardTitle>
       </ContentRow>
     </Container>

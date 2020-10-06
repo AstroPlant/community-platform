@@ -12,18 +12,20 @@
 .md h5,
 .md h6 {
   color: #35ef7f;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .md h1,
 .md h2 {
-  margin: 2rem 0 1rem 0;
+  margin: 4rem 0 1rem 0;
 }
 
 .md h3,
 .md h4,
 .md h5,
 .md h6 {
-  margin: 1rem 0;
+  margin: 2rem 0 0.5rem 0;
 }
 
 .md h1 {
@@ -56,12 +58,14 @@
 .md u,
 .md li {
   font-size: 1em;
+  font-weight: 300 !important;
+
   line-height: 1.5;
   font-weight: 400;
 }
 
 .md p {
-  margin-bottom: 2em;
+  margin-bottom: 0.75rem;
 }
 
 .md a,
@@ -70,7 +74,7 @@
 }
 
 .md a {
-  color: #177fff;
+  color: #177fff !important;
   font-size: 1em;
   font-weight: 700;
 }
@@ -89,7 +93,7 @@
 
 .md blockquote,
 .md pre {
-  background-color: #292929;
+  background-color: #303030;
 }
 
 .md blockquote {

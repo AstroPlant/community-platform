@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Breaks from "./breakpoints";
 
 const TabsContainer = styled.div`
   display: flex;
@@ -8,6 +9,11 @@ const TabsContainer = styled.div`
   width: 100%;
 
   margin: 0 0 1.5rem 0;
+
+  @media screen and (max-width: ${Breaks.small}) {
+    flex-direction: column;
+    margin: 0 0 0.75rem 0;
+  }
 `;
 
 const Tab = styled.p`
@@ -27,6 +33,10 @@ const Tab = styled.p`
 
   &:hover {
     color: ${(props) => props.theme.primary};
+  }
+
+  @media screen and (max-width: ${Breaks.small}) {
+    margin: 0 1.5rem 0.25rem 0;
   }
 `;
 

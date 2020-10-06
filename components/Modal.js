@@ -54,7 +54,7 @@ const ModalContainer = styled(Card)`
 const ModalHead = styled.div`
   display: flex;
 
-  background-color: #252525;
+  background-color: ${(props) => props.theme.textBackground};
   border-bottom: 1px solid ${(props) => props.theme.grey};
 
   width: 100%;
