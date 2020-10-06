@@ -11,7 +11,6 @@ import NewsIcon from "../public/icons/campaign.svg";
 import HelpIcon from "../public/icons/help.svg";
 import LibraryIcon from "../public/icons/library.svg";
 import SlackIcon from "../public/icons/slack.svg";
-import { getFullKit, getUserMemberships } from "../services/data-api";
 import Breaks from "../utils/breakpoints";
 
 const WelcomeMessage = styled.h1`
@@ -74,17 +73,8 @@ function Home({ mainKit }) {
   );
 }
 
-export async function getServerSideProps(ctx) {
-  let memberships = [];
+export async function getServerSideProps() {
   let mainKit = {};
-
-  const user = getLoggedUser(ctx.req.headers.cookie);
-
-  if (user != null) {
-    memberships = await getUserMemberships(user.username);
-    mainKit =
-      memberships.length != 0 && (await getFullKit(memberships[0].kit.serial));
-  }
 
   return {
     props: {

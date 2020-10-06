@@ -93,6 +93,7 @@ export async function getHelpSectionBySlug(slug) {
 /**********************************************
  *                 ARTICLES                   *
  **********************************************/
+
 const imageModel = `{
   url
   alternativeText
@@ -233,6 +234,37 @@ export async function getFullArticle(slug) {
 /**********************************************
  *                 USERS                      *
  **********************************************/
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function login(username, password) {
+  const path = "/auth/local";
+
+  const body = {
+    identifier: username,
+    password: password,
+  };
+
+  return postJson(API_URL + path, body);
+}
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function forgotPassword(email) {
+  const path = "/auth/forgot-password";
+
+  const body = { email };
+
+  const res = await postJson(API_URL + path, body);
+
+  return res;
+}
 
 /***
  * Creates a new user
@@ -748,80 +780,6 @@ export async function getAllFeatures() {
   }`;
 
   return getQuery(graphQLQuery);
-}
-
-/**********************************************
- *                USERS GRAPHS                *
- **********************************************/
-
-/**
- *
- * @param {*} username
- * @param {*} kitSerial
- */
-export async function getUsersGraphs(username, kitSerial) {
-  // TODO Implement with a real API Call
-  const graphs = [
-    {
-      id: 24,
-      title: "Humidity Over Time",
-      type: "bar",
-      owner: "rmnrss",
-      kitSerial: "k-krmw-vp3y-v4g9",
-      configId: 4,
-      peripherals: [{ id: 12, peripheralDefinitionId: 3, quantityTypeId: 3 }],
-    },
-    {
-      id: 25,
-      owner: "rmnrss",
-      title: "Temperature Over Time",
-      type: "line",
-      kitSerial: "k-mqym-kdc8-b3t9",
-      configId: 14,
-      peripherals: [{ id: 44, peripheralDefinitionId: 6, quantityTypeId: 1 }],
-    },
-  ];
-
-  let matchingGraphs = [];
-
-  for (let graph of graphs) {
-    if (username === graph.owner && kitSerial === graph.kitSerial) {
-      matchingGraphs.push(graph);
-    }
-  }
-
-  return matchingGraphs;
-}
-
-/***
- * Logs the user and stores the token cookies
- * @param username the username from the user
- * @param password the user's password
- */
-export async function login(username, password) {
-  const path = "/auth/local";
-
-  const body = {
-    identifier: username,
-    password: password,
-  };
-
-  return postJson(API_URL + path, body);
-}
-
-/***
- * Logs the user and stores the token cookies
- * @param username the username from the user
- * @param password the user's password
- */
-export async function forgotPassword(email) {
-  const path = "/auth/forgot-password";
-
-  const body = { email };
-
-  const res = await postJson(API_URL + path, body);
-
-  return res;
 }
 
 /**********************************************
