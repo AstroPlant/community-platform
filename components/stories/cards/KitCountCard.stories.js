@@ -1,10 +1,10 @@
-import { number, text, withKnobs } from "@storybook/addon-knobs/react";
+import { number, text, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import KitCountCard from "../../cards/KitCountCard";
 
 export default {
   component: KitCountCard,
-  title: "cards/KitCountCard",
+  title: "cards/Kit Count Card",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

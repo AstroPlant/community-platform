@@ -1,20 +1,14 @@
-import { text } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { text, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
-import styled from "styled-components";
 import ArticleCard from "../../cards/ArticleCard";
 
 export default {
   component: ArticleCard,
-  title: "cards/ArticleCard",
+  title: "cards/Article Card",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
-
-const Holder = styled.div`
-  height: 100vh;
-`;
 
 export const Default = () => {
   const articleData = {
@@ -32,9 +26,5 @@ export const Default = () => {
     published_at: text("Publication Date", "2019-10-18"),
   };
 
-  return (
-    <Holder>
-      <ArticleCard article={articleData} onClick={action("Clicked")} />
-    </Holder>
-  );
+  return <ArticleCard article={articleData} onClick={action("Clicked")} />;
 };

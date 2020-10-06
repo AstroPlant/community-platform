@@ -41,10 +41,10 @@ const KitName = styled.b`
   font-size: 20px;
 `;
 
-export default function KitMembershipCard({ membership }) {
+export default function KitMembershipCard({ className, membership }) {
   const kit = membership.kit;
   return (
-    <Container>
+    <Container className={className}>
       <IconHolder color={"dark"} size={48}>
         <KitIcon />
       </IconHolder>

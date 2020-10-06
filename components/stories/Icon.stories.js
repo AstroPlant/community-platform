@@ -1,6 +1,5 @@
 import { action } from "@storybook/addon-actions";
-import { number, select } from "@storybook/addon-knobs";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { number, select, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import Notification from "../../public/icons/notification.svg";
 import Icon from "../Icon";

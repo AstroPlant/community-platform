@@ -1,6 +1,5 @@
 import { action } from "@storybook/addon-actions";
-import { select } from "@storybook/addon-knobs";
-import { text, withKnobs } from "@storybook/addon-knobs/react";
+import { select, text, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import Button from "../Button";
 

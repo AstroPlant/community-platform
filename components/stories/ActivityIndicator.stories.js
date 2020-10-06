@@ -1,5 +1,4 @@
-import { boolean } from "@storybook/addon-knobs";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { boolean, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import ActivityIndicator from "../ActivityIndicator";
 
