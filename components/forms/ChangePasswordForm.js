@@ -58,6 +58,7 @@ export default function ChangePasswordForm() {
           <Form>
             <TextInput
               label="Current Password"
+              id="oldPassword"
               name="oldPassword"
               type="password"
               placeholder="Current"
@@ -65,6 +66,7 @@ export default function ChangePasswordForm() {
 
             <TextInput
               label="New password"
+              id="newPassword"
               name="newPassword"
               type="password"
               placeholder="New secure password"
@@ -72,6 +74,7 @@ export default function ChangePasswordForm() {
 
             <TextInput
               label="Validate password"
+              id="validatePassword"
               name="validatePassword"
               type="password"
               placeholder="Validate new password"

@@ -244,6 +244,7 @@ export default function MediaCreationForm({ librarySections, mediaToEdit }) {
                       <>
                         <TextInput
                           label="URL"
+                          id={`content[${index}].url`}
                           name={`content[${index}].url`}
                           type="text"
                           placeholder="https://example.com"
@@ -255,6 +256,7 @@ export default function MediaCreationForm({ librarySections, mediaToEdit }) {
                         />
                         <TextInput
                           label="Caption"
+                          id={`content[${index}].caption`}
                           name={`content[${index}].caption`}
                           type="text"
                           placeholder="A nice url."
@@ -292,6 +294,7 @@ export default function MediaCreationForm({ librarySections, mediaToEdit }) {
                       <>
                         <TextInput
                           label="Title"
+                          id={`content[${index}].title`}
                           name={`content[${index}].title`}
                           type="text"
                           placeholder="My file title."
@@ -300,6 +303,7 @@ export default function MediaCreationForm({ librarySections, mediaToEdit }) {
 
                         <LongTextInput
                           label="Description"
+                          id={`content[${index}].description`}
                           name={`content[${index}].description`}
                           type="text"
                           placeholder="A description of the file."

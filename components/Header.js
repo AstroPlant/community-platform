@@ -195,6 +195,9 @@ export default function Header() {
    */
   function toggleSearch() {
     setOpenSearch(!openSearch);
+    if (!openSearch) {
+      document.getElementById("query").focus();
+    }
   }
 
   return (
@@ -212,6 +215,7 @@ export default function Header() {
           <ButtonsRow>
             <HeaderButton
               inverted
+              label={"Open search"}
               color="dark"
               icon={openSearch ? <CloseIcon /> : <SearchIcon />}
               onClick={() => toggleSearch()}
@@ -219,6 +223,7 @@ export default function Header() {
 
             <DrawerMenuButton
               inverted
+              label={"Open menu"}
               color="dark"
               icon={<MenuIcon />}
               onClick={() => toggleDrawer()}
@@ -234,6 +239,7 @@ export default function Header() {
                     trigger={
                       <HeaderButton
                         inverted
+                        label={"Open notifications"}
                         color="dark"
                         icon={<Notification />}
                       />

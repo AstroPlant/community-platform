@@ -46,7 +46,7 @@ export default function HelpCard(props) {
   return (
     <>
       {external ? (
-        <a href={props.href} target="_blank">
+        <a href={props.href} target="_blank" rel="noopener">
           <PureCard {...props} />
         </a>
       ) : (

@@ -9,7 +9,10 @@ import {
 
 function CreateMediaPage({ librarySections, media }) {
   return (
-    <PageLayout metaTitle={"Create Media"}>
+    <PageLayout
+      metaTitle={"Create Media"}
+      metaDescription={"Share with the AstroPlant community."}
+    >
       <MediaCreationForm
         librarySections={librarySections}
         mediaToEdit={media}

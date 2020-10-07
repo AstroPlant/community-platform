@@ -81,7 +81,7 @@ const Publisher = styled.p`
 export default function PostLink({ link }) {
   return (
     <Container>
-      <a href={link.url} target="_blank">
+      <a href={link.url} target="_blank" rel="noopener">
         <RichLinkContainer animateOnHover>
           <ImageHolder
             src={link.meta_image_url}

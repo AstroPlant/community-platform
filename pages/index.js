@@ -28,7 +28,7 @@ function Home({ mainKit }) {
     <PageLayout
       metaTitle={"Home"}
       metaDescription={
-        "AstroPlant platform. Grow with the community, manage your kits. Growing a new generation of urban and space farmers."
+        "The AstroPlant community platform. Read the latest astroplant news, share your results and stories with your fellow space farmers! Manage your kits, and find help and support for your kit issues. AstroPlant, growing a new generation of urban and space farmers."
       }
     >
       <WelcomeMessage>

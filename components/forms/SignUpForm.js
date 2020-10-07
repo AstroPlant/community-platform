@@ -27,9 +27,7 @@ const Disclaimer = styled.p`
 `;
 
 const SignupSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
   username: Yup.string()
     .min(2, "Username must be at least 3 characters!")
     .max(50, "Username is too long.")
@@ -98,30 +96,34 @@ export default function SignUpForm() {
               </Disclaimer>
               <TextInput
                 label="email"
+                id="email"
                 name="email"
                 type="email"
                 placeholder="SpaceFarmer@astroplant.io"
               />
               <TextInput
                 label="Username"
+                id="username"
                 name="username"
                 type="text"
                 placeholder="SpaceFarmer"
               />
               <TextInput
                 label="Password"
+                id="password"
                 name="password"
                 type="password"
                 placeholder="Password"
               />
               <TextInput
                 label="Validate password"
+                id="validatePassword"
                 name="validatePassword"
                 type="password"
                 placeholder="Validate Password"
               />
 
-              <Checkbox name="acceptTerms">
+              <Checkbox id="acceptTerms" name="acceptTerms">
                 I agree to the <a>terms and conditions</a>
               </Checkbox>
 

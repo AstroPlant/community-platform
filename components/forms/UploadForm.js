@@ -96,6 +96,7 @@ export default function UploadForm(props) {
       )}
 
       <FileInput
+        id={"files"}
         name={"files"}
         accept="image/*"
         multiple={props.multiple}

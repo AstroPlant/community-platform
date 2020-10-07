@@ -16,7 +16,10 @@ export default function MainLayout({
   children,
 }) {
   return (
-    <PageLayout metaTitle={metaTitle} metaDescription={metaDescription}>
+    <PageLayout
+      metaTitle={metaTitle || pageTitle}
+      metaDescription={metaDescription}
+    >
       <Path />
       <h2>{pageTitle}</h2>
 

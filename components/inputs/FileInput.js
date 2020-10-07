@@ -147,6 +147,7 @@ export default function FileInput({
                   </ItemContent>
                   <RemoveButton
                     inverted
+                    label={"Remove File"}
                     color="greyDark"
                     icon={<RemoveIcon />}
                     onClick={() => removeFile(file.name)}

@@ -136,6 +136,7 @@ export default function SimpleMediaCard({ media, showTools }) {
             <>
               <Button
                 inverted
+                label={"Edit Media"}
                 color={"secondary"}
                 icon={<EditIcon />}
                 onClick={() =>
@@ -147,6 +148,7 @@ export default function SimpleMediaCard({ media, showTools }) {
               />
               <Button
                 inverted
+                label={"Delete Media"}
                 color={"error"}
                 icon={<DeleteIcon />}
                 onClick={() => toggle()}

@@ -23,7 +23,11 @@ export default function Profile({ user, memberships, medias }) {
   const { currentTab, Tabs } = useTabs(["Kits", "Medias"]);
 
   return (
-    <MainLayout pageTitle={user.username} metaTitle={user.username}>
+    <MainLayout
+      pageTitle={user.username}
+      metaTitle={user.username}
+      metaDescription={user.description}
+    >
       <Grid inverted>
         <ProfileCard user={user} />
         <UserContent>

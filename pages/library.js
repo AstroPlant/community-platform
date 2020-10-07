@@ -10,7 +10,9 @@ export default function Library({ librarySections }) {
     <MainLayout
       pageTitle={"AstroPlant Library"}
       metaTitle={"Library"}
-      metaDescription={"Everything you need to get started and contribute."}
+      metaDescription={
+        "The AstroPlant library, a place to share with the community and find useful resources for AstroPlant related topics."
+      }
     >
       <ItemsGrid>
         {librarySections.map((section) => (

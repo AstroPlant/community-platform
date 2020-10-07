@@ -27,12 +27,16 @@ export default function KitCard(props) {
       <Details>
         We're currently working on a new version of Kit Dashboards. For now you
         can use the{" "}
-        <a href="http://astroplant-alpha.surge.sh/home" target="_blank">
+        <a
+          href="http://astroplant-alpha.surge.sh/home"
+          target="_blank"
+          rel="noopener"
+        >
           current tools
         </a>{" "}
         to access and edit your kits. To learn more about the new features
         please{" "}
-        <a href="http://astroplant.slack.com/" target="_blank">
+        <a href="http://astroplant.slack.com/" target="_blank" rel="noopener">
           join our Slack
         </a>
         .
