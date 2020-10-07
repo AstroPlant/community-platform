@@ -9,7 +9,7 @@ const removeMd = require("remove-markdown");
  * Upload a file to strapi using the upload service
  * @param {*} url
  */
-const uploadFromUrl = async url => {
+const uploadFromUrl = async (url) => {
   // Downloading
   const downloaded = await strapi.config.functions.download(url);
 
@@ -26,10 +26,10 @@ const uploadFromUrl = async url => {
  * Searching for images in the content.
  * @param {*} content
  */
-const findImgUrls = content => {
-  return Array.from(content.matchAll(/!\[(.*?)\]\((.*?)\)/g), m => ({
+const findImgUrls = (content) => {
+  return Array.from(content.matchAll(/!\[(.*?)\]\((.*?)\)/g), (m) => ({
     alt: m[1],
-    url: m[2]
+    url: m[2],
   }));
 };
 
@@ -37,7 +37,7 @@ const findImgUrls = content => {
  * create a preview based of the article content
  * @param {*} content
  */
-const createPreview = content => {
+const createPreview = (content) => {
   const plainText = removeMd(content);
 
   return plainText.substring(0, 136) + "...";
@@ -48,26 +48,28 @@ module.exports = {
     const turndownService = new TurndownService();
 
     const { data } = await axios.get(
-      "https://www.astroplant.io/wp-json/wp/v2/posts?per_page=1&page=1"
+      "https://www.astroplant.io/wp-json/wp/v2/posts?per_page=50&page=1"
     );
 
     const posts = await Promise.all(
       data.map(
-        post =>
+        (post) =>
           new Promise(async (resolve, reject) => {
             const {
               title: { rendered: titleRendered },
               content: { rendered: contentRendered },
               date,
-              jetpack_featured_media_url
+              jetpack_featured_media_url,
             } = post;
 
-            const slug = slugify(titleRendered, {
-              lower: true
+            const mdTitle = turndownService.turndown(titleRendered);
+
+            const slug = slugify(mdTitle, {
+              lower: true,
             });
 
             const existingArticle = await strapi.query("article").findOne({
-              slug: slug
+              slug: slug,
             });
 
             if (existingArticle) {
@@ -113,8 +115,7 @@ module.exports = {
 
               // Creating object
               const articleData = {
-                title: titleRendered,
-                slug: slug,
+                title: mdTitle,
                 cover: coverId,
                 preview: createPreview(mdContent),
                 published: true,
@@ -123,9 +124,9 @@ module.exports = {
                 content: [
                   {
                     __component: "content-type.rich-text",
-                    text: mdContent
-                  }
-                ]
+                    text: mdContent,
+                  },
+                ],
               };
 
               try {
@@ -143,5 +144,5 @@ module.exports = {
     );
 
     return posts;
-  }
+  },
 };
