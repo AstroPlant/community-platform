@@ -1,5 +1,4 @@
-import { number } from "@storybook/addon-knobs";
-import { select, withKnobs } from "@storybook/addon-knobs/react";
+import { number, select, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import Logo from "../Logo";
 

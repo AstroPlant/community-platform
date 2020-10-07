@@ -5,11 +5,11 @@ import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
 const Container = styled(Card)`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   && {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     text-align: center;
 
     min-height: 340px;
@@ -18,14 +18,14 @@ const Container = styled(Card)`
 
 const Subtitle = styled.b`
   color: ${(props) => props.theme.primary};
-  margin: 0.25rem 0 0 0;
+  margin: 0.75rem 0 0 0;
 `;
 
 const Description = styled.p`
   width: 100%;
   max-width: 448px;
 
-  margin: 1rem 0;
+  margin: 1rem 0 0 0;
 `;
 
 export default function LibrarySectionCard({

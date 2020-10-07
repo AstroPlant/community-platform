@@ -20,7 +20,7 @@ export default function Checkbox({ children, ...props }) {
     <>
       <Row>
         <Input type="checkbox" {...field} {...props} />
-        <label>{children}</label>
+        <label htmlFor={props.name || props.id}>{children}</label>
       </Row>
 
       {meta.touched && meta.error ? (

@@ -10,7 +10,9 @@ export default function News({ featured, articles }) {
     <MainLayout
       pageTitle={"The latest updates!"}
       metaTitle={"News"}
-      metaDescription={"All the official news and update about AstroPlant !"}
+      metaDescription={
+        "All the official news and update about AstroPlant! Everything you need to know about the project in one place."
+      }
     >
       <FeaturedArticleCard featuredArticle={featured} />
       <ItemsGrid columns={4}>

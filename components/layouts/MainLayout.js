@@ -1,36 +1,29 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import Breaks from "../../utils/breakpoints";
 import Path from "../Path";
 import PageLayout from "./PageLayout";
 
-const HeadRow = styled.div`
+const PageContent = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  @media screen and (max-width: ${Breaks.medium}) {
-    flex-direction: column-reverse;
-  }
+  flex-direction: column;
 `;
 
-const PageTitle = styled.h2`
-  margin-right: auto;
-`;
-
-export default function MainLayout(props) {
+export default function MainLayout({
+  metaDescription,
+  metaTitle,
+  pageTitle,
+  children,
+}) {
   return (
     <PageLayout
-      metaTitle={props.metaTitle}
-      metaDescription={props.metaDescription}
+      metaTitle={metaTitle || pageTitle}
+      metaDescription={metaDescription}
     >
       <Path />
-      <HeadRow>
-        <PageTitle>{props.pageTitle}</PageTitle>
-      </HeadRow>
+      <h2>{pageTitle}</h2>
 
-      {props.children}
+      <PageContent>{children}</PageContent>
     </PageLayout>
   );
 }

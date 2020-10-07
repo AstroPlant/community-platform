@@ -67,6 +67,7 @@ export default function PostFile({ file }) {
   return (
     <a
       target="_blank"
+      rel="noopener"
       href={process.env.NEXT_PUBLIC_STRAPI_PUBLIC_URL + file.file.url}
     >
       <Container animateOnHover>

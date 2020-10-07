@@ -14,7 +14,7 @@ const Container = styled.div`
 
   border-radius: 50%;
 
-  background-color: ${(props) => props.theme.secondary};
+  background-color: ${(props) => props.theme.greyDark};
   color: ${(props) => props.theme.light};
 
   overflow: hidden;

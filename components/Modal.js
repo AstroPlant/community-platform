@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import Close from "../public/icons/close.svg";
+import Breaks from "../utils/breakpoints";
 import Card from "./cards/Card";
 import Icon from "./Icon";
 
@@ -27,20 +28,33 @@ const Overlay = styled.div`
 const ModalContainer = styled(Card)`
   && {
     padding: 0;
+
     height: unset;
-    width: unset;
+    width: 740px;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+    @media screen and (max-width: ${Breaks.large}) {
+      width: 680px;
+      min-height: 470px;
+    }
+
+    @media screen and (max-width: ${Breaks.medium}) {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  & p {
+    margin-bottom: 1rem;
   }
 `;
 
 const ModalHead = styled.div`
   display: flex;
-  align-items: center;
 
+  background-color: ${(props) => props.theme.textBackground};
   border-bottom: 1px solid ${(props) => props.theme.grey};
 
   width: 100%;
@@ -56,7 +70,15 @@ const IconHolder = styled(Icon)`
 
 const ModalContent = styled.div`
   width: 100%;
+  max-height: 80vh;
+
   padding: 2rem;
+
+  overflow: auto;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    max-height: 100%;
+  }
 `;
 
 const Modal = ({ show, handleClose, title, children }) =>
@@ -82,6 +104,10 @@ Modal.propTypes = {
    * Whether or not to show the overlay
    */
   show: PropTypes.bool,
+  /**
+   * Method to handle the modal closing
+   */
+  handleClose: PropTypes.func.isRequired,
   /**
    * Content of the overlay
    */

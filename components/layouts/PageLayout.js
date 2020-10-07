@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -13,7 +14,7 @@ const Content = styled.div`
   min-height: calc(100vh - ${(props) => props.theme.headerHeight});
 
   margin: ${(props) => props.theme.headerHeight} auto 0 auto;
-  padding: 3.75rem 2rem 2rem 2rem;
+  padding: 0rem 2rem 2rem 2rem;
 
   max-width: ${(props) => (props.limitWidth ? "1920px" : "unset")};
 
@@ -26,17 +27,41 @@ const Content = styled.div`
   }
 `;
 
-export default function PageLayout(props) {
+export default function PageLayout({
+  children,
+  limitWidth,
+  metaTitle,
+  metaDescription,
+}) {
+  const router = useRouter();
+
+  const publicUrl = `https://app.astroplant.sda-projects.nl`;
+  const fullUrl = `${publicUrl}${router.asPath}`;
+
+  const fullTitle = `${metaTitle} | AstroPlant Community Platform`;
+
   return (
     <>
       <Head>
-        <title>
-          {props.metaTitle && `${props.metaTitle} | `}AstroPlant Platform
-        </title>
-        <meta name="description" content={props.metaDescription || ""} />
+        <title>{fullTitle}</title>
+        <meta name="title" content={fullTitle} />
+        <meta name="description" content={metaDescription || ""} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={fullUrl} />
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={metaDescription || ""} />
+        <meta property="og:image" content="/images/meta-image" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={fullUrl} />
+        <meta property="twitter:title" content={fullTitle} />
+        <meta property="twitter:description" content={metaDescription || ""} />
+        <meta property="twitter:image" content="/images/meta-image" />
       </Head>
+
       <Header />
-      <Content limitWidth={props.limitWidth}>{props.children}</Content>
+      <Content limitWidth={limitWidth}>{children}</Content>
     </>
   );
 }

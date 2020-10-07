@@ -4,7 +4,7 @@ import styled from "styled-components";
 import * as Yup from "yup";
 import { authenticate, useAuth } from "../../providers/Auth";
 import { useSnackBars } from "../../providers/SnackBarProvider";
-import { forgotPassword, login } from "../../services/community";
+import { login } from "../../services/community";
 import { getErrorMessage, hasError } from "../../utils/fetchTools";
 import Button from "../Button";
 import Checkbox from "../inputs/CheckBox";
@@ -55,7 +55,7 @@ export default function LoginForm() {
 
           // Navigate to the home page
           if (isLogged) {
-            setTimeout(function() {
+            setTimeout(function () {
               actions.resetForm();
             }, 2000);
           }
@@ -72,18 +72,22 @@ export default function LoginForm() {
           <Form>
             <TextInput
               label="Username"
+              id="username"
               name="username"
               type="text"
               placeholder="SpaceFarmer"
             />
             <TextInput
               label="Password"
+              id="password"
               name="password"
               type="password"
               placeholder="Password"
             />
             <Row>
-              <Checkbox name="rememberMe">Remember Me</Checkbox>
+              <Checkbox id="rememberMe" name="rememberMe">
+                Remember Me
+              </Checkbox>
               {/* 
               <a
                 onClick={async () => {

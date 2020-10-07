@@ -18,7 +18,7 @@ export default function Challenges({ challenges }) {
       pageTitle={"Community Challenges"}
       metaTitle={"Challenges"}
       metaDescription={
-        "All the community challenges proposed by AstroPlant. Join a challenge now and help scientist around the world."
+        "All the community challenges proposed by AstroPlant. Join a challenge now and help space and plant scientists around the world."
       }
     >
       <Content>

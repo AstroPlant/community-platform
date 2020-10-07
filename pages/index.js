@@ -1,36 +1,51 @@
+import styled from "styled-components";
 import ChallengeCard from "../components/cards/ChallengeCard";
+import DashboardLinkCard from "../components/cards/DashboardLinkCard";
 import HelpCard from "../components/cards/HelpCard";
 import KitCard from "../components/cards/KitCard";
-import LibraryCard from "../components/cards/LibraryCard";
 import MapCard from "../components/cards/MapCard";
-import NewsCard from "../components/cards/NewsCard";
 import DashboardGrid from "../components/grids/DashboardGrid";
 import PageLayout from "../components/layouts/PageLayout";
 import { getLoggedUser, useAuth } from "../providers/Auth";
+import NewsIcon from "../public/icons/campaign.svg";
 import HelpIcon from "../public/icons/help.svg";
+import LibraryIcon from "../public/icons/library.svg";
 import SlackIcon from "../public/icons/slack.svg";
-import { getFeaturedArticle } from "../services/community";
-import { getFullKit, getUserMemberships } from "../services/data-api";
+import Breaks from "../utils/breakpoints";
 
-function Home({ featuredArticle, mainKit }) {
+const WelcomeMessage = styled.h1`
+  margin: 4rem 0 0.25rem 0;
+
+  @media screen and (max-width: ${Breaks.large}) {
+    margin: 1.5rem 0 0.25rem 0;
+  }
+`;
+
+function Home({ mainKit }) {
   const { user, isLogged } = useAuth();
 
   return (
     <PageLayout
       metaTitle={"Home"}
       metaDescription={
-        "AstroPlant platform. Grow with the community, manage your kits. Growing a new generation of urban and space farmers."
+        "The AstroPlant community platform. Read the latest astroplant news, share your results and stories with your fellow space farmers! Manage your kits, and find help and support for your kit issues. AstroPlant, growing a new generation of urban and space farmers."
       }
-      limitWidth={false}
     >
-      <h1>
+      <WelcomeMessage>
         Welcome
         {isLogged && ` ${user.firstName ? user.firstName : user.username}`}!
-      </h1>
+      </WelcomeMessage>
 
       <DashboardGrid>
         <KitCard home kit={mainKit} />
-        <NewsCard featuredArticle={featuredArticle} />
+        <DashboardLinkCard
+          href={"/news"}
+          icon={<NewsIcon />}
+          title={"Astro' News"}
+          description={
+            "The official blog of the astroplant core team! Everything you need to know about the project in one place."
+          }
+        />
         <ChallengeCard />
         <HelpCard
           iconSVG={<HelpIcon />}
@@ -45,29 +60,24 @@ function Home({ featuredArticle, mainKit }) {
           href="http://astroplant.slack.com/"
         />
         <MapCard />
-        <LibraryCard />
+        <DashboardLinkCard
+          href={"/library"}
+          icon={<LibraryIcon />}
+          title={"AstroPlant Library"}
+          description={
+            "Documentation, tutorials, research, community highlights... Everything you need to get started with AstroPlant !"
+          }
+        />
       </DashboardGrid>
     </PageLayout>
   );
 }
 
-export async function getServerSideProps(ctx) {
-  const featuredArticle = await getFeaturedArticle();
-
-  let memberships = [];
+export async function getServerSideProps() {
   let mainKit = {};
-
-  const user = getLoggedUser(ctx.req.headers.cookie);
-
-  if (user != null) {
-    memberships = await getUserMemberships(user.username);
-    mainKit =
-      memberships.length != 0 && (await getFullKit(memberships[0].kit.serial));
-  }
 
   return {
     props: {
-      featuredArticle: featuredArticle || null,
       mainKit: mainKit || null,
     },
   };

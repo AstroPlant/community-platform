@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import RemoveIcon from "../../public/icons/delete.svg";
@@ -68,9 +68,20 @@ const FileName = styled.p`
   margin-right: 1rem;
 `;
 
-export default function FileInput({ className, id, name, label, ...props }) {
+export default function FileInput({
+  className,
+  id,
+  name,
+  label,
+  initialValues,
+  ...props
+}) {
   const [error, setError] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+
+  useEffect(() => {
+    setSelectedFiles(initialValues);
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDropRejected,
@@ -94,6 +105,7 @@ export default function FileInput({ className, id, name, label, ...props }) {
   function removeFile(name) {
     const newFiles = [...selectedFiles];
     setSelectedFiles(newFiles.filter((file) => file.name !== name));
+    props.onDrop(newFiles.filter((file) => file.name !== name));
   }
 
   return (
@@ -113,10 +125,19 @@ export default function FileInput({ className, id, name, label, ...props }) {
           <h4>Files</h4>
           <FileList>
             {selectedFiles.map((file) => {
+              if (!file) {
+                return null;
+              }
+
               const splitName = file.name.split(".");
               const name = splitName[0];
-              const extension = splitName[1];
-              const size = (file.size / 1000000).toFixed(2);
+              const extension =
+                splitName[splitName.length - 1] || file.ext.replace(".", "");
+              // The files object from the api should contain an id key and give a size in kB
+              // whereas file object created locally give a size in Bytes and do not have an id key
+              const size = file.id
+                ? (file.size / 1000).toFixed(2)
+                : (file.size / 1000000).toFixed(2);
               return (
                 <ListItem key={name}>
                   <ItemContent>
@@ -126,6 +147,7 @@ export default function FileInput({ className, id, name, label, ...props }) {
                   </ItemContent>
                   <RemoveButton
                     inverted
+                    label={"Remove File"}
                     color="greyDark"
                     icon={<RemoveIcon />}
                     onClick={() => removeFile(file.name)}
@@ -157,8 +179,13 @@ FileInput.propTypes = {
    * Callback function to execute when files are dropped or changed
    */
   onDrop: PropTypes.func.isRequired,
+  /**
+   * Initial values of the selected files
+   */
+  initialValues: PropTypes.arrayOf(PropTypes.object),
 };
 
 FileInput.defaultProps = {
   label: null,
+  initialValues: [],
 };

@@ -93,9 +93,20 @@ export async function getHelpSectionBySlug(slug) {
 /**********************************************
  *                 ARTICLES                   *
  **********************************************/
+
 const imageModel = `{
   url
   alternativeText
+}`;
+
+const completeFileModel = `{
+  id
+  url
+  caption
+  name
+  ext
+  type: mime
+  size
 }`;
 
 const authorModel = `{
@@ -113,11 +124,7 @@ const contentModel = `{
     id
     title
     description
-    file {
-      id
-      url
-      mime
-    }
+    file ${completeFileModel}
   }
   ... on ComponentContentTypeLink {
     id
@@ -131,9 +138,7 @@ const contentModel = `{
   ... on ComponentContentTypeImage {
     id
     caption
-    image {
-      url
-    }
+    image ${completeFileModel}
   }
   ... on ComponentContentTypeRichText {
     id
@@ -194,29 +199,6 @@ export async function getArticles() {
 }
 
 /***
- * Fetches the latest article to be displayed on the home page
- */
-export async function getFeaturedArticle() {
-  const query = `{
-    articles(
-      where: { published: true }
-      sort: "published_at:desc"
-      limit: 1
-    ) {
-      id
-      slug
-      title
-      preview
-      cover ${imageModel}
-    }
-  }`;
-
-  const res = await getQuery(query);
-
-  return res.data.articles[0];
-}
-
-/***
  * Fetches the first articles previews
  */
 export async function getFullArticle(slug) {
@@ -252,6 +234,37 @@ export async function getFullArticle(slug) {
 /**********************************************
  *                 USERS                      *
  **********************************************/
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function login(username, password) {
+  const path = "/auth/local";
+
+  const body = {
+    identifier: username,
+    password: password,
+  };
+
+  return postJson(API_URL + path, body);
+}
+
+/***
+ * Logs the user and stores the token cookies
+ * @param username the username from the user
+ * @param password the user's password
+ */
+export async function forgotPassword(email) {
+  const path = "/auth/forgot-password";
+
+  const body = { email };
+
+  const res = await postJson(API_URL + path, body);
+
+  return res;
+}
 
 /***
  * Creates a new user
@@ -369,10 +382,7 @@ const completeLibraryMedia = `
     slug
     type
     created_at
-    cover {
-      url
-      caption
-    }
+    cover ${completeFileModel}
     author ${authorModel}
     content ${contentModel}
   }
@@ -422,10 +432,46 @@ export async function getLibraryMedia(slug) {
 }
 
 /***
- * Creates a library media
- * @param body necessary information to create the media
+ * Fetches a library media
+ * @param id of the media
  */
-export async function createLibraryMedia(body) {
+export async function getLibraryMediaById(id) {
+  const query = `{
+    libraryMedia(id: ${id}) ${completeLibraryMedia}
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedia;
+}
+
+/***
+ * Fetches all library from a specific author
+ * @param authorId the is of the author
+ */
+export async function getLibraryMediasByAuthor(authorId) {
+  const query = `{
+    libraryMedias(where: {author: ${authorId}}){
+    id
+    title
+    slug
+    type
+    created_at
+    }
+  }`;
+
+  const res = await getQuery(query);
+
+  return res.data.libraryMedias;
+}
+
+/***
+ * Prepares the data from the media form to be send to the api
+ * @param formData
+ */
+export async function prepareMedia(formData) {
+  const { content, ...preparedData } = formData;
+
   // Upload process
   const uploadFile = async (file) => {
     const res = await upload([file], {});
@@ -437,22 +483,26 @@ export async function createLibraryMedia(body) {
     }
   };
 
-  // Generic Media infos
-
   // Escaping quote characters
-  body.title = body.title.split('"').join('\\"');
+  preparedData.title = formData.title.split('"').join('\\"');
 
-  // Cover File
-  let coverID = null;
-
-  if (body.cover) {
-    coverID = await uploadFile(body.cover);
+  /**
+   * Cover File
+   * File object from the api should contain an id so we don't update them
+   */
+  if (formData.cover) {
+    if (formData.cover.id != null) {
+      preparedData.coverID = formData.cover.id;
+    } else {
+      preparedData.coverID = await uploadFile(formData.cover);
+    }
+  } else {
+    preparedData.coverID = null;
   }
 
   // Building content bloc queries
-
-  const content = await Promise.all(
-    body.content.map(async (bloc) => {
+  let preparedContent = await Promise.all(
+    content.map(async (bloc) => {
       // Building typeName
       const typeName = `ComponentContentType${bloc.type}`;
       switch (bloc.type) {
@@ -470,7 +520,7 @@ export async function createLibraryMedia(body) {
         }`;
 
         case "Image":
-          const imageID = await uploadFile(bloc.image);
+          const imageID = bloc.image.id || (await uploadFile(bloc.image));
           return `{
           __typename: "${typeName}"
           image: "${imageID}"
@@ -478,7 +528,7 @@ export async function createLibraryMedia(body) {
         }`;
 
         case "File":
-          const fileID = await uploadFile(bloc.file);
+          const fileID = bloc.file.id || (await uploadFile(bloc.file));
           return `{
           __typename: "${typeName}"
           file: "${fileID}"
@@ -492,23 +542,86 @@ export async function createLibraryMedia(body) {
     })
   );
 
+  preparedData.content = preparedContent.join(" ");
+
+  return preparedData;
+}
+
+/***
+ * Creates a library media
+ * @param body necessary information to create the media
+ */
+export async function createLibraryMedia(body) {
+  const preparedMedia = await prepareMedia(body);
+
   const mutation = `mutation {
     createLibraryMedia(
       input: {
         data: {
-          title: "${body.title}"
-          type: ${body.type}
-          library_section: ${body.librarySection}
-          author: ${body.user}
-          cover: ${coverID}
-          content: [${content.join(" ")}]
+          title: "${preparedMedia.title}"
+          type: ${preparedMedia.type}
+          library_section: ${preparedMedia.librarySection}
+          author: ${preparedMedia.user}
+          cover: ${preparedMedia.coverID}
+          content: [${preparedMedia.content}]
         }
       }
     ) {
       libraryMedia {
         id
-        created_at
-        title
+      }
+    }
+  }
+  `;
+
+  const options = createOptionsWithBearer();
+
+  return getQuery(mutation, options);
+}
+
+/**
+ * Update a library media based on it's id
+ * @param {number} id of the media to update
+ * @param {object} body containing the updated information
+ */
+export async function updateLibraryMedia(id, body) {
+  const preparedMedia = await prepareMedia(body);
+
+  const mutation = `mutation {
+    updateLibraryMedia(
+      input: {
+        where: { id: ${id} },
+        data: {
+          title: "${preparedMedia.title}"
+          type: ${preparedMedia.type}
+          library_section: ${preparedMedia.librarySection}
+          author: ${preparedMedia.user}
+          cover: ${preparedMedia.coverID}
+          content: [${preparedMedia.content}]
+        }
+      }
+    ) {
+      libraryMedia {
+        id
+      }
+    }
+  }
+  `;
+
+  const options = createOptionsWithBearer();
+
+  return getQuery(mutation, options);
+}
+
+/***
+ * Deletes a library media
+ * @param mediaID to delete
+ */
+export async function deleteLibraryMedia(mediaID) {
+  const mutation = `mutation {
+    deleteLibraryMedia(input: { where: { id: ${mediaID} } }) {
+      libraryMedia {
+        id
       }
     }
   }
@@ -644,77 +757,29 @@ export async function search({
 }
 
 /**********************************************
- *                USERS GRAPHS                *
+ *                   FEATURES                 *
  **********************************************/
 
+const featureModel = `{
+    id
+    created_at
+    stage
+    name
+    description
+  }`;
+
 /**
- *
- * @param {*} username
- * @param {*} kitSerial
+ * Get all the features from the API
  */
-export async function getUsersGraphs(username, kitSerial) {
-  // TODO Implement with a real API Call
-  const graphs = [
-    {
-      id: 24,
-      title: "Humidity Over Time",
-      type: "bar",
-      owner: "rmnrss",
-      kitSerial: "k-krmw-vp3y-v4g9",
-      configId: 4,
-      peripherals: [{ id: 12, peripheralDefinitionId: 3, quantityTypeId: 3 }],
-    },
-    {
-      id: 25,
-      owner: "rmnrss",
-      title: "Temperature Over Time",
-      type: "line",
-      kitSerial: "k-mqym-kdc8-b3t9",
-      configId: 14,
-      peripherals: [{ id: 44, peripheralDefinitionId: 6, quantityTypeId: 1 }],
-    },
-  ];
+export async function getAllFeatures() {
+  const graphQLQuery = `{
+    under_consideration: features(where: { stage: "under_consideration" }) ${featureModel}
+    planned: features(where: { stage: "planned" }) ${featureModel}
+    in_development: features(where: { stage: "in_development" }) ${featureModel}
+    launched: features(where: { stage: "launched" }) ${featureModel}
+  }`;
 
-  let matchingGraphs = [];
-
-  for (let graph of graphs) {
-    if (username === graph.owner && kitSerial === graph.kitSerial) {
-      matchingGraphs.push(graph);
-    }
-  }
-
-  return matchingGraphs;
-}
-
-/***
- * Logs the user and stores the token cookies
- * @param username the username from the user
- * @param password the user's password
- */
-export async function login(username, password) {
-  const path = "/auth/local";
-
-  const body = {
-    identifier: username,
-    password: password,
-  };
-
-  return postJson(API_URL + path, body);
-}
-
-/***
- * Logs the user and stores the token cookies
- * @param username the username from the user
- * @param password the user's password
- */
-export async function forgotPassword(email) {
-  const path = "/auth/forgot-password";
-
-  const body = { email };
-
-  const res = await postJson(API_URL + path, body);
-
-  return res;
+  return getQuery(graphQLQuery);
 }
 
 /**********************************************

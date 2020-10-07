@@ -1,11 +1,10 @@
-import { number, text } from "@storybook/addon-knobs";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { number, text, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import LibrarySectionCard from "../../cards/LibrarySectionCard";
 
 export default {
   component: LibrarySectionCard,
-  title: "cards/LibrarySectionCard",
+  title: "cards/Library Section Card",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };

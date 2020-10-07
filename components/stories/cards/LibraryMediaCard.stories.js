@@ -1,11 +1,10 @@
-import { string, number, object, text } from "@storybook/addon-knobs";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { text, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import LibraryMediaCard from "../../cards/LibraryMediaCard";
 
 export default {
   component: LibraryMediaCard,
-  title: "cards/LibraryMediaCard",
+  title: "cards/Library Media Card",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
@@ -15,12 +14,7 @@ export const Link = () => {
     id: 1,
     title: text("Media Title", "Title"),
     created_at: text("Media Date", "2020-05-12"),
-    media: [
-      {
-        type: "Link",
-        url: text("Media Url", "url.com"),
-      },
-    ],
+    type: "links",
   };
 
   return <LibraryMediaCard media={mediaData} />;
@@ -31,14 +25,7 @@ export const Article = () => {
     id: 1,
     title: text("Media Title", "Title"),
     created_at: text("Media Date", "2020-05-12"),
-    media: [
-      {
-        type: "Article",
-        cover: {
-          url: text("Cover Url", "/uploads/Placeholder_3028505c45.jpg"),
-        },
-      },
-    ],
+    type: "article",
   };
 
   return <LibraryMediaCard media={mediaData} />;
@@ -49,12 +36,29 @@ export const File = () => {
     id: 1,
     title: text("Media Title", "Title"),
     created_at: text("Media Date", "2020-05-12"),
-    media: [
-      {
-        type: "File",
-        file: { url: text("File Url", "/uploads/Placeholder_3028505c45.jpg") },
-      },
-    ],
+    type: "files",
+  };
+
+  return <LibraryMediaCard media={mediaData} />;
+};
+
+export const Tutorial = () => {
+  const mediaData = {
+    id: 1,
+    title: text("Media Title", "Title"),
+    created_at: text("Media Date", "2020-05-12"),
+    type: "tutorial",
+  };
+
+  return <LibraryMediaCard media={mediaData} />;
+};
+
+export const Album = () => {
+  const mediaData = {
+    id: 1,
+    title: text("Media Title", "Title"),
+    created_at: text("Media Date", "2020-05-12"),
+    type: "album",
   };
 
   return <LibraryMediaCard media={mediaData} />;

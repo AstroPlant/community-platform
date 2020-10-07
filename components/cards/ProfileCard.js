@@ -13,7 +13,6 @@ import Modal from "../Modal";
 import Card from "./Card";
 
 const Container = styled(Card)`
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;

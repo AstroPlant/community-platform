@@ -41,6 +41,11 @@ const SearchButton = styled(Button)`
   margin: 0;
 `;
 
+const HiddenLabel = styled.label`
+  visibility: hidden;
+  width: 0;
+`;
+
 export default function SearchBar(props) {
   const [query, setQuery] = useState("");
 
@@ -68,11 +73,15 @@ export default function SearchBar(props) {
 
   return (
     <Form {...props} onSubmit={handleSubmit} id="searchbar">
+      <HiddenLabel style={{ width: 0 }} htmlFor={"query"}>
+        Search
+      </HiddenLabel>
       <Icon color={"grey"} size={24}>
         <SearchIcon />
       </Icon>
       <Input
         type="text"
+        id={"query"}
         name={"query"}
         placeholder={"Search"}
         onChange={handleChange}

@@ -11,7 +11,6 @@ const EmptyGrid = styled.div`
 const GridContainer = styled(Grid)`
   && {
     grid-template-columns: repeat(${(props) => props.columns}, 1fr);
-    grid-template-rows: repeat(${(props) => props.columns}, 1fr);
 
     @media screen and (max-width: ${Breaks.large}) {
       grid-template-columns: repeat(2, 1fr);

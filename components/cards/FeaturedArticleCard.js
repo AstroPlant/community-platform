@@ -9,19 +9,21 @@ import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
 const Container = styled(Card)`
-  display: grid;
-  grid-template-columns: 0.75fr 1fr;
+  && {
+    display: grid;
+    grid-template-columns: 0.75fr 1fr;
 
-  padding: 0;
-  margin: 2rem 0;
+    padding: 0;
+    margin: 2rem 0;
 
-  @media screen and (max-width: ${Breaks.large}) {
-    display: flex;
-    flex-direction: column;
+    @media screen and (max-width: ${Breaks.large}) {
+      display: flex;
+      flex-direction: column;
 
-    height: unset;
+      height: unset;
 
-    margin: 2rem 0 0 0;
+      margin: 2rem 0 0 0;
+    }
   }
 `;
 
@@ -40,10 +42,13 @@ const CoverHolder = styled(Cover)`
   }
 `;
 
-const InfosContainer = styled.div`
+const DetailsHolder = styled.div`
   display: flex;
   flex-direction: column;
+
   padding: 2rem;
+
+  background-color: ${(props) => props.theme.textBackground};
 `;
 
 const Title = styled.h2`
@@ -71,15 +76,15 @@ const UserDetails = styled(UserPreview)`
 export default function FeaturedArticleCard({ featuredArticle }) {
   return (
     <WrapInLink href={"/news/[slug]"} as={`/news/${featuredArticle.slug}`}>
-      <Container>
+      <Container animateOnHover>
         <CoverHolder cover={featuredArticle.cover} />
-        <InfosContainer>
+        <DetailsHolder>
           <Date dateString={featuredArticle.published_at} />
           <Title>{featuredArticle.title}</Title>
 
           <Preview>{featuredArticle.preview}</Preview>
           <UserDetails user={featuredArticle.author} />
-        </InfosContainer>
+        </DetailsHolder>
       </Container>
     </WrapInLink>
   );

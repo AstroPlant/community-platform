@@ -17,7 +17,7 @@ const Container = styled.div`
   margin: 0 2rem 0 auto;
   padding: 0;
 
-  background-color: ${(props) => props.theme.darkLight};
+  background-color: ${(props) => props.theme.textBackground};
   border-radius: ${(props) => props.theme.radiusMax};
 
   @media screen and (max-width: ${Breaks.large}) {

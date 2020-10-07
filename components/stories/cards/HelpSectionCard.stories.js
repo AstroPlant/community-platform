@@ -1,11 +1,10 @@
-import { text } from "@storybook/addon-knobs";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { text, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import HelpSectionCard from "../../cards/HelpSectionCard";
 
 export default {
   component: HelpSectionCard,
-  title: "cards/HelpSectionCard",
+  title: "cards/Help Section Card",
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
