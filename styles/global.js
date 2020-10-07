@@ -116,8 +116,8 @@ export const GlobalStyle = createGlobalStyle`
     height: 32px;
     border-radius: 16px;
     
-    background: #56F265;
-    color: #000;
+    background: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.dark};
 
     font-family: ${(props) => props.theme.fontFamily};
     font-size: 16px;
