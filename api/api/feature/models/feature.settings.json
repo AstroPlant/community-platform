@@ -3,7 +3,7 @@
   "collectionName": "features",
   "info": {
     "name": "Feature",
-    "description": "A feature to be added to the roadmap"
+    "description": "A feature to be added to the roadmap."
   },
   "options": {
     "increments": true,
@@ -16,12 +16,7 @@
     },
     "stage": {
       "type": "enumeration",
-      "enum": [
-        "under_consideration",
-        "planned",
-        "in_development",
-        "launched"
-      ],
+      "enum": ["under_consideration", "planned", "in_development", "launched"],
       "default": "under_consideration"
     },
     "description": {
