@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "library_sections",
   "info": {
-    "name": "LibrarySection"
+    "name": "LibrarySection",
+    "description": "A section of the library."
   },
   "options": {
     "increments": true,
