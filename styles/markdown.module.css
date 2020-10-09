@@ -3,17 +3,29 @@
   word-break: break-word;
 }
 
+/** Headings **/
+
 .md h1,
 .md h2,
-.md blockquote {
-  margin: 2rem 0 1rem 0;
+.md h3,
+.md h4,
+.md h5,
+.md h6 {
+  color: #35ef7f;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.md h1,
+.md h2 {
+  margin: 4rem 0 1rem 0;
 }
 
 .md h3,
 .md h4,
 .md h5,
 .md h6 {
-  margin: 1rem 0;
+  margin: 2rem 0 0.5rem 0;
 }
 
 .md h1 {
@@ -40,25 +52,20 @@
   letter-spacing: 0.1em;
 }
 
-.md h2,
-.md h4,
-.md h6 {
-  color: #bcbcbc;
-}
+/** Paragraphs & Lists **/
 
 .md p,
 .md u,
 .md li {
   font-size: 1em;
+  font-weight: 300 !important;
+
+  line-height: 1.5;
   font-weight: 400;
 }
 
 .md p {
-  margin-bottom: 2em;
-}
-
-.md blockquote p {
-  margin: 0;
+  margin-bottom: 0.75rem;
 }
 
 .md a,
@@ -66,32 +73,14 @@
   margin-bottom: 0.75rem;
 }
 
-.md blockquote {
-  padding: 1rem;
-
-  font-size: 1em;
-  font-weight: 300;
-  font-style: italic;
-  color: #fff;
-  border-left: 5px solid #35ef7f;
-}
-
-.md pre {
-  width: 100%;
-  padding: 2rem;
-  margin: 1rem 0;
-  background-color: hsla(0, 0%, 100%, 0.1);
-  color: #35ef7f;
-  border-radius: 4px;
-  overflow: auto;
-  white-space: pre-wrap;
-  text-align: justify;
-}
-
 .md a {
-  color: #35ef7f;
+  color: #177fff !important;
   font-size: 1em;
   font-weight: 700;
+}
+
+.md a:hover {
+  text-decoration: underline;
 }
 
 .md ul,
@@ -100,20 +89,94 @@
   margin-left: 2em;
 }
 
-.md img {
-  opacity: 0.7;
+/** Quotes & Pre **/
+
+.md blockquote,
+.md pre {
+  background-color: #303030;
+}
+
+.md blockquote {
+  margin: 1rem 0;
+  padding: 1rem;
+
+  font-size: 1em;
+  font-weight: 300;
+  font-style: italic;
+
+  color: #ccc;
+
+  border-left: 5px solid #35ef7f;
+  border-radius: 0 4px 4px 0;
+}
+
+.md blockquote p {
+  margin: 0;
+}
+
+.md pre {
+  width: 100%;
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  border-radius: 4px;
+}
+
+/** Images **/
+
+.md p img {
+  opacity: 0.9;
 
   border-radius: 8px;
   transition: opacity 0.2s ease;
 
-  max-height: 320px;
-  object-fit: contain;
+  object-fit: cover;
 
   align-self: center;
 }
 
 .md img:hover {
   opacity: 1;
+}
+
+/** Separator **/
+
+.md hr {
+  color: #5a5a5a;
+}
+
+/** Tables **/
+
+.md table {
+  display: block;
+  max-width: 100%;
+  overflow: auto;
+  word-break: normal;
+  font-size: 15px;
+}
+
+.md table td,
+.md table th {
+  padding: 8px 12px;
+  border: 1px solid #5a5a5a;
+}
+
+.md table tr {
+  background-color: #1d1d1d;
+  border-top: 1px solid #c6cbd1;
+}
+
+.md table tr:nth-child(2n) {
+  background-color: #000;
+}
+
+.md table thead tr {
+  background-color: #5a5a5a;
+}
+
+.md table thead th {
+  padding: 10px 12px;
 }
 
 @media screen and (max-width: 768px) {

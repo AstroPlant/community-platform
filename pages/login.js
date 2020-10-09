@@ -80,7 +80,7 @@ function Login() {
         <title>Login or Sign Up | AstroPlant Platform</title>
         <meta
           name="description"
-          content="Login page of the AstroPlant Community Platform"
+          content="Login or Sign Up to the AstroPlant Community Platform"
         />
       </Head>
 
@@ -111,7 +111,7 @@ function Login() {
           </FormHolder>
         </LeftColumn>
         <RightColumn>
-          <img src="./images/login.jpg" />
+          <img src="./images/login.jpg" alt="A person taking care of plants." />
         </RightColumn>
       </SplitLayout>
     </>

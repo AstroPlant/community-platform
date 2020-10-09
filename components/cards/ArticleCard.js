@@ -1,19 +1,30 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Arrow from "../../public/icons/long-arrow.svg";
 import Breaks from "../../utils/breakpoints";
 import Cover from "../Cover";
 import Date from "../Date";
+import Icon from "../Icon";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
+
+const AnimatedArrow = styled(Icon)`
+  && {
+    margin: 0;
+  }
+`;
 
 const Container = styled(Card)`
   && {
     padding: 0;
   }
 
-  display: flex;
   flex-direction: column;
+
+  &:hover ${AnimatedArrow} {
+    animation: cta-arrow 1s ease-in-out infinite;
+  }
 `;
 
 const CoverHolder = styled(Cover)`
@@ -28,31 +39,34 @@ const CoverHolder = styled(Cover)`
   }
 `;
 
-const Content = styled.div`
-  width: 100%;
+const DetailsHolder = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
 
-  background-color: ${(props) => props.theme.darkLight};
+  background-color: ${(props) => props.theme.textBackground};
   padding: 1rem 1.25rem;
 `;
 
 const Title = styled.b`
-  height: 1.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 
-  font-size: 18px;
-  text-overflow: ellipsis;
-
-  color: ${(props) => props.theme.primary};
   overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 `;
 
 const Preview = styled.p`
-  max-height: 3em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  height: 3em;
 
   margin-bottom: 0.5rem;
 
@@ -66,18 +80,46 @@ const ArticleDate = styled(Date)`
   margin-bottom: 0.5rem;
 `;
 
-export default function ArticleCard({ article, showCover, className }) {
+const ReadRow = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  margin-top: 0.25rem;
+`;
+
+const ReadLabel = styled.label`
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+
+  margin-right: auto;
+
+  letter-spacing: 0.1em;
+  color: ${(props) => props.theme.secondary};
+`;
+
+export default function ArticleCard({ article, className, showCover }) {
   return (
     <WrapInLink passHref href={"/news/[slug]"} as={`/news/${article.slug}`}>
-      <Container animateOnHover className={className}>
+      <Container className={className} animateOnHover>
         {showCover && <CoverHolder cover={article.cover} />}
 
-        <Content>
+        <DetailsHolder>
           <ArticleDate dateString={article.published_at} />
 
           <Title>{article.title}</Title>
           <Preview>{article.preview}</Preview>
-        </Content>
+          {showCover && (
+            <ReadRow>
+              <ReadLabel>Read</ReadLabel>
+              <AnimatedArrow size={32} color={"secondary"}>
+                <Arrow />
+              </AnimatedArrow>
+            </ReadRow>
+          )}
+        </DetailsHolder>
       </Container>
     </WrapInLink>
   );

@@ -18,6 +18,7 @@ export default function MyApp({ Component, pageProps }) {
         />
         <meta lang="en" charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="theme-color" content="#35EF7F" />
       </Head>
 
       <AuthProvider>

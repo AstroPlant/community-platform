@@ -3,7 +3,7 @@
   "collectionName": "articles",
   "info": {
     "name": "Article",
-    "description": "An official piece of news from AstroPlant"
+    "description": "An official piece of news from AstroPlant."
   },
   "options": {
     "increments": true
@@ -11,7 +11,6 @@
   "attributes": {
     "title": {
       "type": "string",
-      "description": "Title of the article.",
       "required": true,
       "unique": true
     },
@@ -20,7 +19,6 @@
       "targetField": "title"
     },
     "cover": {
-      "description": "Image Illustrating the article",
       "model": "file",
       "via": "related",
       "allowedTypes": ["images", "videos"],
@@ -29,19 +27,16 @@
     },
     "preview": {
       "type": "text",
-      "description": "A short description of what the article is about.",
       "required": true,
       "maxLength": 140,
       "minLength": 1
     },
     "categories": {
-      "description": "The categories/topics of the article",
       "collection": "category",
       "via": "article"
     },
     "content": {
       "type": "dynamiczone",
-      "description": "Content of the article.",
       "components": [
         "content-type.file",
         "content-type.image",
@@ -52,18 +47,15 @@
       "required": true
     },
     "author": {
-      "description": "User who wrote the article.",
       "plugin": "users-permissions",
       "model": "user"
     },
     "published": {
       "type": "boolean",
-      "description": "Whether or not the article is published.",
       "default": false
     },
     "published_at": {
-      "type": "date",
-      "description": "Date at which the article was published."
+      "type": "date"
     }
   }
 }

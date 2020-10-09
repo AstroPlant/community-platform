@@ -9,21 +9,23 @@ async function updateSection(sectionId) {
 module.exports = {
   lifecycles: {
     async afterCreate(result, data) {
-      updateSection(result.library_section.id);
+      await updateSection(result.library_section.id);
     },
     async afterDelete(results, data) {
-      for (let res of results) {
-        updateSection(res.library_section.id);
+      if (results.length > 0) {
+        for (let res of results) {
+          await updateSection(res.library_section.id);
+        }
       }
     },
     async afterUpdate(result, params, data) {
-      updateSection(result.library_section.id);
+      await updateSection(result.library_section.id);
     },
     async beforeCreate(data) {
       // Auto creating the slug
       if (data.title) {
         data.slug = slugify(data.title, {
-          lower: true
+          lower: true,
         });
       }
 
@@ -40,7 +42,7 @@ module.exports = {
       // Auto updating the slug
       if (data.title) {
         data.slug = slugify(data.title, {
-          lower: true
+          lower: true,
         });
       }
 
@@ -52,6 +54,6 @@ module.exports = {
           );
         }
       }
-    }
-  }
+    },
+  },
 };

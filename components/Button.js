@@ -70,11 +70,11 @@ const Button = React.forwardRef(
         ref={ref}
         type={props.type || "button"}
         isIcon={isIcon}
+        aria-label={label}
         {...props}
       >
         <HoverBar />
-        {icon && <IconHolder size={24}>{icon}</IconHolder>}
-        {label}
+        {isIcon ? <IconHolder size={24}>{icon}</IconHolder> : <>{label}</>}
       </ButtonContainer>
     );
   }

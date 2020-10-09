@@ -2,21 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
-const HoverBar = styled.div`
-  position: absolute;
-  z-index: 2;
-
-  top: 0%;
-  left: 0%;
-
-  height: 4px;
-  width: 100%;
-  transform: scale(0);
-
-  background-color: transparent;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-`;
-
 const Container = styled.div`
   position: relative;
   display: flex;
@@ -26,26 +11,30 @@ const Container = styled.div`
 
   padding: 1.5rem;
 
+  color: ${(props) => props.theme.light};
   background-color: ${(props) => props.theme.darkLight};
 
   border-radius: ${(props) => props.theme.radiusMin};
 
   overflow: hidden;
 
-  &:hover {
-    cursor: ${(props) => props.clickable && "pointer"};
+  transition: ${(props) =>
+    props.animateOnHover && "color 0.3s ease-out, transform 0.3s ease"};
+
+  &:hover h3 {
+    color: ${(props) => props.animateOnHover && props.theme.primary};
   }
 
-  &:hover ${HoverBar} {
-    background-color: ${(props) => props.theme.primary};
-    transform: scale(1);
+  &:hover {
+    transform: ${(props) =>
+      props.animateOnHover && "translateY(-10px) scale(1)"};
+    cursor: ${(props) => props.animateOnHover && "pointer"};
   }
 `;
 
 export default function Card({ animateOnHover, children, ...props }) {
   return (
-    <Container clickable={animateOnHover} {...props}>
-      {animateOnHover && <HoverBar />}
+    <Container animateOnHover={animateOnHover} {...props}>
       {children}
     </Container>
   );

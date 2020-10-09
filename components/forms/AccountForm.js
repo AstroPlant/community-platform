@@ -76,28 +76,41 @@ export default function AccountForm(props) {
               <TextInput
                 disabled
                 label="Username"
+                id="username"
                 name="username"
                 type="text"
               />
 
-              <TextInput label="Email" name="email" type="email" />
+              <TextInput label="Email" id="email" name="email" type="email" />
             </Row>
 
             <Row>
-              <TextInput label="First Name" name="firstName" type="text" />
-              <TextInput label="Last Name" name="lastName" type="text" />
+              <TextInput
+                label="First Name"
+                id="firstName"
+                name="firstName"
+                type="text"
+              />
+              <TextInput
+                label="Last Name"
+                id="lastName"
+                name="lastName"
+                type="text"
+              />
             </Row>
 
             <Row>
               <TextInput
                 addon={"@"}
                 label="Slack username"
+                id="slackUsername"
                 name="slackUsername"
                 type="text"
               />
 
               <LongTextInput
                 label="Description"
+                id="description"
                 name="description"
                 type="text"
                 maxLength={140}

@@ -49,7 +49,13 @@ export default function Map({ kits }) {
           href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         />
       </Head>
-      <MainLayout pageTitle={"All AstroPlant kits"}>
+      <MainLayout
+        pageTitle={"AstroPlant Kit Map"}
+        metaTitle={"AstroPlant Kit Map"}
+        metaDescription={
+          "Explore all the AstroPlant kit available on Earth, get inspired and see what others are growing and how."
+        }
+      >
         <Grid fillHeight>
           <MapHolder>
             <NoSSRMapBuilder kits={kits} changeKit={changeSelectedKit} />

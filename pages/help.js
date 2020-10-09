@@ -13,7 +13,7 @@ export default function Help({ helpSections }) {
         pageTitle={"How can we help you ?"}
         metaTitle={"Help"}
         metaDescription={
-          "Help section of AstroPlant, frequently asked questions, community support."
+          "Support and Help section of AstroPlant, everything you need to troubleshoot your issues (FAQs, Community Support, etc.)."
         }
       >
         <ItemsGrid>

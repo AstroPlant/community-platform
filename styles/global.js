@@ -37,7 +37,7 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 550;
   }
   
-  h5 {
+  h6 {
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -74,6 +74,36 @@ export const GlobalStyle = createGlobalStyle`
     border: none;
   }
 
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-radius: ${(props) => props.theme.radiusMin};
+  }
+
+  @keyframes cta-arrow {
+    0% {
+      transform: translatex(0px);
+    }
+    50% {
+      transform: translatex(5px);
+    }
+    100% {
+      transform: translatex(0px);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+    50% {
+      transform: translatey(-10px);
+    }
+    100% {
+      transform: translatey(0px);
+    }
+  }
+
   .custom-popup {
     top: -16px !important;
     left: -16px !important;
@@ -86,8 +116,8 @@ export const GlobalStyle = createGlobalStyle`
     height: 32px;
     border-radius: 16px;
     
-    background: #56F265;
-    color: #000;
+    background: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.dark};
 
     font-family: ${(props) => props.theme.fontFamily};
     font-size: 16px;
@@ -107,12 +137,6 @@ export const GlobalStyle = createGlobalStyle`
   .custom-popup .leaflet-popup-tip,
   .custom-popup .leaflet-popup-close-button  {
     display: none;
-  }
-
-  @media screen and (max-width: ${Breaks.medium}){
-    p,b {
-      font-size: 14px;
-    }
   }
 
   @media screen and (max-width: ${Breaks.small}){

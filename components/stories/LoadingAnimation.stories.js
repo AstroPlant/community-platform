@@ -1,5 +1,4 @@
-import { select, text } from "@storybook/addon-knobs";
-import { withKnobs } from "@storybook/addon-knobs/react";
+import { select, text, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
 import LoadingAnimation from "../LoadingAnimation";
 

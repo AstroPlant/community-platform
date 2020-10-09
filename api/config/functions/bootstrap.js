@@ -86,6 +86,7 @@ module.exports = async () => {
         "library-media",
         "category",
         "faq",
+        "feature",
         "help-section",
         "library-section",
         "user",

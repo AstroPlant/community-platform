@@ -55,7 +55,7 @@ export default function AuthorCard({ author, ...props }) {
       <Sep />
       <Description>{author.description}</Description>
       <Link passHref href="/users/[username]" as={`/users/${author.username}`}>
-        <ViewButton label={"View Profile"} color="primary" />
+        <ViewButton inverted label={"View Profile"} color="secondary" />
       </Link>
     </Container>
   );

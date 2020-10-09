@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Breaks from "../../utils/breakpoints";
 import WrapInLink from "../WrapInLink";
 import Card from "./Card";
 
@@ -10,6 +11,12 @@ const Container = styled(Card)`
   align-items: center;
   justify-content: center;
   text-align: center;
+
+  min-height: 300px;
+
+  @media screen and (max-width: ${Breaks.medium}) {
+    min-height: 180px;
+  }
 `;
 
 export default function HelpSectionCard(props) {

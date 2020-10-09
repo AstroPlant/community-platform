@@ -1,6 +1,5 @@
-import { number, text, withKnobs } from "@storybook/addon-knobs/react";
+import { number, withKnobs } from "@storybook/addon-knobs";
 import React from "react";
-import imageFile from "../../public/placeholder.jpg";
 import Avatar from "../Avatar";
 
 export default {
@@ -11,31 +10,11 @@ export default {
 };
 
 export const Default = () => {
-  return (
-    <Avatar
-      size={number("Size", 96)}
-      username={text("Username", "PlantLover")}
-    />
-  );
+  return <Avatar size={number("Size", 96)} avatar={null} />;
 };
 
 export const withPicture = () => {
   return (
-    <Avatar
-      imgSrc={imageFile}
-      size={number("Size", 96)}
-      username={text("Username", "PlantLover")}
-    />
-  );
-};
-
-export const withBorders = () => {
-  return (
-    <Avatar
-      bordered
-      imgSrc={imageFile}
-      size={number("Size", 96)}
-      username={text("Username", "PlantLover")}
-    />
+    <Avatar size={number("Size", 96)} avatar={{ url: "/uploads/image.jpg" }} />
   );
 };
