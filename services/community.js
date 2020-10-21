@@ -744,6 +744,7 @@ export async function search({
     }
     medias: searchMedias(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}") ${simpleLibraryMedia}
     users: searchUsers(query:"${query}", start: ${start}, limit: ${limit}, sort: "${sort}"){
+      id
       username
       firstName
       lastName
