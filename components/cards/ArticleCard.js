@@ -102,7 +102,7 @@ const ReadLabel = styled.label`
 
 export default function ArticleCard({ article, className, showCover }) {
   return (
-    <WrapInLink passHref href={"/news/[slug]"} as={`/news/${article.slug}`}>
+    <WrapInLink href={"/news/[slug]"} as={`/news/${article.slug}`}>
       <Container className={className} animateOnHover>
         {showCover && <CoverHolder cover={article.cover} />}
 
