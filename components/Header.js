@@ -2,9 +2,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../providers/Auth";
-import CloseIcon from "../public/icons/close.svg";
 import MenuIcon from "../public/icons/menu.svg";
 import Notification from "../public/icons/notification.svg";
+import SearchOffIcon from "../public/icons/search-off.svg";
 import SearchIcon from "../public/icons/search.svg";
 import Breaks from "../utils/breakpoints";
 import Avatar from "./Avatar";
@@ -217,7 +217,7 @@ export default function Header() {
               inverted
               label={"Open search"}
               color="dark"
-              icon={openSearch ? <CloseIcon /> : <SearchIcon />}
+              icon={openSearch ? <SearchOffIcon /> : <SearchIcon />}
               onClick={() => toggleSearch()}
             />
 
