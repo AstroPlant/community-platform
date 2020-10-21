@@ -20,21 +20,21 @@ export const SearchProvider = ({ children }) => {
 
   useEffect(() => {
     function init() {
-      if (results) {
-        setLoading(false);
+      if (params.query && params.query !== "") {
+        execute();
       }
     }
 
     init();
-  }, [results]);
+  }, [params]);
 
   /**
    * Execute the search with the current parameters
    */
   async function execute() {
-    setLoading(false);
-    const res = await search(params);
     setLoading(true);
+    const res = await search(params);
+    setLoading(false);
     setResults(res.data);
   }
 

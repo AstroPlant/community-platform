@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSearch } from "../../providers/Search";
 import CloseIcon from "../../public/icons/close.svg";
 import SearchIcon from "../../public/icons/search.svg";
 import Button from "../Button";
@@ -26,7 +27,7 @@ const Form = styled.form`
 const Input = styled.input`
   width: 100%;
 
-  padding-right: 1rem;
+  padding: 0 1rem 0 0.5rem;
 
   font: 400 1em ${(props) => props.theme.fontFamily};
   color: ${(props) => props.theme.light};
@@ -41,6 +42,10 @@ const SearchButton = styled(Button)`
   margin: 0;
 `;
 
+const ClearButton = styled.button`
+  background-color: ${(props) => props.theme.transparent};
+`;
+
 const HiddenLabel = styled.label`
   visibility: hidden;
   width: 0;
@@ -48,8 +53,11 @@ const HiddenLabel = styled.label`
 
 export default function SearchBar(props) {
   const [query, setQuery] = useState("");
+  const { clear, setParams, params } = useSearch();
 
   const router = useRouter();
+
+  const validQuery = query && query !== "";
 
   function handleChange(event) {
     setQuery(event.target.value);
@@ -58,17 +66,16 @@ export default function SearchBar(props) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (query && query !== "") {
+    if (validQuery) {
+      setParams({ ...params, query });
       router.push({ pathname: "/search", query: { keywords: query } });
     }
   }
 
   function handleReset(event) {
     event.preventDefault();
-
-    document.getElementById("searchbar").reset();
-
-    setQuery(null);
+    setQuery("");
+    clear();
   }
 
   return (
@@ -76,7 +83,7 @@ export default function SearchBar(props) {
       <HiddenLabel style={{ width: 0 }} htmlFor={"query"}>
         Search
       </HiddenLabel>
-      <Icon color={"grey"} size={24}>
+      <Icon color={"grey"} size={28}>
         <SearchIcon />
       </Icon>
       <Input
@@ -85,16 +92,16 @@ export default function SearchBar(props) {
         name={"query"}
         placeholder={"Search"}
         onChange={handleChange}
+        value={query}
       />
-      <Icon
-        color={"grey"}
-        size={24}
-        onClick={(event) => {
-          handleReset(event);
-        }}
-      >
-        <CloseIcon />
-      </Icon>
+      {validQuery && (
+        <ClearButton aria-label={"Clear"} type="button" onClick={handleReset}>
+          <Icon size={24} color={"grey"}>
+            <CloseIcon />
+          </Icon>
+        </ClearButton>
+      )}
+
       <SearchButton inverted type="submit" label="Search" color="secondary" />
     </Form>
   );
