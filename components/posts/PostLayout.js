@@ -8,10 +8,16 @@ import ArticleCard from "../cards/ArticleCard";
 
 const Layout = styled.div`
   display: flex;
-  margin: 2rem auto 0 auto;
+  align-items: flex-start;
+  justify-content: center;
+
+  grid-gap: 2rem;
+
+  padding: 2rem 0;
 
   @media screen and (max-width: ${Breaks.large}) {
     flex-direction: column;
+    align-items: center;
   }
 `;
 

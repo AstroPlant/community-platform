@@ -14,7 +14,6 @@ const Container = styled.div`
 
   width: 744px;
 
-  margin: 0 2rem 0 auto;
   padding: 0;
 
   background-color: ${(props) => props.theme.textBackground};
