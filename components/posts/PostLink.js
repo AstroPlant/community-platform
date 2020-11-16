@@ -15,6 +15,10 @@ const Container = styled.div`
   width: 100%;
 `;
 
+const ExternalLink = styled.a`
+  width: 100%;
+`;
+
 const RichLinkContainer = styled(Card)`
   && {
     padding: 1.5rem;
@@ -28,14 +32,17 @@ const RichLinkContainer = styled(Card)`
 `;
 
 const ImageHolder = styled.img`
-  height: 96px;
-  width: 96px;
+  height: 100%;
+  max-height: 96px;
+
+  width: 100%;
+  max-width: 96px;
 
   border-radius: ${(props) => props.theme.radiusMax};
 
   @media screen and (max-width: ${Breaks.medium}) {
-    height: 48px;
-    width: 48px;
+    max-height: 48px;
+    max-width: 48px;
   }
 `;
 
@@ -81,7 +88,7 @@ const Publisher = styled.p`
 export default function PostLink({ link }) {
   return (
     <Container>
-      <a href={link.url} target="_blank" rel="noopener">
+      <ExternalLink href={link.url} target="_blank" rel="noopener">
         <RichLinkContainer animateOnHover>
           <ImageHolder
             src={link.meta_image_url}
@@ -94,7 +101,7 @@ export default function PostLink({ link }) {
             <Publisher>{link.meta_publisher}</Publisher>
           </MetaColumn>
         </RichLinkContainer>
-      </a>
+      </ExternalLink>
 
       {link.url_caption && <PostCaption caption={link.url_caption} />}
     </Container>
