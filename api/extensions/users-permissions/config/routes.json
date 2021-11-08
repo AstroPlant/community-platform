@@ -29,6 +29,21 @@
           "actionType": "update"
         }
       }
+    },
+    {
+      "method": "POST",
+      "path": "/auth/local/register",
+      "handler": "User.create",
+      "config": {
+        "policies": [],
+        "prefix": "",
+        "description": "Create a user in Strapi and the AstroPlant Core API",
+        "tag": {
+          "plugin": "users-permissions",
+          "name": "User",
+          "actionType": "create"
+        }
+      }
     }
   ]
 }

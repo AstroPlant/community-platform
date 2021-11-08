@@ -24,6 +24,7 @@ module.exports = {
    * @return {Object}
    */
   async create(ctx) {
+    console.log("CREATING USER")
     const advanced = await strapi
       .store({
         environment: "",
@@ -86,6 +87,7 @@ module.exports = {
     }
 
     try {
+      console.log("CRETATING USER", username)
       // Try to create the user on the data api if it doesn't already exist
       await strapi.config.functions.astroplant.signup(ctx, {
         username: username,
