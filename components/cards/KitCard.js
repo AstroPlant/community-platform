@@ -5,6 +5,7 @@ import Button from "../Button";
 import InProgress from "../InProgress";
 import Card from "./Card";
 import PeripheralCard from "./PeripheralCard";
+import Link from "next/link";
 
 const Container = styled(Card)`
   flex-flow: column;
@@ -47,14 +48,16 @@ export default function KitCard(props) {
 
         <TopContainer>
           <h3>{props.kit.name}</h3>
-          <Button color={"secondary"} inverted label="Open dashboard" />
+          <Link passHref href={`/dashboard/${props.kit.serial}`}>
+            <Button color={"secondary"} inverted label="Open dashboard" />
+          </Link>
         </TopContainer>
 
         <PeripheralCardsContainer>
           {props.kit.config?.peripherals?.map(peripheral => {
             peripheral.measures = props.kit.measures?.measures?.filter(measure => measure.peripheralId === peripheral.id);
-            return peripheral.details.expectedQuantityTypes?.map(quantityType => {
-              return <PeripheralCard key={peripheral.id} color={Theme.dark} peripheral={peripheral} expectedQuantityType={quantityType} />
+            return peripheral.details.expectedQuantityTypes?.map((quantityType, i) => {
+              return <PeripheralCard key={i} color={Theme.dark} peripheral={peripheral} expectedQuantityType={quantityType} />
             })
           })}
         </PeripheralCardsContainer>

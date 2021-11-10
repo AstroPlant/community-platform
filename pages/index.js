@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import ChallengeCard from "../components/cards/ChallengeCard";
 import DashboardLinkCard from "../components/cards/DashboardLinkCard";
@@ -12,6 +13,7 @@ import HelpIcon from "../public/icons/help.svg";
 import LibraryIcon from "../public/icons/library.svg";
 import SlackIcon from "../public/icons/slack.svg";
 import { getFullKit, getKitMeasures, getUserDetails, getUserMemberships } from "../services/data-api";
+import { measurementCtx } from "../stores/measurements";
 import Breaks from "../utils/breakpoints";
 
 const WelcomeMessage = styled.h1`
@@ -24,6 +26,13 @@ const WelcomeMessage = styled.h1`
 
 function Home({ mainKit }) {
   const { user, isLogged } = useAuth();
+  const measurementsStore = useContext(measurementCtx);
+
+  useEffect(() => {
+    if (mainKit) {
+      measurementsStore.setSerial(mainKit.serial);
+    }
+  }, [mainKit, measurementsStore])
 
   return (
     <PageLayout

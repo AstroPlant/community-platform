@@ -2,6 +2,9 @@ import styled from "styled-components";
 import propTypes from "prop-types";
 import Theme from "../../styles/theme";
 import moment from "moment";
+import { observer } from "mobx-react-lite"
+import { useContext } from "react";
+import { measurementCtx } from "../../stores/measurements";
 
 const Container = styled.div`
     background: ${props => props.theme.dark};
@@ -40,25 +43,38 @@ const TimeSince = styled.p`
     align-self: flex-end;
 `
 
-export default function PeripheralCard(props) {
+function PeripheralCard(props) {
 
+    const measurementsStore = useContext(measurementCtx);
     const { peripheral } = props;
-    const quantityType = peripheral.details.quantityTypes.find(quantityType => quantityType.id === props.expectedQuantityType);
-    const measurement = peripheral.measures.find(measurement => measurement.quantityTypeId === props.expectedQuantityType);
-    if (!measurement) return null;
 
+    const quantityType = peripheral.details.quantityTypes.find(quantityType => quantityType.id === props.expectedQuantityType);
+    let measurement = Object.assign([], measurementsStore.measurements)
+        .sort((a, b) => moment(a.datetime).valueOf() > moment(b.datetime).valueOf() ? -1 : 1)
+        .find(measurement => measurement.quantityType === props.expectedQuantityType);
+
+    // Fallback incase the WS does not send us anything
+    if (!measurement) {
+        const oldMeasurement = peripheral.measures.sort((a, b) => moment(a.endDatetime).valueOf() > moment(b.endDatetime).valueOf() ? -1 : 1).find(measurement => measurement.quantityTypeId === props.expectedQuantityType);
+        measurement = {
+            value: oldMeasurement.values.average,
+            datetime: oldMeasurement.endDatetime
+        }
+    }
+
+    if (!measurement) return null;
     return (
         <Container {...props}>
             <Type>{quantityType?.physicalQuantity || "-"}</Type>
 
             <ValueUnitContainer>
-                <Value>{(measurement.values.average.toFixed(2)) || "-"}</Value>
-                <Unit>{quantityType.physicalUnitSymbol}</Unit>
+                <Value>{(measurement.value.toFixed(2)) || "-"}</Value>
+                <Unit>{quantityType?.physicalUnitSymbol}</Unit>
             </ValueUnitContainer>
 
             <PerifName>{peripheral.name}</PerifName>
 
-            <TimeSince>{moment(measurement.datetimeEnd).fromNow()}</TimeSince>
+            <TimeSince>{moment(measurement.datetime).fromNow()}</TimeSince>
         </Container>
     )
 }
@@ -73,3 +89,5 @@ PeripheralCard.defaultProps = {
     color: Theme.greyDark,
     peripheral: {}
 };
+
+export default observer(PeripheralCard);
