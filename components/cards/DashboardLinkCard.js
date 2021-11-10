@@ -29,6 +29,7 @@ const IconHolder = styled(Icon)`
 
 const Title = styled.h3`
   margin: 0 0 0 1rem;
+  color: ${props => props.theme.primary};
 
   transition: color 0.2s ease-out;
 
@@ -51,7 +52,7 @@ export default function DashboardLinkCard({ href, icon, title, description }) {
     <WrapInLink href={href}>
       <Container animateOnHover>
         <TitleRow>
-          <IconHolder size={48} color={"light"}>
+          <IconHolder size={48} color={"primary"}>
             {icon}
           </IconHolder>
           <Title>{title}</Title>

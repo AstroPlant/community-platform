@@ -26,7 +26,7 @@ const formatError = error => [
 module.exports = {
 
   /**
-   * Registers the user in Strapi and the authenticates with the AstroPlant Core API.
+   * Registers the user in Strapi and authenticates with the AstroPlant Core API.
    */
   async register(ctx) {
     const advanced = await strapi
