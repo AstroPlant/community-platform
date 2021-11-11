@@ -48,7 +48,7 @@ export default function KitCard(props) {
 
         <TopContainer>
           <h3>{props.kit.name}</h3>
-          <Link passHref href={`/dashboard/${props.kit.serial}`}>
+          <Link passHref href={`/kit/${props.kit.serial}`}>
             <Button color={"secondary"} inverted label="Open dashboard" />
           </Link>
         </TopContainer>

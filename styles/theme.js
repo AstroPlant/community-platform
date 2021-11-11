@@ -1,5 +1,7 @@
 const Theme = {
   primary: "#35EF7F",
+  primarySemiTransparent: "rgba(53, 239, 127, 0.5)",
+  primaryTransparent: "rgba(53, 239, 127, 0.25)",
 
   secondary: "#177FFF",
 

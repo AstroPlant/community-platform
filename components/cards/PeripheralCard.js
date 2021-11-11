@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { measurementCtx } from "../../stores/measurements";
 
 const Container = styled.div`
-    background: ${props => props.theme.dark};
+    background: ${props => props.color || props.theme.dark};
     padding: 1rem 1.5rem;
     border-radius: ${props => props.theme.radiusMin};
     display: flex;
@@ -36,6 +36,7 @@ const Unit = styled.h3`
 
 const PerifName = styled.p`
     margin-bottom: 1.5rem;
+    align-self: center;
 `
 
 const TimeSince = styled.p`
