@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import propTypes from "prop-types";
 import Theme from '../../styles/theme';
 import useTabs from '../../utils/useTabs';
+import moment from 'moment';
 
 const Container = styled.div`
     padding: 1.5rem;
@@ -33,10 +34,34 @@ const NoWrap = styled.p`
     white-space: nowrap;
 `
 
+const data = {
+    labels: ['1', '2', '3', '4', '5', '6'],
+    datasets: [
+        {
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            fill: false,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgba(255, 99, 132, 0.2)',
+        },
+    ],
+};
+
+
 function ChartCard({ expectedQuantityType, peripheral, measurements }) {
     const { currentTab, Tabs } = useTabs(["1 hour", "3 hours", "1 day"]);
     const quantityType = peripheral.details.quantityTypes.find(quantityType => quantityType.id === expectedQuantityType);
-    console.log(measurements)
+
+    const min = measurements
+        .map(measurement => measurement.values.minimum.toFixed(2));
+
+    const max = measurements
+        .map(measurement => measurement.values.maximum.toFixed(2))
+
+    const average = measurements
+        .map(measurement => measurement.values.average.toFixed(2))
+
+    const labels = measurements.map(measurement => moment(measurement.datetimeEnd).format("HH:mm"))
 
     return (
         <Container>
@@ -52,30 +77,27 @@ function ChartCard({ expectedQuantityType, peripheral, measurements }) {
             </RowCenter>
 
             <Line
-                labels={["Minimum", "Average", "Maximum"]}
-                redraw={true}
+                options={{}}
                 data={{
+                    labels,
                     datasets: [
                         {
                             label: "Minimum",
-                            data: measurements
-                                .map(measurement => measurement.values.minimum),
+                            data: min,
                             fill: true,
-                            backgroundColor: Theme.primaryTransparent,
+                            backgroundColor: Theme.primary,
                         },
                         {
                             label: "Average",
-                            data: measurements
-                                .map(measurement => measurement.values.average),
+                            data: average,
                             fill: true,
                             backgroundColor: Theme.primarySemiTransparent
                         },
                         {
                             label: "Maximum",
-                            data: measurements
-                                .map(measurement => measurement.values.maximum),
+                            data: max,
                             fill: true,
-                            backgroundColor: Theme.primary
+                            backgroundColor: Theme.primaryTransparent
                         }
                     ]
                 }}

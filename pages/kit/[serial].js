@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Grid from "../../components/grids/Grid";
 import PeripheralCard from "../../components/cards/PeripheralCard";
 import Select from "../../components/inputs/Select";
-import PageLayout from "../../components/layouts/PageLayout";
+import MainLayout from "../../components/layouts/MainLayout";
 import { useAuth } from "../../providers/Auth";
 import { getFullKit, getKitMeasures, getKits } from "../../services/data-api";
 import useTabs from "../../utils/useTabs";
@@ -12,6 +12,17 @@ import Theme from "../../styles/theme";
 import { useEffect } from "react";
 import { measurementsStore } from "../../stores/measurements";
 import ChartCard from "../../components/cards/ChartCard";
+import Breaks from "../../utils/breakpoints";
+import dynamic from "next/dynamic";
+
+const NoSSRMapBuilder = dynamic(() => import("../../components/MapBuilder"), {
+    ssr: false,
+});
+
+const MapHolder = styled.div`
+    max-width: 600px;
+    max-height: 500px;
+`;
 
 const Row = styled.div`
     display: flex;
@@ -42,14 +53,15 @@ const ChartsCardsContainer = styled.div`
 function Kit({ kit, otherKits }) {
     const { user, isLogged } = useAuth();
     const router = useRouter();
-    const { currentTab, Tabs } = useTabs(["Overview", "Details"]);
+    const { currentTab, Tabs } = useTabs(["Overview"]);
 
     useEffect(() => {
         measurementsStore.setSerial(kit.serial);
     }, [])
 
     return (
-        <PageLayout
+        <MainLayout
+            pageTitle={kit.name}
             metaTitle={kit.name}
             metaDescription={kit.description}
         >
@@ -65,26 +77,36 @@ function Kit({ kit, otherKits }) {
                 </Formik> */}
             </Row>
 
-            <PeripheralCardsContainer>
-                {kit.config?.peripherals?.map(peripheral => {
-                    peripheral.measures = kit.measures?.measures?.filter(measure => measure.peripheralId === peripheral.id);
-                    return peripheral.details.expectedQuantityTypes?.map((quantityType, i) => {
-                        return <PeripheralCard key={i} color={Theme.darkLight} peripheral={peripheral} expectedQuantityType={quantityType} />
-                    })
-                })}
-            </PeripheralCardsContainer>
+            {currentTab === "Overview" ?
+                <>
+                    <PeripheralCardsContainer>
+                        {kit.config?.peripherals?.map(peripheral => {
+                            peripheral.measures = kit.measures?.measures?.filter(measure => measure.peripheralId === peripheral.id);
+                            return peripheral.details.expectedQuantityTypes?.map((quantityType, i) => {
+                                return <PeripheralCard key={i} color={Theme.darkLight} peripheral={peripheral} expectedQuantityType={quantityType} />
+                            })
+                        })}
+                    </PeripheralCardsContainer>
 
-            <ChartsCardsContainer>
+                    <ChartsCardsContainer>
 
-                {kit.config?.peripherals?.map(peripheral => {
-                    peripheral.measures = kit.measures?.measures?.filter(measure => measure.peripheralId === peripheral.id);
-                    return peripheral.details.expectedQuantityTypes?.map((quantityType, i) => {
-                        return <ChartCard key={i} peripheral={peripheral} measurements={peripheral.measures} expectedQuantityType={quantityType} />
-                    })
-                })}
-            </ChartsCardsContainer>
+                        {kit.config?.peripherals?.map(peripheral => {
+                            peripheral.measures = kit.measures?.measures?.filter(measure => measure.peripheralId === peripheral.id);
+                            return peripheral.details.expectedQuantityTypes?.map((quantityType, i) => {
+                                return <ChartCard key={i} peripheral={peripheral} measurements={peripheral.measures} expectedQuantityType={quantityType} />
+                            })
+                        })}
+                    </ChartsCardsContainer>
+                </>
+                : currentTab === "Details" ?
+                    <Grid fillHeight>
+                        <MapHolder>
+                            <NoSSRMapBuilder kits={[kit]} changeKit={() => { }} />
+                        </MapHolder>
+                    </Grid>
+                    : null}
 
-        </PageLayout>
+        </MainLayout>
     );
 }
 

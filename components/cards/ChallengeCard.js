@@ -37,7 +37,7 @@ export default function ChallengeCard(props) {
           <h3>Community Challenges</h3>
         </TitleRow>
         <ChallengeContent>
-          <p>Comming Soon...</p>
+          <p>Coming Soon...</p>
         </ChallengeContent>
       </Container>
     </WrapInLink>
