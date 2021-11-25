@@ -10,13 +10,18 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "chart.js": "^3.6.0",
     "cookie": "^0.4.1",
     "date-fns": "^2.15.0",
     "formik": "^2.1.7",
     "jwt-decode": "^2.2.0",
     "leaflet": "^1.6.0",
+    "mobx": "^6.3.6",
+    "mobx-react-lite": "^3.2.2",
+    "moment": "^2.29.1",
     "next": "9.5.4",
     "react": "16.13.1",
+    "react-chartjs-2": "^3.3.0",
     "react-cookie": "^4.0.3",
     "react-dom": "16.13.1",
     "react-dropzone": "^11.0.2",

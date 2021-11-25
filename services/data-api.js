@@ -1,6 +1,7 @@
 import { fetchJson, hasError, postJson } from "../utils/fetchTools";
 
 export const API_URL = "https://api.astroplant.sda-projects.nl";
+export const WS_API_URL = "wss://api.astroplant.sda-projects.nl/ws";
 
 function postRequest(path, body, options) {
   const url = API_URL + path;

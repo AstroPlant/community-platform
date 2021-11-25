@@ -13,12 +13,102 @@ const grant = require("grant-koa");
 
 const { sanitizeEntity } = require("strapi-utils");
 
+const sanitizeUser = user =>
+  sanitizeEntity(user, {
+    model: strapi.query("user", "users-permissions").model
+  });
+
 const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const formatError = error => [
   { messages: [{ id: error.id, message: error.message, field: error.field }] }
 ];
 
 module.exports = {
+
+  /**
+   * Registers the user in Strapi and authenticates with the AstroPlant Core API.
+   */
+  async register(ctx) {
+    const advanced = await strapi
+      .store({
+        environment: "",
+        type: "plugin",
+        name: "users-permissions",
+        key: "advanced"
+      })
+      .get();
+
+    const { email, username, password } = ctx.request.body;
+
+    if (!email) return ctx.badRequest("missing.email");
+    if (!username) return ctx.badRequest("missing.username");
+    if (!password) return ctx.badRequest("missing.password");
+
+    const userWithSameUsername = await strapi
+      .query("user", "users-permissions")
+      .findOne({ username });
+
+    if (userWithSameUsername) {
+      return ctx.badRequest(
+        null,
+        formatError({
+          id: "Auth.form.error.username.taken",
+          message: "Username already taken.",
+          field: ["username"]
+        })
+      );
+    }
+
+    if (advanced.unique_email) {
+      const userWithSameEmail = await strapi
+        .query("user", "users-permissions")
+        .findOne({ email });
+
+      if (userWithSameEmail) {
+        return ctx.badRequest(
+          null,
+
+          formatError({
+            id: "Auth.form.error.email.taken",
+            message: "Email already taken.",
+            field: ["email"]
+          })
+        );
+      }
+    }
+
+    const user = {
+      ...ctx.request.body,
+      provider: "local"
+    };
+
+    const defaultRole = await strapi
+      .query("role", "users-permissions")
+      .findOne({ type: advanced.default_role }, []);
+
+    user.role = defaultRole.id;
+
+    try {
+      // Try to create the user on the data api if it doesn't already exist
+      await strapi.config.functions.astroplant.signup(ctx, {
+        username: username,
+        email: email,
+        password: password
+      });
+
+      const data = await strapi.plugins["users-permissions"].services.user.add(
+        user
+      );
+
+      ctx.created(sanitizeUser(data));
+    } catch (error) {
+      ctx.badRequest(null, formatError(error));
+    }
+  },
+
+  /**
+   * Handles the /auth/local request
+   */
   async callback(ctx) {
     const provider = ctx.params.provider || "local";
     const params = ctx.request.body;

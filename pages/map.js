@@ -67,6 +67,7 @@ export default function Map({ kits }) {
               <InformationCard
                 headline={selectedKit.name}
                 details={selectedKit.description}
+                serial={selectedKit.serial}
               />
             ) : (
               <InformationCard

@@ -1,6 +1,7 @@
 const axios = require("axios");
 const jwtDecode = require("jwt-decode");
 const DATA_API_URL = "https://api.astroplant.sda-projects.nl";
+
 const formatError = error => [
   { messages: [{ id: error.id, message: error.message, field: error.field }] }
 ];
@@ -54,13 +55,16 @@ module.exports = {
    */
   async login(ctx, params) {
     try {
+      strapi.log.info("Loggin in user on AstroPlant Core API...");
       const res = await axios.post(DATA_API_URL + "/me/auth", {
         username: params.identifier,
         password: params.password
       });
 
+      strapi.log.info("Logged in to AstroPlant Core API...");
+
       // getting the infos from the request to the AstroPlant Core API.
-      const json = await res.data;
+      const json = res.data;
 
       const refreshToken = json.refreshToken;
       const accessToken = json.accessToken;
@@ -76,6 +80,9 @@ module.exports = {
         accessToken: json.accessToken
       };
     } catch (err) {
+
+      strapi.log.error("Failed to log in to AstroPlant Core API");
+
       return ctx.badRequest(
         null,
         formatError({
@@ -95,6 +102,7 @@ module.exports = {
 
     // If the user doesn't exist on the AstroPlant Core API then he is created there
     try {
+      console.log("CREATING USER ON CORE API", params)
       const res = await axios.post(DATA_API_URL + "/users", {
         username: params.username,
         emailAddress: params.email,
@@ -117,6 +125,7 @@ module.exports = {
         // else we return an error
 
         strapi.log.error("Could not create user on AstroPlant Core API.");
+        console.log("CORE API ERROR", err)
 
         return ctx.badRequest(
           null,

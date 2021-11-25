@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import ChallengeCard from "../components/cards/ChallengeCard";
 import DashboardLinkCard from "../components/cards/DashboardLinkCard";
@@ -11,6 +12,8 @@ import NewsIcon from "../public/icons/campaign.svg";
 import HelpIcon from "../public/icons/help.svg";
 import LibraryIcon from "../public/icons/library.svg";
 import SlackIcon from "../public/icons/slack.svg";
+import { getFullKit, getKitMeasures, getUserDetails, getUserMemberships } from "../services/data-api";
+import { measurementCtx, measurementsStore } from "../stores/measurements";
 import Breaks from "../utils/breakpoints";
 
 const WelcomeMessage = styled.h1`
@@ -23,6 +26,12 @@ const WelcomeMessage = styled.h1`
 
 function Home({ mainKit }) {
   const { user, isLogged } = useAuth();
+
+  useEffect(() => {
+    if (mainKit) {
+      measurementsStore.setSerial(mainKit.serial);
+    }
+  }, [mainKit])
 
   return (
     <PageLayout
@@ -73,12 +82,27 @@ function Home({ mainKit }) {
   );
 }
 
-export async function getServerSideProps() {
-  let mainKit = {};
+export async function getServerSideProps(ctx) {
+  let mainKit = null;
+  const user = getLoggedUser(ctx.req.headers.cookie);
+
+  let completeUser = null;
+  let memberships = null;
+
+  if (user) {
+    completeUser = await getUserDetails(user.username);
+    memberships = await getUserMemberships(user.username);
+
+    if (Array.isArray(memberships) && memberships[0]?.kit) {
+      const kit = await getFullKit(memberships[0].kit.serial);
+      kit.measures = await getKitMeasures(memberships[0].kit.serial, {});
+      mainKit = kit;
+    }
+  }
 
   return {
     props: {
-      mainKit: mainKit || null,
+      mainKit: mainKit,
     },
   };
 }

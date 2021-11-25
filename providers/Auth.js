@@ -14,7 +14,7 @@ const AuthContext = React.createContext({
   user: {},
   isLogged: false,
   isLoading: true,
-  setLogged: () => {},
+  setLogged: () => { },
 });
 
 // Provider passing the AuthContext to the app
@@ -115,7 +115,7 @@ export function getLoggedUser(httpCookies) {
 
     if (httpCookies) {
       const stringUser = getCookieFromHttp(httpCookies, "user");
-      user = JSON.parse(stringUser);
+      user = JSON.parse(stringUser || "{}");
     }
 
     return user;
