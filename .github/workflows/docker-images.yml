@@ -27,5 +27,5 @@ jobs:
           
       - name: Build and push the community api image
         run: |
-          docker build . --file api/Dockerfile.production --tag astroplant/astroplant-community-api:latest
+          docker build ./api --file api/Dockerfile.production --tag astroplant/astroplant-community-api:latest
           docker push astroplant/astroplant-community-api:latest
