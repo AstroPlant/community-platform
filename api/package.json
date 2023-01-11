@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "jwt-decode": "^2.2.0",
-    "knex": "<0.20.0",
+    "knex": "<2.5.0",
     "metascraper": "^5.14.14",
     "metascraper-description": "^5.14.14",
     "metascraper-image": "^5.14.14",
